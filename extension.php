@@ -9,6 +9,8 @@ return array(
 	'version'     => '2.0',
 	'is_core'     => true,
 
+	'autoload' => 'composer',
+
 	'dependencies' => array(
 		'platform/menus' => array(
 			'composer' => 'platform/extension-menus',

@@ -20,8 +20,13 @@
     },
     "autoload": {
         "psr-0": {
-            "Platform\\Dashboard": "src/"
-        }
+            "Platform\\Pages" : "models"
+        },
+        "classmap": [
+            "controllers",
+            "database/migrations",
+            "tests"
+        ]
     },
     "minimum-stability": "dev"
 }
