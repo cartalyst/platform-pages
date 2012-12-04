@@ -1,5 +1,5 @@
 {
-    "name": "platform/extension-pages",
+    "name": "platform/pages",
     "type": "platform-extension",
     "description": "A base application on Laravel.",
     "keywords": ["platform", "ecommerce", "laravel", "bootstrap"],
