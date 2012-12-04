@@ -2,28 +2,144 @@
 
 return array(
 
-	'name'        => 'Pages',
-	'slug'        => 'platform/pages',
-	'author'      => 'Cartalyst LLC',
+	/*
+	|--------------------------------------------------------------------------
+	| Name
+	|--------------------------------------------------------------------------
+	|
+	| This is a name for your extension that is for presentational purposes
+	| only.
+	|
+	*/
+
+	'name' => 'Pages',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Slug
+	|--------------------------------------------------------------------------
+	|
+	| This is a unique slug to describe the extension. This is the only
+	| identifier for this extension and should not be changed as it will be
+	| recognized as a new extension. Ideally, this should match the folder
+	| structure within the extnsions folder though this is not required.
+	|
+	*/
+
+	'slug' => 'platform/pages',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Author
+	|--------------------------------------------------------------------------
+	|
+	| Because everybody deserves credit for their work, right?
+	|
+	*/
+
+	'author' => 'Cartalyst LLC',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Description
+	|--------------------------------------------------------------------------
+	|
+	| One or two sentences describing the extension for users to view when
+	| they are installing the extension
+	|
+	*/
+
 	'description' => 'An extension to manage pages and content.',
-	'version'     => '2.0',
-	'is_core'     => true,
 
-	'autoload' => 'composer',
+	/*
+	|--------------------------------------------------------------------------
+	| Version
+	|--------------------------------------------------------------------------
+	|
+	| Version should be a string version that can be used with
+	| version_compare(). This is how we compare versions of extensions.
+	|
+	*/
 
-	'dependencies' => array(
+	'version' => '2.0.0',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Is Core
+	|--------------------------------------------------------------------------
+	|
+	| Specifies that the extension is a core extension and is installed when
+	| Platform is installed. Typically you wouldn't use this.
+	|
+	*/
+
+	'is_core' => true,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Requirements
+	|--------------------------------------------------------------------------
+	|
+	| List all extensions this extension requires to install / run etc. This
+	| is used in conjunction with composer (you should put the same extension
+	| dependencies in composer.json so they're resolved using composer),
+	| however it can be used without composer, at which point you'll have to
+	| ensure the required extensions are available.
+	|
+	*/
+
+	'require' => array(
 		'platform/menus' => array(
-			'composer' => 'platform/extension-menus',
+			'composer' => false,
 		),
 	),
 
-	'routes' => function() {
+	/*
+	|--------------------------------------------------------------------------
+	| Autoload Logic
+	|--------------------------------------------------------------------------
+	|
+	| Autoloading Logic for the Extension. It may either be 'composer', where
+	| your composer.json file specifies the autoloading logic, 'platform',
+	| where your extension receives convention autoloading based on Platform
+	| standards, or a closure which takes two parameters, first is an instance of
+	| Composer\Autoload\ClassLoader and second is Platform\Extensions\Extension.
+	| The autoload must set appropriate classes and namespaces available when the
+	| extension is started.
+	|
+	*/
 
-		Route::any('test', function() {
+	'autoload' => 'platform',
 
-			echo __FILE__;
+	/*
+	|--------------------------------------------------------------------------
+	| Boot Callback
+	|--------------------------------------------------------------------------
+	|
+	| Closure which takes a Platform\Extnesions\Extension object as a parameter
+	| and is called when the extension is booted. This can do whatever custom
+	| logic is needed upon booting.
+	|
+	*/
 
-		});
-	}
+	'boot' => function(Platform\Extensions\Extension $extension)
+	{
+
+	},
+
+	/*
+	|--------------------------------------------------------------------------
+	| Routes
+	|--------------------------------------------------------------------------
+	|
+	| Routes closure to be called when the Extension is started. Register any
+	| custom routing logic here. This closure takes the 
+	|
+	*/
+
+	'routes' => function(Platform\Extensions\Extension $extension)
+	{
+
+	},
 
 );
