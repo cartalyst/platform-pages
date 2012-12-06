@@ -113,6 +113,22 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| URI
+	|--------------------------------------------------------------------------
+	|
+	| Specify the URI the this extension will respond to. You can choose to
+	| specify a single string, where the URI will be matched on the admin and
+	| public sections of Platform. You can provide an array with keys 'admin'
+	| and 'public' to specify a different URI for admin and public sections and
+	| even provide an 'override' which is an array of Extensions this extension
+	| overrides it's URI from.
+	|
+	*/
+
+	'uri' => 'pages',
+
+	/*
+	|--------------------------------------------------------------------------
 	| Boot Callback
 	|--------------------------------------------------------------------------
 	|
@@ -133,13 +149,15 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| Routes closure to be called when the Extension is started. Register any
-	| custom routing logic here. This closure takes the 
+	| custom routing logic here. This closure takes a
+	| Platform\Extensions\Extension object as a parameter just in case you
+	| need it.
 	|
 	*/
 
 	'routes' => function(Platform\Extensions\Extension $extension)
 	{
-
+		
 	},
 
 );
