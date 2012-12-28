@@ -107,9 +107,7 @@ return array(
 	*/
 
 	'require' => array(
-		'platform/menus' => array(
-			'composer' => false,
-		),
+		'platform/menus',
 	),
 
 	/*
