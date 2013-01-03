@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'description' => 'An extension to manage pages and content.',
+	'description' => 'An extension to manage pages.',
 
 	/*
 	|--------------------------------------------------------------------------
