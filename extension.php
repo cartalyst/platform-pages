@@ -156,7 +156,7 @@ return array(
 
 	'boot' => function(Platform\Foundation\Extensions\Extension $extension)
 	{
-		echo('df');
+		
 	},
 
 	/*
