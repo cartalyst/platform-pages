@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
+use Platform\Menus\Menu;
 
 class MigrationPlatformPagesAddMenuChildren extends Migration {
 
@@ -11,7 +12,18 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	 */
 	public function up()
 	{
-		//
+		$cms = Menu::find('admin-cms');
+
+		$pages = new Menu(array(
+			'slug'      => 'admin-cms-pages',
+			'extension' => 'platform/pages',
+			'name'      => 'Pages',
+			'driver'    => 'static',
+			'class'     => 'icon-file',
+			'uri'       => 'pages'
+		));
+
+		$pages->makeLastChildOf($cms);
 	}
 
 	/**
@@ -21,7 +33,15 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	 */
 	public function down()
 	{
-		//
+		$slugs = array('admin-cms-pages');
+
+		foreach ($slugs as $slug)
+		{
+			if ($menu = Menu::find($slug))
+			{
+				$menu->delete();
+			}
+		}
 	}
 
 }

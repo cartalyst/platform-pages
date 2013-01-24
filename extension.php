@@ -157,7 +157,10 @@ return array(
 
 	'boot' => function(Platform\Extensions\Extension $extension)
 	{
+		$app = app();
 
+		// @todo, move this logic into platform/extensions
+		$app['translator']->addNamespace('platform/pages', __DIR__.'/lang');
 	},
 
 	/*
