@@ -109,6 +109,7 @@ return array(
 	'require' => array(
 		'platform/admin',
 		'platform/menus',
+		'platform/content'
 	),
 
 	/*
