@@ -22,11 +22,43 @@
  * Return all the available frontend themes.
  *
  * @return array
- * @todo   ALL!
+ * @todo   REFACTOR!
  */
 function pagesFindTemplates()
 {
-	return array();
+	// Get both active and fallback themes
+	// ### change this aswelllllll
+	$themes = array(
+		'active'   => 'fancy',
+		'fallback' => 'default'
+	);
+
+	// Empty array to store themes layouts
+	$templates = array();
+
+	// Loop through the themes
+	foreach ($themes as $themeStatus => $themeName)
+	{
+		// clean this ....................
+		$templatePath = app('path') . '/../public/platform/themes/public/platform/' . $themeName . '/views/templates/*.blade.php';
+
+		$layouts = glob($templatePath);
+
+		// Loop through this theme layout files
+		foreach ($layouts as $layout)
+		{
+			// Get the layout file base name
+			$layout = str_replace('.blade.php', '', basename($layout));
+
+			// Prevent duplicates because we use overriding
+			if ( ! array_key_exists($layout, $templates))
+			{
+				$templates[ $themeName ][ $layout ] = $layout;
+			}
+		}
+	}
+
+	return $templates;
 }
 
 /**

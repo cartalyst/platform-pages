@@ -54,7 +54,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page for creating a new page.
+	 * Create a new page.
 	 *
 	 * @return mixed
 	 */
@@ -92,7 +92,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page create form processing page.
+	 * Create a new page form processing.
 	 *
 	 * @return Redirect
 	 */
@@ -102,7 +102,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page update page.
+	 * Page update.
 	 *
 	 * @param  int  $pageId
 	 * @return mixed
@@ -114,32 +114,38 @@ class PagesController extends AdminController {
 
 		try
 		{
-			// Check if the page exists
-			$request = \API::get('pages/' . $pageId);
-
 			// Get the page information
-			$page = $request['page'];
+			$request = \API::get('pages/' . $pageId);
+			$page    = $request['page'];
+
+			// Get the available storage types
+			$storageTypes = pagesStorageTypes();
+
+			// Get all the available frontend templates
+			$templates = pagesFindTemplates();
+
+			// Get the pages visibility statuses
+			$visibility = pagesVisibilityStatuses();
+
+			// Get all the available user groups
+			$request = \API::get('users/groups', array('organized' => true));
+			$groups  = $request['groups'];
 		}
 		catch (\Cartalyst\Api\ApiHttpException $e)
 		{
 			// Set the error message
 			# TODO !
 
-			// Return to the page management
-			return \Redirect::to(ADMIN_URI . '/pages');
-		}
-		catch (\ErrorException $e)
-		{
 			// Return to the page management page
 			return \Redirect::to(ADMIN_URI . '/pages');
 		}
 
 		// Show the page
-		return \View::make('platform/pages::edit', compact('page'));
+		return \View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups'));
 	}
 
 	/**
-	 * Page update form processing page.
+	 * Page update form processing.
 	 *
 	 * @param  int  $pageId
 	 * @return Redirect
@@ -193,7 +199,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page delete page.
+	 * Page delete.
 	 *
 	 * @param  int  $pageId
 	 * @return Redirect

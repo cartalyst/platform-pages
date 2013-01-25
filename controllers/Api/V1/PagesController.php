@@ -29,7 +29,13 @@ class PagesController extends ApiController {
 	 * @var array
 	 */
 	protected $validationRules = array(
-
+		'name'       => 'required',
+		'slug'       => 'required|unique:pages,slug',
+		'status'     => 'required',
+		'type'       => 'required',
+		'template'   => 'required',
+		'visibility' => 'required',
+		'value'      => 'required'
 	);
 
 	/**
@@ -47,4 +53,158 @@ class PagesController extends ApiController {
 
 		return $this->response(array('pages' => Page::paginate($limit)));
 	}
+
+	/**
+	 * Create page.
+	 *
+	 * @return Cartalyst\Api\Http\Response
+	 */
+	public function create()
+	{
+		// Validate the data
+		$validator = \Validator::make(\Input::all(), $this->validationRules);
+
+		// Check if the validation passed
+		if ($validator->passes())
+		{
+			// Create the page
+			$page = new Page(\Input::except('csrf_token'));
+
+			// Was the page created?
+			if ($page->save())
+			{
+				// Page created with success
+				return $this->response(array(
+					'message' => \Lang::get('platform/pages::messages.create.success')
+				));
+			}
+
+			// There was a problem creating the page
+			return $this->response(array(
+				'message' => \Lang::get('platform/pages::messages.create.error')
+			), 500);
+		}
+
+		// Return the validator object
+		return $this->response(compact('validator'));
+	}
+
+	/**
+	 * Returns information about the given page.
+	 *
+	 * @param  int  $pageId
+	 * @return Cartalyst\Api\Http\Response
+	 */
+	public function show($pageId)
+	{
+		// Do we have the page slug?
+		if ( ! is_numeric($pageId))
+		{
+			$page = Page::where('slug', '=', $pageId);
+		}
+
+		// We must have the page id
+		else
+		{
+			$page = Page::where('id', '=', $pageId);
+		}
+
+		// Do we only want the enabled page ?
+		if ($status = $this->api->getCurrentRequest()->input('enabled'))
+		{
+			$page->where('status', '=', 1);
+		}
+
+		// Check if the page exists
+		if ( ! is_null($page = $page->first()))
+		{
+			return $this->response(compact('page'));
+		}
+
+		// Page does not exist
+		return $this->response(array(
+			'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
+		), 404);
+	}
+
+	/**
+	 * Updates the given page.
+	 *
+	 * @param  int  $pageId
+	 * @return Cartalyst\Api\Http\Response
+	 */
+	public function update($pageId)
+	{
+		// Check if the page exists
+		if(is_null($page = Page::find($pageId)))
+		{
+			return $this->response(array(
+				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
+			), 404);
+		}
+
+		// Update the validation rules, so it ignores the current
+		// page slug.
+		$this->validationRules['slug'] = 'required|unique:pages,slug,' . $page->slug . ',slug';
+
+		// Validate the data
+		$validator = \Validator::make(\Input::all(), $this->validationRules);
+
+		// Check if the validation passed
+		if ($validator->passes())
+		{
+			// Update the page data
+			$page->name   = \Input::get('name');
+			$page->slug   = \Input::get('slug');
+			$page->status = \Input::get('status');
+			$page->value  = \Input::get('value');
+
+			// Was the page updated?
+			if ($page->save())
+			{
+				return $this->response(array(
+					'message' => \Lang::get('platform/pages::messages.update.success')
+				));
+			}
+
+			// There was a problem updating the page
+			return $this->response(array(
+				'message' => \Lang::get('platform/pages::messages.update.error')
+			), 500);
+		}
+
+		// Return the validator object
+		return $this->response(compact('validator'));
+	}
+
+	/**
+	 * Deletes the given page.
+	 *
+	 * @param  int  $pageId
+	 * @return Cartalyst\Api\Http\Response
+	 */
+	public function destroy($pageId)
+	{
+		// Check if the page exists
+		if (is_null($page = Page::find($pageId)))
+		{
+			return $this->response(array(
+				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
+			), 404);
+		}
+
+		// Was the page deleted?
+		if ($page->delete())
+		{
+			return $this->response(array(
+				'message' => \Lang::get('platform/pages::messages.delete.success')
+			));
+		}
+
+		// There was a problem deleting the page
+		return $this->response(array(
+			'message' => \Lang::get('platform/pages::messages.delete.error')
+		));
+	}
+
 }
