@@ -39,12 +39,17 @@ return array(
 
 	'create' => array(
 		'legend'  => 'Add Page',
-		'summary' => ''
+		'summary' => 'Please supply the following information.'
 	),
 
 	'edit' => array(
 		'legend'  => 'Edit Page',
-		'summary' => ''
+		'summary' => 'Please supply the following information.'
+	),
+
+	'clone' => array(
+		'legend'  => 'Clone Page',
+		'summary' => 'Please supply the following information.'
 	)
 
 );

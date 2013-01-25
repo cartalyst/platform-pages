@@ -27,4 +27,21 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public $table = 'pages';
 
+	/**
+	 * Returns an array of the page groups.
+	 *
+	 * @return array
+	 */
+	public function groups()
+	{
+		$groups = array();
+
+		foreach (json_decode($this->groups) as $group)
+		{
+			$groups[ $group ] = $group;
+		}
+
+		return $groups;
+	}
+
 }

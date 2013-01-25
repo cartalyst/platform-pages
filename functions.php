@@ -88,3 +88,43 @@ function pagesStorageTypes()
 		'file' => 'File'
 	);
 }
+
+
+
+function findPageFiles()
+	{
+		// Find current active and fallback themes for the frontend;
+		//
+		$themes['active'] = Platform::get('platform/themes::theme.frontend');
+
+		// Set the fallback if the theme is not on default
+		//
+		if ($themes['active'] != 'default')
+		{
+			$themes['fallback'] = 'default';
+		}
+
+		$files = array();
+		$fileNames = array();
+		foreach ($themes as $theme => $name)
+		{
+			$path = path('public') . 'platform/themes/frontend/'.$name.'/extensions/platform/pages/files';
+
+			$_files = glob($path.DS.'*.blade.php');
+
+			foreach ($_files as $file)
+			{
+				$file = str_replace('.blade.php', '', basename($file));
+
+				// prevent duplicates because we use overriding
+				if ( ! in_array($file, $fileNames))
+				{
+					$files[$name][$file] = $file;
+					$fileNames[] = $file;
+				}
+			}
+
+		}
+
+		return $files;
+	}

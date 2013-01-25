@@ -68,7 +68,17 @@ class PagesController extends ApiController {
 		if ($validator->passes())
 		{
 			// Create the page
-			$page = new Page(\Input::except('csrf_token'));
+			$page = new Page;
+
+			//
+			$page->name       = \Input::get('name');
+			$page->slug       = \Input::get('slug'); # we need to make sure this is a slug!
+			$page->template   = \Input::get('template');
+			$page->type       = \Input::get('type');
+			$page->visibility = \Input::get('visibility');
+			$page->groups     = json_encode(\Input::get('groups'));
+			$page->value      = \Input::get('value');
+			$page->status     = \Input::get('status');
 
 			// Was the page created?
 			if ($page->save())
@@ -154,10 +164,14 @@ class PagesController extends ApiController {
 		if ($validator->passes())
 		{
 			// Update the page data
-			$page->name   = \Input::get('name');
-			$page->slug   = \Input::get('slug');
-			$page->status = \Input::get('status');
-			$page->value  = \Input::get('value');
+			$page->name       = \Input::get('name');
+			$page->slug       = \Input::get('slug'); # we need to make sure this is a slug!
+			$page->template   = \Input::get('template');
+			$page->type       = \Input::get('type');
+			$page->visibility = \Input::get('visibility');
+			$page->groups     = json_encode(\Input::get('groups'));
+			$page->value      = \Input::get('value');
+			$page->status     = \Input::get('status');
 
 			// Was the page updated?
 			if ($page->save())

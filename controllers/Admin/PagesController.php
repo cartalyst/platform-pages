@@ -77,6 +77,9 @@ class PagesController extends AdminController {
 			// Get all the available user groups
 			$request = \API::get('users/groups', array('organized' => true));
 			$groups  = $request['groups'];
+
+			// Selected groups
+			$selectedGroups = \Input::old('groups', array());
 		}
 		catch (\Cartalyst\Api\ApiHttpException $e)
 		{
@@ -88,7 +91,7 @@ class PagesController extends AdminController {
 		}
 
 		// Show the page
-		return \View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups'));
+		return \View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups', 'selectedGroups'));
 	}
 
 	/**
@@ -118,6 +121,9 @@ class PagesController extends AdminController {
 			$request = \API::get('pages/' . $pageId);
 			$page    = $request['page'];
 
+			// Get this page groups
+			$pageGroups = $page->groups();
+
 			// Get the available storage types
 			$storageTypes = pagesStorageTypes();
 
@@ -141,7 +147,7 @@ class PagesController extends AdminController {
 		}
 
 		// Show the page
-		return \View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups'));
+		return \View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
 	}
 
 	/**
@@ -222,6 +228,60 @@ class PagesController extends AdminController {
 
 		// Redirect to the pages management
 		return \Redirect::to(ADMIN_URI . '/pages');
+	}
+
+	/**
+	 * Page clone.
+	 *
+	 * @param  int  $pageId
+	 * @return mixed
+	 */
+	public function getClone($pageId = null)
+	{
+		try
+		{
+			// Get the page information
+			$request = \API::get('pages/' . $pageId);
+			$page = $request['page'];
+
+			// Get this page groups
+			$pageGroups = $page->groups();
+
+			// Get the available storage types
+			$storageTypes = pagesStorageTypes();
+
+			// Get all the available frontend templates
+			$templates = pagesFindTemplates();
+
+			// Get the pages visibility statuses
+			$visibility = pagesVisibilityStatuses();
+
+			// Get all the available user groups
+			$request = \API::get('users/groups', array('organized' => true));
+			$groups  = $request['groups'];
+		}
+		catch (\Cartalyst\Api\ApiHttpException $e)
+		{
+			// Set the error message
+			# TODO !
+
+			// Return to the page management page
+			return \Redirect::to(ADMIN_URI . '/pages');
+		}
+
+		// Show the page
+		return \View::make('platform/pages::clone', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+	}
+
+	/**
+	 * Page clone form processing.
+	 *
+	 * @param  int  $pageId
+	 * @return Redirect
+	 */
+	public function postClone($pageId = null)
+	{
+		return $this->postEdit();
 	}
 
 }
