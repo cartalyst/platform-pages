@@ -12,10 +12,12 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	 */
 	public function up()
 	{
+		$admin = Menu::adminMenu();
+
 		$cms = Menu::find('admin-cms');
 
 		$pages = new Menu(array(
-			'slug'      => 'admin-cms-pages',
+			'slug'      => 'admin-pages',
 			'extension' => 'platform/pages',
 			'name'      => 'Pages',
 			'driver'    => 'static',

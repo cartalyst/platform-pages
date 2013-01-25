@@ -30,7 +30,7 @@ class PagesController extends AdminController {
 	public function getIndex()
 	{
 		// Set the current active menu
-		#set_active_menu('admin-cms-pages');
+		set_active_menu('admin-pages');
 
 		try
 		{
@@ -61,7 +61,7 @@ class PagesController extends AdminController {
 	public function getCreate()
 	{
 		// Set the current active menu
-		#set_active_menu('admin-cms-pages');
+		set_active_menu('admin-pages');
 
 		try
 		{
@@ -110,7 +110,7 @@ class PagesController extends AdminController {
 	public function getEdit($pageId = null)
 	{
 		// Set the current active menu
-		#set_active_menu('admin-cms-pages');
+		set_active_menu('admin-pages');
 
 		try
 		{
