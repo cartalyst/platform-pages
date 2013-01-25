@@ -23,9 +23,9 @@ use Platform\Routing\Controllers\AdminController;
 class PagesController extends AdminController {
 
 	/**
-	 * Page management main page.
+	 * Pages management main page.
 	 *
-	 * @return View
+	 * @return mixed
 	 */
 	public function getIndex()
 	{
@@ -53,5 +53,169 @@ class PagesController extends AdminController {
 		return \View::make('platform/pages::index', compact('pages'));
 	}
 
+	/**
+	 * Page for creating a new page.
+	 *
+	 * @return mixed
+	 */
+	public function getCreate()
+	{
+		// Set the current active menu
+		#set_active_menu('admin-cms-pages');
+
+		try
+		{
+			// Get the available storage types
+			$storageTypes = pagesStorageTypes();
+
+			// Get all the available frontend templates
+			$templates = pagesFindTemplates();
+
+			// Get the pages visibility statuses
+			$visibility = pagesVisibilityStatuses();
+
+			// Get all the available user groups
+			$request = \API::get('users/groups', array('organized' => true));
+			$groups  = $request['groups'];
+		}
+		catch (\Cartalyst\Api\ApiHttpException $e)
+		{
+			// Set the error message
+			# TODO !
+
+			// Redirect to the pages management page
+			return \Redirect::to(ADMIN_URI . '/pages');
+		}
+
+		// Show the page
+		return \View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups'));
+	}
+
+	/**
+	 * Page create form processing page.
+	 *
+	 * @return Redirect
+	 */
+	public function postCreate()
+	{
+		return $this->postEdit();
+	}
+
+	/**
+	 * Page update page.
+	 *
+	 * @param  int  $pageId
+	 * @return mixed
+	 */
+	public function getEdit($pageId = null)
+	{
+		// Set the current active menu
+		#set_active_menu('admin-cms-pages');
+
+		try
+		{
+			// Check if the page exists
+			$request = \API::get('pages/' . $pageId);
+
+			// Get the page information
+			$page = $request['page'];
+		}
+		catch (\Cartalyst\Api\ApiHttpException $e)
+		{
+			// Set the error message
+			# TODO !
+
+			// Return to the page management
+			return \Redirect::to(ADMIN_URI . '/pages');
+		}
+		catch (\ErrorException $e)
+		{
+			// Return to the page management page
+			return \Redirect::to(ADMIN_URI . '/pages');
+		}
+
+		// Show the page
+		return \View::make('platform/pages::edit', compact('page'));
+	}
+
+	/**
+	 * Page update form processing page.
+	 *
+	 * @param  int  $pageId
+	 * @return Redirect
+	 */
+	public function postEdit($pageId = null)
+	{
+		// Url so we know to where redirect the page to
+		$url = (is_null($pageId) ? 'create' : 'edit/' . $pageId);
+
+		try
+		{
+			// Are we creating a page?
+			if (is_null($pageId))
+			{
+				$request = \API::post('pages', \Input::all());
+			}
+
+			// No, we are updating an existing page
+			else
+			{
+				$request = \API::put('pages/' . $pageId, \Input::all());
+			}
+
+
+			# Temporary solution for Validation
+			if (isset($request['validator']))
+			{
+				$validator = $request['validator'];
+
+				// Check if the validation failed
+				if ($validator->fails())
+				{
+					// Redirect to the appropriate page
+					return \Redirect::to(ADMIN_URI . '/pages/' . $url)->withInput()->withErrors($validator);
+				}
+			}
+			#
+
+
+			// Set the success message
+			# TODO !
+		}
+		catch (\Cartalyst\Api\ApiHttpException $e)
+		{
+			// Set the error message
+			# TODO !
+		}
+
+		// Redirect to the appropriate page
+		return \Redirect::to(ADMIN_URI . '/pages/' . $url)->withInput();
+	}
+
+	/**
+	 * Page delete page.
+	 *
+	 * @param  int  $pageId
+	 * @return Redirect
+	 */
+	public function getDelete($pageId = null)
+	{
+		try
+		{
+			// Delete the page
+			\API::delete('pages/' . $pageId);
+
+			// Set the success message
+			# TODO !
+		}
+		catch (\Cartalyst\Api\ApiHttpException $e)
+		{
+			// Set the error message.
+			# TODO !
+		}
+
+		// Redirect to the pages management
+		return \Redirect::to(ADMIN_URI . '/pages');
+	}
 
 }

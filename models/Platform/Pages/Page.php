@@ -1,4 +1,4 @@
-<?php
+<?php namespace Platform\Pages;
 /**
  * Part of the Platform application.
  *
@@ -18,11 +18,13 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+class Page extends \Illuminate\Database\Eloquent\Model {
 
-	'id'   => 'Id',
-	'name' => 'Name',
-	'slug' => 'Slug',
-	'type' => 'Storage Type'
+	/**
+	 * The table associated with the model.
+	 *
+	 * @var string
+	 */
+	public $table = 'pages';
 
-);
+}

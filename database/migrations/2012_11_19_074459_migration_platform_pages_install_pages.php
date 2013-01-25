@@ -18,11 +18,9 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('slug');
 			$table->text('value')->nullable();
 			$table->string('template');
+			$table->string('type');
 			$table->boolean('status');
 			$table->timestamps();
-
-			// Add a unique index on the
-			// slug field.
 			$table->unique('slug');
 		});
 	}

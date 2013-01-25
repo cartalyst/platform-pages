@@ -33,13 +33,18 @@ class PagesController extends ApiController {
 	);
 
 	/**
-	 * Display a listing of users using the given filters.
+	 * Display a listing of pages using the given filters.
 	 *
 	 * @return Cartalyst\Api\Http\Response
 	 * @todo   Refactor to allow search filters !!
 	 */
 	public function index()
 	{
-		return $this->response(array('pages' => array()));
+		if ( ! $limit = $this->api->getCurrentRequest()->input('limit'))
+		{
+			return $this->response(array('pages' => Page::all()));
+		}
+
+		return $this->response(array('pages' => Page::paginate($limit)));
 	}
 }

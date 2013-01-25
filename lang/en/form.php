@@ -20,21 +20,25 @@
 
 return array(
 
-	'name'          => 'Name',
-	'name_help'     => 'Type a descriptive name for your page.',
-	'slug'          => 'Slug',
-	'slug_help'     => 'Slug to find page by.',
-	'status'        => 'Status',
-	'status_help'   => 'The page status.',
-	'type'          => 'Storage Type',
-	'type_help'     => 'How do you want to store and edit this page?',
-	'template'      => 'Template',
-	'template_help' => 'Page template to use.',
-	'value'         => 'Content',
-	'value_help'    => 'Contents of your page. @content call is allowed.',
+	'name'            => 'Name',
+	'name_help'       => 'Type a descriptive name for your page.',
+	'slug'            => 'Slug',
+	'slug_help'       => 'Slug to find page by.',
+	'status'          => 'Status',
+	'status_help'     => 'The page status.',
+	'type'            => 'Storage Type',
+	'type_help'       => 'How do you want to store and edit this page?',
+	'template'        => 'Template',
+	'template_help'   => 'Page template to use.',
+	'visibility'      => 'Visibility',
+	'visibility_help' => 'When should this page be seen?',
+	'groups'          => 'Groups',
+	'groups_help'     => 'What user groups should be able to see this page?',
+	'value'           => 'Content',
+	'value_help'      => 'Contents of your page. @content call is allowed.',
 
 	'create' => array(
-		'legend'  => 'Create Page',
+		'legend'  => 'Add Page',
 		'summary' => ''
 	),
 

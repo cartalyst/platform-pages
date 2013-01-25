@@ -161,6 +161,8 @@ return array(
 
 		// @todo, move this logic into platform/extensions
 		$app['translator']->addNamespace('platform/pages', __DIR__.'/lang');
+
+		require_once __DIR__ . '/functions.php';
 	},
 
 	/*
