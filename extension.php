@@ -181,6 +181,10 @@ return array(
 	'routes' => function(Platform\Extensions\Extension $extension)
 	{
 
+		# not sure if this is the best way to do this though!
+		Route::get('/', 'Platform\Pages\Controllers\PagesController@getPage');
+		Route::get('{pageSlug}', 'Platform\Pages\Controllers\PagesController@getPage');
+
 	},
 
 	/*
