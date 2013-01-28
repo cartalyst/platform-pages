@@ -39,6 +39,25 @@ class PagesController extends ApiController {
 	);
 
 	/**
+	 *
+	 *
+	 * @var Platform\Pages\Page
+	 */
+	protected $model;
+
+	/**
+	 * Initializer.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		$app = app();
+
+		$this->model = $app->make('platform/pages::page');
+	}
+
+	/**
 	 * Display a listing of pages using the given filters.
 	 *
 	 * @return Cartalyst\Api\Http\Response
@@ -48,10 +67,10 @@ class PagesController extends ApiController {
 	{
 		if ( ! $limit = $this->api->getCurrentRequest()->input('limit'))
 		{
-			return $this->response(array('pages' => Page::all()));
+			return $this->response(array('pages' => $this->model->all()));
 		}
 
-		return $this->response(array('pages' => Page::paginate($limit)));
+		return $this->response(array('pages' => $this->model->paginate($limit)));
 	}
 
 	/**
@@ -110,13 +129,13 @@ class PagesController extends ApiController {
 		// Do we have the page slug?
 		if ( ! is_numeric($pageId))
 		{
-			$page = Page::where('slug', '=', $pageId);
+			$page = $this->model->where('slug', '=', $pageId);
 		}
 
 		// We must have the page id
 		else
 		{
-			$page = Page::where('id', '=', $pageId);
+			$page = $this->model->where('id', '=', $pageId);
 		}
 
 		// Do we only want the enabled page ?
@@ -146,7 +165,7 @@ class PagesController extends ApiController {
 	public function update($pageId)
 	{
 		// Check if the page exists
-		if(is_null($page = Page::find($pageId)))
+		if(is_null($page = $this->model->find($pageId)))
 		{
 			return $this->response(array(
 				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
@@ -200,7 +219,7 @@ class PagesController extends ApiController {
 	public function destroy($pageId)
 	{
 		// Check if the page exists
-		if (is_null($page = Page::find($pageId)))
+		if (is_null($page = $this->model->find($pageId)))
 		{
 			return $this->response(array(
 				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))

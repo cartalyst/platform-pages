@@ -164,6 +164,12 @@ return array(
 		$app['translator']->addNamespace('platform/pages', __DIR__.'/lang');
 
 		require_once __DIR__ . '/functions.php';
+
+
+		$app['platform/pages::page'] = $app->share(function($app)
+		{
+			return new Platform\Pages\page;
+		});
 	},
 
 	/*
