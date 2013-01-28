@@ -18,9 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use Platform\Routing\Controllers\AdminController;
+use Platform\Routing\Controllers\PublicController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PagesController extends AdminController {
+class PagesController extends PublicController {
 
 	/**
 	 *
@@ -122,10 +123,7 @@ class PagesController extends AdminController {
 		}
 		catch (\Cartalyst\Api\ApiHttpException $e)
 		{
-			// The page doesn't exist
-			# App::abort() or something here to show the 404 page !
-			echo 'The requested page was not found!';
-			die;
+			throw new NotFoundHttpException("No matching page could be found for the requested URI.");
 		}
 	}
 
