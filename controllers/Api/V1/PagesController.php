@@ -65,7 +65,7 @@ class PagesController extends ApiController {
 	 */
 	public function index()
 	{
-		if ( ! $limit = $this->api->getCurrentRequest()->input('limit'))
+		if ( ! $limit = $this->input('limit'))
 		{
 			return $this->response(array('pages' => $this->model->all()));
 		}
@@ -139,7 +139,7 @@ class PagesController extends ApiController {
 		}
 
 		// Do we only want the enabled page ?
-		if ($status = $this->api->getCurrentRequest()->input('enabled'))
+		if ($status = $this->input('enabled'))
 		{
 			$page->where('status', '=', 1);
 		}
