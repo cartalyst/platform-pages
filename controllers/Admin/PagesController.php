@@ -66,13 +66,13 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the available storage types
-			$storageTypes = pagesStorageTypes();
+			$storageTypes = pages_storage_types();
 
 			// Get all the available frontend templates
-			$templates = pagesFindTemplates();
+			$templates = pages_find_templates();
 
 			// Get the pages visibility statuses
-			$visibility = pagesVisibilityStatuses();
+			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
 			$request = \API::get('users/groups', array('organized' => true));
@@ -125,13 +125,13 @@ class PagesController extends AdminController {
 			$pageGroups = $page->groups();
 
 			// Get the available storage types
-			$storageTypes = pagesStorageTypes();
+			$storageTypes = pages_storage_types();
 
 			// Get all the available frontend templates
-			$templates = pagesFindTemplates();
+			$templates = pages_find_templates();
 
 			// Get the pages visibility statuses
-			$visibility = pagesVisibilityStatuses();
+			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
 			$request = \API::get('users/groups', array('organized' => true));
@@ -248,13 +248,13 @@ class PagesController extends AdminController {
 			$pageGroups = $page->groups();
 
 			// Get the available storage types
-			$storageTypes = pagesStorageTypes();
+			$storageTypes = pages_storage_types();
 
 			// Get all the available frontend templates
-			$templates = pagesFindTemplates();
+			$templates = pages_find_templates();
 
 			// Get the pages visibility statuses
-			$visibility = pagesVisibilityStatuses();
+			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
 			$request = \API::get('users/groups', array('organized' => true));

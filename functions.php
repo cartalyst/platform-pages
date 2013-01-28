@@ -24,7 +24,7 @@
  * @return array
  * @todo   REFACTOR!
  */
-function pagesFindTemplates()
+function pages_find_templates()
 {
 	// Get both active and fallback themes
 	// ### change this aswelllllll
@@ -67,7 +67,7 @@ function pagesFindTemplates()
  * @return array
  * @todo   Add Localisation!
  */
-function pagesVisibilityStatuses()
+function pages_visibility_statuses()
 {
 	return array(
 		0 => 'Show Always',
@@ -81,7 +81,7 @@ function pagesVisibilityStatuses()
  * @return array
  * @todo   Add Localisation!
  */
-function pagesStorageTypes()
+function pages_storage_types()
 {
 	return array(
 		'db'   => 'Database',
@@ -91,7 +91,7 @@ function pagesStorageTypes()
 
 
 
-function findPageFiles()
+function pages_find_files()
 	{
 		// Find current active and fallback themes for the frontend;
 		//

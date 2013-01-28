@@ -115,7 +115,7 @@ class PagesController extends AdminController {
 			}
 
 			// Render the page content value
-			$content = contentRender($page->value);
+			$content = content_render($page->value);
 
 			// Show the page
 			return View::make('templates.layouts.' . $page->template, compact('content'));
