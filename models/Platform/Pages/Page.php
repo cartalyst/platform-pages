@@ -44,4 +44,24 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		return $groups;
 	}
 
+	/**
+	 * Create a new instance of the given model.
+	 *
+	 * @param  array  $attributes
+	 * @param  bool   $exists
+	 * @return Illuminate\Database\Eloquent\Model
+	 */
+	public function newInstance($attributes = array(), $exists = false)
+	{
+		// This method just provides a convenient way for us to
+		// generate fresh model instances of this current model.
+		// It is particularly useful during the hydration of new
+		// objects via the Eloquent query builder instances.
+		$model = new static((array) $attributes);
+
+		$model->exists = $exists;
+
+		return $model;
+	}
+
 }

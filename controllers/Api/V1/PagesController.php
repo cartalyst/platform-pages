@@ -19,6 +19,7 @@
  */
 
 use Platform\Routing\Controllers\ApiController;
+use Platform\Pages\Page;
 
 class PagesController extends ApiController {
 
@@ -53,7 +54,7 @@ class PagesController extends ApiController {
 	{
 		$app = app();
 
-		$this->model = $app->make('platform/pages::page');
+		$this->model = $app->make('platform/pages::page')->newQuery();
 	}
 
 	/**
@@ -236,7 +237,7 @@ class PagesController extends ApiController {
 		// There was a problem deleting the page
 		return $this->response(array(
 			'message' => \Lang::get('platform/pages::messages.delete.error')
-		));
+		), 500);
 	}
 
 }
