@@ -165,10 +165,10 @@ return array(
 
 		require_once __DIR__ . '/functions.php';
 
-		$app['platform/pages::page'] = $app->share(function($app)
+		$app['platform/pages::page'] = function($app)
 		{
 			return new Platform\Pages\Page;
-		});
+		};
 
 		// $app->error(function(Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception, $code) use ($app)
 		// {
