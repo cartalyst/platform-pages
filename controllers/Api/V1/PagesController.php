@@ -95,7 +95,7 @@ class PagesController extends ApiController {
 			$page->template   = \Input::get('template');
 			$page->type       = \Input::get('type');
 			$page->visibility = \Input::get('visibility');
-			$page->groups     = json_encode(\Input::get('groups'));
+			$page->groups     = (\Input::get('groups') ? json_encode(\Input::get('groups')) : null);
 			$page->value      = \Input::get('value');
 			$page->status     = \Input::get('status');
 

@@ -34,6 +34,12 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	 */
 	public function groups()
 	{
+		// Do we have groups?
+		if (is_null($this->groups))
+		{
+			return array();
+		}
+
 		$groups = array();
 
 		foreach (json_decode($this->groups) as $group)
