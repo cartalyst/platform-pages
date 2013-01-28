@@ -19,7 +19,6 @@
  */
 
 use Platform\Routing\Controllers\ApiController;
-use Platform\Pages\Page;
 
 class PagesController extends ApiController {
 
