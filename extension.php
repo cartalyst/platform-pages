@@ -107,9 +107,10 @@ return array(
 	*/
 
 	'require' => array(
+
 		'platform/admin',
-		'platform/menus',
-		'platform/content'
+		'platform/content',
+
 	),
 
 	/*
@@ -121,7 +122,7 @@ return array(
 	| your composer.json file specifies the autoloading logic, 'platform',
 	| where your extension receives convention autoloading based on Platform
 	| standards, or a closure which takes two parameters, first is an instance of
-	| Composer\Autoload\ClassLoader and second is Platform\Extensions\Extension.
+	| Composer\Autoload\ClassLoader and second is Cartalyst\Extensions\Extension.
 	| The autoload must set appropriate classes and namespaces available when the
 	| extension is started.
 	|
@@ -150,13 +151,13 @@ return array(
 	| Boot Callback
 	|--------------------------------------------------------------------------
 	|
-	| Closure which takes a Platform\Extensions\Extension object as a parameter
+	| Closure which takes a Cartalyst\Extensions\Extension object as a parameter
 	| and is called when the extension is booted. This can do whatever custom
 	| logic is needed upon booting.
 	|
 	*/
 
-	'boot' => function(Platform\Extensions\Extension $extension)
+	'boot' => function(Cartalyst\Extensions\Extension $extension)
 	{
 		$app = app();
 
@@ -184,12 +185,12 @@ return array(
 	|
 	| Routes closure to be called when the Extension is started. Register any
 	| custom routing logic here. This closure takes a
-	| Platform\Extensions\Extension object as a parameter just in case you
+	| Cartalyst\Extensions\Extension object as a parameter just in case you
 	| need it.
 	|
 	*/
 
-	'routes' => function(Platform\Extensions\Extension $extension)
+	'routes' => function(Cartalyst\Extensions\Extension $extension)
 	{
 
 		# not sure if this is the best way to do this though!
@@ -257,5 +258,17 @@ return array(
 	*/
 
 	'plugins' => array(),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Settings
+	|--------------------------------------------------------------------------
+	|
+	| Register any settings for your extension. You may can also configure
+	| the namespace and group that a setting belongs to.
+	|
+	*/
+
+	'settings' => array(),
 
 );

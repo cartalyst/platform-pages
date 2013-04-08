@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Migrations\Migration;
-use Platform\Menus\Menu;
+use Platform\Ui\Menu;
 
 class MigrationPlatformPagesAddMenuChildren extends Migration {
 

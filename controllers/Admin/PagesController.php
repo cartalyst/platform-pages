@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Platform\Routing\Controllers\AdminController;
+use Platform\Admin\Controllers\Admin\AdminController;
 
 class PagesController extends AdminController {
 

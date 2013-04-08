@@ -52,6 +52,8 @@ class PagesController extends ApiController {
 	 */
 	public function __construct()
 	{
+		parent::__construct();
+
 		$app = app();
 
 		$this->model = $app->make('platform/pages::page')->newQuery();
@@ -65,12 +67,12 @@ class PagesController extends ApiController {
 	 */
 	public function index()
 	{
-		if ( ! $limit = $this->input('limit'))
+		if ( ! $limit = \Input::get('limit'))
 		{
-			return $this->response(array('pages' => $this->model->all()));
+			return \Response::api(array('pages' => $this->model->all()));
 		}
 
-		return $this->response(array('pages' => $this->model->paginate($limit)));
+		return \Response::api(array('pages' => $this->model->paginate($limit)));
 	}
 
 	/**
@@ -103,19 +105,19 @@ class PagesController extends ApiController {
 			if ($page->save())
 			{
 				// Page created with success
-				return $this->response(array(
+				return \Response::api(array(
 					'message' => \Lang::get('platform/pages::messages.create.success')
 				));
 			}
 
 			// There was a problem creating the page
-			return $this->response(array(
+			return \Response::api(array(
 				'message' => \Lang::get('platform/pages::messages.create.error')
 			), 500);
 		}
 
 		// Return the validator object
-		return $this->response(compact('validator'));
+		return \Response::api(compact('validator'));
 	}
 
 	/**
@@ -139,7 +141,7 @@ class PagesController extends ApiController {
 		}
 
 		// Do we only want the enabled page ?
-		if ($status = $this->input('enabled'))
+		if ($status = \Input::get('enabled'))
 		{
 			$page->where('status', '=', 1);
 		}
@@ -147,11 +149,11 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if ( ! is_null($page = $page->first()))
 		{
-			return $this->response(compact('page'));
+			return \Response::api(compact('page'));
 		}
 
 		// Page does not exist
-		return $this->response(array(
+		return \Response::api(array(
 			'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
 		), 404);
 	}
@@ -167,7 +169,7 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if(is_null($page = $this->model->find($pageId)))
 		{
-			return $this->response(array(
+			return \Response::api(array(
 				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
 			), 404);
 		}
@@ -195,19 +197,19 @@ class PagesController extends ApiController {
 			// Was the page updated?
 			if ($page->save())
 			{
-				return $this->response(array(
+				return \Response::api(array(
 					'message' => \Lang::get('platform/pages::messages.update.success')
 				));
 			}
 
 			// There was a problem updating the page
-			return $this->response(array(
+			return \Response::api(array(
 				'message' => \Lang::get('platform/pages::messages.update.error')
 			), 500);
 		}
 
 		// Return the validator object
-		return $this->response(compact('validator'));
+		return \Response::api(compact('validator'));
 	}
 
 	/**
@@ -221,7 +223,7 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if (is_null($page = $this->model->find($pageId)))
 		{
-			return $this->response(array(
+			return \Response::api(array(
 				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
 			), 404);
 		}
@@ -229,13 +231,13 @@ class PagesController extends ApiController {
 		// Was the page deleted?
 		if ($page->delete())
 		{
-			return $this->response(array(
+			return \Response::api(array(
 				'message' => \Lang::get('platform/pages::messages.delete.success')
 			));
 		}
 
 		// There was a problem deleting the page
-		return $this->response(array(
+		return \Response::api(array(
 			'message' => \Lang::get('platform/pages::messages.delete.error')
 		), 500);
 	}
