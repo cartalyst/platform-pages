@@ -46,7 +46,7 @@ class PagesController extends AdminController {
 			# TODO !
 
 			// Redirect to the admin dashboard
-			return \Redirect::to(ADMIN_URI);
+			return \Redirect::toAdmin('');
 		}
 
 		// Show the page
@@ -87,7 +87,7 @@ class PagesController extends AdminController {
 			# TODO !
 
 			// Redirect to the pages management page
-			return \Redirect::to(ADMIN_URI . '/pages');
+			return \Redirect::toAdmin('pages');
 		}
 
 		// Show the page
@@ -143,7 +143,7 @@ class PagesController extends AdminController {
 			# TODO !
 
 			// Return to the page management page
-			return \Redirect::to(ADMIN_URI . '/pages');
+			return \Redirect::toAdmin('pages');
 		}
 
 		// Show the page
@@ -185,7 +185,7 @@ class PagesController extends AdminController {
 				if ($validator->fails())
 				{
 					// Redirect to the appropriate page
-					return \Redirect::to(ADMIN_URI . '/pages/' . $url)->withInput()->withErrors($validator);
+					return \Redirect::toAdmin('pages/' . $url)->withInput()->withErrors($validator);
 				}
 			}
 			#
@@ -201,7 +201,7 @@ class PagesController extends AdminController {
 		}
 
 		// Redirect to the appropriate page
-		return \Redirect::to(ADMIN_URI . '/pages/' . $url)->withInput();
+		return \Redirect::toAdmin('pages/' . $url)->withInput();
 	}
 
 	/**
@@ -227,7 +227,7 @@ class PagesController extends AdminController {
 		}
 
 		// Redirect to the pages management
-		return \Redirect::to(ADMIN_URI . '/pages');
+		return \Redirect::toAdmin('pages');
 	}
 
 	/**
@@ -266,7 +266,7 @@ class PagesController extends AdminController {
 			# TODO !
 
 			// Return to the page management page
-			return \Redirect::to(ADMIN_URI . '/pages');
+			return \Redirect::toAdmin('pages');
 		}
 
 		// Show the page
