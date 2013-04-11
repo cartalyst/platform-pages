@@ -25,7 +25,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 			'uri'       => 'pages'
 		));
 
-		$pages->makeLastChildOf($cms);
+		$pages->makeFirstChildOf($cms);
 	}
 
 	/**
