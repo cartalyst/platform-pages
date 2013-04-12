@@ -51,23 +51,18 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	}
 
 	/**
-	 * Create a new instance of the given model.
+	 * The attributes that are mass assignable.
 	 *
-	 * @param  array  $attributes
-	 * @param  bool   $exists
-	 * @return Illuminate\Database\Eloquent\Model
+	 * @var array
 	 */
-	public function newInstance($attributes = array(), $exists = false)
-	{
-		// This method just provides a convenient way for us to
-		// generate fresh model instances of this current model.
-		// It is particularly useful during the hydration of new
-		// objects via the Eloquent query builder instances.
-		$model = new static((array) $attributes);
-
-		$model->exists = $exists;
-
-		return $model;
-	}
+	protected $fillable = array(
+		'name',
+		'slug',
+		'status',
+		'type',
+		'template',
+		'visibility',
+		'value',
+	);
 
 }

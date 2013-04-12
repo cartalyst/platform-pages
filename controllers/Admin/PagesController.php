@@ -18,7 +18,16 @@
  * @link       http://cartalyst.com
  */
 
+use API;
+use Cartalyst\Api\Http\ApiHttpException;
+use DataGrid;
+use Illuminate\Support\MessageBag as Bag;
+use Input;
+use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Pages\Page;
+use Redirect;
+use View;
 
 class PagesController extends AdminController {
 
@@ -35,22 +44,33 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the pages list
-			$request = \API::get('pages', array(
-				'limit' => 10
-			));
-			$pages = $request['pages'];
+			$result = API::get('pages');
+			$pages  = $result['pages'];
 		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
+		catch (ApiHttpException $e)
 		{
-			// Set the error message
-			# TODO !
-
 			// Redirect to the admin dashboard
-			return \Redirect::toAdmin('');
+			return Redirect::toAdmin('');
 		}
 
 		// Show the page
-		return \View::make('platform/pages::index', compact('pages'));
+		return View::make('platform/pages::index', compact('pages'));
+	}
+
+	/**
+	 * Datasource for the pages Data Grid.
+	 *
+	 * @return Cartalyst\DataGrid\DataGrid
+	 */
+	public function getGrid()
+	{
+		return DataGrid::make(with(new Page)->newQuery(), array(
+			'id',
+			'name',
+			'slug',
+			'status',
+			'created_at',
+		));
 	}
 
 	/**
@@ -75,23 +95,20 @@ class PagesController extends AdminController {
 			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
-			$request = \API::get('users/groups', array('organized' => true));
-			$groups  = $request['groups'];
+			$result = API::get('users/groups', array('organized' => true));
+			$groups = $result['groups'];
 
 			// Selected groups
-			$selectedGroups = \Input::old('groups', array());
+			$selectedGroups = Input::old('groups', array());
 		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
+		catch (ApiHttpException $e)
 		{
-			// Set the error message
-			# TODO !
-
 			// Redirect to the pages management page
-			return \Redirect::toAdmin('pages');
+			return Redirect::toAdmin('pages');
 		}
 
 		// Show the page
-		return \View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups', 'selectedGroups'));
+		return View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups', 'selectedGroups'));
 	}
 
 	/**
@@ -118,8 +135,8 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the page information
-			$request = \API::get('pages/' . $pageId);
-			$page    = $request['page'];
+			$result = API::get("pages/$pageId");
+			$page   = $result['page'];
 
 			// Get this page groups
 			$pageGroups = $page->groups();
@@ -134,20 +151,20 @@ class PagesController extends AdminController {
 			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
-			$request = \API::get('users/groups', array('organized' => true));
-			$groups  = $request['groups'];
+			$result = API::get('users/groups', array('organized' => true));
+			$groups = $result['groups'];
 		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
+		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			# TODO !
+			$messages = with(new Bag)->add('error', $e->getMessage());
 
-			// Return to the page management page
-			return \Redirect::toAdmin('pages');
+			// Return to the pages management page
+			return Redirect::toAdmin('pages')->with('messages', $messages);
 		}
 
 		// Show the page
-		return \View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+		return View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
 	}
 
 	/**
@@ -158,50 +175,38 @@ class PagesController extends AdminController {
 	 */
 	public function postEdit($pageId = null)
 	{
-		// Url so we know to where redirect the page to
-		$url = (is_null($pageId) ? 'create' : 'edit/' . $pageId);
-
 		try
 		{
-			// Are we creating a page?
+			// Are we creating a new page?
 			if (is_null($pageId))
 			{
-				$request = \API::post('pages', \Input::all());
+				$result = API::post('pages', Input::all());
+				$pageId = $result['page']->id;
+
+				// Prepare the success message
+				$success = Lang::get('platform/pages::message.create.success');
 			}
 
 			// No, we are updating an existing page
 			else
 			{
-				$request = \API::put('pages/' . $pageId, \Input::all());
+				API::put("pages/$pageId", Input::all());
+
+				// Prepare the success message
+				$success = Lang::get('platform/pages::message.update.success');
 			}
-
-
-			# Temporary solution for Validation
-			if (isset($request['validator']))
-			{
-				$validator = $request['validator'];
-
-				// Check if the validation failed
-				if ($validator->fails())
-				{
-					// Redirect to the appropriate page
-					return \Redirect::toAdmin('pages/' . $url)->withInput()->withErrors($validator);
-				}
-			}
-			#
-
 
 			// Set the success message
-			# TODO !
-		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
-		{
-			// Set the error message
-			# TODO !
-		}
+			$messages = with(new Bag)->add('success', $success);
 
-		// Redirect to the appropriate page
-		return \Redirect::toAdmin('pages/' . $url)->withInput();
+			// Redirect to the page edit page
+			return Redirect::toAdmin("pages/edit/$pageId")->with('messages', $messages);
+		}
+		catch (ApiHttpException $e)
+		{
+			// Redirect to the appropriate page
+			return Redirect::back()->withInput()->withErrors($e->getErrors());
+		}
 	}
 
 	/**
@@ -215,19 +220,19 @@ class PagesController extends AdminController {
 		try
 		{
 			// Delete the page
-			\API::delete('pages/' . $pageId);
+			API::delete("pages/$pageId");
 
 			// Set the success message
-			# TODO !
+			$messages = with(new Bag)->add('success', Lang::get('platform/pages::message.delete.success'));
 		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
+		catch (ApiHttpException $e)
 		{
-			// Set the error message.
-			# TODO !
+			// Set the error message
+			$messages = with(new Bag)->add('error', Lang::get('platform/pages::message.delete.error'));
 		}
 
-		// Redirect to the pages management
-		return \Redirect::toAdmin('pages');
+		// Redirect to the pages management page
+		return Redirect::toAdmin('pages')->with('messages', $messages);
 	}
 
 	/**
@@ -241,8 +246,8 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the page information
-			$request = \API::get('pages/' . $pageId);
-			$page = $request['page'];
+			$result = API::get("pages/$pageId");
+			$page   = $result['page'];
 
 			// Get this page groups
 			$pageGroups = $page->groups();
@@ -257,20 +262,20 @@ class PagesController extends AdminController {
 			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
-			$request = \API::get('users/groups', array('organized' => true));
-			$groups  = $request['groups'];
+			$result = API::get('users/groups', array('organized' => true));
+			$groups = $result['groups'];
 		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
+		catch (ApiHttpException $e)
 		{
 			// Set the error message
 			# TODO !
 
 			// Return to the page management page
-			return \Redirect::toAdmin('pages');
+			return Redirect::toAdmin('pages');
 		}
 
 		// Show the page
-		return \View::make('platform/pages::clone', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+		return View::make('platform/pages::clone', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
 	}
 
 	/**

@@ -18,8 +18,12 @@
  * @link       http://cartalyst.com
  */
 
+use Input;
+use Lang;
 use Platform\Routing\Controllers\ApiController;
 use Platform\Pages\Page;
+use Response;
+use Validator;
 
 class PagesController extends ApiController {
 
@@ -33,13 +37,13 @@ class PagesController extends ApiController {
 		'slug'       => 'required|unique:pages,slug',
 		'status'     => 'required',
 		'type'       => 'required',
-		'template'   => 'required',
+		// 'template'   => 'required',
 		'visibility' => 'required',
-		'value'      => 'required'
+		'value'      => 'required',
 	);
 
 	/**
-	 *
+	 * Holds the pages model.
 	 *
 	 * @var Platform\Pages\Page
 	 */
@@ -52,27 +56,28 @@ class PagesController extends ApiController {
 	 */
 	public function __construct()
 	{
-		parent::__construct();
-
 		$app = app();
 
-		$this->model = $app->make('platform/pages::page')->newQuery();
+		$this->model = $app->make('platform/pages::page');
 	}
 
 	/**
 	 * Display a listing of pages using the given filters.
 	 *
 	 * @return Cartalyst\Api\Http\Response
-	 * @todo   Refactor to allow search filters !!
 	 */
 	public function index()
 	{
-		if ( ! $limit = \Input::get('limit'))
+		if ($limit = Input::get('limit'))
 		{
-			return \Response::api(array('pages' => $this->model->all()));
+			$pages = $this->model->paginate($limit);
+		}
+		else
+		{
+			$pages = $this->model->all();
 		}
 
-		return \Response::api(array('pages' => $this->model->paginate($limit)));
+		return Response::api(compact('pages'));
 	}
 
 	/**
@@ -82,42 +87,27 @@ class PagesController extends ApiController {
 	 */
 	public function create()
 	{
-		// Validate the data
-		$validator = \Validator::make(\Input::all(), $this->validationRules);
+		// Get all the inputs
+		$inputs = Input::all();
 
-		// Check if the validation passed
-		if ($validator->passes())
+		// Create a new validator instance from our dynamic rules
+		$validator = Validator::make($inputs, $this->validationRules);
+
+		// If validation fails, we'll exit the operation now
+		if($validator->fails())
 		{
-			// Create the page
-			$page = new Page;
-
-			//
-			$page->name       = \Input::get('name');
-			$page->slug       = \Input::get('slug'); # we need to make sure this is a slug!
-			$page->template   = \Input::get('template');
-			$page->type       = \Input::get('type');
-			$page->visibility = \Input::get('visibility');
-			$page->groups     = (\Input::get('groups') ? json_encode(\Input::get('groups')) : null);
-			$page->value      = \Input::get('value');
-			$page->status     = \Input::get('status');
-
-			// Was the page created?
-			if ($page->save())
-			{
-				// Page created with success
-				return \Response::api(array(
-					'message' => \Lang::get('platform/pages::messages.create.success')
-				));
-			}
-
-			// There was a problem creating the page
-			return \Response::api(array(
-				'message' => \Lang::get('platform/pages::messages.create.error')
-			), 500);
+			return Response::api(array('errors' => $validator), 422);
 		}
 
-		// Return the validator object
-		return \Response::api(compact('validator'));
+		// Was the page created?
+		if ($page = Page::create($inputs))
+		{
+			// Page successfully created
+			return Response::api(compact('page'));
+		}
+
+		// There was a problem creating the content
+		return Response::api(Lang::get('platform/pages::message.create.error'), 500);
 	}
 
 	/**
@@ -141,7 +131,7 @@ class PagesController extends ApiController {
 		}
 
 		// Do we only want the enabled page ?
-		if ($status = \Input::get('enabled'))
+		if (Input::get('enabled'))
 		{
 			$page->where('status', '=', 1);
 		}
@@ -149,13 +139,11 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if ( ! is_null($page = $page->first()))
 		{
-			return \Response::api(compact('page'));
+			return Response::api(compact('page'));
 		}
 
 		// Page does not exist
-		return \Response::api(array(
-			'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
-		), 404);
+		return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('pageId')), 404);
 	}
 
 	/**
@@ -169,47 +157,35 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if(is_null($page = $this->model->find($pageId)))
 		{
-			return \Response::api(array(
-				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
-			), 404);
+			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('pageId')), 404);
 		}
 
-		// Update the validation rules, so it ignores the current
-		// page slug.
-		$this->validationRules['slug'] = 'required|unique:pages,slug,' . $page->slug . ',slug';
+		// Get all the inputs
+		$inputs = Input::all();
 
-		// Validate the data
-		$validator = \Validator::make(\Input::all(), $this->validationRules);
+		// Update the validation rules, so it ignores the current page slug.
+		$this->validationRules['slug'] = 'required|unique:pages,slug,'.$page->slug.',slug';
 
-		// Check if the validation passed
-		if ($validator->passes())
+		// Create a new validator instance from our dynamic rules
+		$validator = Validator::make($inputs, $this->validationRules);
+
+		// If validation fails, we'll exit the operation now
+		if ($validator->fails())
 		{
-			// Update the page data
-			$page->name       = \Input::get('name');
-			$page->slug       = \Input::get('slug'); # we need to make sure this is a slug!
-			$page->template   = \Input::get('template');
-			$page->type       = \Input::get('type');
-			$page->visibility = \Input::get('visibility');
-			$page->groups     = json_encode(\Input::get('groups'));
-			$page->value      = \Input::get('value');
-			$page->status     = \Input::get('status');
-
-			// Was the page updated?
-			if ($page->save())
-			{
-				return \Response::api(array(
-					'message' => \Lang::get('platform/pages::messages.update.success')
-				));
-			}
-
-			// There was a problem updating the page
-			return \Response::api(array(
-				'message' => \Lang::get('platform/pages::messages.update.error')
-			), 500);
+			return Response::api(array('errors' => $validator), 422);
 		}
 
-		// Return the validator object
-		return \Response::api(compact('validator'));
+		// Update the page data
+		$page->fill($inputs);
+
+		// Was the page updated?
+		if ($page->save())
+		{
+			return Response::api(compact('page'));
+		}
+
+		// There was a problem updating the content
+		return Response::api(Lang::get('platform/pages::message.update.error'), 500);
 	}
 
 	/**
@@ -223,23 +199,14 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if (is_null($page = $this->model->find($pageId)))
 		{
-			return \Response::api(array(
-				'message' => \Lang::get('platform/pages::messages.does_not_exist', compact('pageId'))
-			), 404);
+			return \Response::api(Lang::get('platform/pages::message.does_not_exist', compact('pageId')), 404);
 		}
 
-		// Was the page deleted?
-		if ($page->delete())
-		{
-			return \Response::api(array(
-				'message' => \Lang::get('platform/pages::messages.delete.success')
-			));
-		}
+		// Delete the page
+		$page->delete();
 
-		// There was a problem deleting the page
-		return \Response::api(array(
-			'message' => \Lang::get('platform/pages::messages.delete.error')
-		), 500);
+		// Page successfully deleted
+		return Response::api(Lang::get('platform/pages::message.delete.success'));
 	}
 
 }

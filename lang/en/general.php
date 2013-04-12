@@ -25,12 +25,12 @@ return array(
 
 	'create' => array(
 		'title'       => 'Create Page',
-		'description' => 'Please supply the following information.'
+		'description' => 'Please supply the following information.',
 	),
 
 	'update' => array(
 		'title'       => 'Update Page',
-		'description' => 'Please update the following information.'
-	)
+		'description' => 'Please update the following information.',
+	),
 
 );

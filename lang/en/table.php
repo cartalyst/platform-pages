@@ -20,9 +20,11 @@
 
 return array(
 
-	'id'   => 'Id',
-	'name' => 'Name',
-	'slug' => 'Slug',
-	'type' => 'Storage Type'
+	'id'         => 'Id',
+	'name'       => 'Name',
+	'slug'       => 'Slug',
+	'type'       => 'Storage Type',
+	'status'     => 'Status',
+	'created_at' => 'Created at',
 
 );

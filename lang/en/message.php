@@ -23,18 +23,18 @@ return array(
 	'does_not_exist' => 'Page [:pageId] does not exist.',
 
 	'create' => array(
-		'error'   => 'Page was not created, please try again.',
-		'success' => 'Page created successfully.'
+		'error'   => 'There was an issue creating the page. Please try again.',
+		'success' => 'Page was successfully created.',
 	),
 
 	'update' => array(
-		'error'   => 'Page was not updated, please try again',
-		'success' => 'Page updated successfully.'
+		'error'   => 'There was an issue updating the page. Please try again.',
+		'success' => 'Page was successfully updated.',
 	),
 
 	'delete' => array(
-		'error'      => 'There was an issue deleting the page. Please try again.',
-		'success'    => 'The page was deleted successfully.'
-	)
+		'error'   => 'There was an issue deleting the page. Please try again.',
+		'success' => 'The page was successfully deleted.',
+	),
 
 );

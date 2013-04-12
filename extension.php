@@ -148,6 +148,27 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
+	| Register Callback
+	|--------------------------------------------------------------------------
+	|
+	| Closure which takes a Cartalyst\Extensions\ExtensionInterface object as a
+	| parameter and is called when the extension is registered. This can do
+	| whatever custom logic is needed upon registering.
+	|
+	*/
+
+	'register' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
+	{
+
+		$app['platform/pages::page'] = function($app)
+		{
+			return new Platform\Pages\Page;
+		};
+
+	},
+
+	/*
+	|--------------------------------------------------------------------------
 	| Boot Callback
 	|--------------------------------------------------------------------------
 	|
@@ -159,23 +180,9 @@ return array(
 
 	'boot' => function(Cartalyst\Extensions\Extension $extension)
 	{
-		$app = app();
 
-		// @todo, move this logic into platform/extensions
-		$app['translator']->addNamespace('platform/pages', __DIR__.'/lang');
+		require_once __DIR__.'/functions.php';
 
-		require_once __DIR__ . '/functions.php';
-
-		$app['platform/pages::page'] = function($app)
-		{
-			return new Platform\Pages\Page;
-		};
-
-		// $app->error(function(Symfony\Component\HttpKernel\Exception\NotFoundHttpException $exception, $code) use ($app)
-		// {
-		// 	$instance = $app->make('Platform\Pages\Controllers\PagesController');
-		// 	return $instance->callAction($app, $app['router'], 'getPage', array($app['request']->path()));
-		// });
 	},
 
 	/*

@@ -18,10 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use Platform\Routing\Controllers\PublicController;
+use Platform\Routing\Controllers\FrontendController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PagesController extends PublicController {
+class PagesController extends FrontendController {
 
 	/**
 	 *

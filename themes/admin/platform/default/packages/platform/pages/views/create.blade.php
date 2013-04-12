@@ -1,133 +1,155 @@
 @extends('templates/default')
 
+{{-- Page title --}}
 @section('title')
-{{ Lang::get('platform/pages::general.title') }}
+@lang('platform/pages::general.create.title') ::
+@parent
 @stop
 
+{{-- Queue Assets --}}
+{{ Asset::queue('redactor', 'platform/content::css/redactor.css', 'style') }}
+{{ Asset::queue('redactor', 'platform/content::js/redactor.min.js', 'jquery') }}
+{{ Asset::queue('redactor-plugins', 'platform/content::js/redactor-plugins.js', 'redactor') }}
+{{ Asset::queue('editor', 'platform/content::js/editor.js', 'media-chooser') }}
+
+{{-- Partial Assets --}}
 @section('assets')
-
+@parent
 @stop
 
+{{-- Inline Styles --}}
+@section('styles')
+@parent
+@stop
+
+{{-- Inline Scripts --}}
 @section('scripts')
-
+@parent
 @stop
 
+{{-- Page content --}}
 @section('content')
-<div class="page-header">
-	<h3>
-		{{ Lang::get('platform/pages::form.create.legend') }}
+<section id="page-create">
 
-		<small>{{ Lang::get('platform/pages::form.create.summary') }}</small>
+	<header class="clearfix">
+		<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> @lang('platform/pages::general.create.title')</h1>
+	</header>
 
-		<div class="pull-right">
-			<a href="{{ URL::to(ADMIN_URI . '/pages') }}" class="btn btn-inverse btn-small">{{ Lang::get('button.back') }}</a>
-		</div>
-	</h3>
-</div>
+	<hr>
 
-<form class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
-	<!-- CSRF Token -->
-	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+	<section class="content">
+		<form class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
+			<!-- CSRF Token -->
+			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-	<!-- Name -->
-	<div class="control-group">
-		<label class="control-label" for="name">{{ Lang::get('platform/pages::form.name') }}:</label>
-		<div class="controls">
-			<input type="text" name="name" id="name" value="{{ Input::old('name') }}" placeholder="{{ Lang::get('platform/pages::form.name') }}">
-			<span class="help-block">{{ Lang::get('platform/pages::form.name_help') }}</span>
-		</div>
-	</div>
+			<fieldset>
+				<legend>@lang('platform/pages::form.create.legend')</legend>
 
-	<!-- Slug -->
-	<div class="control-group">
-		<label class="control-label" for="slug">{{ Lang::get('platform/pages::form.slug') }}:</label>
-		<div class="controls">
-			<input type="text" name="slug" id="slug" value="{{ Input::old('slug') }}" placeholder="{{ Lang::get('platform/pages::form.slug') }}">
-			<span class="help-block">{{ Lang::get('platform/pages::form.slug_help') }}</span>
-		</div>
-	</div>
+				<!-- Name -->
+				<div class="control-group{{ $errors->first('name', ' error') }}" required>
+					<label class="control-label" for="name">@lang('platform/pages::form.name')</label>
+					<div class="controls">
+						<input type="text" name="name" id="name" value="{{ Input::old('name') }}" placeholder="@lang('platform/pages::form.name_help')" required>
+						{{ $errors->first('name', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Status -->
-	<div class="control-group">
-		<label class="control-label" for="status">{{ Lang::get('platform/pages::form.status') }}:</label>
-		<div class="controls">
-			<select name="status" id="status">
-				<option value="1">{{ Lang::get('general.enabled') }}</option>
-				<option value="0">{{ Lang::get('general.disabled') }}</option>
-			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.status_help') }}</span>
-		</div>
-	</div>
+				<!-- Slug -->
+				<div class="control-group{{ $errors->first('slug', ' error') }}" required>
+					<label class="control-label" for="slug">@lang('platform/pages::form.slug')</label>
+					<div class="controls">
+						<input type="text" name="slug" id="slug" value="{{ Input::old('slug') }}" placeholder="@lang('platform/pages::form.slug_help')" required>
+						{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Storage Type -->
-	<div class="control-group">
-		<label class="control-label" for="type">{{ Lang::get('platform/pages::form.type') }}:</label>
-		<div class="controls">
-			<select name="type" id="type">
-			@foreach ($storageTypes as $typeId => $typeName)
-				<option value="{{ $typeId }}">{{ $typeName }}</option>
-			@endforeach
-			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.type_help') }}</span>
-		</div>
-	</div>
+				<!-- Status -->
+				<div class="control-group{{ $errors->first('status', ' error') }}" required>
+					<label class="control-label" for="status">@lang('platform/pages::form.status')</label>
+					<div class="controls">
+						<select name="status" id="status">
+							<option value="1"{{ (Input::old('status', 0) === 1 ? ' selected="selected"' : '') }}>@lang('general.enabled')</option>
+							<option value="0"{{ (Input::old('status', 0) === 0 ? ' selected="selected"' : '') }}>@lang('general.disabled')</option>
+						</select>
+						{{ $errors->first('status', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Templates -->
-	<div class="control-group">
-		<label class="control-label" for="template">{{ Lang::get('platform/pages::form.template') }}:</label>
-		<div class="controls">
-			<select name="template" id="template">
-			@foreach ($templates as $templateName => $layouts)
-				<optgroup label="{{ $templateName }}">
-					@foreach ($layouts as $layout)
-					<option value="{{ $layout }}">{{ $layout }}</option>
-					@endforeach
-				</optgroup>
-			@endforeach
-			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.template_help') }}</span>
-		</div>
-	</div>
+				<!-- Storage Type -->
+				<div class="control-group{{ $errors->first('type', ' error') }}" required>
+					<label class="control-label" for="type">@lang('platform/pages::form.type')</label>
+					<div class="controls">
+						<select name="type" id="type">
+						@foreach ($storageTypes as $typeId => $typeName)
+							<option value="{{ $typeId }}">{{ $typeName }}</option>
+						@endforeach
+						</select>
+						{{ $errors->first('type', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Visibility -->
-	<div class="control-group">
-		<label for="visibility" class="control-label">{{ Lang::get('platform/pages::form.visibility') }}:</label>
-		<div class="controls">
-			<select name="visibility" id="visibility">
-				@foreach ($visibility as $visibilityId => $visibilityName)
-				<option value="{{ $visibilityId }}">{{ $visibilityName }}</option>
-				@endforeach
-			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.visibility_help') }}</span>
-		</div>
-	</div>
+				<!-- Templates -->
+				<div class="control-group{{ $errors->first('template', ' error') }}" required>
+					<label class="control-label" for="template">@lang('platform/pages::form.template')</label>
+					<div class="controls">
+						<select name="template" id="template">
+						@foreach ($templates as $templateName => $layouts)
+							<optgroup label="{{ $templateName }}">
+								@foreach ($layouts as $layout)
+								<option value="{{ $layout }}">{{ $layout }}</option>
+								@endforeach
+							</optgroup>
+						@endforeach
+						</select>
+						{{ $errors->first('template', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Groups -->
-	<div class="control-group">
-		<label for="groups" class="control-label">{{ Lang::get('platform/pages::form.groups') }}:</label>
-		<div class="controls">
-			<select name="groups[]" id="groups[]" multiple="multiple">
-				@foreach ($groups as $groupId => $groupName)
-					<option value="{{ $groupId }}"{{ (array_key_exists($groupId, $selectedGroups) ? ' selected="selected"' : '') }}>{{ $groupName }}</option>
-				@endforeach
-			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.groups_help') }}</span>
-		</div>
-	</div>
+				<!-- Visibility -->
+				<div class="control-group{{ $errors->first('visibility', ' error') }}" required>
+					<label for="visibility" class="control-label">@lang('platform/pages::form.visibility')</label>
+					<div class="controls">
+						<select name="visibility" id="visibility">
+							@foreach ($visibility as $visibilityId => $visibilityName)
+							<option value="{{ $visibilityId }}">{{ $visibilityName }}</option>
+							@endforeach
+						</select>
+						{{ $errors->first('visibility', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Content -->
-	<div class="control-group">
-		<label class="control-label" for="value">{{ Lang::get('platform/pages::form.value') }}:</label>
-		<div class="controls">
-			<textarea rows="10" name="value" id="value">{{ Input::old('value') }}</textarea>
-			<span class="help-block">{{ Lang::get('platform/pages::form.value_help') }}</span>
-		</div>
-	</div>
+				<!-- Groups -->
+				<div class="control-group{{ $errors->first('groups', ' error') }}" required>
+					<label for="groups" class="control-label">@lang('platform/pages::form.groups')</label>
+					<div class="controls">
+						<select name="groups[]" id="groups[]" multiple="multiple">
+							@foreach ($groups as $groupId => $groupName)
+								<option value="{{ $groupId }}"{{ (array_key_exists($groupId, $selectedGroups) ? ' selected="selected"' : '') }}>{{ $groupName }}</option>
+							@endforeach
+						</select>
+						{{ $errors->first('groups', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
 
-	<!-- Form Actions -->
-	<div class="form-actions">
-		<a class="btn btn-small" href="{{ URL::to(ADMIN_URI . '/pages') }}">{{ Lang::get('button.cancel') }}</a>
-		<button class="btn btn-small btn-primary" type="submit">{{ Lang::get('button.update') }}</button>
-	</div>
-</form>
+				<!-- Content -->
+				<div class="control-group{{ $errors->first('value', ' error') }}" required>
+					<label class="control-label" for="value">@lang('platform/pages::form.value')</label>
+					<div class="controls">
+						<textarea rows="10" name="value" id="value">{{ Input::old('value') }}</textarea>
+						{{ $errors->first('value', '<span class="help-inline">:message</span>') }}
+					</div>
+				</div>
+
+				<!-- Form Actions -->
+				<div class="form-actions">
+					<a class="btn btn-small" href="{{ URL::toAdmin('pages') }}">@lang('button.cancel')</a>
+
+					<button class="btn btn-small btn-primary" type="submit">@lang('button.update')</button>
+				</div>
+			</fieldset>
+		</form>
+
+	</section>
+
+</section>
 @stop
