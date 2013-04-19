@@ -44,8 +44,8 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the pages list
-			$result = API::get('pages');
-			$pages  = $result['pages'];
+			$response = API::get('pages');
+			$pages    = $response['pages'];
 		}
 		catch (ApiHttpException $e)
 		{
@@ -95,8 +95,8 @@ class PagesController extends AdminController {
 			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
-			$result = API::get('users/groups', array('organized' => true));
-			$groups = $result['groups'];
+			$response = API::get('users/groups', array('organized' => true));
+			$groups   = $response['groups'];
 
 			// Selected groups
 			$selectedGroups = Input::old('groups', array());
@@ -135,8 +135,8 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the page information
-			$result = API::get("pages/$pageId");
-			$page   = $result['page'];
+			$response = API::get("pages/$pageId");
+			$page     = $response['page'];
 
 			// Get this page groups
 			$pageGroups = $page->groups();
@@ -151,8 +151,8 @@ class PagesController extends AdminController {
 			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
-			$result = API::get('users/groups', array('organized' => true));
-			$groups = $result['groups'];
+			$response = API::get('users/groups', array('organized' => true));
+			$groups   = $response['groups'];
 		}
 		catch (ApiHttpException $e)
 		{
@@ -180,8 +180,8 @@ class PagesController extends AdminController {
 			// Are we creating a new page?
 			if (is_null($pageId))
 			{
-				$result = API::post('pages', Input::all());
-				$pageId = $result['page']->id;
+				$response = API::post('pages', Input::all());
+				$pageId = $response['page']->id;
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.create.success');
@@ -246,8 +246,8 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the page information
-			$result = API::get("pages/$pageId");
-			$page   = $result['page'];
+			$response = API::get("pages/$pageId");
+			$page     = $response['page'];
 
 			// Get this page groups
 			$pageGroups = $page->groups();
@@ -262,8 +262,8 @@ class PagesController extends AdminController {
 			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
-			$result = API::get('users/groups', array('organized' => true));
-			$groups = $result['groups'];
+			$response = API::get('users/groups', array('organized' => true));
+			$groups   = $response['groups'];
 		}
 		catch (ApiHttpException $e)
 		{
