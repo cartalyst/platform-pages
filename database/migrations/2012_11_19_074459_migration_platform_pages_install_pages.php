@@ -25,6 +25,13 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->timestamps();
 			$table->unique('slug');
 		});
+
+		Schema::create('pages_groups', function($table)
+		{
+			$table->integer('page_id')->unsigned();
+			$table->integer('group_id')->unsigned();
+			$table->unique(array('page_id', 'group_id'));
+		});
 	}
 
 	/**
@@ -35,6 +42,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	public function down()
 	{
 		Schema::drop('pages');
+		Schema::drop('pages_groups');
 	}
 
 }

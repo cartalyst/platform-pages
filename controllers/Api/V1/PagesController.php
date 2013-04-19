@@ -88,10 +88,10 @@ class PagesController extends ApiController {
 	public function create()
 	{
 		// Get all the inputs
-		$inputs = Input::all();
+		$input = Input::all();
 
 		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make($inputs, $this->validationRules);
+		$validator = Validator::make($input, $this->validationRules);
 
 		// If validation fails, we'll exit the operation now
 		if($validator->fails())
@@ -100,7 +100,7 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ($page = Page::create($inputs))
+		if ($page = Page::create($input))
 		{
 			// Page successfully created
 			return Response::api(compact('page'));
@@ -161,13 +161,13 @@ class PagesController extends ApiController {
 		}
 
 		// Get all the inputs
-		$inputs = Input::all();
+		$input = Input::all();
 
 		// Update the validation rules, so it ignores the current page slug.
 		$this->validationRules['slug'] = 'required|unique:pages,slug,'.$page->slug.',slug';
 
 		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make($inputs, $this->validationRules);
+		$validator = Validator::make($input, $this->validationRules);
 
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())
@@ -176,7 +176,7 @@ class PagesController extends ApiController {
 		}
 
 		// Update the page data
-		$page->fill($inputs);
+		$page->fill($input);
 
 		// Was the page updated?
 		if ($page->save())

@@ -178,7 +178,7 @@ return array(
 	|
 	*/
 
-	'boot' => function(Cartalyst\Extensions\Extension $extension)
+	'boot' => function(Cartalyst\Extensions\Extension $extension, Illuminate\Foundation\Application $app)
 	{
 
 		require_once __DIR__.'/functions.php';
