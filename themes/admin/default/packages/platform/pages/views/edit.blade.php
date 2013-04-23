@@ -39,13 +39,13 @@
 
 	<section class="content">
 		<form class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
-			<!-- CSRF Token -->
+			{{-- CSRF Token --}}
 			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 			<fieldset>
 				<legend>@lang('platform/pages::form.update.legend')</legend>
 
-				<!-- Name -->
+				{{-- Name --}}
 				<div class="control-group{{ $errors->first('name', ' error') }}" required>
 					<label class="control-label" for="name">@lang('platform/pages::form.name')</label>
 					<div class="controls">
@@ -54,7 +54,7 @@
 					</div>
 				</div>
 
-				<!-- Slug -->
+				{{-- Slug --}}
 				<div class="control-group{{ $errors->first('slug', ' error') }}" required>
 					<label class="control-label" for="slug">@lang('platform/pages::form.slug')</label>
 					<div class="controls">
@@ -63,7 +63,7 @@
 					</div>
 				</div>
 
-				<!-- Status -->
+				{{-- Status --}}
 				<div class="control-group{{ $errors->first('status', ' error') }}" required>
 					<label class="control-label" for="status">@lang('platform/pages::form.status')</label>
 					<div class="controls">
@@ -75,7 +75,7 @@
 					</div>
 				</div>
 
-				<!-- Storage Type -->
+				{{-- Storage Type --}}
 				<div class="control-group{{ $errors->first('type', ' error') }}" required>
 					<label class="control-label" for="type">@lang('platform/pages::form.type')</label>
 					<div class="controls">
@@ -88,7 +88,7 @@
 					</div>
 				</div>
 
-				<!-- Templates -->
+				{{-- Templates --}}
 				<div class="control-group{{ $errors->first('template', ' error') }}" required>
 					<label class="control-label" for="template">@lang('platform/pages::form.template')</label>
 					<div class="controls">
@@ -105,7 +105,7 @@
 					</div>
 				</div>
 
-				<!-- Visibility -->
+				{{-- Visibility --}}
 				<div class="control-group{{ $errors->first('visibility', ' error') }}" required>
 					<label for="visibility" class="control-label">@lang('platform/pages::form.visibility')</label>
 					<div class="controls">
@@ -118,7 +118,7 @@
 					</div>
 				</div>
 
-				<!-- Groups -->
+				{{-- Groups --}}
 				<div class="control-group{{ $errors->first('groups', ' error') }}" required>
 					<label for="groups" class="control-label">@lang('platform/pages::form.groups')</label>
 					<div class="controls">
@@ -131,7 +131,7 @@
 					</div>
 				</div>
 
-				<!-- Content -->
+				{{-- Content --}}
 				<div class="control-group{{ $errors->first('value', ' error') }}" required>
 					<label class="control-label" for="value">@lang('platform/pages::form.value')</label>
 					<div class="controls">
@@ -140,7 +140,7 @@
 					</div>
 				</div>
 
-				<!-- Form Actions -->
+				{{-- Form Actions --}}
 				<div class="form-actions">
 					<a class="btn btn-small" href="{{ URL::toAdmin('pages') }}">@lang('button.cancel')</a>
 

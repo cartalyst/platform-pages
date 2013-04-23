@@ -26,10 +26,10 @@
 </div>
 
 <form class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
-	<!-- CSRF Token -->
+	{{-- CSRF Token --}}
 	<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-	<!-- Name -->
+	{{-- Name --}}
 	<div class="control-group">
 		<label class="control-label" for="name">{{ Lang::get('platform/pages::form.name') }}:</label>
 		<div class="controls">
@@ -38,7 +38,7 @@
 		</div>
 	</div>
 
-	<!-- Slug -->
+	{{-- Slug --}}
 	<div class="control-group">
 		<label class="control-label" for="slug">{{ Lang::get('platform/pages::form.slug') }}:</label>
 		<div class="controls">
@@ -47,7 +47,7 @@
 		</div>
 	</div>
 
-	<!-- Status -->
+	{{-- Status --}}
 	<div class="control-group">
 		<label class="control-label" for="status">{{ Lang::get('platform/pages::form.status') }}:</label>
 		<div class="controls">
@@ -59,7 +59,7 @@
 		</div>
 	</div>
 
-	<!-- Storage Type -->
+	{{-- Storage Type --}}
 	<div class="control-group">
 		<label class="control-label" for="type">{{ Lang::get('platform/pages::form.type') }}:</label>
 		<div class="controls">
@@ -72,7 +72,7 @@
 		</div>
 	</div>
 
-	<!-- Templates -->
+	{{-- Templates --}}
 	<div class="control-group">
 		<label class="control-label" for="template">{{ Lang::get('platform/pages::form.template') }}:</label>
 		<div class="controls">
@@ -89,7 +89,7 @@
 		</div>
 	</div>
 
-	<!-- Visibility -->
+	{{-- Visibility --}}
 	<div class="control-group">
 		<label for="visibility" class="control-label">{{ Lang::get('platform/pages::form.visibility') }}:</label>
 		<div class="controls">
@@ -102,7 +102,7 @@
 		</div>
 	</div>
 
-	<!-- Groups -->
+	{{-- Groups --}}
 	<div class="control-group">
 		<label for="groups" class="control-label">{{ Lang::get('platform/pages::form.groups') }}:</label>
 		<div class="controls">
@@ -115,7 +115,7 @@
 		</div>
 	</div>
 
-	<!-- Content -->
+	{{-- Content --}}
 	<div class="control-group">
 		<label class="control-label" for="value">{{ Lang::get('platform/pages::form.value') }}:</label>
 		<div class="controls">
@@ -124,7 +124,7 @@
 		</div>
 	</div>
 
-	<!-- Form Actions -->
+	{{-- Form Actions --}}
 	<div class="form-actions">
 		<a class="btn btn-small" href="{{ URL::to(ADMIN_URI . '/pages') }}">{{ Lang::get('button.cancel') }}</a>
 		<button class="btn btn-small btn-primary" type="submit">{{ Lang::get('button.update') }}</button>

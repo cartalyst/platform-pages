@@ -69,14 +69,14 @@ jQuery(document).ready(function($){
 
 						<div class="pull-left" data-template>
 
-							<!-- Build different HTML based on the type -->
+							{{-- Build different HTML based on the type --}}
 							[? if type == 'select' ?]
 								<select class="input-small" id="grid-filters-[[column]]" data-column="[[column]]">
 									<option>
 										-- [[label]] --
 									</option>
 
-									<!-- Need to work out how to embed each <option> inside the <optgroup> data-template... -->
+									{{-- Need to work out how to embed each <option> inside the <optgroup> data-template... --}}
 									<option data-template-for="mappings" value="[[value]]">
 										[[label]]
 									</option>
