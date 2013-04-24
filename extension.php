@@ -185,12 +185,16 @@ return array(
 	|
 	*/
 
-	'routes' => function(Cartalyst\Extensions\Extension $extension)
+	'boot' => function(Cartalyst\Extensions\Extension $extension, Illuminate\Foundation\Application $app)
 	{
 
-		# not sure if this is the best way to do this though!
 		Route::get('/', 'Platform\Pages\Controllers\PagesController@getPage');
-		Route::get('{pageSlug}', 'Platform\Pages\Controllers\PagesController@getPage');
+
+		App::before(function($app) {
+
+			Route::get('{pageSlug}', 'Platform\Pages\Controllers\PagesController@getPage');
+
+		});
 
 	},
 
