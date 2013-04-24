@@ -166,7 +166,7 @@ return array(
 	|
 	*/
 
-	'boot' => function(Cartalyst\Extensions\Extension $extension, Illuminate\Foundation\Application $app)
+	'boot' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
 	{
 
 		require_once __DIR__.'/functions.php';
@@ -185,7 +185,7 @@ return array(
 	|
 	*/
 
-	'boot' => function(Cartalyst\Extensions\Extension $extension, Illuminate\Foundation\Application $app)
+	'routes' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
 	{
 
 		Route::get('/', 'Platform\Pages\Controllers\PagesController@getPage');
