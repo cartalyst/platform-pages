@@ -23,7 +23,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 			'uri'       => 'pages'
 		));
 
-		$pages->makeFirstChildOf($admin);
+		$pages->makeLastChildOf($admin);
 	}
 
 	/**
