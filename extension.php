@@ -171,7 +171,8 @@ return array(
 
 		require_once __DIR__.'/functions.php';
 
-		Platform\Pages\Page::setViewEnvironment($app['view']);
+		Platform\Pages\Page::setThemeBag($app['themes']);
+		Platform\Pages\Page::setTheme($app['config']['cartalyst/themes::active']);
 
 	},
 

@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\View\Environment;
+use Cartalyst\Themes\ThemeBag;
 
 class Page extends \Illuminate\Database\Eloquent\Model {
 
@@ -45,12 +45,18 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	);
 
 	/**
-	 * The view environemnt which is
-	 * used for rendering file-based pages.
+	 * The theme bag which is used for rendering file-based pages.
 	 *
-	 * @param  Illuminate\View\Environment
+	 * @var Illuminate\View\Environment
 	 */
-	protected static $view;
+	protected static $themeBag;
+
+	/**
+	 * The theme in which we render pages.
+	 *
+	 * @var string
+	 */
+	protected static $theme = '';
 
 	/**
 	 * Returns an array of the page groups.
@@ -85,7 +91,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		switch ($this->type)
 		{
 			case 'filesystem':
-				return static::$view->make($this->template)->render();
+				return static::$themeBag->view($this->template, array(), static::$theme)->render();
 
 			default:
 				return $this->attributes['type'];
@@ -93,34 +99,65 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	}
 
 	/**
-	 * Get the view environemtn instance.
+	 * Get the theme bag instance.
 	 *
-	 * @return \Illuminate\View\Environment
+	 * @return Cartalyst\Themes\ThemeBag
 	 */
-	public static function getViewEnvironment()
+	public static function getThemeBag()
 	{
-		return static::$view;
+		return static::$themeBag;
 	}
 
 	/**
-	 * Set the view environemtn instance.
+	 * Set the theme bag instance.
 	 *
-	 * @param  \Illuminate\View\Environment
+	 * @param  Cartalyst\Themes\ThemeBag  $themeBag
 	 * @return void
 	 */
-	public static function setViewEnvironment(Environment $view)
+	public static function setThemeBag(ThemeBag $themeBag)
 	{
-		static::$view = $view;
+		static::$themeBag = $themeBag;
 	}
 
 	/**
-	 * Unset the view environemtn for models.
+	 * Unset the theme bag for models.
 	 *
 	 * @return void
 	 */
-	public static function unsetViewEnvironment()
+	public static function unsetThemeBag()
 	{
-		static::$view = null;
+		static::$themeBag = null;
+	}
+
+	/**
+	 * Get the theme name.
+	 *
+	 * @return string
+	 */
+	public static function getTheme()
+	{
+		return static::$theme;
+	}
+
+	/**
+	 * Set the theme name.
+	 *
+	 * @param  string
+	 * @return void
+	 */
+	public static function setTheme($theme)
+	{
+		static::$theme = $theme;
+	}
+
+	/**
+	 * Unset the theme bag for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetTheme()
+	{
+		static::$theme = null;
 	}
 
 }
