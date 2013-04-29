@@ -14,8 +14,6 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	{
 		$admin = Menu::adminMenu();
 
-		$cms = Menu::find('admin-cms');
-
 		$pages = new Menu(array(
 			'slug'      => 'admin-pages',
 			'extension' => 'platform/pages',
@@ -25,7 +23,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 			'uri'       => 'pages'
 		));
 
-		$pages->makeFirstChildOf($cms);
+		$pages->makeFirstChildOf($admin);
 	}
 
 	/**
@@ -35,7 +33,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	 */
 	public function down()
 	{
-		$slugs = array('admin-cms-pages');
+		$slugs = array('admin-pages');
 
 		foreach ($slugs as $slug)
 		{
