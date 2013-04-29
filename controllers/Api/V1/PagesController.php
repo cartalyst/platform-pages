@@ -113,21 +113,21 @@ class PagesController extends ApiController {
 	/**
 	 * Returns information about the given page.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Cartalyst\Api\Http\Response
 	 */
-	public function show($pageId)
+	public function show($id)
 	{
 		// Do we have the page slug?
-		if ( ! is_numeric($pageId))
+		if ( ! is_numeric($id))
 		{
-			$page = $this->model->where('slug', '=', $pageId);
+			$page = $this->model->where('slug', '=', $id);
 		}
 
 		// We must have the page id
 		else
 		{
-			$page = $this->model->where('id', '=', $pageId);
+			$page = $this->model->where('id', '=', $id);
 		}
 
 		// Do we only want the enabled page ?
@@ -143,21 +143,21 @@ class PagesController extends ApiController {
 		}
 
 		// Page does not exist
-		return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('pageId')), 404);
+		return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
 	}
 
 	/**
 	 * Updates the given page.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Cartalyst\Api\Http\Response
 	 */
-	public function update($pageId)
+	public function update($id)
 	{
 		// Check if the page exists
-		if(is_null($page = $this->model->find($pageId)))
+		if(is_null($page = $this->model->find($id)))
 		{
-			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('pageId')), 404);
+			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
 		}
 
 		// Get all the inputs
@@ -191,15 +191,15 @@ class PagesController extends ApiController {
 	/**
 	 * Deletes the given page.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Cartalyst\Api\Http\Response
 	 */
-	public function destroy($pageId)
+	public function destroy($id)
 	{
 		// Check if the page exists
-		if (is_null($page = $this->model->find($pageId)))
+		if (is_null($page = $this->model->find($id)))
 		{
-			return \Response::api(Lang::get('platform/pages::message.does_not_exist', compact('pageId')), 404);
+			return \Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
 		}
 
 		// Delete the page

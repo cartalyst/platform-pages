@@ -75,21 +75,6 @@ function pages_visibility_statuses()
 	);
 }
 
-/**
- * Returns all the valid pages storage types.
- *
- * @return array
- * @todo   Add Localisation!
- */
-function pages_storage_types()
-{
-	return array(
-		'db'   => 'Database',
-		'file' => 'File'
-	);
-}
-
-
 
 function pages_find_files()
 	{

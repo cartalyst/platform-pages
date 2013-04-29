@@ -171,6 +171,8 @@ return array(
 
 		require_once __DIR__.'/functions.php';
 
+		Platform\Pages\Page::setViewEnvironment($app['view']);
+
 	},
 
 	/*

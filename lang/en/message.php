@@ -20,7 +20,7 @@
 
 return array(
 
-	'does_not_exist' => 'Page [:pageId] does not exist.',
+	'does_not_exist' => 'Page [:id] does not exist.',
 
 	'create' => array(
 		'error'   => 'There was an issue creating the page. Please try again.',

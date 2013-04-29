@@ -85,9 +85,6 @@ class PagesController extends AdminController {
 
 		try
 		{
-			// Get the available storage types
-			$storageTypes = pages_storage_types();
-
 			// Get all the available frontend templates
 			$templates = pages_find_templates();
 
@@ -108,7 +105,7 @@ class PagesController extends AdminController {
 		}
 
 		// Show the page
-		return View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups', 'selectedGroups'));
+		return View::make('platform/pages::create', compact('templates', 'visibility', 'groups', 'selectedGroups'));
 	}
 
 	/**
@@ -124,10 +121,10 @@ class PagesController extends AdminController {
 	/**
 	 * Page update.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function getEdit($pageId = null)
+	public function getEdit($id = null)
 	{
 		// Set the current active menu
 		set_active_menu('admin-pages');
@@ -135,14 +132,11 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the page information
-			$response = API::get("pages/$pageId");
+			$response = API::get("pages/$id");
 			$page     = $response['page'];
 
 			// Get this page groups
 			$pageGroups = $page->groups();
-
-			// Get the available storage types
-			$storageTypes = pages_storage_types();
 
 			// Get all the available frontend templates
 			$templates = pages_find_templates();
@@ -164,24 +158,24 @@ class PagesController extends AdminController {
 		}
 
 		// Show the page
-		return View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+		return View::make('platform/pages::edit', compact('page', 'templates', 'visibility', 'groups', 'pageGroups'));
 	}
 
 	/**
 	 * Page update form processing.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function postEdit($pageId = null)
+	public function postEdit($id = null)
 	{
 		try
 		{
 			// Are we creating a new page?
-			if (is_null($pageId))
+			if (is_null($id))
 			{
 				$response = API::post('pages', Input::all());
-				$pageId = $response['page']->id;
+				$id = $response['page']->id;
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.create.success');
@@ -190,7 +184,7 @@ class PagesController extends AdminController {
 			// No, we are updating an existing page
 			else
 			{
-				API::put("pages/$pageId", Input::all());
+				API::put("pages/$id", Input::all());
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.update.success');
@@ -200,7 +194,7 @@ class PagesController extends AdminController {
 			$messages = with(new Bag)->add('success', $success);
 
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/$pageId")->with('messages', $messages);
+			return Redirect::toAdmin("pages/edit/$id")->with('messages', $messages);
 		}
 		catch (ApiHttpException $e)
 		{
@@ -212,15 +206,15 @@ class PagesController extends AdminController {
 	/**
 	 * Page delete.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function getDelete($pageId = null)
+	public function getDelete($id = null)
 	{
 		try
 		{
 			// Delete the page
-			API::delete("pages/$pageId");
+			API::delete("pages/$id");
 
 			// Set the success message
 			$messages = with(new Bag)->add('success', Lang::get('platform/pages::message.delete.success'));
@@ -238,22 +232,19 @@ class PagesController extends AdminController {
 	/**
 	 * Page clone.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function getClone($pageId = null)
+	public function getClone($id = null)
 	{
 		try
 		{
 			// Get the page information
-			$response = API::get("pages/$pageId");
+			$response = API::get("pages/$id");
 			$page     = $response['page'];
 
 			// Get this page groups
 			$pageGroups = $page->groups();
-
-			// Get the available storage types
-			$storageTypes = pages_storage_types();
 
 			// Get all the available frontend templates
 			$templates = pages_find_templates();
@@ -275,16 +266,16 @@ class PagesController extends AdminController {
 		}
 
 		// Show the page
-		return View::make('platform/pages::clone', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+		return View::make('platform/pages::clone', compact('page', 'templates', 'visibility', 'groups', 'pageGroups'));
 	}
 
 	/**
 	 * Page clone form processing.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function postClone($pageId = null)
+	public function postClone($id = null)
 	{
 		return $this->postEdit();
 	}

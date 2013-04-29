@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\View\Environment;
+
 class Page extends \Illuminate\Database\Eloquent\Model {
 
 	/**
@@ -25,7 +27,30 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	 *
 	 * @var string
 	 */
-	public $table = 'pages';
+	protected $table = 'pages';
+
+	/**
+	 * The attributes that are mass assignable.
+	 *
+	 * @var array
+	 */
+	protected $fillable = array(
+		'name',
+		'slug',
+		'status',
+		'type',
+		'template',
+		'visibility',
+		'value',
+	);
+
+	/**
+	 * The view environemnt which is
+	 * used for rendering file-based pages.
+	 *
+	 * @param  Illuminate\View\Environment
+	 */
+	protected static $view;
 
 	/**
 	 * Returns an array of the page groups.
@@ -51,18 +76,51 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	}
 
 	/**
-	 * The attributes that are mass assignable.
+	 * Returns the "value" attribute for the page.
 	 *
-	 * @var array
+	 * @return string
 	 */
-	protected $fillable = array(
-		'name',
-		'slug',
-		'status',
-		'type',
-		'template',
-		'visibility',
-		'value',
-	);
+	public function getValueAttribute()
+	{
+		switch ($this->type)
+		{
+			case 'filesystem':
+				return static::$view->make($this->template)->render();
+
+			default:
+				return $this->attributes['type'];
+		}
+	}
+
+	/**
+	 * Get the view environemtn instance.
+	 *
+	 * @return \Illuminate\View\Environment
+	 */
+	public static function getViewEnvironment()
+	{
+		return static::$view;
+	}
+
+	/**
+	 * Set the view environemtn instance.
+	 *
+	 * @param  \Illuminate\View\Environment
+	 * @return void
+	 */
+	public static function setViewEnvironment(Environment $view)
+	{
+		static::$view = $view;
+	}
+
+	/**
+	 * Unset the view environemtn for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetViewEnvironment()
+	{
+		static::$view = null;
+	}
 
 }
