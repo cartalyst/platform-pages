@@ -35,9 +35,9 @@ class PagesController extends ApiController {
 	protected $validationRules = array(
 		'name'       => 'required',
 		'slug'       => 'required|unique:pages,slug',
-		'status'     => 'required',
-		'type'       => 'required',
-		// 'template'   => 'required',
+		'enabled'    => 'required',
+		'type'       => 'required|in:database,filesystem',
+		// 'source'   => 'required',
 		'visibility' => 'required',
 		'value'      => 'required',
 	);
@@ -133,7 +133,7 @@ class PagesController extends ApiController {
 		// Do we only want the enabled page ?
 		if (Input::get('enabled'))
 		{
-			$page->where('status', '=', 1);
+			$page->where('enabled', '=', 1);
 		}
 
 		// Check if the page exists

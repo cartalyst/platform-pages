@@ -16,22 +16,30 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('slug');
-			$table->string('template');
 			$table->string('type');
-			$table->boolean('visibility');
+			$table->string('visibility');
 			$table->text('groups')->nullable();
+
+			// Database specific
+			$table->text('template')->nullable();
 			$table->text('value')->nullable();
-			$table->boolean('status');
+
+			// Filesystem specific
+			$table->string('file')->nullable();
+
+			// Common
+			$table->boolean('enabled');
 			$table->timestamps();
 			$table->unique('slug');
 		});
 
-		Schema::create('pages_groups', function($table)
-		{
-			$table->integer('page_id')->unsigned();
-			$table->integer('group_id')->unsigned();
-			$table->unique(array('page_id', 'group_id'));
-		});
+		// @todo: Implement this
+		// Schema::create('pages_groups', function($table)
+		// {
+		// 	$table->integer('page_id')->unsigned();
+		// 	$table->integer('group_id')->unsigned();
+		// 	$table->unique(array('page_id', 'group_id'));
+		// });
 	}
 
 	/**
@@ -42,7 +50,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	public function down()
 	{
 		Schema::drop('pages');
-		Schema::drop('pages_groups');
+		// Schema::drop('pages_groups');
 	}
 
 }

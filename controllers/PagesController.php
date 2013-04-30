@@ -37,7 +37,7 @@ class PagesController extends FrontendController {
 		try
 		{
 			// Find the requested page
-			$request = \API::get('pages/' . $pageSlug, array('status' => 1));
+			$request = \API::get('pages/' . $pageSlug, array('enabled' => 1));
 			$page    = $request['page'];
 
 			// Check if the current user can see this page

@@ -37,7 +37,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	protected $fillable = array(
 		'name',
 		'slug',
-		'status',
+		'enabled',
 		'type',
 		'template',
 		'visibility',
@@ -59,43 +59,61 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	protected static $theme = '';
 
 	/**
-	 * Returns an array of the page groups.
+	 * Mutator for the "value" attribute.
 	 *
-	 * @return array
-	 */
-	public function groups()
-	{
-		// Do we have groups?
-		if (is_null($this->groups))
-		{
-			return array();
-		}
-
-		$groups = array();
-
-		foreach (json_decode($this->groups) as $group)
-		{
-			$groups[ $group ] = $group;
-		}
-
-		return $groups;
-	}
-
-	/**
-	 * Returns the "value" attribute for the page.
-	 *
+	 * @param  string  $value
 	 * @return string
 	 */
-	public function getValueAttribute()
+	public function getValueAttribute($value)
 	{
-		switch ($this->type)
+		switch ($type = $this->type)
 		{
 			case 'filesystem':
 				return static::$themeBag->view($this->template, array(), static::$theme)->render();
 
-			default:
-				return $this->attributes['type'];
+			case 'database':
+				return $value;
 		}
+
+		throw new \RuntimeException("Invalid page storage type [$type] for page [{$this->getKey()}].");
+	}
+
+	/**
+	 * Mutator for the "enabled" attribute.
+	 *
+	 * @param  string  $enabled
+	 * @return bool    $enabled
+	 */
+	public function getEnabledAttribute($enabled)
+	{
+		return (bool) $enabled;
+	}
+
+	/**
+	 * Mutator for the "groups" attribute.
+	 *
+	 * @param  string  $groups
+	 * @return array
+	 */
+	public function getGroupsAttribute($groups)
+	{
+		if ( ! $groups)
+		{
+			return array();
+		}
+
+		return json_decode($groups);
+	}
+
+	/**
+	 * Mutator for the "groups" attribute.
+	 *
+	 * @param  mixed  $groups
+	 * @return void
+	 */
+	public function setGroupsAttribute(array $groups = null)
+	{
+		$this->attributes['groups'] = $groups ? json_encode($groups) : array();
 	}
 
 	/**

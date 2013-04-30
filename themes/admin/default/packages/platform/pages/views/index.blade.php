@@ -136,7 +136,7 @@ jQuery(document).ready(function($){
 								<th data-column="id">@lang('platform/pages::table.id')</th>
 								<th data-column="name">@lang('platform/pages::table.name')</th>
 								<th data-column="slug">@lang('platform/pages::table.slug')</th>
-								<th data-column="status">@lang('platform/pages::table.status')</th>
+								<th data-column="enabled">@lang('platform/pages::table.enabled')</th>
 								<th data-column="created_at">@lang('platform/pages::table.created_at')</th>
 								<th></th>
 							</tr>
@@ -146,11 +146,11 @@ jQuery(document).ready(function($){
 								<td data-column="id" class="span1">[[id]]</td>
 								<td data-column="name">[[name]]</td>
 								<td data-column="slug">[[slug]]</td>
-								<td data-type="select" data-column="status" data-mappings="Yes:1|No:0">
-									[? if status == 1 ?]
-										@lang('general.enabled')
+								<td data-type="select" data-column="enabled" data-mappings="Yes:1|No:0">
+									[? if enabled ?]
+										@lang('general.yes')
 									[? else ?]
-										@lang('general.disabled')
+										@lang('general.no')
 									[? endif ?]
 								</td>
 								<td data-column="created_at">[[created_at]]</td>
