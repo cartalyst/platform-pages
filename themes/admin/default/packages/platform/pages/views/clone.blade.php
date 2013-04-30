@@ -104,7 +104,7 @@
 		<div class="controls">
 			<select name="groups[]" id="groups[]" multiple="multiple">
 				@foreach ($groups as $group)
-				<option value="{{ $group->id }}"{{ (in_array($group->id, $page->groups) ? ' selected="selected"' : '') }}>{{ $group->name }}</option>
+				<option value="{{ $group->id }}"{{ ($page->groups->find($group->getKey())) ? ' selected="selected"' : '' }}>{{ $group->name }}</option>
 				@endforeach
 			</select>
 			<span class="help-block">{{ Lang::get('platform/pages::form.groups_help') }}</span>

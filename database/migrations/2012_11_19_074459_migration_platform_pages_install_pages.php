@@ -18,7 +18,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('slug');
 			$table->string('type');
 			$table->string('visibility');
-			$table->text('groups')->nullable();
 
 			// Database specific
 			$table->text('template')->nullable();
@@ -33,13 +32,12 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->unique('slug');
 		});
 
-		// @todo: Implement this
-		// Schema::create('pages_groups', function($table)
-		// {
-		// 	$table->integer('page_id')->unsigned();
-		// 	$table->integer('group_id')->unsigned();
-		// 	$table->unique(array('page_id', 'group_id'));
-		// });
+		Schema::create('pages_groups', function($table)
+		{
+			$table->integer('page_id')->unsigned();
+			$table->integer('group_id')->unsigned();
+			$table->unique(array('page_id', 'group_id'));
+		});
 	}
 
 	/**
@@ -50,7 +48,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	public function down()
 	{
 		Schema::drop('pages');
-		// Schema::drop('pages_groups');
+		Schema::drop('pages_groups');
 	}
 
 }

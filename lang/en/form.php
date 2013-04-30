@@ -34,8 +34,8 @@ return array(
 	'groups_help'     => 'What user groups should be able to see this page?',
 	'template'        => 'Template',
 	'template_help'   => 'Page template to use.',
-	'value'           => 'Content',
-	'value_help'      => 'Contents of your page. @content call is allowed.',
+	'value'           => 'Value',
+	'value_help'      => 'The page\'s value. @content call is allowed.',
 	'file'            => 'File',
 	'file_help'       => 'File to use.',
 

@@ -59,6 +59,23 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	protected static $theme = '';
 
 	/**
+	 * THe user model.
+	 *
+	 * @var string
+	 */
+	protected static $groupModel = 'Platform\users\Models\Group';
+
+	/**
+	 * Get the groups for the page.
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function groups()
+	{
+		return $this->BelongsToMany(static::$groupModel, 'pages_groups');
+	}
+
+	/**
 	 * Mutator for the "value" attribute.
 	 *
 	 * @param  string  $value
@@ -87,33 +104,6 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	public function getEnabledAttribute($enabled)
 	{
 		return (bool) $enabled;
-	}
-
-	/**
-	 * Mutator for the "groups" attribute.
-	 *
-	 * @param  string  $groups
-	 * @return array
-	 */
-	public function getGroupsAttribute($groups)
-	{
-		if ( ! $groups)
-		{
-			return array();
-		}
-
-		return json_decode($groups);
-	}
-
-	/**
-	 * Mutator for the "groups" attribute.
-	 *
-	 * @param  mixed  $groups
-	 * @return void
-	 */
-	public function setGroupsAttribute(array $groups = null)
-	{
-		$this->attributes['groups'] = $groups ? json_encode($groups) : array();
 	}
 
 	/**
@@ -176,6 +166,37 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	public static function unsetTheme()
 	{
 		static::$theme = null;
+	}
+
+	/**
+	 * Get the group model.
+	 *
+	 * @return string
+	 */
+	public static function getGroupModel()
+	{
+		return static::$groupModel;
+	}
+
+	/**
+	 * Set the group model.
+	 *
+	 * @param  string
+	 * @return void
+	 */
+	public static function setGroupModel($groupModel)
+	{
+		static::$groupModel = $groupModel;
+	}
+
+	/**
+	 * Unset the group model for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetGroupModel()
+	{
+		static::$groupModel = null;
 	}
 
 }

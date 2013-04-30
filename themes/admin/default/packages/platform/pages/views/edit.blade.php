@@ -108,7 +108,7 @@
 					<div class="controls">
 						<select name="groups[]" id="groups[]" multiple="multiple">
 							@foreach ($groups as $group)
-								<option value="{{ $group->id }}"{{ (in_array($group->id, $page->groups) ? ' selected="selected"' : '') }}>{{ $group->name }}</option>
+								<option value="{{ $group->id }}"{{ ($page->groups->find($group->getKey())) ? ' selected="selected"' : '' }}>{{ $group->name }}</option>
 							@endforeach
 						</select>
 						{{ $errors->first('groups', '<span class="help-inline">:message</span>') }}
@@ -123,7 +123,7 @@
 						<div class="controls">
 							<select name="template" id="template" required>
 								@foreach ($templates as $value => $name)
-									<option value="{{ $name }}"{{ $page->template == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
+									<option value="{{ $value }}"{{ $page->template == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
 								@endforeach
 							</select>
 							{{ $errors->first('template', '<span class="help-inline">:message</span>') }}

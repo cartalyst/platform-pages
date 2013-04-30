@@ -23,6 +23,7 @@ use Lang;
 use Platform\Routing\Controllers\ApiController;
 use Platform\Pages\Page;
 use Response;
+use Sentry;
 use Validator;
 
 class PagesController extends ApiController {
@@ -70,11 +71,11 @@ class PagesController extends ApiController {
 	{
 		if ($limit = Input::get('limit'))
 		{
-			$pages = $this->model->paginate($limit);
+			$pages = $this->model->with('groups')->paginate($limit);
 		}
 		else
 		{
-			$pages = $this->model->all();
+			$pages = $this->model->with('groups')->get();
 		}
 
 		return Response::api(compact('pages'));
@@ -100,14 +101,20 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ($page = Page::create($input))
+		if ( ! $page = Page::create($input))
 		{
-			// Page successfully created
-			return Response::api(compact('page'));
+			// There was a problem creating the content
+			return Response::api(Lang::get('platform/pages::message.create.error'), 500);
 		}
 
-		// There was a problem creating the content
-		return Response::api(Lang::get('platform/pages::message.create.error'), 500);
+		foreach (Input::get('groups', array()) as $id)
+		{
+			$group = Sentry::getGroupProvider()->findById($id);
+			$user->groups()->attach($group);
+		}
+
+		// Page successfully created
+		return Response::api(compact('page'));
 	}
 
 	/**
@@ -137,7 +144,7 @@ class PagesController extends ApiController {
 		}
 
 		// Check if the page exists
-		if ( ! is_null($page = $page->first()))
+		if ( ! is_null($page = $page->with('groups')->first()))
 		{
 			return Response::api(compact('page'));
 		}
@@ -181,11 +188,17 @@ class PagesController extends ApiController {
 		// Was the page updated?
 		if ($page->save())
 		{
-			return Response::api(compact('page'));
+			// There was a problem updating the content
+			return Response::api(Lang::get('platform/pages::message.update.error'), 500);
 		}
 
-		// There was a problem updating the content
-		return Response::api(Lang::get('platform/pages::message.update.error'), 500);
+		foreach (Input::get('groups', array()) as $id)
+		{
+			$group = Sentry::getGroupProvider()->findById($id);
+			$user->groups()->attach($group);
+		}
+
+		return Response::api(compact('page'));
 	}
 
 	/**
