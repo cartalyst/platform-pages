@@ -18,7 +18,10 @@
  * @link       http://cartalyst.com
  */
 
+use API;
+use Cartalyst\Api\ApiHttpException;
 use Platform\Routing\Controllers\FrontendController;
+use Sentry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesController extends FrontendController {
@@ -37,94 +40,53 @@ class PagesController extends FrontendController {
 		try
 		{
 			// Find the requested page
-			$request = \API::get('pages/' . $pageSlug, array('enabled' => 1));
+			$request = API::get('pages/' . $pageSlug, array('enabled' => 1));
 			$page    = $request['page'];
-
-			// Check if the current user can see this page
-			if ( ! \Sentry::check() and $page->visibility)
-			{
-				# IMO we should show a View page, instead of redirecting
-				# the user to that page...
-				#
-				# return \Theme::make('errors/invalid-permissions');
-				# the errors are saved within the themes folder
-				# so the designer/developer can have more controll
-				# of how the page should look like
-
-				return \Redirect::to('invalid_permissions');
-			}
-
-			// Does this page have user groups assigned?
-			if ($groups = $page->groups())
-			{
-				// Pretend the user doesn't have access
-				$inGroups = false;
-
-				// Loop through the groups
-				foreach ($groups as $groupId)
-				{
-					try
-					{
-						// Get this group information
-						$group = \Sentry::getGroupProvider()->findById($groupId);
-
-						// Check if the user is in this group
-						if (\Sentry::getUser()->inGroup($group))
-						{
-							// The user has access to this group, sweet!
-							$inGroups = true;
-
-							break;
-						}
-					}
-					catch (Cartalyst\Sentry\Groups\GroupNotFoundException $e)
-					{
-						# we maybe throw a 404 error here, because,
-						# the group wasn't found, the possible reason
-						# is that the group was deleted, need to test
-						# this more
-						#
-						echo 'Group does not exist :c';
-						die;
-					}
-				}
-
-				// If the user isn't assigned to any of the page
-				// groups, it means that this user is not allowed
-				// to view this page.
-				if ( ! $inGroups)
-				{
-					# same as the above, show the insufficient permisions page...
-					echo 'you don\'t have access';
-					die;
-				}
-			}
-
-
-
-			### TODO AFTER THIS ###
-
-			echo 'You are on the requested page!';
-			return;
-
-
-			// Is this page content saved on a file?
-			if ($page->type === 'file')
-			{
-				// Show the page
-				return View::make('platform/pages::files.' . $page->slug);
-			}
-
-			// Render the page content value
-			$content = content_render($page->value);
-
-			// Show the page
-			return View::make('templates.layouts.' . $page->template, compact('content'));
 		}
-		catch (\Cartalyst\Api\ApiHttpException $e)
+		catch (ApiHttpException $e)
 		{
 			throw new NotFoundHttpException("No matching page could be found for the requested URI.");
 		}
+
+		// @todo: We should have a config item whether invalid
+		// perms for pages should throw a 404, 403 or redirect
+		// to a certain page...
+		if ($page->visibility == 'logged_in')
+		{
+			if ( ! Sentry::check())
+			{
+				throw new NotFoundHttpException;
+			}
+
+			foreach (Sentry::getUser()->groups() as $group)
+			{
+				$found = false;
+
+				if ($page->groups->find($group->getKey()))
+				{
+					$found = true;
+					break;
+				}
+
+				if ($found == false)
+				{
+					throw new NotFoundHttpException;
+				}
+			}
+		}
+
+		// Is this page content saved on a file?
+		if ($page->type === 'filesystem')
+		{
+			// Show the page
+			return View::make($page->file);
+		}
+
+		// Render the page content value
+		$content = content_render($page->value);
+
+		// Show the page
+		return View::make($page->template, compact('content'));
 	}
 
 }

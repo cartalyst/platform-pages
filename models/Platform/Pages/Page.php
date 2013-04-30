@@ -86,10 +86,11 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		switch ($type = $this->type)
 		{
 			case 'filesystem':
-				return static::$themeBag->view($this->template, array(), static::$theme)->render();
+				return static::$themeBag->view($this->file, array(), static::$theme)->render();
 
 			case 'database':
-				return $value;
+				$view = static::$themeBag->view($this->template, array(), static::$theme)->render();
+				\View::start
 		}
 
 		throw new \RuntimeException("Invalid page storage type [$type] for page [{$this->getKey()}].");
