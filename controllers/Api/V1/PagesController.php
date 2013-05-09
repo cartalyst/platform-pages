@@ -38,9 +38,14 @@ class PagesController extends ApiController {
 		'slug'       => 'required|unique:pages,slug',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
-		// 'source'   => 'required',
 		'visibility' => 'required',
-		'value'      => 'required',
+
+		// Database page
+		'template'   => 'required_if:type,database',
+		'value'      => 'required_if:type,database',
+
+		// Filesystme page
+		'file'       => 'required_if:type,filesystem',
 	);
 
 	/**
@@ -95,9 +100,10 @@ class PagesController extends ApiController {
 		$validator = Validator::make($input, $this->validationRules);
 
 		// If validation fails, we'll exit the operation now
-		if($validator->fails())
+		if ($validator->fails())
 		{
-			return Response::api(array('errors' => $validator), 422);
+			die();
+			return Response::api(array('errors' => $validator->errors()), 422);
 		}
 
 		// Was the page created?

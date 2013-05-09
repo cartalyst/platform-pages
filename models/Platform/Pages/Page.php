@@ -75,13 +75,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		return $this->BelongsToMany(static::$groupModel, 'pages_groups');
 	}
 
-	/**
-	 * Mutator for the "value" attribute.
-	 *
-	 * @param  string  $value
-	 * @return string
-	 */
-	public function getValueAttribute($value)
+	public function render()
 	{
 		switch ($type = $this->type)
 		{
@@ -89,8 +83,9 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 				return static::$themeBag->view($this->file, array(), static::$theme)->render();
 
 			case 'database':
-				$view = static::$themeBag->view($this->template, array(), static::$theme)->render();
-				\View::start
+				return static::$themeBag->view($this->template, array(
+					'content' => $this->value,
+				), static::$theme)->render();
 		}
 
 		throw new \RuntimeException("Invalid page storage type [$type] for page [{$this->getKey()}].");

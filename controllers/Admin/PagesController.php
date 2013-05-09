@@ -28,7 +28,7 @@ use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Pages\Page;
 use Redirect;
 use Symfony\Component\Finder\Finder;
-use Themes;
+use Theme;
 use View;
 
 class PagesController extends AdminController {
@@ -88,7 +88,7 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get all the available user groups
-			$response = API::get('users/groups', array('organized' => true));
+			$response = API::get('users/groups');
 			$groups   = $response['groups'];
 		}
 		catch (ApiHttpException $e)
@@ -134,7 +134,7 @@ class PagesController extends AdminController {
 			$page     = $response['page'];
 
 			// Get all the available user groups
-			$response = API::get('users/groups', array('organized' => true));
+			$response = API::get('users/groups');
 			$groups   = $response['groups'];
 		}
 		catch (ApiHttpException $e)
@@ -293,7 +293,7 @@ class PagesController extends AdminController {
 
 		$finder = new Finder;
 		$finder
-			->in(Themes::getCascadedViewPaths($theme))
+			->in(Theme::getCascadedViewPaths($theme))
 			->depth('< 3')
 			->name(sprintf(
 				'/.*?\.(%s)/',
