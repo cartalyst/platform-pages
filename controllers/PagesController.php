@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Platform\Routing\Controllers\FrontendController;
+use Platform\Ui\Controllers\FrontendController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesController extends FrontendController {
