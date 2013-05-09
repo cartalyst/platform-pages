@@ -102,7 +102,6 @@ class PagesController extends ApiController {
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())
 		{
-			die();
 			return Response::api(array('errors' => $validator->errors()), 422);
 		}
 
@@ -168,7 +167,7 @@ class PagesController extends ApiController {
 	public function update($id)
 	{
 		// Check if the page exists
-		if(is_null($page = $this->model->find($id)))
+		if (is_null($page = $this->model->find($id)))
 		{
 			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
 		}
@@ -177,10 +176,11 @@ class PagesController extends ApiController {
 		$input = Input::all();
 
 		// Update the validation rules, so it ignores the current page slug.
-		$this->validationRules['slug'] = 'required|unique:pages,slug,'.$page->slug.',slug';
+		$validationRules = $this->validationRules;
+		$validationRules['slug'] = 'required|unique:pages,slug,'.$page->slug.',slug';
 
 		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make($input, $this->validationRules);
+		$validator = Validator::make($input, $validationRules);
 
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())

@@ -39,9 +39,10 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		'slug',
 		'enabled',
 		'type',
-		'template',
 		'visibility',
+		'template',
 		'value',
+		'file',
 	);
 
 	/**

@@ -149,7 +149,7 @@
 						<div class="controls">
 							<select name="file" id="file" required>
 								@foreach ($files as $value => $name)
-									<option value="{{ $name }}"{{ $page->file == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
+									<option value="{{ $value }}"{{ $page->file == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
 								@endforeach
 							</select>
 							{{ $errors->first('file', '<span class="help-inline">:message</span>') }}
