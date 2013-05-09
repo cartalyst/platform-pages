@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Themes\ThemeBag;
+
 class Page extends \Illuminate\Database\Eloquent\Model {
 
 	/**
@@ -25,30 +27,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	 *
 	 * @var string
 	 */
-	public $table = 'pages';
-
-	/**
-	 * Returns an array of the page groups.
-	 *
-	 * @return array
-	 */
-	public function groups()
-	{
-		// Do we have groups?
-		if (is_null($this->groups))
-		{
-			return array();
-		}
-
-		$groups = array();
-
-		foreach (json_decode($this->groups) as $group)
-		{
-			$groups[ $group ] = $group;
-		}
-
-		return $groups;
-	}
+	protected $table = 'pages';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -58,11 +37,163 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	protected $fillable = array(
 		'name',
 		'slug',
-		'status',
+		'enabled',
 		'type',
-		'template',
 		'visibility',
+		'template',
 		'value',
+		'file',
 	);
+
+	/**
+	 * The theme bag which is used for rendering file-based pages.
+	 *
+	 * @var Illuminate\View\Environment
+	 */
+	protected static $themeBag;
+
+	/**
+	 * The theme in which we render pages.
+	 *
+	 * @var string
+	 */
+	protected static $theme = '';
+
+	/**
+	 * THe user model.
+	 *
+	 * @var string
+	 */
+	protected static $groupModel = 'Platform\users\Models\Group';
+
+	/**
+	 * Get the groups for the page.
+	 *
+	 * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function groups()
+	{
+		return $this->BelongsToMany(static::$groupModel, 'pages_groups');
+	}
+
+	public function render()
+	{
+		switch ($type = $this->type)
+		{
+			case 'filesystem':
+				return static::$themeBag->view($this->file, array(), static::$theme)->render();
+
+			case 'database':
+				return static::$themeBag->view($this->template, array(
+					'content' => $this->value,
+				), static::$theme)->render();
+		}
+
+		throw new \RuntimeException("Invalid page storage type [$type] for page [{$this->getKey()}].");
+	}
+
+	/**
+	 * Mutator for the "enabled" attribute.
+	 *
+	 * @param  string  $enabled
+	 * @return bool    $enabled
+	 */
+	public function getEnabledAttribute($enabled)
+	{
+		return (bool) $enabled;
+	}
+
+	/**
+	 * Get the theme bag instance.
+	 *
+	 * @return Cartalyst\Themes\ThemeBag
+	 */
+	public static function getThemeBag()
+	{
+		return static::$themeBag;
+	}
+
+	/**
+	 * Set the theme bag instance.
+	 *
+	 * @param  Cartalyst\Themes\ThemeBag  $themeBag
+	 * @return void
+	 */
+	public static function setThemeBag(ThemeBag $themeBag)
+	{
+		static::$themeBag = $themeBag;
+	}
+
+	/**
+	 * Unset the theme bag for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetThemeBag()
+	{
+		static::$themeBag = null;
+	}
+
+	/**
+	 * Get the theme name.
+	 *
+	 * @return string
+	 */
+	public static function getTheme()
+	{
+		return static::$theme;
+	}
+
+	/**
+	 * Set the theme name.
+	 *
+	 * @param  string
+	 * @return void
+	 */
+	public static function setTheme($theme)
+	{
+		static::$theme = $theme;
+	}
+
+	/**
+	 * Unset the theme bag for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetTheme()
+	{
+		static::$theme = null;
+	}
+
+	/**
+	 * Get the group model.
+	 *
+	 * @return string
+	 */
+	public static function getGroupModel()
+	{
+		return static::$groupModel;
+	}
+
+	/**
+	 * Set the group model.
+	 *
+	 * @param  string
+	 * @return void
+	 */
+	public static function setGroupModel($groupModel)
+	{
+		static::$groupModel = $groupModel;
+	}
+
+	/**
+	 * Unset the group model for models.
+	 *
+	 * @return void
+	 */
+	public static function unsetGroupModel()
+	{
+		static::$groupModel = null;
+	}
 
 }

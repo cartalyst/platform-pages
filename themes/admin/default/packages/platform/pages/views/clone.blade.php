@@ -49,26 +49,26 @@
 
 	{{-- Status --}}
 	<div class="control-group">
-		<label class="control-label" for="status">{{ Lang::get('platform/pages::form.status') }}:</label>
+		<label class="control-label" for="enabled">{{ Lang::get('platform/pages::form.enabled') }}:</label>
 		<div class="controls">
-			<select name="status" id="status" required>
-				<option value="1">{{ Lang::get('general.enabled') }}</option>
-				<option value="0">{{ Lang::get('general.disabled') }}</option>
+			<select name="enabled" id="enabled" required>
+				<option value="1">{{ Lang::get('general.yes') }}</option>
+				<option value="0">{{ Lang::get('general.no') }}</option>
 			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.status_help') }}</span>
+			<span class="help-block">{{ Lang::get('platform/pages::form.enabled_help') }}</span>
 		</div>
 	</div>
 
-	{{-- Storage Type --}}
+	{{-- Type --}}
 	<div class="control-group">
 		<label class="control-label" for="type">{{ Lang::get('platform/pages::form.type') }}:</label>
 		<div class="controls">
-			<select name="type" id="type" required>
-			@foreach ($storageTypes as $typeId => $typeName)
-				<option value="{{ $typeId }}">{{ $typeName }}</option>
-			@endforeach
+			<select name="type" id="type">
+				@foreach ($types as $value => $name)
+					<option value="{{ $value }}"{{ $page->type == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
+				@endforeach
 			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.status_help') }}</span>
+			<span class="help-block">{{ Lang::get('platform/pages::form.enabled_help') }}</span>
 		</div>
 	</div>
 
@@ -77,15 +77,11 @@
 		<label class="control-label" for="template">{{ Lang::get('platform/pages::form.template') }}:</label>
 		<div class="controls">
 			<select name="template" id="template" required>
-			@foreach ($templates as $templateName => $layouts)
-				<optgroup label="{{ $templateName }}">
-					@foreach ($layouts as $layout)
-					<option value="{{ $layout }}">{{ $layout }}</option>
-					@endforeach
-				</optgroup>
-			@endforeach
+				@foreach ($templates as $value => $name)
+					<option value="{{ $name }}">{{ $name }}</option>
+				@endforeach
 			</select>
-			<span class="help-block">{{ Lang::get('platform/pages::form.status_help') }}</span>
+			<span class="help-block">{{ Lang::get('platform/pages::form.enabled_help') }}</span>
 		</div>
 	</div>
 
@@ -94,8 +90,8 @@
 		<label for="visibility" class="control-label">{{ Lang::get('platform/pages::form.visibility') }}:</label>
 		<div class="controls">
 			<select name="visibility" id="visibility">
-				@foreach ($visibility as $visibilityId => $visibilityName)
-				<option value="{{ $visibilityId }}">{{ $visibilityName }}</option>
+				@foreach ($visibilities as $value => $name)
+					<option value="{{ $value }}">{{ $name }}</option>
 				@endforeach
 			</select>
 			<span class="help-block">{{ Lang::get('platform/pages::form.visibility_help') }}</span>
@@ -107,8 +103,8 @@
 		<label for="groups" class="control-label">{{ Lang::get('platform/pages::form.groups') }}:</label>
 		<div class="controls">
 			<select name="groups[]" id="groups[]" multiple="multiple">
-				@foreach ($groups as $groupId => $groupName)
-				<option value="{{ $groupId }}"{{ (array_key_exists($groupId, $pageGroups) ? ' selected="selected"' : '') }}>{{ $groupName }}</option>
+				@foreach ($groups as $group)
+				<option value="{{ $group->id }}"{{ ($page->groups->find($group->getKey())) ? ' selected="selected"' : '' }}>{{ $group->name }}</option>
 				@endforeach
 			</select>
 			<span class="help-block">{{ Lang::get('platform/pages::form.groups_help') }}</span>

@@ -34,12 +34,18 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('slug');
-			$table->string('template');
 			$table->string('type');
-			$table->boolean('visibility');
-			$table->text('groups')->nullable();
+			$table->string('visibility');
+
+			// Database specific
+			$table->text('template')->nullable();
 			$table->text('value')->nullable();
-			$table->boolean('status');
+
+			// Filesystem specific
+			$table->string('file')->nullable();
+
+			// Common
+			$table->boolean('enabled');
 			$table->timestamps();
 			$table->unique('slug');
 		});

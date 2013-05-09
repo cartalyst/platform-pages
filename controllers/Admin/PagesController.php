@@ -27,6 +27,8 @@ use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Pages\Page;
 use Redirect;
+use Symfony\Component\Finder\Finder;
+use Theme;
 use View;
 
 class PagesController extends AdminController {
@@ -68,7 +70,7 @@ class PagesController extends AdminController {
 			'id',
 			'name',
 			'slug',
-			'status',
+			'enabled',
 			'created_at',
 		));
 	}
@@ -85,21 +87,9 @@ class PagesController extends AdminController {
 
 		try
 		{
-			// Get the available storage types
-			$storageTypes = pages_storage_types();
-
-			// Get all the available frontend templates
-			$templates = pages_find_templates();
-
-			// Get the pages visibility statuses
-			$visibility = pages_visibility_statuses();
-
 			// Get all the available user groups
-			$response = API::get('users/groups', array('organized' => true));
+			$response = API::get('users/groups');
 			$groups   = $response['groups'];
-
-			// Selected groups
-			$selectedGroups = Input::old('groups', array());
 		}
 		catch (ApiHttpException $e)
 		{
@@ -107,8 +97,13 @@ class PagesController extends AdminController {
 			return Redirect::toAdmin('pages');
 		}
 
+		$visibilities = $this->getVisibilities();
+		$types        = $this->getTypes();
+		$templates    = $this->getSources();
+		$files        = $this->getSources();
+
 		// Show the page
-		return View::make('platform/pages::create', compact('storageTypes', 'templates', 'visibility', 'groups', 'selectedGroups'));
+		return View::make('platform/pages::create', compact('types', 'visibilities', 'groups', 'templates', 'files'));
 	}
 
 	/**
@@ -124,10 +119,10 @@ class PagesController extends AdminController {
 	/**
 	 * Page update.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function getEdit($pageId = null)
+	public function getEdit($id = null)
 	{
 		// Set the current active menu
 		set_active_menu('admin-pages');
@@ -135,23 +130,11 @@ class PagesController extends AdminController {
 		try
 		{
 			// Get the page information
-			$response = API::get("pages/$pageId");
+			$response = API::get("pages/$id");
 			$page     = $response['page'];
 
-			// Get this page groups
-			$pageGroups = $page->groups();
-
-			// Get the available storage types
-			$storageTypes = pages_storage_types();
-
-			// Get all the available frontend templates
-			$templates = pages_find_templates();
-
-			// Get the pages visibility statuses
-			$visibility = pages_visibility_statuses();
-
 			// Get all the available user groups
-			$response = API::get('users/groups', array('organized' => true));
+			$response = API::get('users/groups');
 			$groups   = $response['groups'];
 		}
 		catch (ApiHttpException $e)
@@ -163,25 +146,30 @@ class PagesController extends AdminController {
 			return Redirect::toAdmin('pages')->with('messages', $messages);
 		}
 
+		$visibilities = $this->getVisibilities();
+		$types        = $this->getTypes();
+		$templates    = $this->getSources();
+		$files        = $this->getSources();
+
 		// Show the page
-		return View::make('platform/pages::edit', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+		return View::make('platform/pages::edit', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
 	}
 
 	/**
 	 * Page update form processing.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function postEdit($pageId = null)
+	public function postEdit($id = null)
 	{
 		try
 		{
 			// Are we creating a new page?
-			if (is_null($pageId))
+			if (is_null($id))
 			{
 				$response = API::post('pages', Input::all());
-				$pageId = $response['page']->id;
+				$id = $response['page']->id;
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.create.success');
@@ -190,7 +178,7 @@ class PagesController extends AdminController {
 			// No, we are updating an existing page
 			else
 			{
-				API::put("pages/$pageId", Input::all());
+				API::put("pages/$id", Input::all());
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.update.success');
@@ -200,7 +188,7 @@ class PagesController extends AdminController {
 			$messages = with(new Bag)->add('success', $success);
 
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/$pageId")->with('messages', $messages);
+			return Redirect::toAdmin("pages/edit/$id")->with('messages', $messages);
 		}
 		catch (ApiHttpException $e)
 		{
@@ -212,15 +200,15 @@ class PagesController extends AdminController {
 	/**
 	 * Page delete.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function getDelete($pageId = null)
+	public function getDelete($id = null)
 	{
 		try
 		{
 			// Delete the page
-			API::delete("pages/$pageId");
+			API::delete("pages/$id");
 
 			// Set the success message
 			$messages = with(new Bag)->add('success', Lang::get('platform/pages::message.delete.success'));
@@ -238,28 +226,16 @@ class PagesController extends AdminController {
 	/**
 	 * Page clone.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function getClone($pageId = null)
+	public function getClone($id = null)
 	{
 		try
 		{
 			// Get the page information
-			$response = API::get("pages/$pageId");
+			$response = API::get("pages/$id");
 			$page     = $response['page'];
-
-			// Get this page groups
-			$pageGroups = $page->groups();
-
-			// Get the available storage types
-			$storageTypes = pages_storage_types();
-
-			// Get all the available frontend templates
-			$templates = pages_find_templates();
-
-			// Get the pages visibility statuses
-			$visibility = pages_visibility_statuses();
 
 			// Get all the available user groups
 			$response = API::get('users/groups', array('organized' => true));
@@ -274,19 +250,76 @@ class PagesController extends AdminController {
 			return Redirect::toAdmin('pages');
 		}
 
+		$visibilities = $this->getVisibilities();
+		$types        = $this->getTypes();
+		$templates    = $this->getSources();
+		$files        = $this->getSources();
+
 		// Show the page
-		return View::make('platform/pages::clone', compact('page', 'storageTypes', 'templates', 'visibility', 'groups', 'pageGroups'));
+		return View::make('platform/pages::clone', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
 	}
 
 	/**
 	 * Page clone form processing.
 	 *
-	 * @param  int  $pageId
+	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function postClone($pageId = null)
+	public function postClone($id = null)
 	{
 		return $this->postEdit();
+	}
+
+	protected function getVisibilities()
+	{
+		return array(
+			'always'    => 'Shown Always',
+			'logged_in' => 'Logged In Only',
+		);
+	}
+
+	protected function getTypes()
+	{
+		return array(
+			'database'   => 'Database',
+			'filesystem' => 'Filesystem',
+		);
+	}
+
+	protected function getSources()
+	{
+		$theme = Page::getTheme();
+		$extensions = array_keys(View::getExtensions());
+
+		$finder = new Finder;
+		$finder
+			->in(Theme::getCascadedViewPaths($theme))
+			->depth('< 3')
+			->name(sprintf(
+				'/.*?\.(%s)/',
+				implode('|', array_map(function($extension)
+				{
+					return preg_quote($extension, '/');
+				}, $extensions))
+			));
+
+		$files = array();
+
+		// Replace all file extensions with nothing. pathinfo()
+		// won't tackle ".blade.php" so this is our best shot.
+		$replacements = array_pad(array(), count($extensions), '');
+
+		foreach ($finder->files() as $file)
+		{
+			$_file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+
+			// Because we want to save a valid source for the view
+			// loader, we simply want to store the view name as if
+			// the view loader was loading it.
+			$files[rtrim(str_replace($extensions, $replacements, $_file), '.')] = $_file;
+		}
+
+		return $files;
 	}
 
 }
