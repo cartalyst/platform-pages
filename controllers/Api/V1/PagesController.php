@@ -21,7 +21,7 @@
 use Input;
 use Lang;
 use Platform\Routing\Controllers\ApiController;
-use Platform\Pages\Page;
+use Platform\Pages\Models\Page;
 use Response;
 use Sentry;
 use Validator;
@@ -38,10 +38,11 @@ class PagesController extends ApiController {
 		'slug'       => 'required|unique:pages,slug',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
-		'visibility' => 'required',
+		'visibility' => 'required|in:always,logged_in',
 
 		// Database page
 		'template'   => 'required_if:type,database',
+		'section'    => 'required_if:type,database',
 		'value'      => 'required_if:type,database',
 
 		// Filesystme page
@@ -51,7 +52,7 @@ class PagesController extends ApiController {
 	/**
 	 * Holds the pages model.
 	 *
-	 * @var Platform\Pages\Page
+	 * @var Platform\Pages\Models\Page
 	 */
 	protected $model;
 

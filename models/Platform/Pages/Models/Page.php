@@ -1,4 +1,4 @@
-<?php namespace Platform\Pages;
+<?php namespace Platform\Pages\Models;
 /**
  * Part of the Platform application.
  *
@@ -41,6 +41,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		'type',
 		'visibility',
 		'template',
+		'section',
 		'value',
 		'file',
 	);
@@ -76,6 +77,11 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 		return $this->BelongsToMany(static::$groupModel, 'pages_groups');
 	}
 
+	/**
+	 * Renders the page.
+	 *
+	 * @return stirng
+	 */
 	public function render()
 	{
 		switch ($type = $this->type)
@@ -84,9 +90,11 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 				return static::$themeBag->view($this->file, array(), static::$theme)->render();
 
 			case 'database':
-				return static::$themeBag->view($this->template, array(
-					'content' => $this->value,
-				), static::$theme)->render();
+
+				// We'll inject the section with the value, i.e. @content()
+				static::$themeBag->getViewEnvironment()->inject($this->section, $this->value);
+
+				return static::$themeBag->view($this->template, array(), static::$theme)->render();
 		}
 
 		throw new \RuntimeException("Invalid page storage type [$type] for page [{$this->getKey()}].");

@@ -19,6 +19,7 @@
  */
 
 use Illuminate\Database\Migrations\Migration;
+use Platform\Pages\Models\Page;
 
 class MigrationPlatformPagesInstallPages extends Migration {
 
@@ -38,7 +39,8 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('visibility');
 
 			// Database specific
-			$table->text('template')->nullable();
+			$table->string('template')->nullable();
+			$table->string('section')->nullable();
 			$table->text('value')->nullable();
 
 			// Filesystem specific
@@ -56,6 +58,19 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->integer('group_id')->unsigned();
 			$table->unique(array('page_id', 'group_id'));
 		});
+
+		// We'll go ahead and make a "Welcome" page,
+		// which will be the default for a Platform
+		// installation
+		$page = new Page(array(
+			'name'       => 'Welcome',
+			'slug'       => 'welcome',
+			'visibility' => 'always',
+			'type'       => 'filesystem',
+			'file'       => 'pages/welcome',
+			'enabled'    => true,
+		));
+		$page->save();
 	}
 
 	/**

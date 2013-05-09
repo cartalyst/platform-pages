@@ -130,6 +130,18 @@
 						</div>
 					</div>
 
+					{{-- Section --}}
+					<div class="control-group{{ $errors->first('section', ' error') }}" required>
+						<label class="control-label" for="section">@lang('platform/pages::form.section')</label>
+						<div class="controls">
+							<div class="input-prepend">
+								<i class="add-on">@</i>
+								<input type="text" name="section" value="{{ Input::old('section', 'content') }}" placeholder="@lang('platform/pages::form.section_help')">
+							</div>
+							{{ $errors->first('section', '<span class="help-inline">:message</span>') }}
+						</div>
+					</div>
+
 					{{-- Value --}}
 					<div class="control-group{{ $errors->first('value', ' error') }}" required>
 						<label class="control-label" for="value">@lang('platform/pages::form.value')</label>

@@ -25,7 +25,7 @@ use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
-use Platform\Pages\Page;
+use Platform\Pages\Models\Page;
 use Redirect;
 use Symfony\Component\Finder\Finder;
 use Theme;

@@ -34,6 +34,8 @@ return array(
 	'groups_help'     => 'What user groups should be able to see this page?',
 	'template'        => 'Template',
 	'template_help'   => 'Page template to use.',
+	'section'         => 'Section',
+	'section_help'    => 'Which @section() to inject value to?',
 	'value'           => 'Value',
 	'value_help'      => 'The page\'s value. @content call is allowed.',
 	'file'            => 'File',

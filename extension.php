@@ -150,7 +150,7 @@ return array(
 
 		$app['platform/pages::page'] = function($app)
 		{
-			return new Platform\Pages\Page;
+			return new Platform\Pages\Models\Page;
 		};
 
 	},
@@ -169,8 +169,8 @@ return array(
 	'boot' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
 	{
 
-		Platform\Pages\Page::setThemeBag($app['themes']);
-		Platform\Pages\Page::setTheme($app['config']['cartalyst/themes::active']);
+		Platform\Pages\Models\Page::setThemeBag($app['themes']);
+		Platform\Pages\Models\Page::setTheme($app['config']['cartalyst/themes::active']);
 
 	},
 
@@ -274,7 +274,52 @@ return array(
 
 	'settings' => function()
 	{
+		return array(
 
+			'pages' => array('name' => 'Pages'),
+
+			'pages::general' => array('name' => 'General'),
+
+			'pages::general.default' => array(
+				'name'    => 'Default Page (Shown on root route)',
+				'config'  => 'platform/pages::default',
+				'type'    => 'dropdown',
+				'options' => function()
+				{
+					$response = API::get('pages');
+					$pages    = $response['pages'];
+					$options  = array();
+
+					foreach ($pages as $page)
+					{
+						$options[] = array(
+							'value' => $page->slug,
+							'label' => $page->name,
+						);
+					}
+
+					return $options;
+				}
+			),
+
+			'pages::general.template' => array(
+				'name'    => 'Default Template (File pages)',
+				'config'  => 'platform/pages::template',
+				'type'    => 'dropdown',
+				'options' => function()
+				{
+					return array(
+
+						array(
+							'value' => 'templates/default',
+							'label' => 'Coming soon...',
+						),
+
+					);
+				}
+			),
+
+		);
 	},
 
 );

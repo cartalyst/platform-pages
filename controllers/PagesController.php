@@ -20,6 +20,7 @@
 
 use API;
 use Cartalyst\Api\ApiHttpException;
+use Config;
 use Platform\Ui\Controllers\FrontendController;
 use Sentry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -34,8 +35,8 @@ class PagesController extends FrontendController {
 	 */
 	public function getPage($pageSlug = null)
 	{
-		// Make sure we have a proper page slug
-		$pageSlug = ($pageSlug ?: 'welcome'); # getSetting('platform/pages::default.page');
+		// Default the page slug
+		if ( ! $pageSlug) $pageSlug = Config::get('platform/pages::default');
 
 		try
 		{
