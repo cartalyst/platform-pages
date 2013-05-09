@@ -1,7 +1,25 @@
 <?php
+/**
+ * Part of the Platform application.
+ *
+ * NOTICE OF LICENSE
+ *
+ * Licensed under the 3-clause BSD License.
+ *
+ * This source file is subject to the 3-clause BSD License that is
+ * bundled with this package in the LICENSE file.  It is also available at
+ * the following URL: http://www.opensource.org/licenses/BSD-3-Clause
+ *
+ * @package    Platform
+ * @version    2.0.0
+ * @author     Cartalyst LLC
+ * @license    BSD License (3-clause)
+ * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @link       http://cartalyst.com
+ */
 
 use Illuminate\Database\Migrations\Migration;
-use Platform\Ui\Menu;
+use Platform\Ui\Models\Menu;
 
 class MigrationPlatformPagesAddMenuChildren extends Migration {
 
@@ -14,8 +32,6 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	{
 		$admin = Menu::adminMenu();
 
-		$cms = Menu::find('admin-cms');
-
 		$pages = new Menu(array(
 			'slug'      => 'admin-pages',
 			'extension' => 'platform/pages',
@@ -25,7 +41,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 			'uri'       => 'pages'
 		));
 
-		$pages->makeFirstChildOf($cms);
+		$pages->makeLastChildOf($admin);
 	}
 
 	/**
@@ -35,7 +51,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 	 */
 	public function down()
 	{
-		$slugs = array('admin-cms-pages');
+		$slugs = array('admin-pages');
 
 		foreach ($slugs as $slug)
 		{
