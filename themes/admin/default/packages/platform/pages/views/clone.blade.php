@@ -42,7 +42,12 @@
 	<div class="control-group">
 		<label class="control-label" for="slug">{{ Lang::get('platform/pages::form.slug') }}:</label>
 		<div class="controls">
-			<input type="text" name="slug" id="slug" value="{{ Input::old('slug', $page->slug) }}" placeholder="{{ Lang::get('platform/pages::form.slug') }}" required>
+			<div class="input-prepend">
+				<span class="add-on">
+					{{ str_finish(URL::to('/'), '/') }}
+				</span>
+				<input type="text" name="slug" id="slug" value="{{ Input::old('slug', $page->slug) }}" placeholder="{{ Lang::get('platform/pages::form.slug') }}" required>
+			</div>
 			<span class="help-block">{{ Lang::get('platform/pages::form.slug_help') }}</span>
 		</div>
 	</div>

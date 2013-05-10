@@ -59,7 +59,12 @@
 				<div class="control-group{{ $errors->first('slug', ' error') }}" required>
 					<label class="control-label" for="slug">@lang('platform/pages::form.slug')</label>
 					<div class="controls">
-						<input type="text" name="slug" id="slug" value="{{ Input::old('slug') }}" placeholder="@lang('platform/pages::form.slug_help')" required>
+						<div class="input-prepend">
+							<span class="add-on">
+								{{ str_finish(URL::to('/'), '/') }}
+							</span>
+							<input type="text" name="slug" id="slug" value="{{ Input::old('slug') }}" placeholder="@lang('platform/pages::form.slug_help')" required>
+						</div>
 						{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
 					</div>
 				</div>
