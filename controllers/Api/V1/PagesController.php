@@ -186,7 +186,7 @@ class PagesController extends ApiController {
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())
 		{
-			return Response::api(array('errors' => $validator), 422);
+			return Response::api(array('errors' => $validator->errors()), 422);
 		}
 
 		// Update the page data
