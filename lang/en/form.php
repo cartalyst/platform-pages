@@ -25,7 +25,7 @@ return array(
 	'slug'            => 'Slug',
 	'slug_help'       => 'Slug to find page by.',
 	'enabled'         => 'Enabled',
-	'enabled_help'    => 'Is the Page Enabled or Not?.',
+	'enabled_help'    => 'Is the page enabled or not?',
 	'type'            => 'Storage Type',
 	'type_help'       => 'How do you want to store and edit this page?',
 	'visibility'      => 'Visibility',

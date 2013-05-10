@@ -19,8 +19,9 @@
  */
 
 use Cartalyst\Themes\ThemeBag;
+use Illuminate\Database\Eloquent\Model;
 
-class Page extends \Illuminate\Database\Eloquent\Model {
+class Page extends Model {
 
 	/**
 	 * The table associated with the model.
@@ -97,7 +98,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 				return static::$themeBag->view($this->template, array(), static::$theme)->render();
 		}
 
-		throw new \RuntimeException("Invalid page storage type [$type] for page [{$this->getKey()}].");
+		throw new \RuntimeException("Invalid storage type [$type] for page [{$this->getKey()}].");
 	}
 
 	/**
@@ -109,6 +110,25 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	public function getEnabledAttribute($enabled)
 	{
 		return (bool) $enabled;
+	}
+
+	/**
+	 * Find a model by its primary key.
+	 *
+	 * @param  mixed  $id
+	 * @param  array  $columns
+	 * @return \Illuminate\Database\Eloquent\Model|Collection
+	 */
+	public static function find($id, $columns = array('*'))
+	{
+		$instance = new static;
+
+		if ( ! is_numeric($id))
+		{
+			return $instance->newQuery()->where('slug', '=', $id)->first($columns);
+		}
+
+		return parent::find($id, $columns);
 	}
 
 	/**
@@ -155,7 +175,7 @@ class Page extends \Illuminate\Database\Eloquent\Model {
 	/**
 	 * Set the theme name.
 	 *
-	 * @param  string
+	 * @param  string  $theme
 	 * @return void
 	 */
 	public static function setTheme($theme)

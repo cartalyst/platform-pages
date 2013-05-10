@@ -69,7 +69,7 @@
 					</div>
 				</div>
 
-				{{-- Status --}}
+				{{-- Enabled --}}
 				<div class="control-group{{ $errors->first('enabled', ' error') }}" required>
 					<label class="control-label" for="enabled">@lang('platform/pages::form.enabled')</label>
 					<div class="controls">
@@ -160,7 +160,7 @@
 
 				<div class="type-filesystem{{ ($page->type == 'database') ? ' hide' : '' }}">
 
-					{{-- Files --}}
+					{{-- File --}}
 					<div class="control-group{{ $errors->first('file', ' error') }}" required>
 						<label class="control-label" for="file">@lang('platform/pages::form.file')</label>
 						<div class="controls">

@@ -24,14 +24,14 @@ use DataGrid;
 use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
-use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Content\Controllers\Admin\ContentController;
 use Platform\Pages\Models\Page;
 use Redirect;
 use Symfony\Component\Finder\Finder;
 use Theme;
 use View;
 
-class PagesController extends AdminController {
+class PagesController extends ContentController {
 
 	/**
 	 * Pages management main page.
@@ -275,14 +275,6 @@ class PagesController extends AdminController {
 		return array(
 			'always'    => 'Shown Always',
 			'logged_in' => 'Logged In Only',
-		);
-	}
-
-	protected function getTypes()
-	{
-		return array(
-			'database'   => 'Database',
-			'filesystem' => 'Filesystem',
 		);
 	}
 

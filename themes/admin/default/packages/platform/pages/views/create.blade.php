@@ -69,7 +69,7 @@
 					</div>
 				</div>
 
-				{{-- Status --}}
+				{{-- Enabled --}}
 				<div class="control-group{{ $errors->first('enabled', ' error') }}" required>
 					<label class="control-label" for="enabled">@lang('platform/pages::form.enabled')</label>
 					<div class="controls">

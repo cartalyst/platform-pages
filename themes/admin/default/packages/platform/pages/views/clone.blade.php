@@ -52,7 +52,7 @@
 		</div>
 	</div>
 
-	{{-- Status --}}
+	{{-- Enabled --}}
 	<div class="control-group">
 		<label class="control-label" for="enabled">{{ Lang::get('platform/pages::form.enabled') }}:</label>
 		<div class="controls">
