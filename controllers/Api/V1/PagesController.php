@@ -219,7 +219,7 @@ class PagesController extends ApiController {
 		// Check if the page exists
 		if (is_null($page = $this->model->find($id)))
 		{
-			return \Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
+			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
 		}
 
 		// Delete the page
