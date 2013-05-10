@@ -26,7 +26,9 @@
 @parent
 <script>
 jQuery(document).ready(function($){
-	$('#grid').dataGrid();
+	$.datagrid('main', '.table', '.pagination', '.applied', {
+		loader: '.table-processing'
+	});
 });
 </script>
 @stop
@@ -44,100 +46,76 @@ jQuery(document).ready(function($){
 
 	<hr>
 
-	<section class="pages">
+	<section class="content">
 
 		<div class="actions clearfix">
 			<a href="{{ URL::toAdmin('pages/create') }}" class="btn btn-large btn-primary pull-right">@lang('button.create')</a>
 		</div>
 
-		<div id="grid" data-source="{{ URL::toAdmin('pages/grid') }}" data-results=".grid-results" data-filters=".grid-filters" data-applied-filters=".grid-applied-filters" data-pagination=".grid-pagination">
+		<div class="clearfix">
 
-			<div class="grid-filters">
+			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline pull-left">
+				<select name="column" class="input-medium">
+					<option value="all">All</option>
+					<option value="name">Name</option>
+					<option value="slug">Slug</option>
+				</select>
+				<input name="filter" type="text" placeholder="Filter All" class="input-large">
+				<button class="btn btn-medium">Add Filter</button>
+				<button class="btn btn-medium" data-reset data-grid="main">Reset</button>
+			</form>
 
-				<div class="clearfix">
-					<div class="form-inline">
-
-						<div class="pull-left">
-							<div class="input-append">
-								<input type="text" placeholder="Filter All">
-								<button class="btn add-global-filter">
-									Add
-								</button>
-							</div>
-							&nbsp;
-						</div>
-
-						<div class="pull-left" data-template>
-
-							{{-- Build different HTML based on the type --}}
-							[? if type == 'select' ?]
-								<select class="input-small" id="grid-filters-[[column]]" data-column="[[column]]">
-									<option>
-										-- [[label]] --
-									</option>
-
-									{{-- Need to work out how to embed each <option> inside the <optgroup> data-template... --}}
-									<option data-template-for="mappings" value="[[value]]">
-										[[label]]
-									</option>
-								</select>
-
-								<button class="btn add-filter">
-									Add
-								</button>
-							[? else ?]
-								<div class="input-append">
-									<input type="text" class="input-small" id="grid-filters-[[column]]" data-column="[[column]]" placeholder="[[label]]">
-
-									<button class="btn add-filter">
-										Add
-									</button>
-								</div>
-								&nbsp;
-							[? endif ?]
-
-						</div>
-
-					</div>
-				</div>
-
+			<div class="processing pull-left">
+				<div class="table-processing" style="display: none;">Processing...</div>
 			</div>
 
-			<br>
+		</div>
 
-			<ul class="nav nav-tabs grid-applied-filters">
-				<li data-template>
-					<a href="#" class="remove-filter">
-						[? if type == 'global' ?]
-							<strong>[[value]]</strong>
-						[? else ?]
-							<small><em>([[column]])</em></small> <strong>[[value]]</strong>
-						[? endif ?]
-						<span class="close" style="float: none;">&times;</span>
-					</a>
-				</li>
-			</ul>
+		<ul class="applied" data-grid="main">
+			<li data-template>
+				<a href="#" class="remove-filter btn btn-small">
+					[? if column == undefined ?]
+					[[ valueLabel ]]
+					[? else ?]
+					[[ valueLabel ]] in [[ columnLabel ]]
+					[? endif ?]
+					<span class="close" style="float: none;">&times;</span>
+				</a>
+			</li>
+		</ul>
+
+		<div id="table">
 
 			<div class="tabbable tabs-right">
 
-				<ul class="nav nav-tabs grid-pagination">
-					<li data-template class="[? if active ?] active [? endif ?]">
-						<a href="#" data-page="[[page]]" data-toggle="tab" class="goto-page">
-							Page #[[page]]
+				<ul class="pagination nav nav-tabs" data-grid="main">
+					<li data-template data-if-infiniteload>
+						<a href="#" class="goto-page" data-page="[[ page ]]">
+							Load More
+						</a>
+					</li>
+					<li data-template data-if-throttle>
+						<a href="#" class="goto-page" data-throttle>
+							[[ label ]]
+						</a>
+					</li>
+					<li data-template class="[? if active ?]active[? endif ?]">
+						<a  href="#" data-page="[[ page ]]" class="goto-page">
+							[[ pageStart ]] - [[ pageLimit ]]
 						</a>
 					</li>
 				</ul>
 
-				<div class="tab-pages">
+				<div class="tab-content">
 
-					<table class="table table-striped table-bordered grid-results">
+					<table class="table table-striped table-bordered" data-grid="main" data-source="{{ URL::toAdmin('pages/grid') }}">
 						<thead>
 							<tr>
-								<th data-column="id">@lang('platform/pages::table.id')</th>
-								<th data-column="name">@lang('platform/pages::table.name')</th>
-								<th data-column="slug">@lang('platform/pages::table.slug')</th>
-								<th data-column="enabled">@lang('platform/pages::table.enabled')</th>
-								<th data-column="created_at">@lang('platform/pages::table.created_at')</th>
+								<th data-sort="id" data-grid="main">@lang('platform/pages::table.id')</th>
+								<th data-sort="name" data-grid="main">@lang('platform/pages::table.name')</th>
+								<th data-sort="slug" data-grid="main">@lang('platform/pages::table.slug')</th>
+								<th data-sort="enabled" data-grid="main">@lang('platform/pages::table.enabled')</th>
+								<th data-sort="created_at" data-grid="main">@lang('platform/pages::table.created_at')</th>
 								<th></th>
 							</tr>
 						</thead>
@@ -172,6 +150,7 @@ jQuery(document).ready(function($){
 					</table>
 
 				</div>
+
 			</div>
 
 		</div>
