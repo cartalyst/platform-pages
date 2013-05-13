@@ -59,15 +59,15 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->unique(array('page_id', 'group_id'));
 		});
 
-		// We'll go ahead and make a "Welcome" page,
-		// which will be the default for a Platform
+		// We'll go ahead and make a home page, which
+		// will be the default for a Platform
 		// installation
 		$page = new Page(array(
-			'name'       => 'Welcome',
-			'slug'       => 'welcome',
+			'name'       => 'Home',
+			'slug'       => 'home',
 			'visibility' => 'always',
 			'type'       => 'filesystem',
-			'file'       => 'pages/welcome',
+			'file'       => 'pages/home',
 			'enabled'    => true,
 		));
 		$page->save();
