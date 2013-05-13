@@ -77,19 +77,6 @@ class PagesController extends FrontendController {
 		}
 
 		return $page->render();
-
-		// Is this page content saved on a file?
-		if ($page->type === 'filesystem')
-		{
-			// Show the page
-			return View::make($page->file);
-		}
-
-		// Render the page content value
-		$content = content_render($page->value);
-
-		// Show the page
-		return View::make($page->template, compact('content'));
 	}
 
 }
