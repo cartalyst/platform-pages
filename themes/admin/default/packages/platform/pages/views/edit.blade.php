@@ -25,6 +25,15 @@
 
 {{-- Inline Scripts --}}
 @section('scripts')
+<script>
+jQuery(document).ready(function($) {
+
+	$('#name').keyup(function() {
+		$('#slug').val($(this).slugify());
+	});
+
+});
+</script>
 @parent
 @stop
 
