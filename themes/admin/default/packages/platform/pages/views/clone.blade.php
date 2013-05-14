@@ -20,7 +20,7 @@
 		<small>{{ Lang::get('platform/pages::form.clone.summary') }}</small>
 
 		<div class="pull-right">
-			<a href="{{ URL::to(ADMIN_URI . '/pages') }}" class="btn btn-inverse btn-small">{{ Lang::get('button.back') }}</a>
+			<a href="{{ URL::toAdmin('pages') }}" class="btn btn-inverse btn-small">{{ Lang::get('button.back') }}</a>
 		</div>
 	</h3>
 </div>
@@ -127,7 +127,7 @@
 
 	{{-- Form Actions --}}
 	<div class="form-actions">
-		<a class="btn btn-small" href="{{ URL::to(ADMIN_URI . '/pages') }}">{{ Lang::get('button.cancel') }}</a>
+		<a class="btn btn-small" href="{{ URL::toAdmin('pages') }}">{{ Lang::get('button.cancel') }}</a>
 		<button class="btn btn-small btn-primary" type="submit">{{ Lang::get('button.update') }}</button>
 	</div>
 </form>
