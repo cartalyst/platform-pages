@@ -18,6 +18,9 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Extensions\ExtensionInterface;
+use Illuminate\Foundation\Application;
+
 return array(
 
 	/*
@@ -117,7 +120,7 @@ return array(
 	|
 	*/
 
-	'autoload' => 'platform',
+	'autoload' => 'composer',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -150,7 +153,7 @@ return array(
 	|
 	*/
 
-	'register' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
+	'register' => function(ExtensionInterface $extension, Application $app)
 	{
 
 		$app['platform/pages::page'] = function($app)
@@ -175,7 +178,7 @@ return array(
 	|
 	*/
 
-	'boot' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
+	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
 
 		Platform\Pages\Models\Page::setThemeBag($app['themes']);
@@ -198,7 +201,7 @@ return array(
 	|
 	*/
 
-	'routes' => function(Cartalyst\Extensions\ExtensionInterface $extension, Illuminate\Foundation\Application $app)
+	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
 
 		Route::get('/', 'Platform\Pages\Controllers\PagesController@getPage');
