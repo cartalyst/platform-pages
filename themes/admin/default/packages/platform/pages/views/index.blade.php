@@ -48,10 +48,6 @@ jQuery(document).ready(function($){
 
 	<section class="content">
 
-		<div class="actions clearfix">
-			<a href="{{ URL::toAdmin('pages/create') }}" class="btn btn-large btn-primary pull-right">@lang('button.create')</a>
-		</div>
-
 		<div class="clearfix">
 
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline pull-left">
@@ -88,6 +84,8 @@ jQuery(document).ready(function($){
 
 			<div class="tabbable tabs-right">
 
+				<a href="{{ URL::toAdmin('pages/create') }}" class="btn btn-large btn-primary pull-right create">@lang('button.create')</a>
+
 				<ul class="pagination nav nav-tabs" data-grid="main">
 					<li data-template data-if-infiniteload>
 						<a href="#" class="goto-page" data-page="[[ page ]]">
@@ -111,12 +109,12 @@ jQuery(document).ready(function($){
 					<table class="table table-striped table-bordered" data-grid="main" data-source="{{ URL::toAdmin('pages/grid') }}">
 						<thead>
 							<tr>
-								<th data-sort="id" data-grid="main">@lang('platform/pages::table.id')</th>
-								<th data-sort="name" data-grid="main">@lang('platform/pages::table.name')</th>
-								<th data-sort="slug" data-grid="main">@lang('platform/pages::table.slug')</th>
-								<th data-sort="enabled" data-grid="main">@lang('platform/pages::table.enabled')</th>
-								<th data-sort="created_at" data-grid="main">@lang('platform/pages::table.created_at')</th>
-								<th></th>
+								<th data-sort="id" data-grid="main" class="sortable">@lang('platform/pages::table.id')</th>
+								<th data-sort="name" data-grid="main" class="sortable">@lang('platform/pages::table.name')</th>
+								<th data-sort="slug" data-grid="main" class="sortable">@lang('platform/pages::table.slug')</th>
+								<th data-sort="enabled" data-grid="main" class="sortable">@lang('platform/pages::table.enabled')</th>
+								<th data-sort="created_at" data-grid="main" class="sortable">@lang('platform/pages::table.created_at')</th>
+								<th>Actions</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -135,12 +133,12 @@ jQuery(document).ready(function($){
 								<td data-static class="span1">
 
 									<div class="btn-group">
-										<a href="{{ URL::toAdmin('pages/edit/[[id]]') }}" class="btn btn-small">
-											@lang('button.edit')
+										<a href="{{ URL::toAdmin('pages/edit/[[id]]') }}" class="btn ">
+											<i class="icon-edit"></i>
 										</a>
 
-										<a href="{{ URL::toAdmin('pages/delete/[[id]]') }}" class="btn btn-small btn-danger">
-											@lang('button.delete')
+										<a href="{{ URL::toAdmin('pages/delete/[[id]]') }}" class="btn btn-danger">
+											<i class="icon-trash"></i>
 										</a>
 									</div>
 
