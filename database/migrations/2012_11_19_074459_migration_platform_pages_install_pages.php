@@ -59,15 +59,15 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->unique(array('page_id', 'group_id'));
 		});
 
-		// We'll go ahead and make a home page, which
+		// Create the welome page, which
 		// will be the default for a Platform
 		// installation
 		$page = new Page(array(
-			'name'       => 'Home',
-			'slug'       => 'home',
+			'name'       => 'Welcome',
+			'slug'       => 'welcome',
 			'visibility' => 'always',
 			'type'       => 'filesystem',
-			'file'       => 'pages/home',
+			'file'       => 'welcome',
 			'enabled'    => true,
 		));
 		$page->save();
