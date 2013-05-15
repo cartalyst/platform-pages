@@ -204,12 +204,12 @@ return array(
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
 
-		Route::get('/', 'Platform\Pages\Controllers\PagesController@getPage');
+		Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
 
-		App::before(function($app) {
-
-			Route::get('{pageSlug}', 'Platform\Pages\Controllers\PagesController@getPage');
-
+		App::before(function($app)
+		{
+			Route::get('{slug}', 'Platform\Pages\Controllers\Frontend\PagesController@getPage')
+				->where('slug', '.*?');
 		});
 
 	},

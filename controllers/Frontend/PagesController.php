@@ -1,4 +1,4 @@
-<?php namespace Platform\Pages\Controllers;
+<?php namespace Platform\Pages\Controllers\Frontend;
 /**
  * Part of the Platform application.
  *
@@ -80,3 +80,4 @@ class PagesController extends FrontendController {
 	}
 
 }
+
