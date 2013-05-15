@@ -140,10 +140,10 @@ class PagesController extends ContentController {
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			$messages = with(new Bag)->add('error', $e->getMessage());
+			$notifications = with(new Bag)->add('error', $e->getMessage());
 
 			// Return to the pages management page
-			return Redirect::toAdmin('pages')->with('messages', $messages);
+			return Redirect::toAdmin('pages')->with('notifications', $notifications);
 		}
 
 		$visibilities = $this->getVisibilities();
@@ -185,10 +185,10 @@ class PagesController extends ContentController {
 			}
 
 			// Set the success message
-			$messages = with(new Bag)->add('success', $success);
+			$notifications = with(new Bag)->add('success', $success);
 
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/$id")->with('messages', $messages);
+			return Redirect::toAdmin("pages/edit/$id")->with('notifications', $notifications);
 		}
 		catch (ApiHttpException $e)
 		{
@@ -211,16 +211,16 @@ class PagesController extends ContentController {
 			API::delete("pages/$id");
 
 			// Set the success message
-			$messages = with(new Bag)->add('success', Lang::get('platform/pages::message.delete.success'));
+			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.delete.success'));
 		}
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			$messages = with(new Bag)->add('error', Lang::get('platform/pages::message.delete.error'));
+			$notifications = with(new Bag)->add('error', Lang::get('platform/pages::message.delete.error'));
 		}
 
 		// Redirect to the pages management page
-		return Redirect::toAdmin('pages')->with('messages', $messages);
+		return Redirect::toAdmin('pages')->with('messages', $notifications);
 	}
 
 	/**
