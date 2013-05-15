@@ -133,11 +133,11 @@ jQuery(document).ready(function($){
 								<td data-static class="span1">
 
 									<div class="btn-group">
-										<a href="{{ URL::toAdmin('pages/edit/[[id]]') }}" class="btn ">
+										<a href="{{ URL::toAdmin('pages/edit/[[id]]') }}" class="btn" title="Edit">
 											<i class="icon-edit"></i>
 										</a>
 
-										<a href="{{ URL::toAdmin('pages/delete/[[id]]') }}" class="btn btn-danger">
+										<a href="{{ URL::toAdmin('pages/delete/[[id]]') }}" class="btn btn-danger" title="Delete">
 											<i class="icon-trash"></i>
 										</a>
 									</div>
