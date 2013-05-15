@@ -188,9 +188,7 @@ jQuery(document).ready(function($) {
 
 				{{-- Form Actions --}}
 				<div class="form-actions">
-					<a class="btn btn-small" href="{{ URL::toAdmin('pages') }}">@lang('button.cancel')</a>
-
-					<button class="btn btn-small btn-primary" type="submit">@lang('button.update')</button>
+					<button class="btn btn-large btn-primary" type="submit">@lang('button.update')</button>
 				</div>
 			</fieldset>
 		</form>
