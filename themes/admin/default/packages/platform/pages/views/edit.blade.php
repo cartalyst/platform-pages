@@ -12,6 +12,7 @@
 {{ Asset::queue('redactor-plugins', 'platform/content::js/redactor-plugins.js', 'redactor') }}
 {{ Asset::queue('editor', 'platform/content::js/editor.js', 'media-chooser') }}
 {{ Asset::queue('pages', 'platform/pages::js/pages.js', 'jquery') }}
+{{ Asset::queue('slugify', 'js/vendor/platform/slugify.js', 'jquery') }}
 
 {{-- Partial Assets --}}
 @section('assets')
@@ -29,7 +30,7 @@
 jQuery(document).ready(function($) {
 
 	$('#name').keyup(function() {
-		$('#slug').val($(this).slugify());
+		$('#slug').val($(this)val().slugify());
 	});
 
 });

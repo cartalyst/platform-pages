@@ -12,6 +12,7 @@
 {{ Asset::queue('redactor-plugins', 'platform/content::js/redactor-plugins.js', 'redactor') }}
 {{ Asset::queue('editor', 'platform/content::js/editor.js', 'media-chooser') }}
 {{ Asset::queue('pages', 'platform/pages::js/pages.js', 'jquery') }}
+{{ Asset::queue('slugify', 'js/vendor/platform/slugify.js', 'jquery') }}
 
 {{-- Partial Assets --}}
 @section('assets')
@@ -29,7 +30,7 @@
 jQuery(document).ready(function($) {
 
 	$('#name').keyup(function() {
-		$('#slug').val($(this).slugify());
+		$('#slug').val($(this).val().slugify());
 	});
 
 });
@@ -83,8 +84,8 @@ jQuery(document).ready(function($) {
 					<label class="control-label" for="enabled">@lang('platform/pages::form.enabled')</label>
 					<div class="controls">
 						<select name="enabled" id="enabled">
-							<option value="1"{{ (Input::old('enabled', 0) === 1 ? ' selected="selected"' : '') }}>@lang('general.yes')</option>
-							<option value="0"{{ (Input::old('enabled', 0) === 0 ? ' selected="selected"' : '') }}>@lang('general.no')</option>
+							<option value="1"{{ (Input::old('enabled') === 1 ? ' selected="selected"' : '') }}>@lang('general.yes')</option>
+							<option value="0"{{ (Input::old('enabled') === 0 ? ' selected="selected"' : '') }}>@lang('general.no')</option>
 						</select>
 						{{ $errors->first('enabled', '<span class="help-inline">:message</span>') }}
 					</div>
