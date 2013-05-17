@@ -24,12 +24,17 @@ return array(
 	'description' => 'Manage your website pages.',
 
 	'create' => array(
-		'title'       => 'Create Page',
+		'title'       => 'Create',
 		'description' => 'Please supply the following information.',
 	),
 
 	'update' => array(
-		'title'       => 'Update Page',
+		'title'       => 'Update :name',
+		'description' => 'Please update the following information.',
+	),
+
+	'clone' => array(
+		'title'       => 'Clone :name',
 		'description' => 'Please update the following information.',
 	),
 

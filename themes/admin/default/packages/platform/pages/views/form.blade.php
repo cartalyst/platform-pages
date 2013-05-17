@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-@lang("platform/pages::general.$segment.title") ::
+@lang("platform/pages::general.$segment.title", array('name' => ! empty($page) ? $page->name : '')) ::
 @parent
 @stop
 
@@ -32,7 +32,7 @@
 <section id="page-create">
 
 	<header class="clearfix">
-		<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> @lang("platform/pages::general.$segment.title")</h1>
+		<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> @lang("platform/pages::general.$segment.title", array('name' => ! empty($page) ? $page->name : ''))</h1>
 	</header>
 
 	<hr>
