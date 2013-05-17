@@ -122,37 +122,65 @@ class PagesController extends ContentController {
 	 * @param  int  $id
 	 * @return mixed
 	 */
+	/**
+	 * Page update.
+	 *
+	 * @param  mixed  $id
+	 * @return mixed
+	 */
 	public function getEdit($id = null)
 	{
-		// Set the current active menu
-		set_active_menu('admin-pages');
+		return $this->showForm($id, 'update');
+	}
 
+
+
+	/**
+	 * Shows the form.
+	 *
+	 * @param  mixed   $id
+	 * @param  string  $page
+	 * @return mixed
+	 */
+	protected function showForm($id = null, $page = null)
+	{
 		try
 		{
-			// Get the page information
+			// Set the current active menu
+			set_active_menu('admin-pages');
+	
+			// Content fallback
+			$pages = null;
+	
+			// Do we have a content identifier?
+			if ( ! is_null($id))
+			{
+				// Get the page information
 			$response = API::get("pages/$id");
 			$page     = $response['page'];
-
+	
 			// Get all the available user groups
 			$response = API::get('users/groups');
 			$groups   = $response['groups'];
+			}
+	
+			// Get all the available content files
+				$visibilities = $this->getVisibilities();
+				$types        = $this->getTypes();
+				$templates    = $this->getTemplates();
+				$files        = $this->getSources();
+	
+			// Show the page
+			return View::make('platform/pages::edit', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
 		}
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
 			$notifications = with(new Bag)->add('error', $e->getMessage());
-
+	
 			// Return to the pages management page
 			return Redirect::toAdmin('pages')->with('notifications', $notifications);
 		}
-
-		$visibilities = $this->getVisibilities();
-		$types        = $this->getTypes();
-		$templates    = $this->getSources();
-		$files        = $this->getSources();
-
-		// Show the page
-		return View::make('platform/pages::edit', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
 	}
 
 	/**
@@ -240,6 +268,15 @@ class PagesController extends ContentController {
 			// Get all the available user groups
 			$response = API::get('users/groups', array('organized' => true));
 			$groups   = $response['groups'];
+			
+			$visibilities = $this->getVisibilities();
+			$types        = $this->getTypes();
+			$templates    = $this->getTemplates();
+			$files        = $this->getSources();
+
+			// Show the page
+			return View::make('platform/pages::clone', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
+
 		}
 		catch (ApiHttpException $e)
 		{
@@ -250,13 +287,6 @@ class PagesController extends ContentController {
 			return Redirect::toAdmin('pages');
 		}
 
-		$visibilities = $this->getVisibilities();
-		$types        = $this->getTypes();
-		$templates    = $this->getSources();
-		$files        = $this->getSources();
-
-		// Show the page
-		return View::make('platform/pages::clone', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
 	}
 
 	/**
@@ -278,7 +308,7 @@ class PagesController extends ContentController {
 		);
 	}
 
-	protected function getSources()
+	protected function getTemplates()
 	{
 		$theme = Page::getTheme();
 		$extensions = array_keys(View::getExtensions());
@@ -312,6 +342,11 @@ class PagesController extends ContentController {
 		}
 
 		return $files;
+	}
+	
+	protected function getTypes()
+	{
+		return array();
 	}
 
 }
