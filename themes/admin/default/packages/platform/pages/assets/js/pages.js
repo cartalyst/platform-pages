@@ -7,4 +7,8 @@ jQuery(document).ready(function($)
 		$('.type-'+$(this).val()).removeClass('hide');
 	});
 
+	$('#name').keyup(function() {
+		$('#slug').val($(this).val().slugify());
+	});
+
 });

@@ -21,7 +21,6 @@
 use Input;
 use Lang;
 use Platform\Routing\Controllers\ApiController;
-use Platform\Pages\Models\Page;
 use Response;
 use Sentry;
 use Validator;
@@ -45,7 +44,7 @@ class PagesController extends ApiController {
 		'section'    => 'required_if:type,database',
 		'value'      => 'required_if:type,database',
 
-		// Filesystme page
+		// Filesystem page
 		'file'       => 'required_if:type,filesystem',
 	);
 
@@ -107,40 +106,48 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ( ! $page = Page::create($input))
+		if ($page = $this->model->create($input))
 		{
-			// There was a problem creating the content
-			return Response::api(Lang::get('platform/pages::message.create.error'), 500);
+			//
+			foreach (Input::get('groups', array()) as $id)
+			{
+				$group = Sentry::getGroupProvider()->findById($id);
+
+				$page->groups()->attach($group);
+			}
+
+			// Page successfully created
+			return Response::api(compact('page'));
 		}
 
-		foreach (Input::get('groups', array()) as $id)
-		{
-			$group = Sentry::getGroupProvider()->findById($id);
-			$user->groups()->attach($group);
-		}
-
-		// Page successfully created
-		return Response::api(compact('page'));
+		// There was a problem creating the content
+		return Response::api(Lang::get('platform/pages::message.error.create'), 500);
 	}
 
 	/**
 	 * Returns information about the given page.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $id
 	 * @return Cartalyst\Api\Http\Response
 	 */
-	public function show($id)
+	public function show($id = null)
 	{
 		// Do we have the page slug?
 		if ( ! is_numeric($id))
 		{
-			$page = $this->model->where('slug', '=', $id);
+			$page = $this->model->with('groups')->where('slug', $id)->first();
 		}
 
 		// We must have the page id
 		else
 		{
-			$page = $this->model->where('id', '=', $id);
+			$page = $this->model->with('groups')->where('id', $id)->first();
+		}
+
+		// Check if the page exists
+		if (is_null($page))
+		{
+			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 		}
 
 		// Do we only want the enabled page ?
@@ -150,28 +157,41 @@ class PagesController extends ApiController {
 		}
 
 		// Check if the page exists
-		if ( ! is_null($page = $page->with('groups')->first()))
+		if ( ! is_null($page))
 		{
 			return Response::api(compact('page'));
 		}
 
 		// Page does not exist
-		return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
+		return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 	}
 
 	/**
 	 * Updates the given page.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $id
 	 * @return Cartalyst\Api\Http\Response
 	 */
-	public function update($id)
+	public function update($id = null)
 	{
-		// Check if the page exists
-		if (is_null($page = $this->model->find($id)))
+		// Do we have the page slug?
+		if ( ! is_numeric($id))
 		{
-			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
+			$page = $this->model->where('slug', $id)->first();
 		}
+
+		// We must have the page id
+		else
+		{
+			$page = $this->model->where('id', $id)->first();
+		}
+
+		// Check if the page exists
+		if (is_null($page))
+		{
+			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
+		}
+
 
 		// Get all the inputs
 		$input = Input::all();
@@ -211,22 +231,34 @@ class PagesController extends ApiController {
 	/**
 	 * Deletes the given page.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $id
 	 * @return Cartalyst\Api\Http\Response
 	 */
-	public function destroy($id)
+	public function destroy($id = null)
 	{
-		// Check if the page exists
-		if (is_null($page = $this->model->find($id)))
+		// Do we have the page slug?
+		if ( ! is_numeric($id))
 		{
-			return Response::api(Lang::get('platform/pages::message.does_not_exist', compact('id')), 404);
+			$page = $this->model->where('slug', $id)->first();
+		}
+
+		// We must have the page id
+		else
+		{
+			$page = $this->model->where('id', $id)->first();
+		}
+
+		// Check if the page exists
+		if (is_null($page))
+		{
+			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 		}
 
 		// Delete the page
 		$page->delete();
 
 		// Page successfully deleted
-		return Response::api(Lang::get('platform/pages::message.delete.success'));
+		return Response::api(Lang::get('platform/pages::message.success.delete'));
 	}
 
 }

@@ -24,14 +24,14 @@ use DataGrid;
 use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
-use Platform\Content\Controllers\Admin\ContentController;
+use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Pages\Models\Page;
 use Redirect;
 use Symfony\Component\Finder\Finder;
 use Theme;
 use View;
 
-class PagesController extends ContentController {
+class PagesController extends AdminController {
 
 	/**
 	 * Pages management main page.
@@ -43,20 +43,8 @@ class PagesController extends ContentController {
 		// Set the current active menu
 		set_active_menu('admin-pages');
 
-		try
-		{
-			// Get the pages list
-			$response = API::get('pages');
-			$pages    = $response['pages'];
-		}
-		catch (ApiHttpException $e)
-		{
-			// Redirect to the admin dashboard
-			return Redirect::toAdmin('');
-		}
-
 		// Show the page
-		return View::make('platform/pages::index', compact('pages'));
+		return View::make('platform/pages::index');
 	}
 
 	/**
@@ -66,7 +54,11 @@ class PagesController extends ContentController {
 	 */
 	public function getGrid()
 	{
-		return DataGrid::make(with(new Page)->newQuery(), array(
+		// Get the content list
+		$response = API::get('v1/pages');
+
+		//
+		return DataGrid::make($response['pages'], array(
 			'id',
 			'name',
 			'slug',
@@ -82,28 +74,7 @@ class PagesController extends ContentController {
 	 */
 	public function getCreate()
 	{
-		// Set the current active menu
-		set_active_menu('admin-pages');
-
-		try
-		{
-			// Get all the available user groups
-			$response = API::get('users/groups');
-			$groups   = $response['groups'];
-		}
-		catch (ApiHttpException $e)
-		{
-			// Redirect to the pages management page
-			return Redirect::toAdmin('pages');
-		}
-
-		$visibilities = $this->getVisibilities();
-		$types        = $this->getTypes();
-		$templates    = $this->getSources();
-		$files        = $this->getSources();
-
-		// Show the page
-		return View::make('platform/pages::create', compact('types', 'visibilities', 'groups', 'templates', 'files'));
+		return $this->showForm(null, 'create');
 	}
 
 	/**
@@ -113,7 +84,7 @@ class PagesController extends ContentController {
 	 */
 	public function postCreate()
 	{
-		return $this->postEdit();
+		return $this->processForm();
 	}
 
 	/**
@@ -124,35 +95,7 @@ class PagesController extends ContentController {
 	 */
 	public function getEdit($id = null)
 	{
-		// Set the current active menu
-		set_active_menu('admin-pages');
-
-		try
-		{
-			// Get the page information
-			$response = API::get("pages/$id");
-			$page     = $response['page'];
-
-			// Get all the available user groups
-			$response = API::get('users/groups');
-			$groups   = $response['groups'];
-		}
-		catch (ApiHttpException $e)
-		{
-			// Set the error message
-			$notifications = with(new Bag)->add('error', $e->getMessage());
-
-			// Return to the pages management page
-			return Redirect::toAdmin('pages')->with('notifications', $notifications);
-		}
-
-		$visibilities = $this->getVisibilities();
-		$types        = $this->getTypes();
-		$templates    = $this->getSources();
-		$files        = $this->getSources();
-
-		// Show the page
-		return View::make('platform/pages::edit', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
+		return $this->showForm($id, 'update');
 	}
 
 	/**
@@ -163,38 +106,29 @@ class PagesController extends ContentController {
 	 */
 	public function postEdit($id = null)
 	{
-		try
-		{
-			// Are we creating a new page?
-			if (is_null($id))
-			{
-				$response = API::post('pages', Input::all());
-				$id = $response['page']->id;
+		return $this->processForm($id);
+	}
 
-				// Prepare the success message
-				$success = Lang::get('platform/pages::message.create.success');
-			}
+	/**
+	 * Page clone.
+	 *
+	 * @param  int  $id
+	 * @return mixed
+	 */
+	public function getClone($id = null)
+	{
+		return $this->showForm($id, 'clone');
+	}
 
-			// No, we are updating an existing page
-			else
-			{
-				API::put("pages/$id", Input::all());
-
-				// Prepare the success message
-				$success = Lang::get('platform/pages::message.update.success');
-			}
-
-			// Set the success message
-			$notifications = with(new Bag)->add('success', $success);
-
-			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/$id")->with('notifications', $notifications);
-		}
-		catch (ApiHttpException $e)
-		{
-			// Redirect to the appropriate page
-			return Redirect::back()->withInput()->withErrors($e->getErrors());
-		}
+	/**
+	 * Page clone form processing.
+	 *
+	 * @param  int  $id
+	 * @return Redirect
+	 */
+	public function postClone($id = null)
+	{
+		return $this->processForm($id);
 	}
 
 	/**
@@ -211,72 +145,115 @@ class PagesController extends ContentController {
 			API::delete("pages/$id");
 
 			// Set the success message
-			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.delete.success'));
+			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));
 		}
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			$notifications = with(new Bag)->add('error', Lang::get('platform/pages::message.delete.error'));
+			$notifications = with(new Bag)->add('error', Lang::get('platform/pages::message.error.delete'));
 		}
 
 		// Redirect to the pages management page
-		return Redirect::toAdmin('pages')->with('messages', $notifications);
+		return Redirect::toAdmin('pages')->with('notifications', $notifications);
 	}
 
 	/**
-	 * Page clone.
+	 * Shows the form.
 	 *
-	 * @param  int  $id
+	 * @param  mixed   $id
+	 * @param  string  $page
 	 * @return mixed
 	 */
-	public function getClone($id = null)
+	protected function showForm($id = null, $segment = null)
 	{
 		try
 		{
-			// Get the page information
-			$response = API::get("pages/$id");
-			$page     = $response['page'];
+			// Set the current active menu
+			set_active_menu('admin-pages');
+
+			// Data fallback
+			$page       = null;
+			$pageGroups = array();
+
+			// Do we have a page identifier?
+			if ( ! is_null($id))
+			{
+				// Get the page information
+				$response = API::get("v1/pages/$id");
+				$page     = $response['page'];
+
+				// Get this page groups
+				$pageGroups = $page->groups()->lists('name', 'group_id');
+			}
 
 			// Get all the available user groups
-			$response = API::get('users/groups', array('organized' => true));
+			$response = API::get('v1/users/groups');
 			$groups   = $response['groups'];
+
+			// Get all the available templates
+			$templates = $this->getSources();
+
+			// Get all the available page files
+			$files = $this->getSources();
+
+			// Show the page
+			return View::make('platform/pages::form', compact('page', 'segment', 'groups', 'pageGroups', 'templates', 'files'));
 		}
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			# TODO !
+			$notifications = with(new Bag)->add('error', $e->getMessage());
 
-			// Return to the page management page
-			return Redirect::toAdmin('pages');
+			// Return to the pages management page
+			return Redirect::toAdmin('pages')->with('notifications', $notifications);
 		}
-
-		$visibilities = $this->getVisibilities();
-		$types        = $this->getTypes();
-		$templates    = $this->getSources();
-		$files        = $this->getSources();
-
-		// Show the page
-		return View::make('platform/pages::clone', compact('page', 'types', 'visibilities', 'groups', 'templates', 'files'));
 	}
 
 	/**
-	 * Page clone form processing.
+	 * Processes the form.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $id
 	 * @return Redirect
 	 */
-	public function postClone($id = null)
+	protected function processForm($id = null)
 	{
-		return $this->postEdit();
+		try
+		{
+			// Are we creating a new page?
+			if (is_null($id))
+			{
+				// Make the request
+				$response  = API::post('v1/pages', Input::all());
+				$id        = $response['page']->id;
+
+				// Prepare the success message
+				$success = Lang::get('platform/pages::message.success.create');
+			}
+
+			// No, we are updating an page content
+			else
+			{
+				// Make the request
+				API::put("v1/pages/$id", Input::all());
+
+				// Prepare the success message
+				$success = Lang::get('platform/pages::message.success.update');
+			}
+
+			// Set the success message
+			$notifications = with(new Bag)->add('success', $success);
+
+			// Redirect to the page edit page
+			return Redirect::toAdmin("pages/edit/$id")->with('notifications', $notifications);
+		}
+		catch (ApiHttpException $e)
+		{
+			// Redirect to the appropriate page
+			return Redirect::back()->withInput()->withErrors($e->getErrors());
+		}
 	}
 
-	protected function getVisibilities()
-	{
-		return array(
-			'always'    => 'Shown Always',
-			'logged_in' => 'Logged In Only',
-		);
-	}
+
 
 	protected function getSources()
 	{

@@ -52,9 +52,10 @@ jQuery(document).ready(function($){
 
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline pull-left">
 				<select name="column" class="input-medium">
-					<option value="all">All</option>
-					<option value="name">Name</option>
-					<option value="slug">Slug</option>
+					<option value="all">@lang('general.all')</option>
+					<option value="name">@lang('platform/pages::table.name')</option>
+					<option value="slug">@lang('platform/pages::table.slug')</option>
+					<option value="created_at">@lang('platform/pages::table.created_at')</option>
 				</select>
 				<input name="filter" type="text" placeholder="Filter All" class="input-large">
 				<button class="btn btn-medium">Add Filter</button>
@@ -109,19 +110,19 @@ jQuery(document).ready(function($){
 					<table class="table table-striped table-bordered" data-grid="main" data-source="{{ URL::toAdmin('pages/grid') }}">
 						<thead>
 							<tr>
-								<th data-sort="id" data-grid="main" class="sortable">@lang('platform/pages::table.id')</th>
+								<th data-sort="id" data-grid="main" class="span1sortable">@lang('platform/pages::table.id')</th>
 								<th data-sort="name" data-grid="main" class="sortable">@lang('platform/pages::table.name')</th>
 								<th data-sort="slug" data-grid="main" class="sortable">@lang('platform/pages::table.slug')</th>
 								<th data-sort="enabled" data-grid="main" class="sortable">@lang('platform/pages::table.enabled')</th>
 								<th data-sort="created_at" data-grid="main" class="sortable">@lang('platform/pages::table.created_at')</th>
-								<th>Actions</th>
+								<th class="span1">@lang('table.actions')</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr data-template>
-								<td data-column="id" class="span1">[[id]]</td>
-								<td data-column="name">[[name]]</td>
-								<td data-column="slug">[[slug]]</td>
+								<td>[[ id ]]</td>
+								<td>[[ name ]]</td>
+								<td>[[ slug ]]</td>
 								<td data-type="select" data-column="enabled" data-mappings="Yes:1|No:0">
 									[? if enabled ?]
 										@lang('general.yes')
@@ -129,15 +130,15 @@ jQuery(document).ready(function($){
 										@lang('general.no')
 									[? endif ?]
 								</td>
-								<td data-column="created_at">[[created_at]]</td>
-								<td data-static class="span1">
+								<td data-column="created_at">[[ created_at ]]</td>
+								<td>
 
 									<div class="btn-group">
-										<a href="{{ URL::toAdmin('pages/edit/[[id]]') }}" class="btn" title="Edit">
+										<a href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" class="btn" title="@lang('button.edit')">
 											<i class="icon-edit"></i>
 										</a>
 
-										<a href="{{ URL::toAdmin('pages/delete/[[id]]') }}" class="btn btn-danger" title="Delete">
+										<a data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" class="btn btn-danger" title="@lang('button.delete')">
 											<i class="icon-trash"></i>
 										</a>
 									</div>
@@ -156,4 +157,6 @@ jQuery(document).ready(function($){
 	</section>
 
 </section>
+
+@widget('platform/ui::modal.confirm')
 @stop
