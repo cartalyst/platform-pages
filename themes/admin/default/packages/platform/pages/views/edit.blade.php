@@ -30,7 +30,7 @@
 jQuery(document).ready(function($) {
 
 	$('#name').keyup(function() {
-		$('#slug').val($(this)val().slugify());
+		$('#slug').val($(this).val().slugify());
 	});
 
 });
