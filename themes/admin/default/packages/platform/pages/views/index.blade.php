@@ -26,8 +26,16 @@
 @parent
 <script>
 jQuery(document).ready(function($){
-	$.datagrid('main', '.table', '.pagination', '.applied', {
-		loader: '.table-processing'
+	$.datagrid('main', '#grid', '.pagination', '.applied', {
+		loader: '.table-processing',
+		sort: {
+			column: 'created_at',
+			direction: 'desc'
+		},
+		callback: function(totalCount, filteredCount){
+			//Leverage the Callback to show total counts or filtered count
+			$('.filtered').html(filteredCount);
+		}
 	});
 });
 </script>
@@ -50,42 +58,32 @@ jQuery(document).ready(function($){
 
 		<div class="clearfix">
 
-			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline pull-left">
+			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline filters pull-left">
+
 				<select name="column" class="input-medium">
 					<option value="all">@lang('general.all')</option>
 					<option value="name">@lang('platform/pages::table.name')</option>
 					<option value="slug">@lang('platform/pages::table.slug')</option>
 					<option value="created_at">@lang('platform/pages::table.created_at')</option>
 				</select>
-				<input name="filter" type="text" placeholder="Filter All" class="input-large">
-				<button class="btn btn-medium">Add Filter</button>
-				<button class="btn btn-medium" data-reset data-grid="main">Reset</button>
-			</form>
 
+				<div class="input-append">
+					<input name="filter" type="text" placeholder="Search" class="input-large">
+					<span class="add-on filtered"></span>
+					<button class="btn btn-large"><i class="icon-plus"></i></button>
+					<button class="btn btn-large" data-reset data-grid="main"><i class="icon-refresh"></i></button>
+					<a class="btn btn-large" href="{{ URL::toAdmin('pages/create') }}">@lang('button.create')</a>
+				</div>
+			</form>
 			<div class="processing pull-left">
 				<div class="table-processing" style="display: none;">Processing...</div>
 			</div>
 
 		</div>
 
-		<ul class="applied" data-grid="main">
-			<li data-template>
-				<a href="#" class="remove-filter btn btn-small">
-					[? if column == undefined ?]
-					[[ valueLabel ]]
-					[? else ?]
-					[[ valueLabel ]] in [[ columnLabel ]]
-					[? endif ?]
-					<span class="close" style="float: none;">&times;</span>
-				</a>
-			</li>
-		</ul>
-
 		<div id="table">
 
 			<div class="tabbable tabs-right">
-
-				<a href="{{ URL::toAdmin('pages/create') }}" class="btn btn-large btn-primary pull-right create">@lang('button.create')</a>
 
 				<ul class="pagination nav nav-tabs" data-grid="main">
 					<li data-template data-if-infiniteload>
@@ -107,7 +105,20 @@ jQuery(document).ready(function($){
 
 				<div class="tab-content">
 
-					<table class="table table-striped table-bordered" data-grid="main" data-source="{{ URL::toAdmin('pages/grid') }}">
+					<ul class="applied" data-grid="main">
+						<li data-template style="display:none" class="btn-group">
+							<a class="btn" href="#">
+								[? if column == undefined ?]
+								[[ valueLabel ]]
+								[? else ?]
+								[[ valueLabel ]] in [[ columnLabel ]]
+								[? endif ?]
+							</a>
+							<a href="#" class="btn remove-filter"><i class="icon-remove-sign"></i></a>
+						</li>
+					</ul>
+
+					<table id="grid" data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="table table-bordered table-striped">
 						<thead>
 							<tr>
 								<th data-sort="id" data-grid="main" class="span1sortable">@lang('platform/pages::table.id')</th>
