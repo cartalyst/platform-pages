@@ -70,7 +70,7 @@
 
 				{{-- Enabled --}}
 				<div class="control-group{{ $errors->first('enabled', ' error') }}" required>
-					<label class="control-label" for="enabled">@lang('platform/pages::form.enabled')</label>
+					<label class="control-label" for="enabled">@lang('platform/pages::form.status')</label>
 					<div class="controls">
 						<select name="enabled" id="enabled" required>
 							<option value="1"{{ (Input::old('enabled', ! empty($page) ? $page->enabled : 1) === 1 ? ' selected="selected"' : '') }}>@lang('general.enabled')</option>
@@ -85,8 +85,8 @@
 					<label class="control-label" for="type">@lang('platform/pages::form.type')</label>
 					<div class="controls">
 						<select name="type" id="type">
-							<option value="database"{{ Input::old('type', ! empty($content) ? $content->type : 'database') == 'database' ? ' selected="selected"' : '' }}>@lang('platform/content::form.database')</option>
-							<option value="filesystem"{{ Input::old('type', ! empty($content) ? $content->type : 'database') == 'filesystem' ? ' selected="selected"' : '' }}>@lang('platform/content::form.filesystem')</option>
+							<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : '' }}>@lang('platform/content::form.database')</option>
+							<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : '' }}>@lang('platform/content::form.filesystem')</option>
 						</select>
 						{{ $errors->first('type', '<span class="help-inline">:message</span>') }}
 					</div>
