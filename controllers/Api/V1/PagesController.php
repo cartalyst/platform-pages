@@ -222,7 +222,7 @@ class PagesController extends ApiController {
 		$groupsToAdd    = array_diff($selectedGroups, $pageGroups);
 		$groupsToRemove = array_diff($pageGroups, $selectedGroups);
 
-		// Assign the geoup to the page
+		// Assign the group to the page
 		foreach ($groupsToAdd as $id)
 		{
 			$group = Sentry::getGroupProvider()->findById($id);
