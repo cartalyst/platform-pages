@@ -142,7 +142,7 @@ class PagesController extends AdminController {
 		try
 		{
 			// Delete the page
-			API::delete("pages/$id");
+			API::delete("v1/pages/$id");
 
 			// Set the success message
 			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));

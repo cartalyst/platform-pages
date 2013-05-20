@@ -81,7 +81,8 @@ class Page extends Model {
 	/**
 	 * Renders the page.
 	 *
-	 * @return stirng
+	 * @return string
+	 * @throws RuntimeException
 	 */
 	public function render()
 	{
@@ -105,7 +106,7 @@ class Page extends Model {
 	 * Mutator for the "enabled" attribute.
 	 *
 	 * @param  string  $enabled
-	 * @return bool    $enabled
+	 * @return bool
 	 */
 	public function getEnabledAttribute($enabled)
 	{
@@ -125,7 +126,7 @@ class Page extends Model {
 
 		if ( ! is_numeric($id))
 		{
-			return $instance->newQuery()->where('slug', '=', $id)->first($columns);
+			return $instance->newQuery()->where('slug', $id)->first($columns);
 		}
 
 		return parent::find($id, $columns);

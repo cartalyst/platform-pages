@@ -180,10 +180,10 @@ return array(
 
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
+		$model = $app['platform/pages::page'];
 
-		Platform\Pages\Models\Page::setThemeBag($app['themes']);
-		Platform\Pages\Models\Page::setTheme($app['config']['cartalyst/themes::active']);
-
+		$model->setThemeBag($app['themes']);
+		$model->setTheme($app['config']['cartalyst/themes::active']);
 	},
 
 	/*
@@ -204,7 +204,7 @@ return array(
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
 
-		Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
+		// Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
 
 		App::before(function($app)
 		{

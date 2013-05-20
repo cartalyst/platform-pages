@@ -30,19 +30,20 @@ class PagesController extends FrontendController {
 	/**
 	 *
 	 *
-	 * @param  string  $pageSlug
+	 * @param  string  $slug
 	 * @return mixed
+	 * @throws NotFoundHttpException
 	 */
-	public function getPage($pageSlug = null)
+	public function getPage($slug = null)
 	{
 		// Default the page slug
-		if ( ! $pageSlug) $pageSlug = Config::get('platform/pages::default');
+		$slug = $slug ?: Config::get('platform/pages::default');
 
 		try
 		{
 			// Find the requested page
-			$request = API::get('pages/' . $pageSlug, array('enabled' => true));
-			$page    = $request['page'];
+			$response = API::get("v1/pages/$slug", array('enabled' => true));
+			$page     = $response['page'];
 		}
 		catch (ApiHttpException $e)
 		{

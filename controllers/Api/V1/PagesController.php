@@ -135,35 +135,29 @@ class PagesController extends ApiController {
 		// Do we have the page slug?
 		if ( ! is_numeric($id))
 		{
-			$page = $this->model->with('groups')->where('slug', $id)->first();
+			$page = $this->model->where('slug', $id);
 		}
 
 		// We must have the page id
 		else
 		{
-			$page = $this->model->with('groups')->where('id', $id)->first();
-		}
-
-		// Check if the page exists
-		if (is_null($page))
-		{
-			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
+			$page = $this->model->where('id', $id);
 		}
 
 		// Do we only want the enabled page ?
 		if (Input::get('enabled'))
 		{
-			$page->where('enabled', '=', 1);
+			$page->where('enabled', 1);
 		}
 
 		// Check if the page exists
-		if ( ! is_null($page))
+		if (is_null($page = $page->with('groups')->first()))
 		{
-			return Response::api(compact('page'));
+			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 		}
 
-		// Page does not exist
-		return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
+		// Return the page information
+		return Response::api(compact('page'));
 	}
 
 	/**
@@ -177,31 +171,29 @@ class PagesController extends ApiController {
 		// Do we have the page slug?
 		if ( ! is_numeric($id))
 		{
-			$page = $this->model->where('slug', $id)->first();
+			$page = $this->model->where('slug', $id);
 		}
 
 		// We must have the page id
 		else
 		{
-			$page = $this->model->where('id', $id)->first();
+			$page = $this->model->where('id', $id);
 		}
 
 		// Check if the page exists
-		if (is_null($page))
+		if (is_null($page = $page->first()))
 		{
 			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 		}
-
 
 		// Get all the inputs
 		$input = Input::all();
 
 		// Update the validation rules, so it ignores the current page slug.
-		$validationRules = $this->validationRules;
-		$validationRules['slug'] = 'required|unique:pages,slug,'.$page->slug.',slug';
+		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
 
 		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make($input, $validationRules);
+		$validator = Validator::make($input, $this->validationRules);
 
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())
@@ -213,16 +205,37 @@ class PagesController extends ApiController {
 		$page->fill($input);
 
 		// Was the page updated?
-		if ($page->save())
+		if ( ! $page->save())
 		{
 			// There was a problem updating the content
 			return Response::api(Lang::get('platform/pages::message.update.error'), 500);
 		}
 
-		foreach (Input::get('groups', array()) as $id)
+		// Get the current page groups
+		$pageGroups = $page->groups()->lists('group_id');
+
+		// Get the selected groups
+		$selectedGroups = Input::get('groups', array());
+
+		// Groups comparison between the groups the page currently
+		// have and the groups the page will have.
+		$groupsToAdd    = array_diff($selectedGroups, $pageGroups);
+		$groupsToRemove = array_diff($pageGroups, $selectedGroups);
+
+		// Assign the geoup to the page
+		foreach ($groupsToAdd as $id)
 		{
 			$group = Sentry::getGroupProvider()->findById($id);
-			$user->groups()->attach($group);
+
+			$page->groups()->attach($group);
+		}
+
+		// Remove the group from the page
+		foreach ($groupsToRemove as $id)
+		{
+			$group = Sentry::getGroupProvider()->findById($id);
+
+			$page->groups()->detach($group);
 		}
 
 		return Response::api(compact('page'));
@@ -239,17 +252,17 @@ class PagesController extends ApiController {
 		// Do we have the page slug?
 		if ( ! is_numeric($id))
 		{
-			$page = $this->model->where('slug', $id)->first();
+			$page = $this->model->where('slug', $id);
 		}
 
 		// We must have the page id
 		else
 		{
-			$page = $this->model->where('id', $id)->first();
+			$page = $this->model->where('id', $id);
 		}
 
 		// Check if the page exists
-		if (is_null($page))
+		if (is_null($page = $page->first()))
 		{
 			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 		}
