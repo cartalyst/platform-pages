@@ -219,18 +219,18 @@ return array(
 	| Permissions
 	|--------------------------------------------------------------------------
 	|
-	| List of permissions this extension has. These are shown in user
-	| management to build a graphical interface where permissions may be
-	| selected.
+	| List of permissions this extension has. These are shown in the user
+	| management area to build a graphical interface where permissions
+	| may be selected.
 	|
 	| The admin controllers state that permissions should follow the following
 	| structure:
 	|
-	|     vendor/extension::admin.controller@method
+	|     vendor/extension::area.controller@method
 	|
 	| For example:
 	|
-	|    platform/users::admin.usersController@getIndex
+	|    platform/users::admin.usersController@index
 	|    Platform\Users\Controllers\Admin\UsersController@getIndex
 	|
 	| These are automatically generated for controller routes however you are
