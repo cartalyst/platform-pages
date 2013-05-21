@@ -32,6 +32,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	{
 		Schema::create('pages', function($table)
 		{
+			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->string('name');
 			$table->string('slug');
