@@ -20,7 +20,7 @@
 
 return array(
 
-	'title'       => 'Pages',
+	'title'       => 'Page Management',
 	'description' => 'Manage your website pages.',
 
 	'create' => array(
