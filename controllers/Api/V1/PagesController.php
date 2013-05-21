@@ -62,9 +62,9 @@ class PagesController extends ApiController {
 	 */
 	public function __construct()
 	{
-		$app = app();
+		parent::__construct();
 
-		$this->model = $app->make('platform/pages::page');
+		$this->model = app('Platform\Pages\Models\Page');
 	}
 
 	/**

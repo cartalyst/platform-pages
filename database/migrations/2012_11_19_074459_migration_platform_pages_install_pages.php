@@ -32,7 +32,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	{
 		Schema::create('pages', function($table)
 		{
-			$table->engine = 'InnoDB';
 			$table->increments('id');
 			$table->string('name');
 			$table->string('slug');
@@ -50,6 +49,12 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			// Common
 			$table->boolean('enabled');
 			$table->timestamps();
+
+			// We'll need to ensure that MySQL uses
+			// the InnoDB engine to suppor the
+			// indexes, other engines aren't
+			// afftected.
+			$table->engine = 'InnoDB';
 			$table->unique('slug');
 		});
 

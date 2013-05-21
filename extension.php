@@ -20,6 +20,7 @@
 
 use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
+use Platform\Pages\Models\Page;
 
 return array(
 
@@ -156,11 +157,6 @@ return array(
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
 
-		$app['platform/pages::page'] = function($app)
-		{
-			return new Platform\Pages\Models\Page;
-		};
-
 	},
 
 	/*
@@ -180,10 +176,8 @@ return array(
 
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
-		$model = $app['platform/pages::page'];
-
-		$model->setThemeBag($app['themes']);
-		$model->setTheme($app['config']['cartalyst/themes::active']);
+		Page::setThemeBag($app['themes']);
+		Page::setTheme($app['config']['cartalyst/themes::active']);
 	},
 
 	/*
