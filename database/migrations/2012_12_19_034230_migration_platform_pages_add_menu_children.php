@@ -36,7 +36,7 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 			'slug'      => 'admin-pages',
 			'extension' => 'platform/pages',
 			'name'      => 'Pages',
-			'driver'    => 'static',
+			'type'      => 'static',
 			'class'     => 'icon-file',
 			'uri'       => 'pages',
 			'enabled'   => true,
