@@ -38,7 +38,8 @@ class MigrationPlatformPagesAddMenuChildren extends Migration {
 			'name'      => 'Pages',
 			'driver'    => 'static',
 			'class'     => 'icon-file',
-			'uri'       => 'pages'
+			'uri'       => 'pages',
+			'enabled'   => true,
 		));
 
 		$pages->makeLastChildOf($admin);
