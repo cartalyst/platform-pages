@@ -50,10 +50,8 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->boolean('enabled');
 			$table->timestamps();
 
-			// We'll need to ensure that MySQL uses
-			// the InnoDB engine to suppor the
-			// indexes, other engines aren't
-			// afftected.
+			// We'll need to ensure that MySQL uses the InnoDB engine to
+			// support the indexes, other engines aren't affected.
 			$table->engine = 'InnoDB';
 			$table->unique('slug');
 		});
