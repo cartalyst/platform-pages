@@ -66,7 +66,7 @@ class Page extends Model {
 	 *
 	 * @var string
 	 */
-	protected static $groupModel = 'Platform\users\Models\Group';
+	protected static $groupModel = 'Platform\Users\Models\Group';
 
 	/**
 	 * Get the groups for the page.
