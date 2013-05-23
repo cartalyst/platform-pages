@@ -1,6 +1,8 @@
 jQuery(document).ready(function($) {
 
-	$('textarea#value').redactor();
+	$('textarea#value').redactor({
+		minHeight: 300
+	});
 
 	$('#name').keyup(function() {
 		$('#slug').val($(this).val().slugify());
@@ -21,5 +23,7 @@ jQuery(document).ready(function($) {
 			$('#file').removeAttr('required', true);
 		}
 	});
+
+	H5F.setup(document.getElementById('page-create-form'))
 
 });
