@@ -7,9 +7,10 @@
 @stop
 
 {{-- Queue Assets --}}
-{{ Asset::queue('redactor', 'platform/content::css/redactor.css', 'style') }}
-{{ Asset::queue('redactor', 'platform/content::js/redactor.min.js', 'jquery') }}
+{{ Asset::queue('redactor', 'styles/css/vendor/imperavi/redactor.css', 'style') }}
+{{ Asset::queue('redactor', 'js/vendor/imperavi/redactor.js', 'jquery') }}
 {{ Asset::queue('slugify', 'js/vendor/platform/slugify.js', 'jquery') }}
+{{ Asset::queue('validate', 'js/vendor/platform/validate.js', 'jquery') }}
 {{ Asset::queue('pages', 'platform/pages::js/pages.js', 'jquery') }}
 
 {{-- Partial Assets --}}
@@ -38,7 +39,7 @@
 	<hr>
 
 	<section class="content">
-		<form class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
+		<form id="page-create-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
 			{{-- CSRF Token --}}
 			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
