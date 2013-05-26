@@ -12,6 +12,7 @@
 {{ Asset::queue('slugify', 'js/vendor/platform/slugify.js', 'jquery') }}
 {{ Asset::queue('validate', 'js/vendor/platform/validate.js', 'jquery') }}
 {{ Asset::queue('pages', 'platform/pages::js/pages.js', 'jquery') }}
+{{ Asset::queue('redactor-editor', 'platform/pages::js/editor.js', 'redactor') }}
 
 {{-- Partial Assets --}}
 @section('assets')

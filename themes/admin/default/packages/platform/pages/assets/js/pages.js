@@ -1,9 +1,5 @@
 jQuery(document).ready(function($) {
 
-	$('textarea#value').redactor({
-		minHeight: 300
-	});
-
 	$('#name').keyup(function() {
 		$('#slug').val($(this).val().slugify());
 	});
