@@ -26,7 +26,7 @@
 <script>
 jQuery(document).ready(function($) {
 	$.datagrid('main', '#grid', '.grid-pagination', '.applied', {
-		loader: '.table-processing',
+		loader: '.loading',
 		type: 'single',
 		sort: {
 			column: 'created_at',
@@ -113,44 +113,54 @@ jQuery(document).ready(function($) {
 
 		</div>
 
-		<table id="grid" data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="table">
-			<thead>
-				<tr>
-					<th data-sort="id" data-grid="main" class="span1sortable">{{ trans('platform/pages::table.id') }}</th>
-					<th data-sort="name" data-grid="main" class="sortable">{{ trans('platform/pages::table.name') }}</th>
-					<th data-sort="slug" data-grid="main" class="sortable">{{ trans('platform/pages::table.slug') }}</th>
-					<th data-sort="enabled" data-grid="main" class="sortable">{{ trans('platform/pages::table.enabled') }}</th>
-					<th data-sort="created_at" data-grid="main" class="sortable">{{ trans('platform/pages::table.created_at') }}</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr data-template style="display: none;">
-					<td>[[ id ]]</td>
-					<td>[[ name ]]</td>
-					<td>[[ slug ]]</td>
-					<td>
-						[? if enabled ?]
-							{{ trans('general.yes') }}
-						[? else ?]
-							{{ trans('general.no') }}
-						[? endif ?]
-					</td>
-					<td>[[ created_at ]]</td>
-					<td>
-						<div class="actions">
-							<a data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i> {{ trans('button.delete') }}</a>
-							<a href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" title="{{ trans('button.edit') }}"><i class="icon-edit"></i> {{ trans('button.edit') }}</a>
-						</div>
-					</td>
-				</tr>
-				<tr data-results-fallback style="display: none;">
-					<td colspan="4">
-						<center><strong>{{ trans('table.no_results') }}</strong></center>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="grid-wrap clearfix">
+
+			<div class="loading">
+				<div>
+					<span><img src="{{ Asset::getUrl('img/loader.gif') }}" /> {{ trans('general.loading') }}</span>
+				</div>
+			</div>
+
+			<table id="grid" data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="table">
+				<thead>
+					<tr>
+						<th data-sort="id" data-grid="main" class="span1sortable">{{ trans('platform/pages::table.id') }}</th>
+						<th data-sort="name" data-grid="main" class="sortable">{{ trans('platform/pages::table.name') }}</th>
+						<th data-sort="slug" data-grid="main" class="sortable">{{ trans('platform/pages::table.slug') }}</th>
+						<th data-sort="enabled" data-grid="main" class="sortable">{{ trans('platform/pages::table.enabled') }}</th>
+						<th data-sort="created_at" data-grid="main" class="sortable">{{ trans('platform/pages::table.created_at') }}</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr data-template style="display: none;">
+						<td>[[ id ]]</td>
+						<td>[[ name ]]</td>
+						<td>[[ slug ]]</td>
+						<td>
+							[? if enabled ?]
+								{{ trans('general.yes') }}
+							[? else ?]
+								{{ trans('general.no') }}
+							[? endif ?]
+						</td>
+						<td>[[ created_at ]]</td>
+						<td>
+							<div class="actions">
+								<a data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i> {{ trans('button.delete') }}</a>
+								<a href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" title="{{ trans('button.edit') }}"><i class="icon-edit"></i> {{ trans('button.edit') }}</a>
+							</div>
+						</td>
+					</tr>
+					<tr data-results-fallback style="display: none;">
+						<td colspan="6">
+							<center><strong>{{ trans('table.no_results') }}</strong></center>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
 
 	</section>
 
