@@ -331,4 +331,33 @@ return array(
 		);
 	},
 
+	/*
+	|--------------------------------------------------------------------------
+	| Menus
+	|--------------------------------------------------------------------------
+	|
+	| You may specify the default admin menu hierarchy for your extension. You
+	| can provide a recursive array of menu children and their children. These
+	| will be created upon installation, synchronized upon upgrading and
+	| removed upon uninstallation.
+	|
+	| Menu children are automatically put at the end of the menu for extensions
+	| installed through the Operations extension.
+	|
+	| The default order (for extensions installed initially) can be
+	| found by editing app/config/platform.php.
+	|
+	*/
+
+	'menu' => array(
+
+		array(
+			'slug'  => 'admin-pages',
+			'name'  => 'Pages',
+			'class' => 'icon-file',
+			'uri'   => 'pages',
+		),
+
+	),
+
 );
