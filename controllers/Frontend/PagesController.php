@@ -21,11 +21,11 @@
 use API;
 use Cartalyst\Api\ApiHttpException;
 use Config;
-use Platform\Ui\Controllers\FrontendController;
+use Platform\Routing\Controllers\BaseController;
 use Sentry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class PagesController extends FrontendController {
+class PagesController extends BaseController {
 
 	/**
 	 *
