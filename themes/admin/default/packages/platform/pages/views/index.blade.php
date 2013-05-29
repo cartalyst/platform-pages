@@ -10,6 +10,8 @@
 {{ Asset::queue('tab', 'js/vendor/bootstrap/tab.js', 'jquery') }}
 {{ Asset::queue('tempo', 'js/vendor/tempo/tempo.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'js/vendor/cartalyst/data-grid.js', 'tempo') }}
+{{ Asset::queue('bootstrap-modal', 'js/vendor/bootstrap/modal.js', 'jquery') }}
+{{ Asset::queue('platform-helpers', 'js/vendor/platform/helpers.js', 'bootstrap-modal') }}
 
 {{-- Partial Assets --}}
 @section('assets')
@@ -169,5 +171,28 @@ jQuery(document).ready(function($){
 
 </section>
 
-@widget('platform/ui::modal.confirm')
+<div id="platform-modal-confirm" class="modal hide fade">
+
+	<div class="modal-header">
+
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		<h2>Warning</h2>
+
+	</div>
+
+	<div class="modal-body">
+
+		<h4>You are about to delete this record, do you want to Continue?</h4>
+
+	</div>
+
+	<div class="modal-footer">
+
+		<button class="btn btn-cancel" data-dismiss="modal" aria-hidden="true"><i class="icon-circle-arrow-left"></i> @lang('button.cancel')</button>
+		<a href="#" class="btn btn-primary confirm"><i class="icon-trash"></i> @lang('button.delete') </a>
+
+	</div>
+
+</div>
+
 @stop
