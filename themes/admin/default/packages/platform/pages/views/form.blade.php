@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-@lang("platform/pages::general.$segment.title", array('name' => ! empty($page) ? $page->name : '')) ::
+@lang("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : '')) ::
 @parent
 @stop
 
@@ -33,19 +33,36 @@
 @section('content')
 <section id="page-create">
 
-	<header class="clearfix">
-		<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> @lang("platform/pages::general.$segment.title", array('name' => ! empty($page) ? $page->name : ''))</h1>
-	</header>
+	<form id="page-create-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
 
-	<hr>
+		{{-- CSRF Token --}}
+		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
-	<section class="content">
-		<form id="page-create-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
-			{{-- CSRF Token --}}
-			<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+		<header class="clearfix">
+			<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> @lang("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : ''))</h1>
 
+			<nav class="utilities pull-right">
+				<ul>
+					@if( ! empty($page) and $segment != 'copy')
+					<li>
+						<a class="btn btn-action tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("page/delete/{$page->id}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+					</li>
+					<li>
+						<a class="btn btn-action tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->id}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
+					</li>
+					@endif
+					<li>
+						<button class="btn btn-action tip" data-placement="bottom" title="{{ trans('button.update') }}" type="submit"><i class="icon-save"></i></button>
+					</li>
+				</ul>
+			</nav>
+		</header>
+
+		<hr>
+
+		<section class="content">
 			<fieldset>
-				<legend>@lang("platform/pages::form.$segment.legend")</legend>
+				<legend>@lang("platform/pages::form.{$segment}.legend")</legend>
 
 				{{-- Name --}}
 				<div class="control-group{{ $errors->first('name', ' error') }}" required>
@@ -176,14 +193,30 @@
 
 				</div>
 
-				{{-- Form Actions --}}
-				<div class="form-actions">
-					<button class="btn btn-large btn-primary" type="submit">@lang('button.update')</button>
-				</div>
 			</fieldset>
-		</form>
 
-	</section>
+		</section>
+
+		{{-- Form Actions --}}
+		<footer>
+			<nav class="utilities pull-right">
+				<ul>
+					@if( ! empty($page) and $segment != 'copy')
+					<li>
+						<a class="btn btn-action tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->id}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+					</li>
+					<li>
+						<a class="btn btn-action tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->id}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
+					</li>
+					@endif
+					<li>
+						<button class="btn btn-action tip" data-placement="bottom" title="{{ trans('button.update') }}" type="submit"><i class="icon-save"></i></button>
+					</li>
+				</ul>
+			</nav>
+		</footer>
+
+	</form>
 
 </section>
 @stop

@@ -33,8 +33,8 @@ return array(
 		'description' => 'Please update the following information.',
 	),
 
-	'clone' => array(
-		'title'       => 'Clone :name',
+	'copy' => array(
+		'title'       => 'Copy :name',
 		'description' => 'Please update the following information.',
 	),
 

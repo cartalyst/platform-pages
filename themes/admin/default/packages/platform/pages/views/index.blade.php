@@ -99,6 +99,7 @@ jQuery(document).ready(function($) {
 
 			<div class="grid-pagination pull-right" data-grid="main">
 				<div data-template style="display: none;">
+					<span class="page-meta">[[ pageStart ]] - [[ pageLimit ]] {{ trans('general.of') }} <span id="total"></span></span>
 					[? if prevPage !== null ?]
 					<a href="#" data-page="[[ prevPage ]]" class="btn">
 						<i class="icon-chevron-left"></i>
@@ -138,7 +139,6 @@ jQuery(document).ready(function($) {
 			<table id="grid" data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="table">
 				<thead>
 					<tr>
-						<th data-sort="id" data-grid="main" class="span1sortable">{{ trans('platform/pages::table.id') }}</th>
 						<th data-sort="name" data-grid="main" class="sortable">{{ trans('platform/pages::table.name') }}</th>
 						<th data-sort="slug" data-grid="main" class="sortable">{{ trans('platform/pages::table.slug') }}</th>
 						<th data-sort="enabled" data-grid="main" class="sortable">{{ trans('platform/pages::table.enabled') }}</th>
@@ -148,7 +148,6 @@ jQuery(document).ready(function($) {
 				</thead>
 				<tbody>
 					<tr data-template style="display: none;">
-						<td>[[ id ]]</td>
 						<td>[[ name ]]</td>
 						<td>[[ slug ]]</td>
 						<td>
@@ -162,12 +161,13 @@ jQuery(document).ready(function($) {
 						<td>
 							<div class="actions">
 								<a class="btn btn-action" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" data-title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+								<a class="btn btn-action" href="{{ URL::toAdmin('pages/copy/[[ id ]]') }}" data-title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
 								<a class="btn btn-action" href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" data-title="{{ trans('button.edit') }}"><i class="icon-edit"></i></a>
 							</div>
 						</td>
 					</tr>
 					<tr data-results-fallback style="display: none;">
-						<td colspan="4" class="no-results">
+						<td colspan="5" class="no-results">
 							{{ trans('table.no_results') }}
 						</td>
 					</tr>

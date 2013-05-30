@@ -22,6 +22,7 @@ return array(
 
 	'index'  => 'List Pages',
 	'create' => 'Create new Pages',
+	'copy'   => 'Copy Page',
 	'edit'   => 'View / Edit Pages',
 	'delete' => 'Delete Pages',
 

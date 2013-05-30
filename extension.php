@@ -253,6 +253,7 @@ return array(
 
 			'platform/pages::admin.pagesController@index'  => Lang::get('platform/pages::permissions.index'),
 			'platform/pages::admin.pagesController@create' => Lang::get('platform/pages::permissions.create'),
+			'platform/pages::admin.pagesController@copy'   => Lang::get('platform/pages::permissions.copy'),
 			'platform/pages::admin.pagesController@edit'   => Lang::get('platform/pages::permissions.edit'),
 			'platform/pages::admin.pagesController@delete' => Lang::get('platform/pages::permissions.delete'),
 

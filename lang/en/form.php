@@ -51,8 +51,8 @@ return array(
 		'summary' => 'Please supply the following information.',
 	),
 
-	'clone' => array(
-		'legend'  => 'Clone Page',
+	'copy' => array(
+		'legend'  => 'Copy Page',
 		'summary' => 'Please supply the following information.',
 	),
 

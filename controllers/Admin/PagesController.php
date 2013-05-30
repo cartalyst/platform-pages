@@ -110,23 +110,23 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page clone.
+	 * Page copy.
 	 *
 	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function getClone($id = null)
+	public function getCopy($id = null)
 	{
-		return $this->showForm($id, 'clone');
+		return $this->showForm($id, 'copy');
 	}
 
 	/**
-	 * Page clone form processing.
+	 * Page copy form processing.
 	 *
 	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function postClone($id = null)
+	public function postCopy($id = null)
 	{
 		return $this->processForm($id);
 	}
