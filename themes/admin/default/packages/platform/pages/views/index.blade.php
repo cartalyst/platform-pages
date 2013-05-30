@@ -34,6 +34,7 @@ jQuery(document).ready(function($) {
 		},
 		callback: function(obj) {
 			$('#total').html(obj.filterCount);
+
 			$('[data-title]').tooltip();
 		}
 	});
@@ -98,16 +99,24 @@ jQuery(document).ready(function($) {
 
 			<div class="grid-pagination pull-right" data-grid="main">
 				<div data-template style="display: none;">
-					<span class="page-meta">[[ pageStart ]] - [[ pageLimit ]] {{ trans('general.of') }} <span id="total"></span></span>
 					[? if prevPage !== null ?]
-					<a  href="#" data-page="[[ prevPage ]]" class="btn btn-circle">
+					<a href="#" data-page="[[ prevPage ]]" class="btn">
 						<i class="icon-chevron-left"></i>
 					</a>
+					[? else ?]
+					<span class="btn disabled btn-circle">
+						<i class="icon-chevron-left"></i>
+					</span>
 					[? endif ?]
+
 					[? if nextPage !== null ?]
-					<a  href="#" data-page="[[ nextPage ]]" class="btn btn-circle">
+					<a href="#" data-page="[[ nextPage ]]" class="btn">
 						<i class="icon-chevron-right"></i>
 					</a>
+					[? else ?]
+					<span class="btn disabled btn-circle">
+						<i class="icon-chevron-right"></i>
+					</span>
 					[? endif ?]
 				</div>
 			</div>
