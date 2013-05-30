@@ -51,7 +51,7 @@ jQuery(document).ready(function($) {
 		<nav class="utilities pull-left">
 			<ul>
 				<li>
-					<a class="btn btn-action" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a>
+					<a class="btn btn-action" data-placement="bottom" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a>
 				</li>
 			</ul>
 		</nav>
