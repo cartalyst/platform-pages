@@ -34,6 +34,7 @@ jQuery(document).ready(function($) {
 		},
 		callback: function(obj) {
 			$('#total').html(obj.filterCount);
+			$('[data-title]').tooltip();
 		}
 	});
 });
@@ -116,8 +117,12 @@ jQuery(document).ready(function($) {
 		<div class="grid-wrap clearfix">
 
 			<div class="loading">
-				<div>
-					<span><img src="{{ Asset::getUrl('img/loader.gif') }}" /> {{ trans('general.loading') }}</span>
+				<div class="loading-wrap">
+					<div class="cell">
+						{{ trans('general.loading') }}
+						<br>
+						<span class="loader"></span>
+					</div>
 				</div>
 			</div>
 
@@ -147,14 +152,14 @@ jQuery(document).ready(function($) {
 						<td>[[ created_at ]]</td>
 						<td>
 							<div class="actions">
-								<a data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i> {{ trans('button.delete') }}</a>
-								<a href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" title="{{ trans('button.edit') }}"><i class="icon-edit"></i> {{ trans('button.edit') }}</a>
+								<a class="btn btn-action" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" data-title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+								<a class="btn btn-action" href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" data-title="{{ trans('button.edit') }}"><i class="icon-edit"></i></a>
 							</div>
 						</td>
 					</tr>
 					<tr data-results-fallback style="display: none;">
-						<td colspan="6">
-							<center><strong>{{ trans('table.no_results') }}</strong></center>
+						<td colspan="4" class="no-results">
+							{{ trans('table.no_results') }}
 						</td>
 					</tr>
 				</tbody>
