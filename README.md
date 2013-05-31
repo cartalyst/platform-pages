@@ -1,4 +1,0 @@
-pages
-=====
-
-Platform Extension - Pages
