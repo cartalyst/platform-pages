@@ -123,12 +123,11 @@ class PagesController extends AdminController {
 	/**
 	 * Page copy form processing.
 	 *
-	 * @param  int  $id
 	 * @return Redirect
 	 */
-	public function postCopy($id = null)
+	public function postCopy()
 	{
-		return $this->processForm($id);
+		return $this->processForm();
 	}
 
 	/**

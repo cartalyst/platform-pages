@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-{{ trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : '')) }} ::
+{{ trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : null)) }} ::
 @parent
 @stop
 
@@ -39,7 +39,7 @@
 		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
 
 		<header class="clearfix">
-			<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> {{ trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : '')) }}</h1>
+			<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> {{ trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : null)) }}</h1>
 
 			<nav class="utilities pull-right">
 				<ul>
@@ -68,7 +68,7 @@
 				<div class="control-group{{ $errors->first('name', ' error') }}" required>
 					<label class="control-label" for="name">{{ trans('platform/pages::form.name') }}</label>
 					<div class="controls">
-						<input type="text" name="name" id="name" value="{{ Input::old('name', ! empty($page) ? $page->name : '') }}" placeholder="{{ trans('platform/pages::form.name_help') }}" required>
+						<input type="text" name="name" id="name" value="{{ Input::old('name', ! empty($page) ? $page->name : null) }}" placeholder="{{ trans('platform/pages::form.name_help') }}" required>
 						{{ $errors->first('name', '<span class="help-inline">:message</span>') }}
 					</div>
 				</div>
@@ -81,7 +81,7 @@
 							<span class="add-on">
 								{{ str_finish(URL::to('/'), '/') }}
 							</span>
-							<input type="text" name="slug" id="slug" value="{{ Input::old('slug', ! empty($page) ? $page->slug : '') }}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
+							<input type="text" name="slug" id="slug" value="{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
 						</div>
 						{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
 					</div>
@@ -92,8 +92,8 @@
 					<label class="control-label" for="enabled">{{ trans('platform/pages::form.status') }}</label>
 					<div class="controls">
 						<select name="enabled" id="enabled" required>
-							<option value="1"{{ (Input::old('enabled', ! empty($page) ? $page->enabled : 1) === 1 ? ' selected="selected"' : '') }}>{{ trans('general.enabled') }}</option>
-							<option value="0"{{ (Input::old('enabled', ! empty($page) ? $page->enabled : 1) === 0 ? ' selected="selected"' : '') }}>{{ trans('general.disabled') }}</option>
+							<option value="1"{{ (Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 1 ? ' selected="selected"' : null) }}>{{ trans('general.enabled') }}</option>
+							<option value="0"{{ (Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 0 ? ' selected="selected"' : null) }}>{{ trans('general.disabled') }}</option>
 						</select>
 						{{ $errors->first('enabled', '<span class="help-inline">:message</span>') }}
 					</div>
@@ -104,8 +104,8 @@
 					<label class="control-label" for="type">{{ trans('platform/pages::form.type') }}</label>
 					<div class="controls">
 						<select name="type" id="type">
-							<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : '' }}>{{ trans('platform/content::form.database') }}</option>
-							<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : '' }}>{{ trans('platform/content::form.filesystem') }}</option>
+							<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.database') }}</option>
+							<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.filesystem') }}</option>
 						</select>
 						{{ $errors->first('type', '<span class="help-inline">:message</span>') }}
 					</div>
@@ -130,7 +130,7 @@
 					<div class="controls">
 						<select name="groups[]" id="groups[]" multiple="multiple">
 							@foreach ($groups as $group)
-								<option value="{{ $group->id }}"{{ array_key_exists($group->id, $pageGroups) ? ' selected="selected"' : '' }}>{{ $group->name }}</option>
+								<option value="{{ $group->id }}"{{ array_key_exists($group->id, $pageGroups) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
 							@endforeach
 						</select>
 						{{ $errors->first('groups', '<span class="help-inline">:message</span>') }}
@@ -138,7 +138,7 @@
 				</div>
 
 
-				<div class="type-database{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' hide' : '' }}">
+				<div class="type-database{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' hide' : null }}">
 
 					{{-- Templates --}}
 					<div class="control-group{{ $errors->first('template', ' error') }}" required>
@@ -146,7 +146,7 @@
 						<div class="controls">
 							<select name="template" id="template" required>
 								@foreach ($templates as $value => $name)
-								<option value="{{ $value }}"{{ Input::old('template', ! empty($page) ? $page->template : '') == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
+								<option value="{{ $value }}"{{ Input::old('template', ! empty($page) ? $page->template : null) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 								@endforeach
 							</select>
 							{{ $errors->first('template', '<span class="help-inline">:message</span>') }}
@@ -159,7 +159,7 @@
 						<div class="controls">
 							<div class="input-prepend">
 								<i class="add-on">@</i>
-								<input type="text" name="section" value="{{ Input::old('section', ! empty($page) ? $page->section : '') }}" placeholder="{{ trans('platform/pages::form.section_help') }}">
+								<input type="text" name="section" value="{{ Input::old('section', ! empty($page) ? $page->section : null) }}" placeholder="{{ trans('platform/pages::form.section_help') }}">
 							</div>
 							{{ $errors->first('section', '<span class="help-inline">:message</span>') }}
 						</div>
@@ -169,14 +169,14 @@
 					<div class="control-group{{ $errors->first('value', ' error') }}" required>
 						<label class="control-label" for="value">{{ trans('platform/pages::form.value') }}</label>
 						<div class="controls">
-							<textarea rows="10" name="value" id="value"{{ Input::old('value', ! empty($page) ? $page->type : '') == 'database' ? ' required' : '' }}>{{ Input::old('value', ! empty($page) ? $page->value : '') }}</textarea>
+							<textarea rows="10" name="value" id="value"{{ Input::old('value', ! empty($page) ? $page->type : null) == 'database' ? ' required' : null }}>{{ Input::old('value', ! empty($page) ? $page->value : null) }}</textarea>
 							{{ $errors->first('value', '<span class="help-inline">:message</span>') }}
 						</div>
 					</div>
 
 				</div>
 
-				<div class="type-filesystem{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' hide' : '' }}">
+				<div class="type-filesystem{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' hide' : null }}">
 
 					{{-- File --}}
 					<div class="control-group{{ $errors->first('file', ' error') }}" required>
@@ -184,7 +184,7 @@
 						<div class="controls">
 							<select name="file" id="file" required>
 								@foreach ($files as $value => $name)
-								<option value="{{ $value }}"{{ Input::old('file', ! empty($page) ? $page->file : '') == $value ? ' selected="selected"' : ''}}>{{ $name }}</option>
+								<option value="{{ $value }}"{{ Input::old('file', ! empty($page) ? $page->file : null) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 								@endforeach
 							</select>
 							{{ $errors->first('file', '<span class="help-inline">:message</span>') }}
