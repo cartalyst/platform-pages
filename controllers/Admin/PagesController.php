@@ -141,7 +141,7 @@ class PagesController extends AdminController {
 		try
 		{
 			// Delete the page
-			API::delete("v1/pages/$id");
+			API::delete("v1/pages/{$id}");
 
 			// Set the success message
 			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));
@@ -178,7 +178,7 @@ class PagesController extends AdminController {
 			if ( ! is_null($id))
 			{
 				// Get the page information
-				$response = API::get("v1/pages/$id");
+				$response = API::get("v1/pages/{$id}");
 				$page     = $response['page'];
 
 				// Get this page groups
@@ -233,7 +233,7 @@ class PagesController extends AdminController {
 			else
 			{
 				// Make the request
-				API::put("v1/pages/$id", Input::all());
+				API::put("v1/pages/{$id}", Input::all());
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.success.update');
@@ -243,7 +243,7 @@ class PagesController extends AdminController {
 			$notifications = with(new Bag)->add('success', $success);
 
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/$id")->with('notifications', $notifications);
+			return Redirect::toAdmin("pages/edit/{$id}")->with('notifications', $notifications);
 		}
 		catch (ApiHttpException $e)
 		{
