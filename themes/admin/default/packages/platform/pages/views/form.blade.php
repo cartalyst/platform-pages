@@ -68,7 +68,7 @@
 				<div class="control-group{{ $errors->first('name', ' error') }}" required>
 					<label class="control-label" for="name">{{ trans('platform/pages::form.name') }}</label>
 					<div class="controls">
-						<input type="text" name="name" id="name" value="{{ Input::old('name', ! empty($page) ? $page->name : null) }}" placeholder="{{ trans('platform/pages::form.name_help') }}" required>
+						<input type="text" name="name" id="name" value="{{{ Input::old('name', ! empty($page) ? $page->name : null) }}}" placeholder="{{ trans('platform/pages::form.name_help') }}" required>
 						{{ $errors->first('name', '<span class="help-inline">:message</span>') }}
 					</div>
 				</div>
@@ -81,7 +81,7 @@
 							<span class="add-on">
 								{{ str_finish(URL::to('/'), '/') }}
 							</span>
-							<input type="text" name="slug" id="slug" value="{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
+							<input type="text" name="slug" id="slug" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
 						</div>
 						{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
 					</div>
@@ -159,7 +159,7 @@
 						<div class="controls">
 							<div class="input-prepend">
 								<i class="add-on">@</i>
-								<input type="text" name="section" value="{{ Input::old('section', ! empty($page) ? $page->section : null) }}" placeholder="{{ trans('platform/pages::form.section_help') }}">
+								<input type="text" name="section" value="{{{ Input::old('section', ! empty($page) ? $page->section : null) }}}" placeholder="{{ trans('platform/pages::form.section_help') }}">
 							</div>
 							{{ $errors->first('section', '<span class="help-inline">:message</span>') }}
 						</div>
@@ -169,7 +169,7 @@
 					<div class="control-group{{ $errors->first('value', ' error') }}" required>
 						<label class="control-label" for="value">{{ trans('platform/pages::form.value') }}</label>
 						<div class="controls">
-							<textarea rows="10" name="value" id="value"{{ Input::old('value', ! empty($page) ? $page->type : null) == 'database' ? ' required' : null }}>{{ Input::old('value', ! empty($page) ? $page->value : null) }}</textarea>
+							<textarea rows="10" name="value" id="value"{{{ Input::old('value', ! empty($page) ? $page->type : null) == 'database' ? ' required' : null }}}>{{ Input::old('value', ! empty($page) ? $page->value : null) }}</textarea>
 							{{ $errors->first('value', '<span class="help-inline">:message</span>') }}
 						</div>
 					</div>
