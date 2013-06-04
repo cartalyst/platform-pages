@@ -28,7 +28,14 @@ return array(
 	'enabled_help'    => 'What is the status of this page?',
 	'type'            => 'Storage Type',
 	'type_help'       => 'How do you want to store and edit this page?',
-	'visibility'      => 'Visibility',
+	'visibility'      => array(
+		'legend' => 'Visibility',
+
+		'always'     => 'Show Always',
+		'logged_in'  => 'Logged In',
+		'logged_out' => 'Logged Out',
+		'admin'      => 'Admin Only',
+	),
 	'visibility_help' => 'When should this page be seen?',
 	'groups'          => 'Groups',
 	'groups_help'     => 'What user groups should be able to see this page?',
@@ -37,7 +44,7 @@ return array(
 	'section'         => 'Section',
 	'section_help'    => 'Which @section() to inject value to?',
 	'value'           => 'Value',
-	'value_help'      => 'The page\'s value. @content call is allowed.',
+	'value_help'      => "The page's value. @content call is allowed.",
 	'file'            => 'File',
 	'file_help'       => 'File to use.',
 
@@ -55,5 +62,4 @@ return array(
 		'legend'  => 'Copy Page',
 		'summary' => 'Please supply the following information.',
 	),
-
 );

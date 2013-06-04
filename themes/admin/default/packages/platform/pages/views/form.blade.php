@@ -1,10 +1,7 @@
 @extends('templates/default')
 
 {{-- Page title --}}
-@section('title')
-{{ trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : null)) }} ::
-@parent
-@stop
+@section('title', trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : null)))
 
 {{-- Queue Assets --}}
 {{ Asset::queue('redactor', 'styles/css/vendor/imperavi/redactor.css', 'style') }}
@@ -31,9 +28,9 @@
 
 {{-- Page content --}}
 @section('content')
-<section id="page-create">
+<section id="page">
 
-	<form id="page-create-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
+	<form id="page-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
 
 		{{-- CSRF Token --}}
 		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
@@ -92,8 +89,8 @@
 					<label class="control-label" for="enabled">{{ trans('platform/pages::form.status') }}</label>
 					<div class="controls">
 						<select name="enabled" id="enabled" required>
-							<option value="1"{{ (Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 1 ? ' selected="selected"' : null) }}>{{ trans('general.enabled') }}</option>
-							<option value="0"{{ (Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 0 ? ' selected="selected"' : null) }}>{{ trans('general.disabled') }}</option>
+							<option value="1"{{ Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 1 ? ' selected="selected"' : null }}>{{ trans('general.enabled') }}</option>
+							<option value="0"{{ Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 0 ? ' selected="selected"' : null }}>{{ trans('general.disabled') }}</option>
 						</select>
 						{{ $errors->first('enabled', '<span class="help-inline">:message</span>') }}
 					</div>
@@ -113,12 +110,12 @@
 
 				{{-- Visibility --}}
 				<div class="control-group{{ $errors->first('visibility', ' error') }}" required>
-					<label for="visibility" class="control-label">{{ trans('platform/pages::form.visibility') }}</label>
+					<label for="visibility" class="control-label">{{ trans('platform/pages::form.visibility.legend') }}</label>
 					<div class="controls">
 						<select name="visibility" id="visibility">
-							<option value="always">Show Always</option>
-							<option value="logged_in">Logged In Only</option>
-							<option value="admin">Admin Only</option>
+							<option value="always"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'always' ? ' selected="selected"' : null }}>{{ trans('platform/pages::form.visibility.always') }}</option>
+							<option value="logged_in"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'logged_in' ? ' selected="selected"' : null }}>{{ trans('platform/pages::form.visibility.logged_in') }}</option>
+							<option value="admin"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'admin' ? ' selected="selected"' : null }}>{{ trans('platform/pages::form.visibility.admin') }}</option>
 						</select>
 						{{ $errors->first('visibility', '<span class="help-inline">:message</span>') }}
 					</div>
