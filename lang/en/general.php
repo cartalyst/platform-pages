@@ -24,7 +24,7 @@ return array(
 	'description' => 'Manage your website pages.',
 
 	'create' => array(
-		'title'       => 'Create',
+		'title'       => 'Create Page',
 		'description' => 'Please supply the following information.',
 	),
 
