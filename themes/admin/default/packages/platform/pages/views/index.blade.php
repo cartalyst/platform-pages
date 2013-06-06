@@ -142,7 +142,7 @@ jQuery(document).ready(function($) {
 						<th data-sort="name" data-grid="main" class="sortable">{{ trans('platform/pages::table.name') }}</th>
 						<th data-sort="slug" data-grid="main" class="sortable">{{ trans('platform/pages::table.slug') }}</th>
 						<th data-sort="enabled" data-grid="main" class="sortable">{{ trans('platform/pages::table.enabled') }}</th>
-						<th data-sort="created_at" data-grid="main" class="sortable">{{ trans('platform/pages::table.created_at') }}</th>
+						<th data-sort="created_at" data-grid="main" class="span2 sortable">{{ trans('platform/pages::table.created_at') }}</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -157,7 +157,7 @@ jQuery(document).ready(function($) {
 								{{ trans('general.no') }}
 							[? endif ?]
 						</td>
-						<td>[[ created_at ]]</td>
+						<td>[[ created_at | date 'DD MMMM YYYY' ]]</td>
 						<td>
 							<div class="actions">
 								<a class="btn btn-action" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" data-title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
