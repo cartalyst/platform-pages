@@ -19,7 +19,7 @@
  */
 
 use API;
-use Cartalyst\Api\ApiHttpException;
+use Cartalyst\Api\Http\ApiHttpException;
 use Config;
 use Platform\Routing\Controllers\BaseController;
 use Sentry;
@@ -47,7 +47,7 @@ class PagesController extends BaseController {
 		}
 		catch (ApiHttpException $e)
 		{
-			throw new NotFoundHttpException("No matching page could be found for the requested URI.");
+			throw new NotFoundHttpException("No matching page could be found for the requested URI [$slug].");
 		}
 
 		// @todo: We should have a config item whether invalid
