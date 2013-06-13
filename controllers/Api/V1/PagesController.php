@@ -132,31 +132,20 @@ class PagesController extends ApiController {
 	 */
 	public function show($id = null)
 	{
-		// Do we have the page slug?
-		if ( ! is_numeric($id))
-		{
-			$page = $this->model->where('slug', $id);
-		}
-
-		// We must have the page id
-		else
-		{
-			$page = $this->model->where('id', $id);
-		}
+		$query = $this->model->newQuery()->with('groups');
 
 		// Do we only want the enabled page ?
 		if (Input::get('enabled'))
 		{
-			$page->where('enabled', 1);
+			$query->where('enabled', 1);
 		}
 
-		// Check if the page exists
-		if (is_null($page = $page->with('groups')->first()))
+		// Try slug first
+		if ( ! $page = $query->where('slug', $id)->first() and ! $page = $query->where('id', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
 		}
 
-		// Return the page information
 		return Response::api(compact('page'));
 	}
 

@@ -124,9 +124,9 @@ class Page extends Model {
 	{
 		$instance = new static;
 
-		if ( ! is_numeric($id))
+		if ($page = $instance->newQuery()->where('slug', $id)->first($columns))
 		{
-			return $instance->newQuery()->where('slug', $id)->first($columns);
+			return $page;
 		}
 
 		return parent::find($id, $columns);
