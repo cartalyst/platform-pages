@@ -21,7 +21,7 @@
 return array(
 
 	// General messages
-	'page_not_found' => 'Page [:id] does not exist.',
+	'not_found' => 'Page [:id] does not exist.',
 
 	// Success messages
 	'success' => array(

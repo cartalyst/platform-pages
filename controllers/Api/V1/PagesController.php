@@ -120,7 +120,7 @@ class PagesController extends ApiController {
 			return Response::api(compact('page'));
 		}
 
-		// There was a problem creating the content
+		// There was a problem creating the page
 		return Response::api(Lang::get('platform/pages::message.error.create'), 500);
 	}
 
@@ -140,10 +140,10 @@ class PagesController extends ApiController {
 			$query->where('enabled', 1);
 		}
 
-		// Try slug first
-		if ( ! $page = $query->where('slug', $id)->first() and ! $page = $query->where('id', $id)->first())
+		// Search for the page
+		if ( ! $page = $query->where('slug', $id)->orWhere('id', $id)->first())
 		{
-			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
+			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
 
 		return Response::api(compact('page'));
@@ -157,22 +157,12 @@ class PagesController extends ApiController {
 	 */
 	public function update($id = null)
 	{
-		// Do we have the page slug?
-		if ( ! is_numeric($id))
-		{
-			$page = $this->model->where('slug', $id);
-		}
+		$query = $this->model->newQuery();
 
-		// We must have the page id
-		else
+		// Search for the page
+		if ( ! $page = $query->where('slug', $id)->orWhere('id', $id)->first())
 		{
-			$page = $this->model->where('id', $id);
-		}
-
-		// Check if the page exists
-		if (is_null($page = $page->first()))
-		{
-			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
+			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
 
 		// Get all the inputs
@@ -196,7 +186,7 @@ class PagesController extends ApiController {
 		// Was the page updated?
 		if ( ! $page->save())
 		{
-			// There was a problem updating the content
+			// There was a problem updating the page
 			return Response::api(Lang::get('platform/pages::message.update.error'), 500);
 		}
 
@@ -238,22 +228,12 @@ class PagesController extends ApiController {
 	 */
 	public function destroy($id = null)
 	{
-		// Do we have the page slug?
-		if ( ! is_numeric($id))
-		{
-			$page = $this->model->where('slug', $id);
-		}
+		$query = $this->model->newQuery();
 
-		// We must have the page id
-		else
+		// Search for the page
+		if ( ! $page = $query->where('slug', $id)->orWhere('id', $id)->first())
 		{
-			$page = $this->model->where('id', $id);
-		}
-
-		// Check if the page exists
-		if (is_null($page = $page->first()))
-		{
-			return Response::api(Lang::get('platform/pages::message.page_not_found', compact('id')), 404);
+			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
 
 		// Delete the page
