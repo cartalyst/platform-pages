@@ -48,7 +48,10 @@
 			"models",
 			"tests",
 			"widgets"
-		]
+		],
+		"psr-0": {
+			"Platform\\Pages" : "src/"
+		}
 	},
 	"extra": {
 		"component": "extension",
