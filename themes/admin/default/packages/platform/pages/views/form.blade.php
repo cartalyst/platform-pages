@@ -1,7 +1,7 @@
 @extends('templates/default')
 
 {{-- Page title --}}
-@section('title', trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : null)))
+@section('title', trans("platform/pages::general.{$pageSegment}.title", array('page' => ! empty($page) ? $page->name : null)))
 
 {{-- Queue Assets --}}
 {{ Asset::queue('redactor', 'styles/css/vendor/imperavi/redactor.css', 'style') }}
@@ -11,11 +11,6 @@
 {{ Asset::queue('pages', 'platform/pages::js/pages.js', 'jquery') }}
 {{ Asset::queue('redactor-editor', 'platform/pages::js/editor.js', 'redactor') }}
 
-{{-- Partial Assets --}}
-@section('assets')
-@parent
-@stop
-
 {{-- Inline Styles --}}
 @section('styles')
 @parent
@@ -24,42 +19,32 @@
 {{-- Inline Scripts --}}
 @section('scripts')
 @parent
+<script>
+	H5F.setup(document.getElementById('page-form'));
+</script>
 @stop
 
 {{-- Page content --}}
 @section('content')
-<section id="page">
+<form id="page-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
 
-	<form id="page-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
+	{{-- CSRF Token --}}
+	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-		{{-- CSRF Token --}}
-		<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+	<header class="page__header">
 
-		<header class="clearfix">
-			<h1><a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> {{ trans("platform/pages::general.{$segment}.title", array('name' => ! empty($page) ? $page->name : null)) }}</h1>
+		<div class="page__actions">
+			<h1>
+				<a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> {{ trans("platform/pages::general.{$pageSegment}.title", array('page' => ! empty($page) ? $page->name : null)) }}
+			</h1>
+		</div>
 
-			<nav class="utilities pull-right">
-				<ul>
-					@if( ! empty($page) and $segment != 'copy')
-					<li>
-						<a class="btn btn-action tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("page/delete/{$page->id}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
-					</li>
-					<li>
-						<a class="btn btn-action tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->id}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
-					</li>
-					@endif
-					<li>
-						<button class="btn btn-action tip" data-placement="bottom" title="{{ trans('button.update') }}" type="submit"><i class="icon-save"></i></button>
-					</li>
-				</ul>
-			</nav>
-		</header>
+	</header>
 
-		<hr>
+	<section class="page__content">
 
-		<section class="content">
-			<fieldset>
-				<legend>{{ trans("platform/pages::form.{$segment}.legend") }}</legend>
+		<fieldset>
+				<legend>{{ trans("platform/pages::form.{$pageSegment}.legend") }}</legend>
 
 				{{-- Name --}}
 				<div class="control-group{{ $errors->first('name', ' error') }}" required>
@@ -194,26 +179,24 @@
 
 		</section>
 
-		{{-- Form Actions --}}
-		<footer>
-			<nav class="utilities pull-right">
-				<ul>
-					@if( ! empty($page) and $segment != 'copy')
-					<li>
-						<a class="btn btn-action tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->id}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
-					</li>
-					<li>
-						<a class="btn btn-action tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->id}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
-					</li>
-					@endif
-					<li>
-						<button class="btn btn-action tip" data-placement="bottom" title="{{ trans('button.update') }}" type="submit"><i class="icon-save"></i></button>
-					</li>
-				</ul>
-			</nav>
-		</footer>
+	<footer class="page__footer">
 
-	</form>
+		<nav class="actions actions--right">
+			<ul class="navigation navigation--inline-circle">
+				@if( ! empty($page) and $pageSegment != 'copy')
+				<li>
+					<a class="danger tip" data-placement="top" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->id}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+				</li>
+				<li>
+					<a class="tip" data-placement="top" href="{{ URL::toAdmin("pages/copy/{$page->id}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
+				</li>
+				@endif
+				<li>
+					<button class="tip" data-placement="top" title="{{ trans('button.save') }}" type="submit"><i class="icon-save"></i></button>
+				</li>
+			</ul>
+		</nav>
 
-</section>
+	</footer>
+</form>
 @stop

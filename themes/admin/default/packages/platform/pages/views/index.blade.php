@@ -10,11 +10,6 @@
 {{ Asset::queue('tempo', 'js/vendor/tempo/tempo.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'js/vendor/cartalyst/data-grid.js', 'tempo') }}
 
-{{-- Partial Assets --}}
-@section('assets')
-@parent
-@stop
-
 {{-- Inline Styles --}}
 @section('styles')
 @parent
@@ -24,8 +19,9 @@
 @section('scripts')
 @parent
 <script>
-jQuery(document).ready(function($) {
-	$.datagrid('main', '#grid', '.grid-pagination', '.applied', {
+$(function() {
+
+	$.datagrid('main', '.data-grid__table', '.data-grid__pagination', '.data-grid__applied', {
 		loader: '.loading',
 		type: 'single',
 		sort: {
@@ -33,43 +29,45 @@ jQuery(document).ready(function($) {
 			direction: 'desc'
 		},
 		callback: function(obj) {
-			$('#total').html(obj.filterCount);
 
+			$('.total').html(Platform.Utils.shorten(obj.filterCount));
 			$('[data-title]').tooltip();
+
 		}
 	});
+
 });
 </script>
 @stop
 
 {{-- Page pages --}}
 @section('content')
-<section id="pages">
+<header class="page__header">
 
-	<header class="clearfix">
-		<h1>{{ trans('platform/pages::general.title') }}</h1>
+	<nav class="page__navigation">
+		@widget('platform/menus::nav.show', array(1, 1, 'navigation nav nav-tabs', admin_uri()))
+	</nav>
 
-		<nav class="utilities pull-left">
-			<ul>
-				<li>
-					<a class="btn btn-action" data-placement="bottom" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a>
-				</li>
+	<div class="page__actions">
+		<h1><span class="total"></span> {{ trans('platform/pages::general.title') }}</h1>
+
+		<nav class="actions">
+			<ul class="navigation navigation--inline-circle">
+				<li><a data-placement="right" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a></li>
 			</ul>
 		</nav>
+	</div>
 
-		<nav class="tertiary-navigation pull-right">
-			@widget('platform/menus::nav.show', array(2, 1, 'nav nav-pills', admin_uri()))
-		</nav>
-	</header>
+</header>
 
-	<hr>
+<section class="page__content">
 
-	<section class="content">
+	<div class="data-grid">
 
-		<div class="grid-functions clearfix">
+		<header class="clearfix">
 
-			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="filters pull-left">
-				<div class="styled">
+			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="data-grid__search">
+				<div class="select">
 					<select name="column">
 						<option value="all">{{ trans('general.all') }}</option>
 						<option value="name">{{ trans('platform/pages::table.name') }}</option>
@@ -82,101 +80,105 @@ jQuery(document).ready(function($) {
 					<input name="filter" type="text" placeholder="{{ trans('general.search') }}" class="input-large">
 					<button class="btn btn-large"><i class="icon-search"></i></button>
 				</div>
-
-				<ul class="applied pull-left" data-grid="main">
-					<li data-template style="display: none;" class="btn-group">
-						<a class="btn btn-large" href="#">
-							[? if column == undefined ?]
-							[[ valueLabel ]]
-							[? else ?]
-							[[ valueLabel ]] {{ trans('general.in') }} [[ columnLabel ]]
-							[? endif ?]
-						</a>
-						<a href="#" class="btn btn-large remove-filter"><i class="icon-remove-sign"></i></a>
-					</li>
-				</ul>
 			</form>
 
-			<div class="grid-pagination pull-right" data-grid="main">
-				<div data-template style="display: none;">
-					<span class="page-meta">[[ pageStart ]] - [[ pageLimit ]] {{ trans('general.of') }} <span id="total"></span></span>
-					[? if prevPage !== null ?]
-					<a href="#" data-page="[[ prevPage ]]" class="btn">
-						<i class="icon-chevron-left"></i>
+			<ul class="data-grid__applied navigation navigation--inline" data-grid="main">
+				<li data-template style="display: none;">
+					<a href="#">
+						[? if column == undefined ?]
+						[[ valueLabel ]]
+						[? else ?]
+						[[ valueLabel ]] {{ trans('general.in') }} [[ columnLabel ]]
+						[? endif ?]
+						<i class="icon-remove-sign"></i>
 					</a>
-					[? else ?]
-					<span class="btn disabled btn-circle">
-						<i class="icon-chevron-left"></i>
-					</span>
+				</li>
+			</ul>
+
+			<div class="data-grid__loader">
+				<div class="loading">
+					<span class="loading__loader"></span>
+				</div>
+			</div>
+
+		</header>
+
+		<table data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="data-grid__table">
+			<thead>
+				<tr>
+					<th data-sort="name" data-grid="main" class="sortable">{{ trans('platform/pages::table.name') }}</th>
+					<th data-sort="slug" data-grid="main" class="sortable">{{ trans('platform/pages::table.slug') }}</th>
+					<th data-sort="enabled" data-grid="main" class="sortable">{{ trans('platform/pages::table.enabled') }}</th>
+					<th data-sort="created_at" data-grid="main" class="span2 sortable">{{ trans('platform/pages::table.created_at') }}</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr data-template style="display: none;">
+					<td>[[ name ]]</td>
+					<td>[[ slug ]]</td>
+					<td>
+						[? if enabled ?]
+							{{ trans('general.yes') }}
+						[? else ?]
+							{{ trans('general.no') }}
+						[? endif ?]
+					</td>
+					<td>[[ created_at | date 'DD MMMM YYYY' ]]</td>
+					<td>
+						<nav class="actions actions--hidden">
+							<ul class="navigation navigation--inline-circle">
+								<li>
+									<a data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" data-title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+								</li>
+								<li>
+									<a href="{{ URL::toAdmin('pages/copy/[[ slug ]]') }}" data-title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
+								</li>
+								<li>
+									<a href="{{ URL::toAdmin('pages/edit/[[ slug ]]') }}" data-title="{{ trans('button.edit') }}"><i class="icon-pencil"></i></a>
+								</li>
+							</ul>
+						</nav>
+					</td>
+				</tr>
+				<tr data-results-fallback style="display: none;">
+					<td colspan="5" class="no-results">
+						{{ trans('table.no_results') }}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+</section>
+
+<footer class="page__footer">
+
+	<div class="data-grid__pagination clearfix" data-grid="main">
+		<div data-template style="display: none;">
+			<div class="count">[[ pageStart ]] - [[ pageLimit ]] {{ trans('general.of') }} <span class="total"></span></div>
+			<nav class="actions actions--right">
+				<ul class="navigation navigation--inline-circle">
+					[? if prevPage !== null ?]
+					<li>
+						<a href="#" data-page="[[ prevPage ]]">
+							<i class="icon-chevron-left"></i>
+						</a>
+					</li>
 					[? endif ?]
 
 					[? if nextPage !== null ?]
-					<a href="#" data-page="[[ nextPage ]]" class="btn">
-						<i class="icon-chevron-right"></i>
-					</a>
-					[? else ?]
-					<span class="btn disabled btn-circle">
-						<i class="icon-chevron-right"></i>
-					</span>
+					<li>
+						<a href="#" data-page="[[ nextPage ]]">
+							<i class="icon-chevron-right"></i>
+						</a>
+					</li>
 					[? endif ?]
-				</div>
-			</div>
-
+				</ul>
+			</nav>
 		</div>
+	</div>
 
-		<div class="grid-wrap clearfix">
-
-			<div class="loading">
-				<div class="loading-wrap">
-					<div class="cell">
-						{{ trans('general.loading') }}
-						<br>
-						<span class="loader"></span>
-					</div>
-				</div>
-			</div>
-
-			<table id="grid" data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="table">
-				<thead>
-					<tr>
-						<th data-sort="name" data-grid="main" class="sortable">{{ trans('platform/pages::table.name') }}</th>
-						<th data-sort="slug" data-grid="main" class="sortable">{{ trans('platform/pages::table.slug') }}</th>
-						<th data-sort="enabled" data-grid="main" class="sortable">{{ trans('platform/pages::table.enabled') }}</th>
-						<th data-sort="created_at" data-grid="main" class="span2 sortable">{{ trans('platform/pages::table.created_at') }}</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr data-template style="display: none;">
-						<td>[[ name ]]</td>
-						<td>[[ slug ]]</td>
-						<td>
-							[? if enabled ?]
-								{{ trans('general.yes') }}
-							[? else ?]
-								{{ trans('general.no') }}
-							[? endif ?]
-						</td>
-						<td>[[ created_at | date 'DD MMMM YYYY' ]]</td>
-						<td>
-							<div class="actions">
-								<a class="btn btn-action" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ id ]]') }}" data-title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
-								<a class="btn btn-action" href="{{ URL::toAdmin('pages/copy/[[ id ]]') }}" data-title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
-								<a class="btn btn-action" href="{{ URL::toAdmin('pages/edit/[[ id ]]') }}" data-title="{{ trans('button.edit') }}"><i class="icon-edit"></i></a>
-							</div>
-						</td>
-					</tr>
-					<tr data-results-fallback style="display: none;">
-						<td colspan="5" class="no-results">
-							{{ trans('table.no_results') }}
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-		</div>
-
-	</section>
-
-</section>
+</footer>
 @stop

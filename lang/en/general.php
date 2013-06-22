@@ -29,12 +29,12 @@ return array(
 	),
 
 	'update' => array(
-		'title'       => 'Update :name',
+		'title'       => 'Update :page',
 		'description' => 'Please update the following information.',
 	),
 
 	'copy' => array(
-		'title'       => 'Copy :name',
+		'title'       => 'Copy :page',
 		'description' => 'Please update the following information.',
 	),
 

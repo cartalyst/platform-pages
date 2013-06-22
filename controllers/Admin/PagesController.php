@@ -54,10 +54,10 @@ class PagesController extends AdminController {
 	 */
 	public function getGrid()
 	{
-		// Get the content list
+		// Get all the pages
 		$response = API::get('v1/pages');
 
-		//
+		// Return the Data Grid object
 		return DataGrid::make($response['pages'], array(
 			'id',
 			'name',
@@ -90,34 +90,34 @@ class PagesController extends AdminController {
 	/**
 	 * Page update.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $slug
 	 * @return mixed
 	 */
-	public function getEdit($id = null)
+	public function getEdit($slug = null)
 	{
-		return $this->showForm($id, 'update');
+		return $this->showForm($slug, 'update');
 	}
 
 	/**
 	 * Page update form processing.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $slug
 	 * @return Redirect
 	 */
-	public function postEdit($id = null)
+	public function postEdit($slug = null)
 	{
-		return $this->processForm($id);
+		return $this->processForm($slug);
 	}
 
 	/**
 	 * Page copy.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $slug
 	 * @return mixed
 	 */
-	public function getCopy($id = null)
+	public function getCopy($slug = null)
 	{
-		return $this->showForm($id, 'copy');
+		return $this->showForm($slug, 'copy');
 	}
 
 	/**
@@ -133,15 +133,15 @@ class PagesController extends AdminController {
 	/**
 	 * Page delete.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $slug
 	 * @return Redirect
 	 */
-	public function getDelete($id = null)
+	public function getDelete($slug = null)
 	{
 		try
 		{
 			// Delete the page
-			API::delete("v1/pages/{$id}");
+			API::delete("v1/pages/{$slug}");
 
 			// Set the success message
 			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));
@@ -159,11 +159,11 @@ class PagesController extends AdminController {
 	/**
 	 * Shows the form.
 	 *
-	 * @param  mixed   $id
-	 * @param  string  $page
+	 * @param  mixed   $slug
+	 * @param  string  $pageSegment
 	 * @return mixed
 	 */
-	protected function showForm($id = null, $segment = null)
+	protected function showForm($slug = null, $pageSegment = null)
 	{
 		try
 		{
@@ -175,10 +175,10 @@ class PagesController extends AdminController {
 			$pageGroups = array();
 
 			// Do we have a page identifier?
-			if ( ! is_null($id))
+			if ( ! is_null($slug))
 			{
 				// Get the page information
-				$response = API::get("v1/pages/{$id}");
+				$response = API::get("v1/pages/{$slug}");
 				$page     = $response['page'];
 
 				// Get this page groups
@@ -196,7 +196,7 @@ class PagesController extends AdminController {
 			$files = $this->getSources();
 
 			// Show the page
-			return View::make('platform/pages::form', compact('page', 'segment', 'groups', 'pageGroups', 'templates', 'files'));
+			return View::make('platform/pages::form', compact('page', 'groups', 'pageGroups', 'templates', 'files', 'pageSegment'));
 		}
 		catch (ApiHttpException $e)
 		{
@@ -211,19 +211,19 @@ class PagesController extends AdminController {
 	/**
 	 * Processes the form.
 	 *
-	 * @param  mixed  $id
+	 * @param  mixed  $slug
 	 * @return Redirect
 	 */
-	protected function processForm($id = null)
+	protected function processForm($slug = null)
 	{
 		try
 		{
 			// Are we creating a new page?
-			if (is_null($id))
+			if (is_null($slug))
 			{
 				// Make the request
-				$response  = API::post('v1/pages', Input::all());
-				$id        = $response['page']->id;
+				$response = API::post('v1/pages', Input::all());
+				$slug     = $response['page']->slug;
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.success.create');
@@ -233,7 +233,8 @@ class PagesController extends AdminController {
 			else
 			{
 				// Make the request
-				API::put("v1/pages/{$id}", Input::all());
+				$response = API::put("v1/pages/{$slug}", Input::all());
+				$slug     = $response['page']->slug;
 
 				// Prepare the success message
 				$success = Lang::get('platform/pages::message.success.update');
@@ -243,7 +244,7 @@ class PagesController extends AdminController {
 			$notifications = with(new Bag)->add('success', $success);
 
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/{$id}")->with('notifications', $notifications);
+			return Redirect::toAdmin("pages/edit/{$slug}")->with('notifications', $notifications);
 		}
 		catch (ApiHttpException $e)
 		{
