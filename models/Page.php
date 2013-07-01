@@ -86,17 +86,18 @@ class Page extends Model {
 	 */
 	public function render()
 	{
+		$title = $this->attributes['name'];
 		switch ($type = $this->type)
 		{
 			case 'filesystem':
-				return static::$themeBag->view($this->file, array(), static::$theme)->render();
+				return static::$themeBag->view($this->file, array(), static::$theme)->with('title', $title)->render();
 
 			case 'database':
 
 				// We'll inject the section with the value, i.e. @content()
 				static::$themeBag->getViewEnvironment()->inject($this->section, $this->value);
 
-				return static::$themeBag->view($this->template, array(), static::$theme)->render();
+				return static::$themeBag->view($this->template, array(), static::$theme)->with('title', $title)->render();
 		}
 
 		throw new \RuntimeException("Invalid storage type [$type] for page [{$this->getKey()}].");
