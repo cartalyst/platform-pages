@@ -37,7 +37,7 @@ class PagesController extends ApiController {
 		'slug'       => 'required|unique:pages,slug',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
-		'visibility' => 'required|in:always,logged_in',
+		'visibility' => 'required|in:always,logged_in,admin',
 
 		// Database page
 		'template'   => 'required_if:type,database',
