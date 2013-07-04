@@ -38,6 +38,7 @@ class Page extends Model {
 	protected $fillable = array(
 		'name',
 		'slug',
+		'uri',
 		'enabled',
 		'type',
 		'visibility',

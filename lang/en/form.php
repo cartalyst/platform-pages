@@ -24,6 +24,8 @@ return array(
 	'name_help'       => 'Type a descriptive name for your page.',
 	'slug'            => 'Slug',
 	'slug_help'       => 'Slug to find page by.',
+	'uri'             => 'Uri',
+	'uri_help'        => 'Your page uri.',
 	'status'          => 'Status',
 	'enabled_help'    => 'What is the status of this page?',
 	'type'            => 'Storage Type',

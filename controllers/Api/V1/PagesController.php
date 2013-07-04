@@ -35,6 +35,7 @@ class PagesController extends ApiController {
 	protected $validationRules = array(
 		'name'       => 'required',
 		'slug'       => 'required|unique:pages,slug',
+		'uri'        => 'required|unique:pages,uri',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
 		'visibility' => 'required|in:always,logged_in,admin',
@@ -132,6 +133,7 @@ class PagesController extends ApiController {
 	 */
 	public function show($id = null)
 	{
+		// Get a new query builder
 		$query = $this->model->newQuery()->with('groups');
 
 		// Do we only want the enabled page ?
@@ -141,7 +143,7 @@ class PagesController extends ApiController {
 		}
 
 		// Search for the page
-		if ( ! $page = $query->where('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $query->where('uri', Input::get('uri'))->orWhere('slug', $id)->orWhere('id', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
@@ -157,6 +159,7 @@ class PagesController extends ApiController {
 	 */
 	public function update($id = null)
 	{
+		// Get a new query builder
 		$query = $this->model->newQuery();
 
 		// Search for the page
@@ -228,6 +231,7 @@ class PagesController extends ApiController {
 	 */
 	public function destroy($id = null)
 	{
+		// Get a new query builder
 		$query = $this->model->newQuery();
 
 		// Search for the page

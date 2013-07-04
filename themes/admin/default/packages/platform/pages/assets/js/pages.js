@@ -2,6 +2,8 @@ jQuery(document).ready(function($) {
 
 	$('#name').keyup(function() {
 		$('#slug').val($(this).val().slugify());
+
+		$('#uri').val($(this).val().slugify('/'));
 	});
 
 	$('#type').change(function() {

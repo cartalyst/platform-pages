@@ -42,8 +42,11 @@ class PagesController extends BaseController {
 
 		try
 		{
+			// Determine the api route we will use to find the page
+			$route = substr_count($slug, '/') ? 'v1/page' : "v1/page/{$slug}";
+
 			// Find the requested page
-			$response = API::get("v1/pages/$slug", array('enabled' => true));
+			$response = API::get($route, array('uri' => $slug, 'enabled' => true));
 			$page     = $response['page'];
 		}
 		catch (ApiHttpException $e)

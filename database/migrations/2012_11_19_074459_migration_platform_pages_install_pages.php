@@ -35,6 +35,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->increments('id');
 			$table->string('name');
 			$table->string('slug');
+			$table->string('uri');
 			$table->string('type');
 			$table->string('visibility');
 

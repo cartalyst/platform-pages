@@ -59,13 +59,22 @@
 			<div class="control-group{{ $errors->first('slug', ' error') }}" required>
 				<label class="control-label" for="slug">{{ trans('platform/pages::form.slug') }}</label>
 				<div class="controls">
+					<input type="text" name="slug" id="slug" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
+					{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
+				</div>
+			</div>
+
+			{{-- URI --}}
+			<div class="control-group{{ $errors->first('uri', ' error') }}" required>
+				<label class="control-label" for="uri">{{ trans('platform/pages::form.uri') }}</label>
+				<div class="controls">
 					<div class="input-prepend">
 						<span class="add-on">
 							{{ str_finish(URL::to('/'), '/') }}
 						</span>
-						<input type="text" name="slug" id="slug" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
+						<input type="text" name="uri" id="uri" value="{{{ Input::old('uri', ! empty($page) ? $page->uri : null) }}}" placeholder="{{ trans('platform/pages::form.uri_help') }}" required>
 					</div>
-					{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
+					{{ $errors->first('uri', '<span class="help-inline">:message</span>') }}
 				</div>
 			</div>
 
