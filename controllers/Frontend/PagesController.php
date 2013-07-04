@@ -23,6 +23,7 @@ use Cartalyst\Api\Http\ApiHttpException;
 use Config;
 use Platform\Routing\Controllers\BaseController;
 use Sentry;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesController extends BaseController {
@@ -53,26 +54,32 @@ class PagesController extends BaseController {
 		// @todo: We should have a config item whether invalid
 		// perms for pages should throw a 404, 403 or redirect
 		// to a certain page...
-		if ($page->visibility == 'logged_in')
+		if (in_array($page->visibility, array('logged_in', 'admin')))
 		{
 			if ( ! Sentry::check())
 			{
-				throw new NotFoundHttpException;
+				throw new HttpException(403, "You don't have permission to view this page.");
 			}
 
-			foreach (Sentry::getUser()->groups() as $group)
+			if ( ! Sentry::getUser()->isSuperUser())
 			{
-				$found = false;
-
-				if ($page->groups->find($group->getKey()))
+				if ($page->groups->count())
 				{
-					$found = true;
-					break;
-				}
+					$found = false;
 
-				if ($found == false)
-				{
-					throw new NotFoundHttpException;
+					foreach (Sentry::getUser()->groups() as $group)
+					{
+						if ($page->groups->find($group->getKey()))
+						{
+							$found = true;
+							break;
+						}
+					}
+
+					if ( ! $found)
+					{
+						throw new HttpException(403, "You don't have permission to view this page.");
+					}
 				}
 			}
 		}
