@@ -70,6 +70,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 		$page = new Page(array(
 			'name'       => 'Welcome',
 			'slug'       => 'welcome',
+			'uri'        => 'welcome',
 			'visibility' => 'always',
 			'type'       => 'filesystem',
 			'file'       => 'welcome',
