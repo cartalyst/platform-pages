@@ -156,7 +156,7 @@ class PagesController extends AdminController {
 		}
 
 		// Redirect to the pages management page
-		return Redirect::toAdmin('pages')->with('notifications', $bag->getMessages());
+		return Redirect::toAdmin('pages')->with('notifications', $bag);
 	}
 
 	/**
@@ -221,6 +221,9 @@ class PagesController extends AdminController {
 	{
 		try
 		{
+			// Instantiate a new message bag
+			$bag = new Bag;
+
 			// Are we creating a new page?
 			if (is_null($slug))
 			{
@@ -228,8 +231,8 @@ class PagesController extends AdminController {
 				$response = API::post('v1/pages', Input::all());
 				$slug     = $response['page']->slug;
 
-				// Prepare the success message
-				$success = Lang::get('platform/pages::message.success.create');
+				// Set the success message
+				$bag->add('success', Lang::get('platform/pages::message.success.create'));
 			}
 
 			// No, we are updating an page content
@@ -239,15 +242,12 @@ class PagesController extends AdminController {
 				$response = API::put("v1/pages/{$slug}", Input::all());
 				$slug     = $response['page']->slug;
 
-				// Prepare the success message
-				$success = Lang::get('platform/pages::message.success.update');
+				// Set the success message
+				$bag->add('success', Lang::get('platform/pages::message.success.update'));
 			}
 
-			// Set the success message
-			$notifications = with(new Bag)->add('success', $success);
-
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/{$slug}")->with('notifications', $notifications);
+			return Redirect::toAdmin("pages/edit/{$slug}")->with('notifications', $bag);
 		}
 		catch (ApiHttpException $e)
 		{
