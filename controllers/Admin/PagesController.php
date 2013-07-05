@@ -256,7 +256,11 @@ class PagesController extends AdminController {
 		}
 	}
 
-
+	/**
+	 * Returns a list of the available page files on the current active theme.
+	 *
+	 * @return array
+	 */
 	protected function getPageFiles()
 	{
 		$theme = Page::getTheme();
@@ -287,18 +291,23 @@ class PagesController extends AdminController {
 
 		foreach ($finder->files() as $file)
 		{
-			$_file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
 
-			// Because we want to save a valid source for the view
-			// loader, we simply want to store the view name as if
-			// the view loader was loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $_file), '.')] = $_file;
+			// Because we want to save a valid source for the view loader, we
+			// simply want to store the view name as if the view loader was
+			// loading it.
+			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
 		}
 
 		return $files;
 	}
 
 
+	/**
+	 * Returns a list of the available templates of the current active theme.
+	 *
+	 * @return array
+	 */
 	protected function getTemplates()
 	{
 		$theme = Page::getTheme();
