@@ -116,10 +116,10 @@
 			</div>
 
 			{{-- Groups --}}
-			<div class="control-group{{ $errors->first('groups', ' error') }}" required>
+			<div class="control-group{{ $errors->first('groups', ' error') }}{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'always' ? ' hide' : null }}" required>
 				<label for="groups" class="control-label">{{ trans('platform/pages::form.groups') }}</label>
 				<div class="controls">
-					<select name="groups[]" id="groups[]" multiple="multiple">
+					<select name="groups[]" id="groups" multiple="multiple">
 					@foreach ($groups as $group)
 						<option value="{{ $group->id }}"{{ array_key_exists($group->id, $pageGroups) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
 					@endforeach
@@ -127,7 +127,6 @@
 					{{ $errors->first('groups', '<span class="help-inline">:message</span>') }}
 				</div>
 			</div>
-
 
 			<div class="type-database{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' hide' : null }}">
 

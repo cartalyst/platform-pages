@@ -22,6 +22,19 @@ jQuery(document).ready(function($) {
 		}
 	});
 
+	$('#visibility').change(function() {
+
+		if ($(this).val() === 'always')
+		{
+			$('#groups').parent().parent().addClass('hide');
+		}
+		else
+		{
+			$('#groups').parent().parent().removeClass('hide');
+		}
+
+	});
+
 	H5F.setup(document.getElementById('page-create-form'))
 
 });
