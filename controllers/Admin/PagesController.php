@@ -34,7 +34,7 @@ use View;
 class PagesController extends AdminController {
 
 	/**
-	 * Pages management main page.
+	 * Display a listing of pages.
 	 *
 	 * @return mixed
 	 */
@@ -68,7 +68,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Create a new page.
+	 * Show the form for creating a new page.
 	 *
 	 * @return mixed
 	 */
@@ -78,7 +78,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Create a new page form processing.
+	 * Handle posting of the form for creating a new page.
 	 *
 	 * @return Redirect
 	 */
@@ -88,7 +88,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page update.
+	 * Show the form for updating a page.
 	 *
 	 * @param  mixed  $slug
 	 * @return mixed
@@ -99,7 +99,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page update form processing.
+	 * Handle posting of the form for updating a page.
 	 *
 	 * @param  mixed  $slug
 	 * @return Redirect
@@ -110,7 +110,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page copy.
+	 * Show the form for copying a page.
 	 *
 	 * @param  mixed  $slug
 	 * @return mixed
@@ -121,7 +121,7 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page copy form processing.
+	 * Handle posting of the form for copying a page.
 	 *
 	 * @return Redirect
 	 */
@@ -131,29 +131,32 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Page delete.
+	 * Remove the specified page.
 	 *
 	 * @param  mixed  $slug
 	 * @return Redirect
 	 */
 	public function getDelete($slug = null)
 	{
+		// Instantiate a new message bag
+		$bag = new Bag;
+
 		try
 		{
 			// Delete the page
-			API::delete("v1/pages/{$slug}");
+			API::delete("v1/page/{$slug}");
 
 			// Set the success message
-			$notifications = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));
+			$bag->add('success', Lang::get('platform/pages::message.success.delete'));
 		}
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			$notifications = with(new Bag)->add('error', Lang::get('platform/pages::message.error.delete'));
+			$bag->add('error', Lang::get('platform/pages::message.error.delete'));
 		}
 
 		// Redirect to the pages management page
-		return Redirect::toAdmin('pages')->with('notifications', $notifications);
+		return Redirect::toAdmin('pages')->with('notifications', $bag->getMessages());
 	}
 
 	/**
@@ -178,7 +181,7 @@ class PagesController extends AdminController {
 			if ( ! is_null($slug))
 			{
 				// Get the page information
-				$response = API::get("v1/pages/{$slug}");
+				$response = API::get("v1/page/{$slug}");
 				$page     = $response['page'];
 
 				// Get this page groups
@@ -190,10 +193,10 @@ class PagesController extends AdminController {
 			$groups   = $response['groups'];
 
 			// Get all the available templates
-			$templates = $this->getSources();
+			$templates = $this->getTemplates();
 
 			// Get all the available page files
-			$files = $this->getSources();
+			$files = $this->getPageFiles();
 
 			// Show the page
 			return View::make('platform/pages::form', compact('page', 'groups', 'pageGroups', 'templates', 'files', 'pageSegment'));
@@ -254,23 +257,27 @@ class PagesController extends AdminController {
 	}
 
 
-
-	protected function getSources()
+	protected function getPageFiles()
 	{
 		$theme = Page::getTheme();
+
 		$extensions = array_keys(View::getExtensions());
 
+		$paths = array();
+
+		## this if shouldn't be required, since we are only interested
+		## on the current active theme views
+		foreach (Theme::getCascadedViewPaths($theme) as $path)
+		{
+			if (strpos($path, 'admin') == false)
+			{
+				$paths[] = $path . DIRECTORY_SEPARATOR . 'pages';
+			}
+		}
+		##
+
 		$finder = new Finder;
-		$finder
-			->in(Theme::getCascadedViewPaths($theme))
-			->depth('< 3')
-			->name(sprintf(
-				'/.*?\.(%s)/',
-				implode('|', array_map(function($extension)
-				{
-					return preg_quote($extension, '/');
-				}, $extensions))
-			));
+		$finder->in($paths);
 
 		$files = array();
 
@@ -286,6 +293,43 @@ class PagesController extends AdminController {
 			// loader, we simply want to store the view name as if
 			// the view loader was loading it.
 			$files[rtrim(str_replace($extensions, $replacements, $_file), '.')] = $_file;
+		}
+
+		return $files;
+	}
+
+
+	protected function getTemplates()
+	{
+		$theme = Page::getTheme();
+
+		$extensions = array_keys(View::getExtensions());
+
+		$finder = new Finder;
+		$finder->in(Theme::getCascadedViewPaths($theme));
+		$finder->depth('< 3');
+		$finder->name(sprintf(
+			'/.*?\.(%s)/',
+			implode('|', array_map(function($extension)
+			{
+				return preg_quote($extension, '/');
+			}, $extensions))
+		));
+
+		$files = array();
+
+		// Replace all file extensions with nothing. pathinfo()
+		// won't tackle ".blade.php" so this is our best shot.
+		$replacements = array_pad(array(), count($extensions), '');
+
+		foreach ($finder->files() as $file)
+		{
+			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+
+			// Because we want to save a valid source for the view loader, we
+			// simply want to store the view name as if the view loader was
+			// loading it.
+			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
 		}
 
 		return $files;
