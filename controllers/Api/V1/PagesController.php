@@ -23,6 +23,7 @@ use Lang;
 use Platform\Routing\Controllers\ApiController;
 use Response;
 use Sentry;
+use Str;
 use Validator;
 
 class PagesController extends ApiController {
@@ -94,11 +95,23 @@ class PagesController extends ApiController {
 	 */
 	public function create()
 	{
-		// Get all the inputs
-		$input = Input::all();
+		// If we no slug was submited, we will generate one
+		// based on the content name.
+		$slug = Str::slug(Input::get('slug', null) ?: Input::get('name'));
+		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
+
+		// Get the storage type and update the inputs accordingly
+		$type = Input::get('type');
+
+		$section = ($type === 'filesystem' ? null : Input::get('section'));
+		$value = ($type === 'filesystem' ? null : Input::get('value'));
+		$file  = ($type === 'database' ? null : Input::get('file'));
+
+		// Merge in the updated inputs
+		Input::merge(compact('slug', 'section', 'value', 'file'));
 
 		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make($input, $this->validationRules);
+		$validator = Validator::make(Input::all(), $this->validationRules);
 
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())
@@ -107,7 +120,7 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ($page = $this->model->create($input))
+		if ($page = $this->model->create(Input::all()))
 		{
 			//
 			foreach (Input::get('groups', array()) as $id)
@@ -159,24 +172,33 @@ class PagesController extends ApiController {
 	 */
 	public function update($id = null)
 	{
-		// Get a new query builder
-		$query = $this->model->newQuery();
-
 		// Search for the page
-		if ( ! $page = $query->where('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
-
-		// Get all the inputs
-		$input = Input::all();
 
 		// Update the validation rules
 		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
 		$this->validationRules['uri'] = "required|unique:pages,uri,{$page->uri},uri";
 
+		// If we no slug was submited, we will generate one
+		// based on the content name.
+		$slug = Str::slug(Input::get('slug', null) ?: Input::get('name'));
+		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
+
+		// Get the storage type and update the inputs accordingly
+		$type = Input::get('type');
+
+		$section = ($type === 'filesystem' ? null : Input::get('section'));
+		$value = ($type === 'filesystem' ? null : Input::get('value'));
+		$file  = ($type === 'database' ? null : Input::get('file'));
+
+		// Merge in the updated inputs
+		Input::merge(compact('slug', 'section', 'value', 'file'));
+
 		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make($input, $this->validationRules);
+		$validator = Validator::make(Input::all(), $this->validationRules);
 
 		// If validation fails, we'll exit the operation now
 		if ($validator->fails())
@@ -184,11 +206,8 @@ class PagesController extends ApiController {
 			return Response::api(array('errors' => $validator->errors()), 422);
 		}
 
-		// Update the page data
-		$page->fill($input);
-
 		// Was the page updated?
-		if ( ! $page->save())
+		if ( ! $page->fill(Input::all())->save())
 		{
 			// There was a problem updating the page
 			return Response::api(Lang::get('platform/pages::message.update.error'), 500);
@@ -232,11 +251,8 @@ class PagesController extends ApiController {
 	 */
 	public function destroy($id = null)
 	{
-		// Get a new query builder
-		$query = $this->model->newQuery();
-
 		// Search for the page
-		if ( ! $page = $query->where('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
