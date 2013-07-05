@@ -157,7 +157,7 @@ class PagesController extends ApiController {
 		}
 
 		// Search for the page
-		if ( ! $page = $query->where('uri', Input::get('uri'))->orWhere('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $query->where('uri', $id)->orWhere('slug', $id)->orWhere('id', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}

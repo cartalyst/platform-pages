@@ -214,10 +214,11 @@ return array(
 	{
 		Route::group(array('prefix' => '{api}/v1/page'), function()
 		{
-			Route::get('/'        , 'Platform\Pages\Controllers\Api\V1\PagesController@show');
-			Route::get('{slug}'   , 'Platform\Pages\Controllers\Api\V1\PagesController@show');
+			Route::get('{slug}'   , 'Platform\Pages\Controllers\Api\V1\PagesController@show')
+				->where('slug', '.*?');
 			Route::delete('{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
 		});
+
 		App::before(function($app)
 		{
 			Route::get('{slug}', 'Platform\Pages\Controllers\Frontend\PagesController@getPage')
