@@ -103,12 +103,13 @@ class PagesController extends ApiController {
 		// Get the storage type and update the inputs accordingly
 		$type = Input::get('type');
 
+		$template = ($type === 'filesystem' ? null : Input::get('template'));
 		$section = ($type === 'filesystem' ? null : Input::get('section'));
 		$value = ($type === 'filesystem' ? null : Input::get('value'));
 		$file  = ($type === 'database' ? null : Input::get('file'));
 
 		// Merge in the updated inputs
-		Input::merge(compact('slug', 'section', 'value', 'file'));
+		Input::merge(compact('slug', 'template', 'section', 'value', 'file'));
 
 		// Create a new validator instance from our dynamic rules
 		$validator = Validator::make(Input::all(), $this->validationRules);
@@ -190,12 +191,13 @@ class PagesController extends ApiController {
 		// Get the storage type and update the inputs accordingly
 		$type = Input::get('type');
 
+		$template = ($type === 'filesystem' ? null : Input::get('template'));
 		$section = ($type === 'filesystem' ? null : Input::get('section'));
 		$value = ($type === 'filesystem' ? null : Input::get('value'));
 		$file  = ($type === 'database' ? null : Input::get('file'));
 
 		// Merge in the updated inputs
-		Input::merge(compact('slug', 'section', 'value', 'file'));
+		Input::merge(compact('slug', 'template', 'section', 'value', 'file'));
 
 		// Create a new validator instance from our dynamic rules
 		$validator = Validator::make(Input::all(), $this->validationRules);
