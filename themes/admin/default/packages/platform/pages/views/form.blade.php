@@ -90,18 +90,6 @@
 				</div>
 			</div>
 
-			{{-- Type --}}
-			<div class="control-group{{ $errors->first('type', ' error') }}" required>
-				<label class="control-label" for="type">{{ trans('platform/pages::form.type') }}</label>
-				<div class="controls">
-					<select name="type" id="type">
-						<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.database') }}</option>
-						<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.filesystem') }}</option>
-					</select>
-					{{ $errors->first('type', '<span class="help-inline">:message</span>') }}
-				</div>
-			</div>
-
 			{{-- Visibility --}}
 			<div class="control-group{{ $errors->first('visibility', ' error') }}" required>
 				<label for="visibility" class="control-label">{{ trans('platform/pages::form.visibility.legend') }}</label>
@@ -125,6 +113,18 @@
 					@endforeach
 					</select>
 					{{ $errors->first('groups', '<span class="help-inline">:message</span>') }}
+				</div>
+			</div>
+
+			{{-- Type --}}
+			<div class="control-group{{ $errors->first('type', ' error') }}" required>
+				<label class="control-label" for="type">{{ trans('platform/pages::form.type') }}</label>
+				<div class="controls">
+					<select name="type" id="type">
+						<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.database') }}</option>
+						<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.filesystem') }}</option>
+					</select>
+					{{ $errors->first('type', '<span class="help-inline">:message</span>') }}
 				</div>
 			</div>
 
