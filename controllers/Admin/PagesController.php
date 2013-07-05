@@ -185,7 +185,7 @@ class PagesController extends AdminController {
 				$page     = $response['page'];
 
 				// Get this page groups
-				$pageGroups = $page->groups()->lists('name', 'group_id');
+				$pageGroups = $page->groups->lists('name', 'id');
 			}
 
 			// Get all the available user groups
