@@ -280,8 +280,7 @@ class PagesController extends AdminController {
 		}
 		##
 
-		$finder = new Finder;
-		$finder->in($paths);
+		$finder = with(new Finder)->in($paths);
 
 		$files = array();
 
