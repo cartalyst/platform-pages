@@ -213,6 +213,7 @@ return array(
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
 		Route::get('{api}/v1/page/{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@show');
+		Route::delete('{api}/v1/page/{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
 		Route::get('{api}/v1/page', 'Platform\Pages\Controllers\Api\V1\PagesController@show');
 
 		App::before(function($app)
