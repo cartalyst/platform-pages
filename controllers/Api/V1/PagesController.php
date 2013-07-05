@@ -171,8 +171,9 @@ class PagesController extends ApiController {
 		// Get all the inputs
 		$input = Input::all();
 
-		// Update the validation rules, so it ignores the current page slug.
+		// Update the validation rules
 		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
+		$this->validationRules['uri'] = "required|unique:pages,uri,{$page->uri},uri";
 
 		// Create a new validator instance from our dynamic rules
 		$validator = Validator::make($input, $this->validationRules);
