@@ -212,10 +212,12 @@ return array(
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::get('{api}/v1/page/{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@show');
-		Route::delete('{api}/v1/page/{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
-		Route::get('{api}/v1/page', 'Platform\Pages\Controllers\Api\V1\PagesController@show');
-
+		Route::group(array('prefix' => '{api}/v1/page'), function()
+		{
+			Route::get('/'        , 'Platform\Pages\Controllers\Api\V1\PagesController@show');
+			Route::get('{slug}'   , 'Platform\Pages\Controllers\Api\V1\PagesController@show');
+			Route::delete('{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
+		});
 		App::before(function($app)
 		{
 			Route::get('{slug}', 'Platform\Pages\Controllers\Frontend\PagesController@getPage')
