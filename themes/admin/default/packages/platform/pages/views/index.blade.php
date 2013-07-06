@@ -129,6 +129,9 @@ $(function() {
 						<nav class="actions actions--hidden">
 							<ul class="navigation navigation--inline-circle">
 								<li>
+									<a target="_blank" href="{{ URL::to('[[ uri ]]') }}" data-title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
+								</li>
+								<li>
 									<a data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" data-title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
 								</li>
 								<li>

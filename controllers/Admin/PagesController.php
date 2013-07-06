@@ -63,6 +63,7 @@ class PagesController extends AdminController {
 			'id',
 			'name',
 			'slug',
+			'uri',
 			'enabled',
 			'created_at',
 		));
