@@ -317,8 +317,9 @@ return array(
 			'pages::general' => array('name' => 'General'),
 
 			'pages::general.default' => array(
-				'name'    => 'Default Page (Shown on root route)',
+				'name'    => 'Default Page',
 				'config'  => 'platform/pages::default',
+				'info'    => 'The page that is shown on the root route.',
 				'type'    => 'dropdown',
 				'options' => function()
 				{
@@ -339,19 +340,23 @@ return array(
 			),
 
 			'pages::general.template' => array(
-				'name'    => 'Default Template (File pages)',
+				'name'    => 'Default Template',
 				'config'  => 'platform/pages::template',
+				'info'    => 'The default template that is used for pages.',
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					return array(
+					$options = array();
 
-						array(
-							'value' => 'templates/default',
-							'label' => 'Coming soon...',
-						),
+					foreach (Page::getTemplates() as $value => $label)
+					{
+						$options[] = array(
+							'value' => $value,
+							'label' => $label,
+						);
+					}
 
-					);
+					return $options;
 				}
 			),
 

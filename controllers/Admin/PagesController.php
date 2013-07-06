@@ -195,13 +195,13 @@ class PagesController extends AdminController {
 			$groups   = $response['groups'];
 
 			// Get all the available templates
-			$templates = $this->getTemplates();
+			$templates = Page::getTemplates();
 
 			// Get the default template
 			$defaultTemplate = Config::get('platform/pages::template', null);
 
 			// Get all the available page files
-			$files = $this->getPageFiles();
+			$files = Page::getPageFiles();
 
 			// Show the page
 			return View::make('platform/pages::form', compact('page', 'groups', 'pageGroups', 'templates', 'defaultTemplate', 'files', 'pageSegment'));
@@ -259,93 +259,6 @@ class PagesController extends AdminController {
 			// Redirect to the appropriate page
 			return Redirect::back()->withInput()->withErrors($e->getErrors());
 		}
-	}
-
-	/**
-	 * Returns a list of the available page files on the current active theme.
-	 *
-	 * @return array
-	 */
-	protected function getPageFiles()
-	{
-		$theme = Page::getTheme();
-
-		$extensions = array_keys(View::getExtensions());
-
-		$paths = array();
-
-		## this if shouldn't be required, since we are only interested
-		## on the current active theme views
-		foreach (Theme::getCascadedViewPaths($theme) as $path)
-		{
-			if (strpos($path, 'admin') == false)
-			{
-				$paths[] = $path . DIRECTORY_SEPARATOR . 'pages';
-			}
-		}
-		##
-
-		$finder = with(new Finder)->in($paths);
-
-		$files = array();
-
-		// Replace all file extensions with nothing. pathinfo()
-		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad(array(), count($extensions), '');
-
-		foreach ($finder->files() as $file)
-		{
-			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
-
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
-		}
-
-		return $files;
-	}
-
-
-	/**
-	 * Returns a list of the available templates of the current active theme.
-	 *
-	 * @return array
-	 */
-	protected function getTemplates()
-	{
-		$theme = Page::getTheme();
-
-		$extensions = array_keys(View::getExtensions());
-
-		$finder = new Finder;
-		$finder->in(Theme::getCascadedViewPaths($theme));
-		$finder->depth('< 3');
-		$finder->name(sprintf(
-			'/.*?\.(%s)/',
-			implode('|', array_map(function($extension)
-			{
-				return preg_quote($extension, '/');
-			}, $extensions))
-		));
-
-		$files = array();
-
-		// Replace all file extensions with nothing. pathinfo()
-		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad(array(), count($extensions), '');
-
-		foreach ($finder->files() as $file)
-		{
-			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
-
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
-		}
-
-		return $files;
 	}
 
 }
