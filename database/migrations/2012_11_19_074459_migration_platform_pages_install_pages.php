@@ -64,9 +64,8 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->unique(array('page_id', 'group_id'));
 		});
 
-		// Create the welome page, which
-		// will be the default for a Platform
-		// installation
+		// Create the welcome page, which will be the default
+		// for a Platform installation.
 		$page = new Page(array(
 			'name'       => 'Welcome',
 			'slug'       => 'welcome',
