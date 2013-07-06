@@ -136,7 +136,7 @@
 					<div class="controls">
 						<select name="template" id="template" required>
 						@foreach ($templates as $value => $name)
-							<option value="{{ $value }}"{{ Input::old('template', ! empty($page) ? $page->template : Config::get('platform/pages::template', null)) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
+							<option value="{{ $value }}"{{ Input::old('template', ! empty($page) ? $page->template : $defaultTemplate) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 						@endforeach
 						</select>
 						{{ $errors->first('template', '<span class="help-inline">:message</span>') }}

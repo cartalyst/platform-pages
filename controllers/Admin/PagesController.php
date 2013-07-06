@@ -20,6 +20,7 @@
 
 use API;
 use Cartalyst\Api\Http\ApiHttpException;
+use Config;
 use DataGrid;
 use Illuminate\Support\MessageBag as Bag;
 use Input;
@@ -195,11 +196,14 @@ class PagesController extends AdminController {
 			// Get all the available templates
 			$templates = $this->getTemplates();
 
+			// Get the default template
+			$defaultTemplate = Config::get('platform/pages::template', null);
+
 			// Get all the available page files
 			$files = $this->getPageFiles();
 
 			// Show the page
-			return View::make('platform/pages::form', compact('page', 'groups', 'pageGroups', 'templates', 'files', 'pageSegment'));
+			return View::make('platform/pages::form', compact('page', 'groups', 'pageGroups', 'templates', 'defaultTemplate', 'files', 'pageSegment'));
 		}
 		catch (ApiHttpException $e)
 		{
