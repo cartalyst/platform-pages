@@ -20,6 +20,7 @@
 
 use Cartalyst\Themes\ThemeBag;
 use Illuminate\Database\Eloquent\Model;
+use RuntimeException;
 
 class Page extends Model {
 
@@ -87,24 +88,26 @@ class Page extends Model {
 	 */
 	public function render()
 	{
-		$title = $this->attributes['name'];
-		$slug = $this->attributes['slug'];
+		$page = $this;
 
-		switch ($type = $this->type)
+		$type = $this->type;
+
+		if (in_array($type, array('filesystem', 'database')))
 		{
-			case 'filesystem':
+			$view = "pages/{$this->file}";
 
-				return static::$themeBag->view('pages/'.$this->file, array(), static::$theme)->with(array('title'=> $title, 'slug' => $slug))->render();
-
-			case 'database':
-
+			if ($type === 'database')
+			{
 				// We'll inject the section with the value, i.e. @content()
 				static::$themeBag->getViewEnvironment()->inject($this->section, $this->value);
 
-				return static::$themeBag->view($this->template, array(), static::$theme)->with(array('title'=> $title, 'slug' => $slug))->render();
+				$view = $this->template;
+			}
+
+			return static::$themeBag->view($view, compact('page'), static::$theme)->render();
 		}
 
-		throw new \RuntimeException("Invalid storage type [{$type}] for page [{$this->getKey()}].");
+		throw new RuntimeException("Invalid storage type [{$type}] for page [{$this->getKey()}].");
 	}
 
 	/**
@@ -221,7 +224,7 @@ class Page extends Model {
 	}
 
 	/**
-	 * Unset the group model for models.
+	 * Unset the group model.
 	 *
 	 * @return void
 	 */
