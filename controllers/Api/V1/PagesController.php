@@ -123,7 +123,7 @@ class PagesController extends ApiController {
 		// Was the page created?
 		if ($page = $this->model->create(Input::all()))
 		{
-			//
+			// Loop through the groups
 			foreach (Input::get('groups', array()) as $id)
 			{
 				$group = Sentry::getGroupProvider()->findById($id);
@@ -216,7 +216,7 @@ class PagesController extends ApiController {
 		}
 
 		// Get the current page groups
-		$pageGroups = $page->groups()->lists('group_id');
+		$pageGroups = $page->groups->lists('id');
 
 		// Get the selected groups
 		$selectedGroups = Input::get('groups', array());
