@@ -193,6 +193,9 @@
 			<ul class="navigation navigation--inline-circle">
 				@if( ! empty($page) and $pageSegment != 'copy')
 				<li>
+					<a class="tip" target="_blank" href="{{ URL::to($page->uri) }}" title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
+				</li>
+				<li>
 					<a class="danger tip" data-placement="top" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
 				</li>
 				<li>
