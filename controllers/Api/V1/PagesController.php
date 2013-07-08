@@ -157,7 +157,7 @@ class PagesController extends ApiController {
 		}
 
 		// Search for the page
-		if ( ! $page = $query->where('uri', $id)->orWhere('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $query->where('uri', $id)->orWhere('slug', $id)->orWhere('id', 'LIKE', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
@@ -174,7 +174,7 @@ class PagesController extends ApiController {
 	public function update($id = null)
 	{
 		// Search for the page
-		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', 'LIKE', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
@@ -254,7 +254,7 @@ class PagesController extends ApiController {
 	public function destroy($id = null)
 	{
 		// Search for the page
-		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', $id)->first())
+		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', 'LIKE', $id)->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
