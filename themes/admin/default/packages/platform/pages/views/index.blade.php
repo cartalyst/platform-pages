@@ -64,7 +64,7 @@ $(function() {
 
 	<div class="data-grid">
 
-		<header class="clearfix">
+		<header class="data-grid__header">
 
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="data-grid__search">
 				<div class="select">
