@@ -150,6 +150,14 @@ class PagesController extends ApiController {
 		// Get a new query builder
 		$query = $this->model->newQuery()->with('groups');
 
+		// Search for the page uri, slug or id
+		$query->orWhere(function($query) use ($id)
+		{
+			$query->where('uri', $id);
+			$query->orWhere('slug', $id);
+			$query->orWhere('id', 'LIKE', $id);
+		});
+
 		// Do we only want the enabled page ?
 		if (Input::get('enabled'))
 		{
@@ -157,7 +165,7 @@ class PagesController extends ApiController {
 		}
 
 		// Search for the page
-		if ( ! $page = $query->where('uri', $id)->orWhere('slug', $id)->orWhere('id', 'LIKE', $id)->first())
+		if ( ! $page = $query->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
@@ -173,8 +181,19 @@ class PagesController extends ApiController {
 	 */
 	public function update($id = null)
 	{
+		// Get a new query builder
+		$query = $this->model->newQuery();
+
+		// Search for the page uri, slug or id
+		$query->orWhere(function($query) use ($id)
+		{
+			$query->where('uri', $id);
+			$query->orWhere('slug', $id);
+			$query->orWhere('id', 'LIKE', $id);
+		});
+
 		// Search for the page
-		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', 'LIKE', $id)->first())
+		if ( ! $page = $query->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
@@ -253,8 +272,19 @@ class PagesController extends ApiController {
 	 */
 	public function destroy($id = null)
 	{
+		// Get a new query builder
+		$query = $this->model->newQuery();
+
+		// Search for the page uri, slug or id
+		$query->orWhere(function($query) use ($id)
+		{
+			$query->where('uri', $id);
+			$query->orWhere('slug', $id);
+			$query->orWhere('id', 'LIKE', $id);
+		});
+
 		// Search for the page
-		if ( ! $page = $this->model->newQuery()->where('slug', $id)->orWhere('id', 'LIKE', $id)->first())
+		if ( ! $page = $query->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
