@@ -19,6 +19,7 @@
  */
 
 use Cartalyst\Themes\ThemeBag;
+use Config;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
@@ -295,6 +296,7 @@ class Page extends Model {
 		$finder = new Finder;
 		$finder->in(Theme::getCascadedViewPaths($theme));
 		$finder->depth('< 3');
+		$finder->exclude(Config::get('platform/pages::exclude'));
 		$finder->name(sprintf(
 			'/.*?\.(%s)/',
 			implode('|', array_map(function($extension)

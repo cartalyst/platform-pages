@@ -42,4 +42,21 @@ return array(
 
 	'template' => 'templates/default',
 
+	/*
+	|--------------------------------------------------------------------------
+	| Exclude directories
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify the directories that you want to exclude from
+	| the template listing.
+	|
+	*/
+
+	'exclude' => array(
+		'errors',
+		'modals',
+		'pages',
+		'partials',
+	),
+
 );
