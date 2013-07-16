@@ -22,7 +22,7 @@ return array(
 
 	'id'         => 'Id',
 	'name'       => 'Name',
-	'slug'       => 'Slug',
+	'slug'       => 'Short name',
 	'type'       => 'Storage Type',
 	'enabled'    => 'Enabled',
 	'created_at' => 'Created at',

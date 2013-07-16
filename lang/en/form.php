@@ -22,14 +22,19 @@ return array(
 
 	'name'            => 'Name',
 	'name_help'       => 'Type a descriptive name for your page.',
-	'slug'            => 'Slug',
-	'slug_help'       => 'Slug to find page by.',
+
+	'slug'            => 'Short name',
+	'slug_help'       => 'Single word, no spaces. Underscores and dashes are allowed.',
+
 	'uri'             => 'Uri',
 	'uri_help'        => 'Your page uri.',
-	'status'          => 'Status',
+
+	'enabled'         => 'Status',
 	'enabled_help'    => 'What is the status of this page?',
+
 	'type'            => 'Storage Type',
 	'type_help'       => 'How do you want to store and edit this page?',
+
 	'visibility'      => array(
 		'legend' => 'Visibility',
 
@@ -39,14 +44,19 @@ return array(
 		'admin'      => 'Admin Only',
 	),
 	'visibility_help' => 'When should this page be seen?',
+
 	'groups'          => 'Groups',
 	'groups_help'     => 'What user groups should be able to see this page?',
+
 	'template'        => 'Template',
 	'template_help'   => 'Page template to use.',
+
 	'section'         => 'Section',
 	'section_help'    => 'Which @section() to inject value to?',
+
 	'value'           => 'Value',
 	'value_help'      => "The page's value. @content call is allowed.",
+
 	'file'            => 'File',
 	'file_help'       => 'File to use.',
 
@@ -64,4 +74,5 @@ return array(
 		'legend'  => 'Copy Page',
 		'summary' => 'Please supply the following information.',
 	),
+
 );

@@ -50,8 +50,12 @@
 			<div class="control-group{{ $errors->first('name', ' error') }}" required>
 				<label class="control-label" for="name">{{ trans('platform/pages::form.name') }}</label>
 				<div class="controls">
-					<input type="text" name="name" id="name" value="{{{ Input::old('name', ! empty($page) ? $page->name : null) }}}" placeholder="{{ trans('platform/pages::form.name_help') }}" required>
-					{{ $errors->first('name', '<span class="help-inline">:message</span>') }}
+					<input type="text" name="name" id="name" value="{{{ Input::old('name', ! empty($page) ? $page->name : null) }}}" required>
+					@if ($errors->has('name'))
+					{{ $errors->first('name', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.name_help') }}</span>
+					@endif
 				</div>
 			</div>
 
@@ -59,8 +63,12 @@
 			<div class="control-group{{ $errors->first('slug', ' error') }}" required>
 				<label class="control-label" for="slug">{{ trans('platform/pages::form.slug') }}</label>
 				<div class="controls">
-					<input type="text" name="slug" id="slug" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}" placeholder="{{ trans('platform/pages::form.slug_help') }}" required>
-					{{ $errors->first('slug', '<span class="help-inline">:message</span>') }}
+					<input type="text" name="slug" id="slug" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}" required>
+					@if ($errors->has('slug'))
+					{{ $errors->first('slug', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.slug_help') }}</span>
+					@endif
 				</div>
 			</div>
 
@@ -72,21 +80,29 @@
 						<span class="add-on">
 							{{ str_finish(URL::to('/'), '/') }}
 						</span>
-						<input type="text" name="uri" id="uri" value="{{{ Input::old('uri', ! empty($page) ? $page->uri : null) }}}" placeholder="{{ trans('platform/pages::form.uri_help') }}" required>
+						<input type="text" name="uri" id="uri" value="{{{ Input::old('uri', ! empty($page) ? $page->uri : null) }}}" required>
 					</div>
-					{{ $errors->first('uri', '<span class="help-inline">:message</span>') }}
+					@if ($errors->has('uri'))
+					{{ $errors->first('uri', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.uri_help') }}</span>
+					@endif
 				</div>
 			</div>
 
 			{{-- Enabled --}}
 			<div class="control-group{{ $errors->first('enabled', ' error') }}" required>
-				<label class="control-label" for="enabled">{{ trans('platform/pages::form.status') }}</label>
+				<label class="control-label" for="enabled">{{ trans('platform/pages::form.enabled') }}</label>
 				<div class="controls">
 					<select name="enabled" id="enabled" required>
 						<option value="1"{{ Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 1 ? ' selected="selected"' : null }}>{{ trans('general.enabled') }}</option>
 						<option value="0"{{ Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) === 0 ? ' selected="selected"' : null }}>{{ trans('general.disabled') }}</option>
 					</select>
-					{{ $errors->first('enabled', '<span class="help-inline">:message</span>') }}
+					@if ($errors->has('enabled'))
+					{{ $errors->first('enabled', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.enabled_help') }}</span>
+					@endif
 				</div>
 			</div>
 
@@ -99,7 +115,11 @@
 						<option value="logged_in"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'logged_in' ? ' selected="selected"' : null }}>{{ trans('platform/pages::form.visibility.logged_in') }}</option>
 						<option value="admin"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'admin' ? ' selected="selected"' : null }}>{{ trans('platform/pages::form.visibility.admin') }}</option>
 					</select>
-					{{ $errors->first('visibility', '<span class="help-inline">:message</span>') }}
+					@if ($errors->has('visibility'))
+					{{ $errors->first('visibility', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.visibility_help') }}</span>
+					@endif
 				</div>
 			</div>
 
@@ -112,7 +132,11 @@
 						<option value="{{ $group->id }}"{{ array_key_exists($group->id, $pageGroups) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
 					@endforeach
 					</select>
-					{{ $errors->first('groups', '<span class="help-inline">:message</span>') }}
+					@if ($errors->has('groups'))
+					{{ $errors->first('groups', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.groups_help') }}</span>
+					@endif
 				</div>
 			</div>
 
@@ -124,7 +148,11 @@
 						<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.database') }}</option>
 						<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : null }}>{{ trans('platform/content::form.filesystem') }}</option>
 					</select>
-					{{ $errors->first('type', '<span class="help-inline">:message</span>') }}
+					@if ($errors->has('type'))
+					{{ $errors->first('type', '<span class="help-block">:message</span>') }}
+					@else
+					<span class="help-block">{{ trans('platform/pages::form.type_help') }}</span>
+					@endif
 				</div>
 			</div>
 
@@ -139,7 +167,11 @@
 							<option value="{{ $value }}"{{ Input::old('template', ! empty($page) ? $page->template : $defaultTemplate) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 						@endforeach
 						</select>
-						{{ $errors->first('template', '<span class="help-inline">:message</span>') }}
+						@if ($errors->has('template'))
+						{{ $errors->first('template', '<span class="help-block">:message</span>') }}
+						@else
+						<span class="help-block">{{ trans('platform/pages::form.template_help') }}</span>
+						@endif
 					</div>
 				</div>
 
@@ -149,9 +181,13 @@
 					<div class="controls">
 						<div class="input-prepend">
 							<i class="add-on">@</i>
-							<input type="text" name="section" value="{{{ Input::old('section', ! empty($page) ? $page->section : null) }}}" placeholder="{{ trans('platform/pages::form.section_help') }}">
+							<input type="text" name="section" value="{{{ Input::old('section', ! empty($page) ? $page->section : null) }}}">
 						</div>
-						{{ $errors->first('section', '<span class="help-inline">:message</span>') }}
+						@if ($errors->has('section'))
+						{{ $errors->first('section', '<span class="help-block">:message</span>') }}
+						@else
+						<span class="help-block">{{ trans('platform/pages::form.section_help') }}</span>
+						@endif
 					</div>
 				</div>
 
@@ -160,7 +196,11 @@
 					<label class="control-label" for="value">{{ trans('platform/pages::form.value') }}</label>
 					<div class="controls">
 						<textarea rows="10" name="value" id="value"{{{ Input::old('value', ! empty($page) ? $page->type : null) == 'database' ? ' required' : null }}}>{{ Input::old('value', ! empty($page) ? $page->value : null) }}</textarea>
-						{{ $errors->first('value', '<span class="help-inline">:message</span>') }}
+						@if ($errors->has('value'))
+						{{ $errors->first('value', '<span class="help-block">:message</span>') }}
+						@else
+						<span class="help-block">{{ trans('platform/pages::form.value_help') }}</span>
+						@endif
 					</div>
 				</div>
 
@@ -177,7 +217,11 @@
 							<option value="{{ $value }}"{{ Input::old('file', ! empty($page) ? $page->file : null) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 						@endforeach
 						</select>
-						{{ $errors->first('file', '<span class="help-inline">:message</span>') }}
+						@if ($errors->has('file'))
+						{{ $errors->first('file', '<span class="help-block">:message</span>') }}
+						@else
+						<span class="help-block">{{ trans('platform/pages::form.file_help') }}</span>
+						@endif
 					</div>
 				</div>
 

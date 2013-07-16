@@ -70,7 +70,7 @@ class PagesController extends ApiController {
 	}
 
 	/**
-	 * Display a listing of pages using the given filters.
+	 * Display a listing of the pages.
 	 *
 	 * @return Cartalyst\Api\Http\Response
 	 */
@@ -89,14 +89,14 @@ class PagesController extends ApiController {
 	}
 
 	/**
-	 * Create page.
+	 * Store a newly created page in storage.
 	 *
 	 * @return Cartalyst\Api\Http\Response
 	 */
 	public function create()
 	{
-		// If we no slug was submited, we will generate one
-		// based on the content name.
+		// If no slug was submited, we will generate
+		// one based on the page name.
 		$slug = Str::slug(Input::get('slug', null) ?: Input::get('name'));
 		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
 
@@ -140,7 +140,7 @@ class PagesController extends ApiController {
 	}
 
 	/**
-	 * Returns information about the given page.
+	 * Display the specified page.
 	 *
 	 * @param  mixed  $id
 	 * @return Cartalyst\Api\Http\Response
@@ -174,7 +174,7 @@ class PagesController extends ApiController {
 	}
 
 	/**
-	 * Updates the given page.
+	 * Update the specified page in storage.
 	 *
 	 * @param  mixed  $id
 	 * @return Cartalyst\Api\Http\Response
@@ -202,8 +202,8 @@ class PagesController extends ApiController {
 		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
 		$this->validationRules['uri'] = "required|unique:pages,uri,{$page->uri},uri";
 
-		// If we no slug was submited, we will generate one
-		// based on the content name.
+		// If no slug was submited, we will generate
+		// one based on the page name.
 		$slug = Str::slug(Input::get('slug', null) ?: Input::get('name'));
 		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
 
@@ -265,7 +265,7 @@ class PagesController extends ApiController {
 	}
 
 	/**
-	 * Deletes the given page.
+	 * Remove the specified page from storage.
 	 *
 	 * @param  mixed  $id
 	 * @return Cartalyst\Api\Http\Response
