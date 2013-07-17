@@ -41,21 +41,17 @@ $(function() {
 @stop
 
 {{-- Page pages --}}
-@section('content')
+@section('page')
 <header class="page__header">
 
 	<nav class="page__navigation">
 		@widget('platform/menus::nav.show', array(1, 1, 'navigation nav nav-tabs', admin_uri()))
 	</nav>
 
-	<div class="page__actions">
+	<div class="page__title">
+
 		<h1><span class="total"></span> {{ trans('platform/pages::general.title') }}</h1>
 
-		<nav class="actions">
-			<ul class="navigation navigation--inline-circle">
-				<li><a data-placement="right" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a></li>
-			</ul>
-		</nav>
 	</div>
 
 </header>
@@ -126,7 +122,7 @@ $(function() {
 					</td>
 					<td>[[ created_at | date 'DD MMMM YYYY' ]]</td>
 					<td>
-						<nav class="actions actions--hidden">
+						<nav class="actions actions--hidden actions--right">
 							<ul class="navigation navigation--inline-circle">
 								<li>
 									<a target="_blank" href="{{ URL::to('[[ uri ]]') }}" data-title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
@@ -155,8 +151,15 @@ $(function() {
 	</div>
 
 </section>
+@stop
 
-<footer class="page__footer">
+@section('page__footer')
+
+	<nav class="actions actions--right">
+		<ul class="navigation navigation--inline-circle">
+			<li><a data-placement="right" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a></li>
+		</ul>
+	</nav>
 
 	<div class="data-grid__pagination clearfix" data-grid="main">
 		<div data-template style="display: none;">
@@ -183,5 +186,4 @@ $(function() {
 		</div>
 	</div>
 
-</footer>
 @stop

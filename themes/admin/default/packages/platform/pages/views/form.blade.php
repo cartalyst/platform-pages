@@ -25,7 +25,7 @@
 @stop
 
 {{-- Page content --}}
-@section('content')
+@section('page')
 <form id="page-form" class="form-horizontal" action="{{ Request::fullUrl() }}" method="POST" accept-char="UTF-8" autocomplete="off">
 
 	{{-- CSRF Token --}}
@@ -33,7 +33,7 @@
 
 	<header class="page__header">
 
-		<div class="page__actions">
+		<div class="page__title">
 			<h1>
 				<a class="icon-reply" href="{{ URL::toAdmin('pages') }}"></a> {{ trans("platform/pages::general.{$pageSegment}.title", array('page' => ! empty($page) ? $page->name : null)) }}
 			</h1>
@@ -230,28 +230,29 @@
 		</fieldset>
 
 	</section>
+@stop
 
-	<footer class="page__footer">
+@section('page__footer')
 
 		<nav class="actions actions--right">
 			<ul class="navigation navigation--inline-circle">
 				@if( ! empty($page) and $pageSegment != 'copy')
 				<li>
-					<a class="tip" target="_blank" href="{{ URL::to($page->uri) }}" title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
+					<a class="tip" data-placement="bottom" target="_blank" href="{{ URL::to($page->uri) }}" title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
 				</li>
 				<li>
-					<a class="danger tip" data-placement="top" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+					<a class="danger tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
 				</li>
 				<li>
-					<a class="tip" data-placement="top" href="{{ URL::toAdmin("pages/copy/{$page->slug}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
+					<a class="tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->slug}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
 				</li>
 				@endif
 				<li>
-					<button class="tip" data-placement="top" title="{{ trans('button.save') }}" type="submit"><i class="icon-save"></i></button>
+					<button class="tip" data-placement="bottom" title="{{ trans('button.save') }}" type="submit"><i class="icon-save"></i></button>
 				</li>
 			</ul>
 		</nav>
 
-	</footer>
 </form>
+
 @stop
