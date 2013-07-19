@@ -35,6 +35,6 @@ jQuery(document).ready(function($) {
 
 	});
 
-	H5F.setup(document.getElementById('page-create-form'))
-
 });
+
+H5F.setup(document.getElementById('page-form'))

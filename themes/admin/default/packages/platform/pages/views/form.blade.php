@@ -19,9 +19,6 @@
 {{-- Inline Scripts --}}
 @section('scripts')
 @parent
-<script>
-	H5F.setup(document.getElementById('page-form'));
-</script>
 @stop
 
 {{-- Page content --}}
