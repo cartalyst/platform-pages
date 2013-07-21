@@ -230,26 +230,24 @@
 @stop
 
 @section('page__footer')
-
-		<nav class="actions actions--right">
-			<ul class="navigation navigation--inline-circle">
-				@if( ! empty($page) and $pageSegment != 'copy')
-				<li>
-					<a class="tip" data-placement="bottom" target="_blank" href="{{ URL::to($page->uri) }}" title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
-				</li>
-				<li>
-					<a class="danger tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
-				</li>
-				<li>
-					<a class="tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->slug}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
-				</li>
-				@endif
-				<li>
-					<button class="tip" data-placement="bottom" title="{{ trans('button.save') }}" type="submit"><i class="icon-save"></i></button>
-				</li>
-			</ul>
-		</nav>
+	<nav class="actions actions--right">
+		<ul class="navigation navigation--inline-circle">
+			@if( ! empty($page) and $pageSegment != 'copy')
+			<li>
+				<a class="tip" data-placement="bottom" target="_blank" href="{{ URL::to($page->uri) }}" title="{{ trans('platform/pages::button.view') }}"><i class="icon-eye-open"></i></a>
+			</li>
+			<li>
+				<a class="danger tip" data-placement="bottom" data-toggle="modal" data-target="#platform-modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}" title="{{ trans('button.delete') }}"><i class="icon-trash"></i></a>
+			</li>
+			<li>
+				<a class="tip" data-placement="bottom" href="{{ URL::toAdmin("pages/copy/{$page->slug}") }}" title="{{ trans('button.copy') }}"><i class="icon-copy"></i></a>
+			</li>
+			@endif
+			<li>
+				<button class="tip" data-placement="bottom" title="{{ trans('button.save') }}" type="submit"><i class="icon-save"></i></button>
+			</li>
+		</ul>
+	</nav>
 
 </form>
-
 @stop

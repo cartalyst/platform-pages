@@ -154,7 +154,6 @@ $(function() {
 @stop
 
 @section('page__footer')
-
 	<nav class="actions actions--right">
 		<ul class="navigation navigation--inline-circle">
 			<li><a data-placement="bottom" href="{{ URL::toAdmin('pages/create') }}" data-title="{{ trans('button.create') }}"><i class="icon-plus"></i></a></li>
@@ -185,5 +184,4 @@ $(function() {
 			</nav>
 		</div>
 	</div>
-
 @stop
