@@ -47,6 +47,8 @@ class Page extends Model {
 		'enabled',
 		'type',
 		'visibility',
+		'meta_description',
+		'meta_title',
 		'template',
 		'section',
 		'value',

@@ -51,6 +51,11 @@ return array(
 	'template'        => 'Template',
 	'template_help'   => 'Page template to use.',
 
+
+	'meta_desc'       => 'Meta Description',
+	'meta_title'      => 'Meta Title',
+	'meta_help'  	  => 'Page meta data.',
+
 	'section'         => 'Section',
 	'section_help'    => 'Which @section() to inject value to?',
 

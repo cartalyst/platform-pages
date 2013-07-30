@@ -38,6 +38,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('uri');
 			$table->string('type');
 			$table->string('visibility');
+			$table->string('meta_description');
 
 			// Database specific
 			$table->string('template')->nullable();
@@ -67,13 +68,15 @@ class MigrationPlatformPagesInstallPages extends Migration {
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
 		$page = new Page(array(
-			'name'       => 'Welcome',
-			'slug'       => 'welcome',
-			'uri'        => 'welcome',
-			'visibility' => 'always',
-			'type'       => 'filesystem',
-			'file'       => 'welcome',
-			'enabled'    => true,
+			'name'       		=> 'Welcome',
+			'slug'       		=> 'welcome',
+			'uri'        		=> 'welcome',
+			'visibility' 		=> 'always',
+			'meta_description' 	=> '',
+			'meta_title' 		=> '',
+			'type'       		=> 'filesystem',
+			'file'       		=> 'welcome',
+			'enabled'    		=> true,
 		));
 		$page->save();
 	}
