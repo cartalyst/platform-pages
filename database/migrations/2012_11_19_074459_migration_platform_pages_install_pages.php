@@ -39,6 +39,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('type');
 			$table->string('visibility');
 			$table->string('meta_description');
+			$table->string('meta_title');
 
 			// Database specific
 			$table->string('template')->nullable();
