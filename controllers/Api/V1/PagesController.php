@@ -34,20 +34,20 @@ class PagesController extends ApiController {
 	 * @var array
 	 */
 	protected $validationRules = array(
-		'name'       => 'required',
-		'slug'       => 'required|unique:pages,slug',
-		'uri'        => 'required|unique:pages,uri',
-		'enabled'    => 'required',
-		'type'       => 'required|in:database,filesystem',
-		'visibility' => 'required|in:always,logged_in,admin',
+		'name'       			=> 'required',
+		'slug'       			=> 'required|unique:pages,slug',
+		'uri'        			=> 'required|unique:pages,uri',
+		'enabled'    			=> 'required',
+		'type'       			=> 'required|in:database,filesystem',
+		'visibility' 			=> 'required|in:always,logged_in,admin',
 
 		// Database page
-		'template'   => 'required_if:type,database',
-		'section'    => 'required_if:type,database',
-		'value'      => 'required_if:type,database',
+		'template'   			=> 'required_if:type,database',
+		'section'    			=> 'required_if:type,database',
+		'value'      			=> 'required_if:type,database',
 
 		// Filesystem page
-		'file'       => 'required_if:type,filesystem',
+		'file'       			=> 'required_if:type,filesystem',
 	);
 
 	/**
