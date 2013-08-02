@@ -95,20 +95,20 @@
 					@if ($errors->has('meta_title'))
 					{{ $errors->first('meta_title', '<span class="help-block">:message</span>') }}
 					@else
-					<span class="help-block">{{ trans('platform/pages::form.meta_help') }}</span>
+					<span class="help-block">{{ trans('platform/pages::form.meta_title_help') }}</span>
 					@endif
 				</div>
 			</div>
 
 			{{-- Meta Description --}}
 			<div class="control-group{{ $errors->first('meta_description', ' error') }}">
-				<label class="control-label" for="meta_description">{{ trans('platform/pages::form.meta_desc') }}</label>
+				<label class="control-label" for="meta_description">{{ trans('platform/pages::form.meta_description') }}</label>
 				<div class="controls">
 					<input type="text" name="meta_description" id="meta_description" value="{{{ Input::old('meta_description', ! empty($page) ? $page->meta_description : null) }}}">
 					@if ($errors->has('meta_description'))
 					{{ $errors->first('meta_description', '<span class="help-block">:message</span>') }}
 					@else
-					<span class="help-block">{{ trans('platform/pages::form.meta_help') }}</span>
+					<span class="help-block">{{ trans('platform/pages::form.meta_description_help') }}</span>
 					@endif
 				</div>
 			</div>

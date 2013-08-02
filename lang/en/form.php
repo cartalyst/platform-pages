@@ -20,22 +20,22 @@
 
 return array(
 
-	'name'            => 'Name',
-	'name_help'       => 'Type a descriptive name for your page.',
+	'name'      => 'Name',
+	'name_help' => 'Type a descriptive name for your page.',
 
-	'slug'            => 'Short name',
-	'slug_help'       => 'Single word, no spaces. Underscores and dashes are allowed.',
+	'slug'      => 'Short name',
+	'slug_help' => 'Single word, no spaces. Underscores and dashes are allowed.',
 
-	'uri'             => 'Uri',
-	'uri_help'        => 'Your page uri.',
+	'uri'      => 'Uri',
+	'uri_help' => 'Your page uri.',
 
-	'enabled'         => 'Status',
-	'enabled_help'    => 'What is the status of this page?',
+	'enabled'      => 'Status',
+	'enabled_help' => 'What is the status of this page?',
 
-	'type'            => 'Storage Type',
-	'type_help'       => 'How do you want to store and edit this page?',
+	'type'      => 'Storage Type',
+	'type_help' => 'How do you want to store and edit this page?',
 
-	'visibility'      => array(
+	'visibility' => array(
 		'legend' => 'Visibility',
 
 		'always'     => 'Show Always',
@@ -45,25 +45,26 @@ return array(
 	),
 	'visibility_help' => 'When should this page be seen?',
 
-	'groups'          => 'Groups',
-	'groups_help'     => 'What user groups should be able to see this page?',
+	'groups'      => 'Groups',
+	'groups_help' => 'What user groups should be able to see this page?',
 
-	'template'        => 'Template',
-	'template_help'   => 'Page template to use.',
+	'template'      => 'Template',
+	'template_help' => 'Page template to use.',
 
-
-	'meta_desc'       => 'Meta Description',
 	'meta_title'      => 'Meta Title',
-	'meta_help'  	  => 'Page meta data.',
+	'meta_title_help' => 'Meta Title tag.',
 
-	'section'         => 'Section',
-	'section_help'    => 'Which @section() to inject value to?',
+	'meta_description'      => 'Meta Description',
+	'meta_description_help' => 'Meta Description tag.',
 
-	'value'           => 'Value',
-	'value_help'      => "The page's value. @content call is allowed.",
+	'section'      => 'Section',
+	'section_help' => 'Which @section() to inject value to?',
 
-	'file'            => 'File',
-	'file_help'       => 'File to use.',
+	'value'      => 'Value',
+	'value_help' => "The page's value. @content call is allowed.",
+
+	'file'      => 'File',
+	'file_help' => 'File to use.',
 
 	'create' => array(
 		'legend'  => 'Add Page',

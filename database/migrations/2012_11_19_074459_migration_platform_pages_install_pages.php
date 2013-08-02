@@ -69,15 +69,15 @@ class MigrationPlatformPagesInstallPages extends Migration {
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
 		$page = new Page(array(
-			'name'       		=> 'Welcome',
-			'slug'       		=> 'welcome',
-			'uri'        		=> 'welcome',
-			'visibility' 		=> 'always',
-			'meta_description' 	=> '',
-			'meta_title' 		=> '',
-			'type'       		=> 'filesystem',
-			'file'       		=> 'welcome',
-			'enabled'    		=> true,
+			'name'              => 'Welcome',
+			'slug'              => 'welcome',
+			'uri'               => 'welcome',
+			'visibility'        => 'always',
+			'meta_title'        => 'Welcome',
+			'meta_description'  => 'The default home page.',
+			'type'              => 'filesystem',
+			'file'              => 'welcome',
+			'enabled'           => true,
 		));
 		$page->save();
 	}
