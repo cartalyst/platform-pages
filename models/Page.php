@@ -20,6 +20,7 @@
 
 use Cartalyst\Themes\ThemeBag;
 use Config;
+use Event;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
@@ -110,7 +111,11 @@ class Page extends Model {
 				$view = $this->template;
 			}
 
-			return static::$themeBag->view($view, compact('page'), static::$theme)->render();
+			$data = Event::fire('platform/pages::rendering', array($data = array()));
+
+			$data = array_merge(compact('page'), is_array($data[0]) ? $data[0] : array());
+
+			return static::$themeBag->view($view, $data, static::$theme)->render();
 		}
 
 		throw new RuntimeException("Invalid storage type [{$type}] for page [{$this->getKey()}].");
