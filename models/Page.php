@@ -112,8 +112,15 @@ class Page extends Model {
 
 			$current = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
 
+			$data = array();
+
+			foreach ($current as $val)
+			{
+				$data[array_keys($val)[0]] = array_values($val)[0];
+			}
+
 			$data = array_merge(
-				! empty($current[0]) ? $current[0] : array(),
+				$data,
 				compact('page')
 			);
 
