@@ -110,9 +110,12 @@ class Page extends Model {
 				$view = $this->template;
 			}
 
-			$data = static::$dispatcher->fire('platform/pages::rendering', compact('page'));
+			$current = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
 
-			$data = array_merge(compact('page'), ! empty($data[0]) ? $data[0] : array());
+			$data = array_merge(
+				! empty($current[0]) ? $current[0] : array(),
+				compact('page')
+			);
 
 			return static::$themeBag->view($view, $data, static::$theme)->render();
 		}
