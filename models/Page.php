@@ -19,6 +19,7 @@
  */
 
 use Cartalyst\Themes\ThemeBag;
+use Closure;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
@@ -110,19 +111,7 @@ class Page extends Model {
 				$view = $this->template;
 			}
 
-			$current = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
-
-			$data = array();
-
-			foreach ($current as $val)
-			{
-				$data[array_keys($val)[0]] = array_values($val)[0];
-			}
-
-			$data = array_merge(
-				$data,
-				compact('page')
-			);
+			$data = array_merge($this->additionalRenderData(), compact('page'));
 
 			return static::$themeBag->view($view, $data, static::$theme)->render();
 		}
@@ -139,6 +128,44 @@ class Page extends Model {
 	public function getEnabledAttribute($enabled)
 	{
 		return (bool) $enabled;
+	}
+
+	/**
+	 * Grabs additional rendering data by firing a callback which
+	 * people can listen into.
+	 *
+	 * @return arary  $data
+	 */
+	protected function additionalRenderData()
+	{
+		$page = $this;
+
+		$responses = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
+		$data      = array();
+
+		foreach ($responses as $response)
+		{
+			// If nothing was was returned, the page was probably modified
+			// or something else occured.
+			if ($response === null) continue;
+
+			if ( ! is_array($response))
+			{
+				throw new \InvalidArgumentException("Page rendering event listeners must return an array or must not return anything at all.");
+			}
+
+			$value = reset($response);
+			$key = key($response);
+
+			$data[$key] = $value;
+		}
+
+		if (array_key_exists('page', $data))
+		{
+			throw new \RuntimeException("Cannot set [page] additional data for a page as it is reserved.");
+		}
+
+		return $data;
 	}
 
 	/**
@@ -338,6 +365,17 @@ class Page extends Model {
 		}
 
 		return $files;
+	}
+
+	/**
+	 * Add a callback for when a page is rendering.
+	 *
+	 * @param  Closure  $callback
+	 * @return void
+	 */
+	public static function rendering(Closure $callback)
+	{
+		static::$dispatcher->listen('platform/pages::rendering.*', $callback);
 	}
 
 }
