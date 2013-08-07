@@ -303,8 +303,9 @@ class Page extends Model {
 			}
 		}
 		##
-
-		$finder = with(new Finder)->in($paths);
+		## Issue with in method the correct method should be append as that is what is being done here 
+		## the array of paths is appended to the Finder Object.
+		$finder = with(new Finder)->append($paths);
 
 		$files = array();
 
