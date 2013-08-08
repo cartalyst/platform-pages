@@ -293,18 +293,22 @@ class Page extends Model {
 
 		$paths = array();
 
-		## this if shouldn't be required, since we are only interested
-		## on the current active theme views
+		// Loop through the view paths
 		foreach (Theme::getCascadedViewPaths($theme) as $path)
 		{
-			if (strpos($path, 'admin') == false)
-			{
-				$paths[] = $path . DIRECTORY_SEPARATOR . 'pages';
-			}
-		}
-		##
+			// Full path to the pages folder
+			$fullPath = implode(DIRECTORY_SEPARATOR, array($path, 'pages'));
 
-		$finder = with(new Finder)->in($paths);
+			// Check if the path doesn't exist
+			if ( ! is_dir($fullPath))
+			{
+				continue;
+			}
+
+			$paths[] = $fullPath;
+		}
+
+		$finder = with(new Finder)->files()->in($paths);
 
 		$files = array();
 
@@ -312,7 +316,7 @@ class Page extends Model {
 		// won't tackle ".blade.php" so this is our best shot.
 		$replacements = array_pad(array(), count($extensions), '');
 
-		foreach ($finder->files() as $file)
+		foreach ($finder as $file)
 		{
 			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
 
