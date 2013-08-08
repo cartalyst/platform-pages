@@ -293,8 +293,8 @@ class Page extends Model {
 
 		$paths = array();
 
-		## this if shouldn't be required, since we are only interested
-		## on the current active theme views
+		// this if shouldn't be required, since we are only interested
+		// on the current active theme views
 		foreach (Theme::getCascadedViewPaths($theme) as $path)
 		{
 			if (strpos($path, 'admin') == false)
@@ -303,9 +303,8 @@ class Page extends Model {
 			}
 		}
 		
-		// Issue with in method the correct method should be append as that is what is being done here 
-		// the array of paths is appended to the Finder Object.
-		$finder = with(new Finder)->append($paths);
+		
+		$finder = with(new Finder)->files()->in($paths);
 
 		$files = array();
 
