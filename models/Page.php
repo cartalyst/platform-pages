@@ -297,7 +297,9 @@ class Page extends Model {
 		// on the current active theme views
 		foreach (Theme::getCascadedViewPaths($theme) as $path)
 		{
-			if (strpos($path, 'admin') == false)
+			// added themes admin so if someone has 'admin' anywhere in their path
+			// it will still works.
+			if (strpos($path, 'themes/admin') == false)
 			{
 				$paths[] = $path . DIRECTORY_SEPARATOR . 'pages';
 			}
