@@ -120,7 +120,7 @@ $(function() {
 							{{ trans('general.no') }}
 						[? endif ?]
 					</td>
-					<td>[[ created_at | date 'DD MMMM YYYY' ]]</td>
+					<td>[[ created_at ]]</td>
 					<td>
 						<nav class="actions actions--hidden actions--right">
 							<ul class="navigation navigation--inline-circle">
