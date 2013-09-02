@@ -28,7 +28,7 @@
 	"repositories": [
 		{
 			"type": "composer",
-			"url": "http://packages.cartalyst.com"
+			"url": "http://packages.igorherson.com/web"
 		}
 	],
 	"require": {
