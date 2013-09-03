@@ -154,10 +154,10 @@ class Page extends Model {
 				throw new \InvalidArgumentException("Page rendering event listeners must return an array or must not return anything at all.");
 			}
 
-			$value = reset($response);
-			$key = key($response);
-
-			$data[$key] = $value;
+			foreach ($response as $key => $value)
+			{
+				$data[$key] = $value;
+			}
 		}
 
 		if (array_key_exists('page', $data))
