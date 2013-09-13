@@ -97,6 +97,11 @@ class PagesController extends AdminController {
 	 */
 	public function getEdit($slug = null)
 	{
+		if (is_null($slug))
+		{
+			return Redirect::toAdmin('pages');
+		}
+
 		return $this->showForm($slug, 'update');
 	}
 
@@ -119,6 +124,11 @@ class PagesController extends AdminController {
 	 */
 	public function getCopy($slug = null)
 	{
+		if (is_null($slug))
+		{
+			return Redirect::toAdmin('pages');
+		}
+
 		return $this->showForm($slug, 'copy');
 	}
 
@@ -140,6 +150,11 @@ class PagesController extends AdminController {
 	 */
 	public function getDelete($slug = null)
 	{
+		if (is_null($slug))
+		{
+			return Redirect::toAdmin('pages');
+		}
+
 		// Instantiate a new message bag
 		$bag = new Bag;
 
