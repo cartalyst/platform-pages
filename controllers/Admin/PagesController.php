@@ -97,6 +97,7 @@ class PagesController extends AdminController {
 	 */
 	public function getEdit($slug = null)
 	{
+		// Do we have a slug?
 		if (is_null($slug))
 		{
 			return Redirect::toAdmin('pages');
@@ -124,6 +125,7 @@ class PagesController extends AdminController {
 	 */
 	public function getCopy($slug = null)
 	{
+		// Do we have a slug?
 		if (is_null($slug))
 		{
 			return Redirect::toAdmin('pages');
@@ -150,26 +152,25 @@ class PagesController extends AdminController {
 	 */
 	public function getDelete($slug = null)
 	{
-		if (is_null($slug))
-		{
-			return Redirect::toAdmin('pages');
-		}
-
 		// Instantiate a new message bag
 		$bag = new Bag;
 
-		try
+		// Do we have a slug?
+		if ( ! is_null($slug))
 		{
-			// Delete the page
-			API::delete("v1/page/{$slug}");
+			try
+			{
+				// Delete the page
+				API::delete("v1/page/{$slug}");
 
-			// Set the success message
-			$bag->add('success', Lang::get('platform/pages::message.success.delete'));
-		}
-		catch (ApiHttpException $e)
-		{
-			// Set the error message
-			$bag->add('error', Lang::get('platform/pages::message.error.delete'));
+				// Set the success message
+				$bag->add('success', Lang::get('platform/pages::message.success.delete'));
+			}
+			catch (ApiHttpException $e)
+			{
+				// Set the error message
+				$bag->add('error', Lang::get('platform/pages::message.error.delete'));
+			}
 		}
 
 		// Redirect to the pages management page
