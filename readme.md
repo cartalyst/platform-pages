@@ -8,10 +8,12 @@ Extension Story
 ----------
 
 ####Incomplete
+
 - User can set page attributes.
 - User can create multiple content sections.
 
 ####Complete
+
 - *xx-xx-13* - v0.9.0
 	- User can create a new page.
 	- User can set the page name.
