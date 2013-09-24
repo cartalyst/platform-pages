@@ -105,8 +105,12 @@ class Page extends Model {
 
 			if ($type === 'database')
 			{
+				# temporary
+				$model = new \Platform\Content\Models\Content;
+				$value = $model->prepareContent($this->value);
+
 				// We'll inject the section with the value, i.e. @content()
-				static::$themeBag->getViewEnvironment()->inject($this->section, $this->value);
+				static::$themeBag->getViewEnvironment()->inject($this->section, $value);
 
 				$view = $this->template;
 			}
