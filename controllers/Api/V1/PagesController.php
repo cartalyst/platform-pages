@@ -158,13 +158,10 @@ class PagesController extends ApiController {
 			$query->orWhere('id', 'LIKE', $id);
 		});
 
-		// Do we only want the enabled page ?
-		if (Input::get('enabled'))
-		{
-			$query->where('enabled', 1);
-		}
+		// Search for page by it's status
+		$query->where('enabled', (int) Input::get('enabled', 1));
 
-		// Search for the page
+		// Grab the page
 		if ( ! $page = $query->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
@@ -192,7 +189,10 @@ class PagesController extends ApiController {
 			$query->orWhere('id', 'LIKE', $id);
 		});
 
-		// Search for the page
+		// Search for page by it's status
+		$query->where('enabled', (int) Input::get('enabled', 1));
+
+		// Grab the page
 		if ( ! $page = $query->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
@@ -283,7 +283,7 @@ class PagesController extends ApiController {
 			$query->orWhere('id', 'LIKE', $id);
 		});
 
-		// Search for the page
+		// Grab the page
 		if ( ! $page = $query->first())
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
