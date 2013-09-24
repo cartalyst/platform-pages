@@ -71,11 +71,18 @@ class Page extends Model {
 	protected static $theme = null;
 
 	/**
-	 * THe user model.
+	 * The group model.
 	 *
 	 * @var string
 	 */
 	protected static $groupModel = 'Platform\Users\Models\Group';
+
+	/**
+	 * The content model.
+	 *
+	 * @var string
+	 */
+	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
 	 * Get the groups for the page.
@@ -105,9 +112,9 @@ class Page extends Model {
 
 			if ($type === 'database')
 			{
-				# temporary
-				$model = new \Platform\Content\Models\Content;
-				$value = $model->prepareContent($this->value);
+				// Get the content model
+				$contentModel = app($this->getContentModel());
+				$value = $contentModel->prepareContent($this->value);
 
 				// We'll inject the section with the value, i.e. @content()
 				static::$themeBag->getViewEnvironment()->inject($this->section, $value);
@@ -266,12 +273,12 @@ class Page extends Model {
 	/**
 	 * Set the group model.
 	 *
-	 * @param  string
+	 * @param  string  $model
 	 * @return void
 	 */
-	public static function setGroupModel($groupModel)
+	public static function setGroupModel($model)
 	{
-		static::$groupModel = $groupModel;
+		static::$groupModel = $model;
 	}
 
 	/**
@@ -282,6 +289,37 @@ class Page extends Model {
 	public static function unsetGroupModel()
 	{
 		static::$groupModel = null;
+	}
+
+	/**
+	 * Get the content model.
+	 *
+	 * @return string
+	 */
+	public static function getContentModel()
+	{
+		return static::$contentModel;
+	}
+
+	/**
+	 * Set the content model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setContentModel($model)
+	{
+		static::$contentModel = $model;
+	}
+
+	/**
+	 * Unset the content model.
+	 *
+	 * @return void
+	 */
+	public static function unsetContentModel()
+	{
+		static::$contentModel = null;
 	}
 
 	/**
