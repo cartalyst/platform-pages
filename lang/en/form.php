@@ -24,7 +24,7 @@ return array(
 	'name_help' => 'Type a descriptive name for your page.',
 
 	'slug'      => 'Short name',
-	'slug_help' => 'Single word, no spaces. Underscores and dashes are allowed.',
+	'slug_help' => 'Single word, no spaces, no special words. Dashes are allowed.',
 
 	'uri'      => 'Uri',
 	'uri_help' => 'Your page uri.',

@@ -97,7 +97,7 @@ class PagesController extends ApiController {
 	{
 		// If no slug was submited, we will generate
 		// one based on the page name.
-		$slug = Str::slug(Input::get('slug', null) ?: Input::get('name'));
+		$slug = Str::slug(str_replace('_', '-', Input::get('slug', null) ?: Input::get('name')));
 		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
 
 		// Get the storage type and update the inputs accordingly
@@ -204,7 +204,7 @@ class PagesController extends ApiController {
 
 		// If no slug was submited, we will generate
 		// one based on the page name.
-		$slug = Str::slug(Input::get('slug', null) ?: Input::get('name'));
+		$slug = Str::slug(str_replace('_', '-', Input::get('slug', null) ?: Input::get('name')));
 		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
 
 		// Get the storage type and update the inputs accordingly
