@@ -2,8 +2,6 @@ jQuery(document).ready(function($) {
 
 	$('#name').keyup(function() {
 		$('#slug').val($(this).val().slugify());
-
-		$('#uri').val($(this).val().slugify('/'));
 	});
 
 	$('#type').change(function() {
@@ -35,6 +33,9 @@ jQuery(document).ready(function($) {
 
 	});
 
-});
+	$('textarea').fseditor({
+		transition: 'fade',
+		overlay: true
+	});
 
-H5F.setup(document.getElementById('page-form'));
+});
