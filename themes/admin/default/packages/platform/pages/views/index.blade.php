@@ -129,11 +129,11 @@ $(function()
 					</td>
 					<td>[[ created_at ]]</td>
 					<td>
-						<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" title="{{{ trans('button.delete') }}}"><i class="icon-trash"></i></a>
+						<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/[[ slug ]]') }}" title="{{{ trans('button.edit') }}}"><i class="icon-edit"></i></a>
 
 						<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/copy/[[ slug ]]') }}" title="{{{ trans('button.copy') }}}"><i class="icon-copy"></i></a>
 
-						<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/[[ slug ]]') }}" title="{{{ trans('button.edit') }}}"><i class="icon-edit"></i></a>
+						<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" title="{{{ trans('button.delete') }}}"><i class="icon-trash"></i></a>
 					</td>
 				</tr>
 				<tr data-results-fallback style="display: none;">
