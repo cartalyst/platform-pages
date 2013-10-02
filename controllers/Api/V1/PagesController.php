@@ -53,7 +53,7 @@ class PagesController extends ApiController {
 	/**
 	 * Holds the pages model.
 	 *
-	 * @var Platform\Pages\Models\Page
+	 * @var \Platform\Pages\Models\Page
 	 */
 	protected $model;
 
@@ -72,7 +72,7 @@ class PagesController extends ApiController {
 	/**
 	 * Display a listing of the pages.
 	 *
-	 * @return Cartalyst\Api\Http\Response
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function index()
 	{
@@ -91,26 +91,10 @@ class PagesController extends ApiController {
 	/**
 	 * Store a newly created page in storage.
 	 *
-	 * @return Cartalyst\Api\Http\Response
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function create()
 	{
-		// If no slug was submited, we will generate
-		// one based on the page name.
-		$slug = Str::slug(str_replace('_', '-', Input::get('slug', null) ?: Input::get('name')));
-		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
-
-		// Get the storage type and update the inputs accordingly
-		$type = Input::get('type');
-
-		$template = ($type === 'filesystem' ? null : Input::get('template'));
-		$section = ($type === 'filesystem' ? null : Input::get('section'));
-		$value = ($type === 'filesystem' ? null : Input::get('value'));
-		$file  = ($type === 'database' ? null : Input::get('file'));
-
-		// Merge in the updated inputs
-		Input::merge(compact('slug', 'template', 'section', 'value', 'file'));
-
 		// Create a new validator instance from our dynamic rules
 		$validator = Validator::make(Input::all(), $this->validationRules);
 
@@ -143,7 +127,7 @@ class PagesController extends ApiController {
 	 * Display the specified page.
 	 *
 	 * @param  mixed  $id
-	 * @return Cartalyst\Api\Http\Response
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function show($id = null)
 	{
@@ -174,7 +158,7 @@ class PagesController extends ApiController {
 	 * Update the specified page in storage.
 	 *
 	 * @param  mixed  $id
-	 * @return Cartalyst\Api\Http\Response
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function update($id = null)
 	{
@@ -201,22 +185,6 @@ class PagesController extends ApiController {
 		// Update the validation rules
 		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
 		$this->validationRules['uri'] = "required|unique:pages,uri,{$page->uri},uri";
-
-		// If no slug was submited, we will generate
-		// one based on the page name.
-		$slug = Str::slug(str_replace('_', '-', Input::get('slug', null) ?: Input::get('name')));
-		$uri = Str::slug(Input::get('uri', null) ?: Input::get('uri'));
-
-		// Get the storage type and update the inputs accordingly
-		$type = Input::get('type');
-
-		$template = ($type === 'filesystem' ? null : Input::get('template'));
-		$section = ($type === 'filesystem' ? null : Input::get('section'));
-		$value = ($type === 'filesystem' ? null : Input::get('value'));
-		$file  = ($type === 'database' ? null : Input::get('file'));
-
-		// Merge in the updated inputs
-		Input::merge(compact('slug', 'template', 'section', 'value', 'file'));
 
 		// Create a new validator instance from our dynamic rules
 		$validator = Validator::make(Input::all(), $this->validationRules);
@@ -268,7 +236,7 @@ class PagesController extends ApiController {
 	 * Remove the specified page from storage.
 	 *
 	 * @param  mixed  $id
-	 * @return Cartalyst\Api\Http\Response
+	 * @return \Cartalyst\Api\Http\Response
 	 */
 	public function destroy($id = null)
 	{

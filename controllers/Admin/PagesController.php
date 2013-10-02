@@ -37,7 +37,7 @@ class PagesController extends AdminController {
 	/**
 	 * Display a listing of pages.
 	 *
-	 * @return mixed
+	 * @return \View
 	 */
 	public function getIndex()
 	{
@@ -51,7 +51,7 @@ class PagesController extends AdminController {
 	/**
 	 * Datasource for the pages Data Grid.
 	 *
-	 * @return Cartalyst\DataGrid\DataGrid
+	 * @return \Cartalyst\DataGrid\DataGrid
 	 */
 	public function getGrid()
 	{
@@ -82,7 +82,7 @@ class PagesController extends AdminController {
 	/**
 	 * Handle posting of the form for creating a new page.
 	 *
-	 * @return Redirect
+	 * @return \Redirect
 	 */
 	public function postCreate()
 	{
@@ -110,7 +110,7 @@ class PagesController extends AdminController {
 	 * Handle posting of the form for updating a page.
 	 *
 	 * @param  mixed  $slug
-	 * @return Redirect
+	 * @return \Redirect
 	 */
 	public function postEdit($slug = null)
 	{
@@ -137,7 +137,7 @@ class PagesController extends AdminController {
 	/**
 	 * Handle posting of the form for copying a page.
 	 *
-	 * @return Redirect
+	 * @return \Redirect
 	 */
 	public function postCopy()
 	{
@@ -148,7 +148,7 @@ class PagesController extends AdminController {
 	 * Remove the specified page.
 	 *
 	 * @param  mixed  $slug
-	 * @return Redirect
+	 * @return \Redirect
 	 */
 	public function getDelete($slug = null)
 	{
@@ -236,7 +236,7 @@ class PagesController extends AdminController {
 	 * Processes the form.
 	 *
 	 * @param  mixed  $slug
-	 * @return Redirect
+	 * @return \Redirect
 	 */
 	protected function processForm($slug = null)
 	{

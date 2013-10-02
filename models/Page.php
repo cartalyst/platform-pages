@@ -23,6 +23,7 @@ use Closure;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
+use Str;
 use Symfony\Component\Finder\Finder;
 use Theme;
 use View;
@@ -59,7 +60,7 @@ class Page extends Model {
 	/**
 	 * The theme bag which is used for rendering file-based pages.
 	 *
-	 * @var Illuminate\View\Environment
+	 * @var \Illuminate\View\Environment
 	 */
 	protected static $themeBag;
 
@@ -85,9 +86,79 @@ class Page extends Model {
 	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
+	 * Prepare the slug attribute.
+	 *
+	 * @param  string  $slug
+	 * @return void
+	 */
+	public function setSlugAttribute($slug)
+	{
+		$slug = str_replace('_', '-', $slug ?: $this->name);
+
+		$this->attributes['slug'] = Str::slug($slug);
+	}
+
+	/**
+	 * Prepare the uri attribute.
+	 *
+	 * @param  string  $uri
+	 * @return void
+	 */
+	public function setUriAttribute($uri)
+	{
+		$uri = str_replace('_', '-', $uri ?: $this->uri);
+
+		$this->attributes['uri'] = Str::slug($uri);
+	}
+
+	/**
+	 * Prepare the template attribute.
+	 *
+	 * @param  string  $template
+	 * @return void
+	 */
+	public function setTemplateAttribute($template)
+	{
+		$this->attributes['template'] = ($this->type === 'filesystem' ? null : $template);
+	}
+
+	/**
+	 * Prepare the section attribute.
+	 *
+	 * @param  string  $section
+	 * @return void
+	 */
+	public function setSectionAttribute($section)
+	{
+		$this->attributes['section'] = ($this->type === 'filesystem' ? null : $section);
+	}
+
+	/**
+	 * Prepare the value attribute.
+	 *
+	 * @param  string  $value
+	 * @return void
+	 */
+	public function setValueAttribute($value)
+	{
+		$this->attributes['value'] = ($this->type === 'filesystem' ? null : $value);
+	}
+
+	/**
+	 * Prepare the file attribute.
+	 *
+	 * @param  string  $file
+	 * @return void
+	 */
+	public function setFileAttribute($file)
+	{
+		$this->attributes['file'] = ($this->type === 'database' ? null : $file);
+	}
+
+	/**
 	 * Get the groups for the page.
 	 *
-	 * @return Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
 	 */
 	public function groups()
 	{
@@ -98,7 +169,7 @@ class Page extends Model {
 	 * Renders the page.
 	 *
 	 * @return string
-	 * @throws RuntimeException
+	 * @throws \RuntimeException
 	 */
 	public function render()
 	{
@@ -201,7 +272,7 @@ class Page extends Model {
 	/**
 	 * Get the theme bag instance.
 	 *
-	 * @return Cartalyst\Themes\ThemeBag
+	 * @return \Cartalyst\Themes\ThemeBag
 	 */
 	public static function getThemeBag()
 	{
@@ -211,7 +282,7 @@ class Page extends Model {
 	/**
 	 * Set the theme bag instance.
 	 *
-	 * @param  Cartalyst\Themes\ThemeBag  $themeBag
+	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
 	 * @return void
 	 */
 	public static function setThemeBag(ThemeBag $themeBag)
