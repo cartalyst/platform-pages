@@ -41,8 +41,8 @@
 
 			{{-- Tabs --}}
 			<ul class="nav nav-tabs" data-toogle="tab">
-				<li class="active"><a href="#general">* General</a></li>
-				<li><a href="#attributes">* Attributes</a></li>
+				<li class="active"><a href="#general">{{{ trans('platform/pages::general.tabs.general') }}}</a></li>
+				<li><a href="#attributes">{{{ trans('platform/pages::general.tabs.attributes') }}}</a></li>
 			</ul>
 
 			{{-- Tabs content --}}
@@ -232,7 +232,7 @@
 
 				{{-- Attributes tab --}}
 				<div class="tab-pane" id="attributes">
-
+				attributes
 				</div>
 
 			</div>

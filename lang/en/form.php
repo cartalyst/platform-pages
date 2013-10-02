@@ -66,19 +66,4 @@ return array(
 	'file'      => 'File',
 	'file_help' => 'File to use.',
 
-	'create' => array(
-		'legend'  => 'Add Page',
-		'summary' => 'Please supply the following information.',
-	),
-
-	'update' => array(
-		'legend'  => 'Edit Page',
-		'summary' => 'Please supply the following information.',
-	),
-
-	'copy' => array(
-		'legend'  => 'Copy Page',
-		'summary' => 'Please supply the following information.',
-	),
-
 );

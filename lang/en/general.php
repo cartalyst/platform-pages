@@ -29,13 +29,18 @@ return array(
 	),
 
 	'update' => array(
-		'title'       => 'Update :page',
+		'title'       => 'Update Page',
 		'description' => 'Please update the following information.',
 	),
 
 	'copy' => array(
-		'title'       => 'Copy :page',
+		'title'       => 'Copy Page',
 		'description' => 'Please update the following information.',
+	),
+
+	'tabs' => array(
+		'general'    => 'General',
+		'attributes' => 'Attributes',
 	),
 
 );
