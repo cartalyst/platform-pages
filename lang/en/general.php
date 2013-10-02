@@ -28,7 +28,7 @@ return array(
 		'description' => 'Please supply the following information.',
 	),
 
-	'update' => array(
+	'edit' => array(
 		'title'       => 'Update Page',
 		'description' => 'Please update the following information.',
 	),
