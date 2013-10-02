@@ -176,6 +176,35 @@
 					{{-- Type : Database --}}
 					<div class="type-database{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' hide' : null }}">
 
+						{{-- Template --}}
+						<div class="form-group{{ $errors->first('template', ' error') }}">
+							<label for="template" class="col-lg-2 control-label">{{{ trans('platform/pages::form.template') }}}</label>
+							<div class="col-lg-4">
+								<select class="form-control" name="template" id="template"{{ Input::old('type', ! empty($page) ? $page->type : null) == 'templatesystem' ? ' required' : null }}>
+								@foreach ($templates as $value => $name)
+									<option value="{{ $value }}"{{ Input::old('template', ! empty($page) ? $page->template : $defaultTemplate) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
+								@endforeach
+								</select>
+
+								<span class="help-block">
+									{{{ $errors->first('template', ':message') ?: trans('platform/pages::form.template_help') }}}
+								</span>
+							</div>
+						</div>
+
+						{{-- Section --}}
+						<div class="form-group{{ $errors->first('section', ' has-error') }}">
+							<label for="section" class="col-lg-2 control-label">{{{ trans('platform/pages::form.section') }}}</label>
+							<div class="col-lg-10">
+								<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::form.section') }}}" value="{{{ Input::old('section', ! empty($page) ? $page->section : null) }}}">
+
+								<span class="help-block">
+									{{{ $errors->first('section', ':message') ?: trans('platform/pages::form.section_help') }}}
+								</span>
+							</div>
+						</div>
+
+						{{-- Value --}}
 						<div class="form-group{{ $errors->first('value', ' has-error') }}">
 							<label for="value" class="col-lg-2 control-label">{{{ trans('platform/pages::form.value') }}}</label>
 							<div class="col-lg-10">
