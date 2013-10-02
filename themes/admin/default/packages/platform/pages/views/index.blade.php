@@ -78,28 +78,32 @@ $(function()
 
 		</div>
 
-		{{-- Data Grid : Applied Filters --}}
-		<div class="clearfix">
+		<div class="row">
 
-			<div class="pull-right">
-				<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/create') }}" title="{{{ trans('button.create') }}}"><i class="icon-plus"></i></a></li>
+			{{-- Data Grid : Applied Filters --}}
+			<div class="col-lg-10">
+
+				<div class="data-grid_applied" data-grid="main">
+
+					<span data-template style="display: none;">
+
+						<button type="button" class="btn btn-info tip" title="Remove filter">
+							[? if column == undefined ?]
+								[[ valueLabel ]]
+							[? else ?]
+								[[ valueLabel ]] {{{ trans('general.in') }}} <em>[[ columnLabel ]]</em>
+							[? endif ?]
+							<i class="icon-remove-sign"></i>
+						</button>
+
+					</span>
+
+				</div>
+
 			</div>
 
-			<div class="data-grid_applied" data-grid="main">
-
-				<span data-template style="display: none;">
-
-					<button type="button" class="btn btn-info tip" title="Remove filter">
-						[? if column == undefined ?]
-							[[ valueLabel ]]
-						[? else ?]
-							[[ valueLabel ]] {{{ trans('general.in') }}} <em>[[ columnLabel ]]</em>
-						[? endif ?]
-						<i class="icon-remove-sign"></i>
-					</button>
-
-				</span>
-
+			<div class="col-lg-2 text-right">
+				<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="icon-plus"></i> {{{ trans('button.create') }}}</a>
 			</div>
 
 		</div>
