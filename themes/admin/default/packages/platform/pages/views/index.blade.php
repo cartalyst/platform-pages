@@ -166,7 +166,7 @@ $(function()
 
 				</div>
 
-				<div class="count">Showing [[ pageStart ]] to [[ pageLimit ]] {{{ trans('general.of') }}} <span class="total"></span> entries</div>
+				{{{ trans('general.showing') }}} [[ pageStart ]] {{{ trans('general.to') }}} [[ pageLimit ]] {{{ trans('general.of') }}} <span class="total"></span>
 
 			</div>
 		</div>
