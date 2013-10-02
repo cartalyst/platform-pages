@@ -1,8 +1,10 @@
 @extends('layouts/default')
 
 {{-- Page title --}}
-@section('title', trans("platform/pages::general.{$pageSegment}.title"))
-
+@section('title')
+{{{ trans("platform/pages::general.{$pageSegment}.title") }}} {{{ ! empty($page) ? '- ' . $page->name : null }}} ::
+@parent
+@stop
 {{-- Queue assets --}}
 {{ Asset::queue('validate', 'js/platform/validate.js', 'jquery') }}
 {{ Asset::queue('fseditor', 'js/burakson/jquery.fseditor-min.js', 'jquery') }}
@@ -55,7 +57,7 @@
 					<div class="form-group{{ $errors->first('name', ' has-error') }}">
 						<label for="name" class="col-lg-2 control-label">{{{ trans('platform/pages::form.name') }}}</label>
 						<div class="col-lg-10">
-							<input type="text" class="form-control" name="name" id="name" placeholder="{{{ trans('platform/pages::form.name') }}}" value="{{{ Input::old('name', ! empty($page) ? $page->name : null) }}}">
+							<input type="text" class="form-control" name="name" id="name" placeholder="{{{ trans('platform/pages::form.name') }}}" value="{{{ Input::old('name', ! empty($page) ? $page->name : null) }}}" required>
 
 							<span class="help-block">
 								{{{ $errors->first('name', ':message') ?: trans('platform/pages::form.name_help') }}}
@@ -67,7 +69,7 @@
 					<div class="form-group{{ $errors->first('slug', ' has-error') }}">
 						<label for="slug" class="col-lg-2 control-label">{{{ trans('platform/pages::form.slug') }}}</label>
 						<div class="col-lg-10">
-							<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::form.slug') }}}" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}">
+							<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::form.slug') }}}" value="{{{ Input::old('slug', ! empty($page) ? $page->slug : null) }}}" required>
 
 							<span class="help-block">
 								{{{ $errors->first('slug', ':message') ?: trans('platform/pages::form.slug_help') }}}
@@ -79,7 +81,7 @@
 					<div class="form-group{{ $errors->first('uri', ' has-error') }}">
 						<label for="uri" class="col-lg-2 control-label">{{{ trans('platform/pages::form.uri') }}}</label>
 						<div class="col-lg-10">
-							<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::form.uri') }}}" value="{{{ Input::old('uri', ! empty($page) ? $page->uri : null) }}}">
+							<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::form.uri') }}}" value="{{{ Input::old('uri', ! empty($page) ? $page->uri : null) }}}" required>
 
 							<span class="help-block">
 								{{{ $errors->first('uri', ':message') ?: trans('platform/pages::form.uri_help') }}}
@@ -115,7 +117,7 @@
 					<div class="form-group{{ $errors->first('enabled', ' has-error') }}">
 						<label for="enabled" class="col-lg-2 control-label">{{{ trans('platform/pages::form.enabled') }}}</label>
 						<div class="col-lg-4">
-							<select class="form-control" name="enabled" id="enabled">
+							<select class="form-control" name="enabled" id="enabled" required>
 								<option value="1"{{ (Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) == 1 ? ' selected="selected"' : null) }}>{{{ trans('general.enabled') }}}</option>
 								<option value="0"{{ (Input::old('enabled', ! empty($page) ? (int) $page->enabled : 1) == 0 ? ' selected="selected"' : null) }}>{{{ trans('general.disabled') }}}</option>
 							</select>
@@ -130,7 +132,7 @@
 					<div class="form-group{{ $errors->first('visibility', ' has-error') }}">
 						<label for="visibility" class="col-lg-2 control-label">{{{ trans('platform/pages::form.visibility.legend') }}}</label>
 						<div class="col-lg-4">
-							<select class="form-control" name="visibility" id="visibility">
+							<select class="form-control" name="visibility" id="visibility" required>
 								<option value="always"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'always' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::form.visibility.always') }}}</option>
 								<option value="logged_in"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'logged_in' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::form.visibility.logged_in') }}}</option>
 								<option value="admin"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'admin' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::form.visibility.admin') }}}</option>
@@ -162,7 +164,7 @@
 					<div class="form-group{{ $errors->first('type', ' has-error') }}">
 						<label for="type" class="col-lg-2 control-label">{{{ trans('platform/pages::form.type') }}}</label>
 						<div class="col-lg-4">
-							<select class="form-control" name="type" id="type">
+							<select class="form-control" name="type" id="type" required>
 								<option value="database"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/content::form.database') }}}</option>
 								<option value="filesystem"{{ Input::old('type', ! empty($page) ? $page->type : 'database') == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/content::form.filesystem') }}}</option>
 							</select>
