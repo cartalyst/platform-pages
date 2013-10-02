@@ -106,9 +106,7 @@ class Page extends Model {
 	 */
 	public function setUriAttribute($uri)
 	{
-		$uri = str_replace('_', '-', $uri ?: $this->uri);
-
-		$this->attributes['uri'] = Str::slug($uri);
+		$this->attributes['uri'] = Str::slug($uri ?: $this->uri, '/');
 	}
 
 	/**
