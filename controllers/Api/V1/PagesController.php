@@ -199,7 +199,7 @@ class PagesController extends ApiController {
 		if ( ! $page->fill(Input::all())->save())
 		{
 			// There was a problem updating the page
-			return Response::api(Lang::get('platform/pages::message.update.error'), 500);
+			return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
 		}
 
 		// Get the current page groups

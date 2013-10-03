@@ -29,11 +29,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class PagesController extends BaseController {
 
 	/**
-	 *
+	 * Render the page.
 	 *
 	 * @param  string  $slug
 	 * @return mixed
-	 * @throws NotFoundHttpException
+	 * @throws \NotFoundHttpException
+	 * @throws \HttpException
 	 */
 	public function getPage($slug = null)
 	{

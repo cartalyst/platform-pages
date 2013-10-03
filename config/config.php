@@ -53,10 +53,12 @@ return array(
 	*/
 
 	'exclude' => array(
+
 		'errors',
 		'modals',
 		'pages',
 		'partials',
+
 	),
 
 );

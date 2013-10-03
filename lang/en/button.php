@@ -20,6 +20,9 @@
 
 return array(
 
-	'view' => 'View page',
+	'create' => 'Create page',
+	'edit'   => 'Edit page',
+	'copy'   => 'Copy page',
+	'delete' => 'Delete page',
 
 );

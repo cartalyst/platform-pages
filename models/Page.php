@@ -215,6 +215,8 @@ class Page extends Model {
 	 * people can listen into.
 	 *
 	 * @return arary  $data
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
 	 */
 	protected function additionalRenderData()
 	{

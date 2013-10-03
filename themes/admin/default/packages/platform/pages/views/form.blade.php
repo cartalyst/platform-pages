@@ -5,10 +5,11 @@
 {{{ trans("platform/pages::general.{$pageSegment}.title") }}} {{{ ! empty($page) ? '- ' . $page->name : null }}} ::
 @parent
 @stop
+
 {{-- Queue assets --}}
 {{ Asset::queue('validate', 'js/platform/validate.js', 'jquery') }}
-{{ Asset::queue('fseditor', 'js/burakson/jquery.fseditor-min.js', 'jquery') }}
-{{ Asset::queue('fseditor', 'css/burakson/fseditor.css', 'styles') }}
+{{ Asset::queue('fseditor-js', 'js/burakson/jquery.fseditor-min.js', 'jquery') }}
+{{ Asset::queue('fseditor-css', 'css/burakson/fseditor.css', 'styles') }}
 {{ Asset::queue('tabs', 'js/bootstrap/tab.js', 'jquery') }}
 {{ Asset::queue('slugify', 'js/platform/slugify.js', 'jquery') }}
 {{ Asset::queue('pages-scripts', 'platform/pages::js/scripts.js', 'jquery') }}
@@ -241,29 +242,29 @@
 
 					</div>
 
-					{{-- Form actions --}}
-					<div class="form-group">
-
-						<div class="col-lg-offset-2 col-lg-10">
-							<button class="btn btn-success" type="submit">{{{ trans('button.save') }}}</button>
-							<a class="btn btn-default" href="{{{ URL::toAdmin('content') }}}">{{{ trans('button.cancel') }}}</a>
-
-							@if ( ! empty($page) and $pageSegment != 'copy')
-							<div class="pull-right">
-								<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}">{{{ trans('button.delete') }}}</a>
-
-								<a class="btn btn-info" href="{{ URL::toAdmin("pages/copy/{$page->slug}") }}">{{{ trans('button.copy') }}}</a>
-							</div>
-							@endif
-						</div>
-
-					</div>
-
 				</div>
 
 				{{-- Attributes tab --}}
 				<div class="tab-pane" id="attributes">
 				attributes
+				</div>
+
+			</div>
+
+			{{-- Form actions --}}
+			<div class="form-group">
+
+				<div class="col-lg-12">
+					<button class="btn btn-success" type="submit">{{{ trans("platform/pages::button.{$pageSegment}") }}}</button>
+					<a class="btn btn-default" href="{{{ URL::toAdmin('content') }}}">{{{ trans('button.cancel') }}}</a>
+
+					@if ( ! empty($page) and $pageSegment != 'copy')
+					<div class="pull-right">
+						<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}">{{{ trans('platform/pages::button.delete') }}}</a>
+
+						<a class="btn btn-info" href="{{ URL::toAdmin("pages/copy/{$page->slug}") }}">{{{ trans('platform/pages::button.copy') }}}</a>
+					</div>
+					@endif
 				</div>
 
 			</div>

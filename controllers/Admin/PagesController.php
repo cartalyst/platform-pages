@@ -256,7 +256,7 @@ class PagesController extends AdminController {
 				$bag->add('success', Lang::get('platform/pages::message.success.create'));
 			}
 
-			// No, we are updating an page content
+			// No, we are updating a page content
 			else
 			{
 				// Make the request
@@ -264,7 +264,7 @@ class PagesController extends AdminController {
 				$slug     = $response['page']->slug;
 
 				// Set the success message
-				$bag->add('success', Lang::get('platform/pages::message.success.update'));
+				$bag->add('success', Lang::get('platform/pages::message.success.edit'));
 			}
 
 			// Redirect to the page edit page

@@ -1,10 +1,15 @@
 jQuery(document).ready(function($) {
 
-	$('#name').keyup(function() {
+	// When the page name changes, we generate the slug
+	$(document).on('keyup', '#name', function() {
+
 		$('#slug').val($(this).val().slugify());
+
 	});
 
-	$('#type').change(function() {
+	// When the storage type changes
+	$(document).on('change', '#type', function() {
+
 		$('[class^="type"]').addClass('hide');
 		$('.type-'+$(this).val()).removeClass('hide');
 
@@ -18,9 +23,11 @@ jQuery(document).ready(function($) {
 			$('#value').attr('required');
 			$('#file').removeAttr('required', true);
 		}
+
 	});
 
-	$('#visibility').change(function() {
+	// When the page visibility changes
+	$(document).on('change', '#visibility', function() {
 
 		if ($(this).val() === 'always')
 		{
@@ -33,7 +40,8 @@ jQuery(document).ready(function($) {
 
 	});
 
-	$('textarea').fseditor({
+	// Instantiate the editor
+	$('textarea#value').fseditor({
 		transition: 'fade',
 		overlay: true
 	});
