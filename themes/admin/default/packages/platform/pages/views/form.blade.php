@@ -256,7 +256,7 @@
 
 				<div class="col-lg-12">
 					<button class="btn btn-success" type="submit">{{{ trans("platform/pages::button.{$pageSegment}") }}}</button>
-					<a class="btn btn-default" href="{{{ URL::toAdmin('content') }}}">{{{ trans('button.cancel') }}}</a>
+					<a class="btn btn-default" href="{{{ URL::toAdmin('pages') }}}">{{{ trans('button.cancel') }}}</a>
 
 					@if ( ! empty($page) and $pageSegment != 'copy')
 					<div class="pull-right">
