@@ -160,7 +160,7 @@ class Page extends Model {
 	 */
 	public function groups()
 	{
-		return $this->belongsToMany(static::$groupModel, 'pages_groups');
+		return $this->belongsToMany(static::$groupModel, 'pages_groups', 'page_id', 'group_id');
 	}
 
 	/**
