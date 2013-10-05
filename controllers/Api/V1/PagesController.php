@@ -143,7 +143,10 @@ class PagesController extends ApiController {
 		});
 
 		// Search for page by it's status
-		$query->where('enabled', (int) Input::get('enabled', 1));
+		if ($status = Input::get('enabled'))
+		{
+			$query->where('enabled', (int) $status);
+		}
 
 		// Grab the page
 		if ( ! $page = $query->first())
