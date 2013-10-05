@@ -189,9 +189,6 @@ class PagesController extends ApiController {
 			$query->orWhere('id', 'LIKE', $id);
 		});
 
-		// Search for page by it's status
-		$query->where('enabled', (int) Input::get('enabled', 1));
-
 		// Grab the page
 		if ( ! $page = $query->first())
 		{
