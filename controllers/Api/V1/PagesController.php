@@ -43,8 +43,8 @@ class PagesController extends ApiController {
 
 		// Database page
 		'template'   			=> 'required_if:type,database',
-		'section'    			=> 'required_if:type,database',
-		'value'      			=> 'required_if:type,database',
+		// 'section'    			=> 'required_if:type,database',
+		// 'value'      			=> 'required_if:type,database',
 
 		// Filesystem page
 		'file'       			=> 'required_if:type,filesystem',

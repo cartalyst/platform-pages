@@ -20,7 +20,9 @@
 
 use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
+use Platform\Pages\Controllers\Frontend\PagesController;
 use Platform\Pages\Models\Page;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return array(
 
@@ -191,8 +193,34 @@ return array(
 
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
+		// Set the theme bag and the active theme
 		Page::setThemeBag($app['themes']);
 		Page::setTheme($app['config']['cartalyst/themes::active']);
+
+		// Check the environment and app.debug settings
+		if (App::environment() === 'production' or $app['config']['app.debug'] === false)
+		{
+			$error404 = $app['config']['platform/pages::404'];
+
+			if ( ! is_null($error404))
+			{
+				App::error(function(NotFoundHttpException $exception, $code) use ($error404)
+				{
+					Log::error($exception);
+
+					try
+					{
+						$content = with(new PagesController)->getPage($error404);
+
+						return Response::make($content, 404);
+					}
+					catch (Exception $e)
+					{
+
+					}
+				});
+			}
+		}
 	},
 
 	/*
@@ -323,8 +351,9 @@ return array(
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					$response = API::get('pages');
+					$response = API::get('v1/pages');
 					$pages    = $response['pages'];
+
 					$options  = array();
 
 					foreach ($pages as $page)
@@ -353,6 +382,35 @@ return array(
 						$options[] = array(
 							'value' => $value,
 							'label' => $label,
+						);
+					}
+
+					return $options;
+				}
+			),
+
+			'pages::general.404' => array(
+				'name'    => 'Default 404 Error Page',
+				'config'  => 'platform/pages::404',
+				'info'    => 'The page that is shown when a 404 error arises.',
+				'type'    => 'dropdown',
+				'options' => function()
+				{
+					$response = API::get('v1/pages');
+					$pages    = $response['pages'];
+
+					$options  = array();
+
+					$options[] = array(
+						'value' => null,
+						'label' => 'Disabled',
+					);
+
+					foreach ($pages as $page)
+					{
+						$options[] = array(
+							'value' => $page->slug,
+							'label' => $page->name,
 						);
 					}
 
