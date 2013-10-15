@@ -139,7 +139,7 @@ $(function() {
 						<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="icon-trash"></i></a>
 					</td>
 				</tr>
-				<tr data-results-fallback>
+				<tr data-results-fallback style="display: none;">
 					<td colspan="5" class="no-results">
 						{{{ trans('table.no_results') }}}
 					</td>

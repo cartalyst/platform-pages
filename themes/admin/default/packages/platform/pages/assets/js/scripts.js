@@ -41,9 +41,13 @@ jQuery(document).ready(function($) {
 	});
 
 	// Instantiate the editor
-	$('textarea#value').fseditor({
-		transition: 'fade',
-		overlay: true
+	$('.redactor').redactor({
+		focus: true,
+		toolbarFixed: true,
+		wym: true,
 	});
+
+	// Validate the form
+	H5F.setup(document.getElementById('pages-form'));
 
 });

@@ -8,8 +8,8 @@
 
 {{-- Queue assets --}}
 {{ Asset::queue('validate', 'js/platform/validate.js', 'jquery') }}
-{{ Asset::queue('fseditor-js', 'js/burakson/jquery.fseditor-min.js', 'jquery') }}
-{{ Asset::queue('fseditor-css', 'css/burakson/fseditor.css', 'styles') }}
+{{ Asset::queue('redactor-js', 'js/redactor/redactor.min.js', 'jquery') }}
+{{ Asset::queue('redactor-css', 'css/redactor/redactor.css', 'styles') }}
 {{ Asset::queue('tabs', 'js/bootstrap/tab.js', 'jquery') }}
 {{ Asset::queue('slugify', 'js/platform/slugify.js', 'jquery') }}
 {{ Asset::queue('pages-scripts', 'platform/pages::js/scripts.js', 'jquery') }}
@@ -17,9 +17,6 @@
 {{-- Inline scripts --}}
 @section('scripts')
 @parent
-<script type="text/javascript">
-	H5F.setup(document.getElementById('pages-form'));
-</script>
 @stop
 
 {{-- Page content --}}
@@ -211,7 +208,7 @@
 						<div class="form-group{{ $errors->first('value', ' has-error') }}">
 							<label for="value" class="col-lg-2 control-label">{{{ trans('platform/pages::form.value') }}}</label>
 							<div class="col-lg-10">
-								<textarea style="height: 160px;" class="form-control" name="value" id="value">{{{ Input::old('value', ! empty($page) ? $page->value : null) }}}</textarea>
+								<textarea style="height: 160px;" class="form-control redactor" name="value" id="value">{{{ Input::old('value', ! empty($page) ? $page->value : null) }}}</textarea>
 
 								<span class="help-block">
 									{{{ $errors->first('value', ':message') ?: trans('platform/pages::form.value_help') }}}
