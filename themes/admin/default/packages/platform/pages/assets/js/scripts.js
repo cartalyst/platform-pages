@@ -42,9 +42,8 @@ jQuery(document).ready(function($) {
 
 	// Instantiate the editor
 	$('.redactor').redactor({
-		focus: true,
 		toolbarFixed: true,
-		wym: true,
+		minHeight: 200,
 	});
 
 	// Validate the form

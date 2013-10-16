@@ -208,7 +208,7 @@
 						<div class="form-group{{ $errors->first('value', ' has-error') }}">
 							<label for="value" class="col-lg-2 control-label">{{{ trans('platform/pages::form.value') }}}</label>
 							<div class="col-lg-10">
-								<textarea style="height: 160px;" class="form-control redactor" name="value" id="value">{{{ Input::old('value', ! empty($page) ? $page->value : null) }}}</textarea>
+								<textarea class="form-control redactor" name="value" id="value">{{{ Input::old('value', ! empty($page) ? $page->value : null) }}}</textarea>
 
 								<span class="help-block">
 									{{{ $errors->first('value', ':message') ?: trans('platform/pages::form.value_help') }}}
