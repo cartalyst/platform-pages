@@ -390,7 +390,7 @@ return array(
 			),
 
 			'pages::general.404' => array(
-				'name'    => 'Default 404 Error Page',
+				'name'    => '404 Error Page',
 				'config'  => 'platform/pages::404',
 				'info'    => 'The page that is shown when a 404 error arises.',
 				'type'    => 'dropdown',
