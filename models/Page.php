@@ -26,7 +26,6 @@ use RuntimeException;
 use Sentry;
 use Str;
 use Symfony\Component\Finder\Finder;
-use Theme;
 use View;
 
 class Page extends Model {
@@ -87,7 +86,18 @@ class Page extends Model {
 	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
-	 * Prepare the slug attribute.
+	 * Get mutator for the "enabled" attribute.
+	 *
+	 * @param  string  $enabled
+	 * @return bool
+	 */
+	public function getEnabledAttribute($enabled)
+	{
+		return (bool) $enabled;
+	}
+
+	/**
+	 * Set mutator the "slug" attribute.
 	 *
 	 * @param  string  $slug
 	 * @return void
@@ -100,7 +110,7 @@ class Page extends Model {
 	}
 
 	/**
-	 * Prepare the uri attribute.
+	 * Set mutator for the "uri" attribute.
 	 *
 	 * @param  string  $uri
 	 * @return void
@@ -111,7 +121,7 @@ class Page extends Model {
 	}
 
 	/**
-	 * Prepare the template attribute.
+	 * Set mutator for the "template" attribute.
 	 *
 	 * @param  string  $template
 	 * @return void
@@ -122,7 +132,7 @@ class Page extends Model {
 	}
 
 	/**
-	 * Prepare the section attribute.
+	 * Set mutator for the "section" attribute.
 	 *
 	 * @param  string  $section
 	 * @return void
@@ -133,7 +143,7 @@ class Page extends Model {
 	}
 
 	/**
-	 * Prepare the value attribute.
+	 * Set mutator for the "value" attribute.
 	 *
 	 * @param  string  $value
 	 * @return void
@@ -144,7 +154,7 @@ class Page extends Model {
 	}
 
 	/**
-	 * Prepare the file attribute.
+	 * Set mutator for the "file" attribute.
 	 *
 	 * @param  string  $file
 	 * @return void
@@ -234,21 +244,10 @@ class Page extends Model {
 	}
 
 	/**
-	 * Mutator for the "enabled" attribute.
-	 *
-	 * @param  string  $enabled
-	 * @return bool
-	 */
-	public function getEnabledAttribute($enabled)
-	{
-		return (bool) $enabled;
-	}
-
-	/**
 	 * Grabs additional rendering data by firing a callback which
 	 * people can listen into.
 	 *
-	 * @return arary  $data
+	 * @return array
 	 * @throws \InvalidArgumentException
 	 * @throws \RuntimeException
 	 */
@@ -261,9 +260,9 @@ class Page extends Model {
 
 		foreach ($responses as $response)
 		{
-			// If nothing was was returned, the page was probably modified
-			// or something else occured.
-			if ($response === null) continue;
+			// If nothing was returned, the page was probably
+			// modified or something else occured.
+			if (is_null($response)) continue;
 
 			if ( ! is_array($response))
 			{
@@ -434,14 +433,12 @@ class Page extends Model {
 	 */
 	public static function getPageFiles()
 	{
-		$theme = Page::getTheme();
-
 		$extensions = array_keys(View::getExtensions());
 
 		$paths = array();
 
 		// Loop through the view paths
-		foreach (Theme::getCascadedViewPaths($theme) as $path)
+		foreach (static::$themeBag->getCascadedViewPaths(static::$theme) as $path)
 		{
 			// Full path to the pages folder
 			$fullPath = implode(DIRECTORY_SEPARATOR, array($path, 'pages'));
@@ -483,12 +480,10 @@ class Page extends Model {
 	 */
 	public static function getTemplates()
 	{
-		$theme = Page::getTheme();
-
 		$extensions = array_keys(View::getExtensions());
 
 		$finder = new Finder;
-		$finder->in(Theme::getCascadedViewPaths($theme));
+		$finder->in(static::$themeBag->getCascadedViewPaths(static::$theme));
 		$finder->depth('< 3');
 		$finder->exclude(Config::get('platform/pages::exclude'));
 		$finder->name(sprintf(
@@ -521,7 +516,7 @@ class Page extends Model {
 	/**
 	 * Add a callback for when a page is rendering.
 	 *
-	 * @param  Closure  $callback
+	 * @param  \Closure  $callback
 	 * @return void
 	 */
 	public static function rendering(Closure $callback)
