@@ -34,20 +34,18 @@ class PagesController extends ApiController {
 	 * @var array
 	 */
 	protected $validationRules = array(
-		'name'       			=> 'required',
-		'slug'       			=> 'required|unique:pages,slug',
-		'uri'        			=> 'required|unique:pages,uri',
-		'enabled'    			=> 'required',
-		'type'       			=> 'required|in:database,filesystem',
-		'visibility' 			=> 'required|in:always,logged_in,admin',
+		'name'       => 'required',
+		'slug'       => 'required|unique:pages,slug',
+		'uri'        => 'required|unique:pages,uri',
+		'enabled'    => 'required',
+		'type'       => 'required|in:database,filesystem',
+		'visibility' => 'required|in:always,logged_in,admin',
 
 		// Database page
-		'template'   			=> 'required_if:type,database',
-		// 'section'    			=> 'required_if:type,database',
-		// 'value'      			=> 'required_if:type,database',
+		'template' => 'required_if:type,database',
 
 		// Filesystem page
-		'file'       			=> 'required_if:type,filesystem',
+		'file' => 'required_if:type,filesystem',
 	);
 
 	/**
@@ -76,13 +74,25 @@ class PagesController extends ApiController {
 	 */
 	public function index()
 	{
+		$query = $this->model->newQuery();
+
+		foreach (Input::get('criteria', array()) as $column => $criteria)
+		{
+			$query = $query->where($column, $criteria);
+		}
+
+		foreach (Input::get('sort', array()) as $column => $direction)
+		{
+			$query = $query->orderBy($column, $direction);
+		}
+
 		if ($limit = Input::get('limit'))
 		{
-			$pages = $this->model->with('groups')->paginate($limit);
+			$pages = $query->with('groups')->paginate($limit);
 		}
 		else
 		{
-			$pages = $this->model->with('groups')->get();
+			$pages = $query->with('groups')->get();
 		}
 
 		return Response::api(compact('pages'));
@@ -107,13 +117,8 @@ class PagesController extends ApiController {
 		// Was the page created?
 		if ($page = $this->model->create(Input::all()))
 		{
-			// Loop through the groups
-			foreach (Input::get('groups', array()) as $id)
-			{
-				$group = Sentry::getGroupProvider()->findById($id);
-
-				$page->groups()->attach($group);
-			}
+			// Set this page groups
+			$page->setGroups(Input::get('groups', array()));
 
 			// Page successfully created
 			return Response::api(compact('page'));
@@ -135,12 +140,9 @@ class PagesController extends ApiController {
 		$query = $this->model->newQuery()->with('groups');
 
 		// Search for the page uri, slug or id
-		$query->orWhere(function($query) use ($id)
-		{
-			$query->where('uri', $id);
-			$query->orWhere('slug', $id);
-			$query->orWhere('id', 'LIKE', $id);
-		});
+		$query->orWhere('uri', $id);
+		$query->orWhere('slug', $id);
+		$query->orWhere('id', $id);
 
 		// Search for page by it's status
 		if ($status = Input::get('enabled'))
@@ -169,12 +171,9 @@ class PagesController extends ApiController {
 		$query = $this->model->newQuery();
 
 		// Search for the page uri, slug or id
-		$query->orWhere(function($query) use ($id)
-		{
-			$query->where('uri', $id);
-			$query->orWhere('slug', $id);
-			$query->orWhere('id', 'LIKE', $id);
-		});
+		$query->orWhere('uri', $id);
+		$query->orWhere('slug', $id);
+		$query->orWhere('id', $id);
 
 		// Grab the page
 		if ( ! $page = $query->first())
@@ -202,32 +201,8 @@ class PagesController extends ApiController {
 			return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
 		}
 
-		// Get the current page groups
-		$pageGroups = $page->groups->lists('id');
-
-		// Get the selected groups
-		$selectedGroups = Input::get('groups', array());
-
-		// Groups comparison between the groups the page currently
-		// have and the groups the page will have.
-		$groupsToAdd    = array_diff($selectedGroups, $pageGroups);
-		$groupsToRemove = array_diff($pageGroups, $selectedGroups);
-
-		// Assign the group to the page
-		foreach ($groupsToAdd as $id)
-		{
-			$group = Sentry::getGroupProvider()->findById($id);
-
-			$page->groups()->attach($group);
-		}
-
-		// Remove the group from the page
-		foreach ($groupsToRemove as $id)
-		{
-			$group = Sentry::getGroupProvider()->findById($id);
-
-			$page->groups()->detach($group);
-		}
+		// Set this page groups
+		$page->setGroups(Input::get('groups', array()));
 
 		return Response::api(compact('page'));
 	}
@@ -244,12 +219,9 @@ class PagesController extends ApiController {
 		$query = $this->model->newQuery();
 
 		// Search for the page uri, slug or id
-		$query->orWhere(function($query) use ($id)
-		{
-			$query->where('uri', $id);
-			$query->orWhere('slug', $id);
-			$query->orWhere('id', 'LIKE', $id);
-		});
+		$query->orWhere('uri', $id);
+		$query->orWhere('slug', $id);
+		$query->orWhere('id', $id);
 
 		// Grab the page
 		if ( ! $page = $query->first())

@@ -403,7 +403,7 @@ return array(
 
 					$options[] = array(
 						'value' => null,
-						'label' => 'Disabled',
+						'label' => 'Default',
 					);
 
 					foreach ($pages as $page)

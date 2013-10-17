@@ -23,6 +23,7 @@ use Closure;
 use Config;
 use Illuminate\Database\Eloquent\Model;
 use RuntimeException;
+use Sentry;
 use Str;
 use Symfony\Component\Finder\Finder;
 use Theme;
@@ -161,6 +162,39 @@ class Page extends Model {
 	public function groups()
 	{
 		return $this->belongsToMany(static::$groupModel, 'pages_groups', 'page_id', 'group_id');
+	}
+
+	/**
+	 * Set the page groups.
+	 *
+	 * @param  array  $groups
+	 * @return void
+	 */
+	public function setGroups($groups)
+	{
+		// Get the current page groups
+		$pageGroups = $this->groups->lists('id');
+
+		// Groups comparison between the groups the page currently
+		// have and the groups the page will have.
+		$groupsToAdd    = array_diff($groups, $pageGroups);
+		$groupsToRemove = array_diff($pageGroups, $groups);
+
+		// Assign the group to the page
+		foreach ($groupsToAdd as $id)
+		{
+			$group = Sentry::getGroupProvider()->findById($id);
+
+			$this->groups()->attach($group);
+		}
+
+		// Remove the group from the page
+		foreach ($groupsToRemove as $id)
+		{
+			$group = Sentry::getGroupProvider()->findById($id);
+
+			$this->groups()->detach($group);
+		}
 	}
 
 	/**

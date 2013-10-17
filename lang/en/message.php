@@ -34,7 +34,6 @@ return array(
 	'error' => array(
 		'create' => 'There was an issue creating the page. Please try again.',
 		'edit'   => 'There was an issue updating the page. Please try again.',
-		'delete' => 'There was an issue deleting the page. Please try again.',
 	),
 
 );

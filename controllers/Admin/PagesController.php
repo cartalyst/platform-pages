@@ -152,29 +152,22 @@ class PagesController extends AdminController {
 	 */
 	public function getDelete($slug = null)
 	{
-		// Instantiate a new message bag
-		$bag = new Bag;
-
-		// Do we have a slug?
-		if ( ! is_null($slug))
+		try
 		{
-			try
-			{
-				// Delete the page
-				API::delete("v1/page/{$slug}");
+			// Delete the page
+			API::delete("v1/page/{$slug}");
 
-				// Set the success message
-				$bag->add('success', Lang::get('platform/pages::message.success.delete'));
-			}
-			catch (ApiHttpException $e)
-			{
-				// Set the error message
-				$bag->add('error', Lang::get('platform/pages::message.error.delete'));
-			}
+			// Set the success message
+			$bag = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));
+		}
+		catch (ApiHttpException $e)
+		{
+			// Set the error message
+			$bag = with(new Bag)->add('error', $e->getMessage());
 		}
 
 		// Redirect to the pages management page
-		return Redirect::toAdmin('pages')->with('notifications', $bag);
+		return Redirect::toAdmin('pages')->withNotifications($bag);
 	}
 
 	/**
@@ -225,10 +218,10 @@ class PagesController extends AdminController {
 		catch (ApiHttpException $e)
 		{
 			// Set the error message
-			$notifications = with(new Bag)->add('error', $e->getMessage());
+			$bag = with(new Bag)->add('error', $e->getMessage());
 
 			// Return to the pages management page
-			return Redirect::toAdmin('pages')->with('notifications', $notifications);
+			return Redirect::toAdmin('pages')->withNotifications($bag);
 		}
 	}
 
@@ -250,25 +243,29 @@ class PagesController extends AdminController {
 			{
 				// Make the request
 				$response = API::post('v1/pages', Input::all());
-				$slug     = $response['page']->slug;
+
+				// Get the new page slug
+				$slug = $response['page']->slug;
 
 				// Set the success message
 				$bag->add('success', Lang::get('platform/pages::message.success.create'));
 			}
 
-			// No, we are updating a page content
+			// No, we are updating a page
 			else
 			{
 				// Make the request
 				$response = API::put("v1/pages/{$slug}", Input::all());
-				$slug     = $response['page']->slug;
+
+				// Get the updated page slug
+				$slug  = $response['page']->slug;
 
 				// Set the success message
 				$bag->add('success', Lang::get('platform/pages::message.success.edit'));
 			}
 
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/{$slug}")->with('notifications', $bag);
+			return Redirect::toAdmin("pages/edit/{$slug}")->withNotifications($bag);
 		}
 		catch (ApiHttpException $e)
 		{
