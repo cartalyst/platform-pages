@@ -68,7 +68,7 @@ $(function() {
 						<input name="filter" type="text" placeholder="{{{ trans('general.search') }}}" class="form-control">
 					</div>
 
-					<button class="btn btn-default"><i class="icon-search"></i></button>
+					<button class="btn btn-default"><i class="fa fa-search"></i></button>
 				</form>
 
 			</span>
@@ -92,7 +92,7 @@ $(function() {
 							[? else ?]
 								[[ valueLabel ]] {{{ trans('general.in') }}} <em>[[ columnLabel ]]</em>
 							[? endif ?]
-							<i class="icon-remove-sign"></i>
+							<i class="fa fa-times"></i>
 						</button>
 
 					</span>
@@ -102,7 +102,7 @@ $(function() {
 			</div>
 
 			<div class="col-lg-2 text-right">
-				<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="icon-plus"></i> {{{ trans('platform/pages::button.create') }}}</a>
+				<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('platform/pages::button.create') }}}</a>
 			</div>
 
 		</div>
@@ -132,11 +132,11 @@ $(function() {
 					</td>
 					<td>[[ created_at ]]</td>
 					<td>
-						<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.edit') }}}"><i class="icon-edit"></i></a>
+						<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.edit') }}}"><i class="fa fa-edit"></i></a>
 
-						<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/copy/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="icon-copy"></i></a>
+						<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/copy/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="fa fa-copy"></i></a>
 
-						<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="icon-trash"></i></a>
+						<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="fa fa-trash-o"></i></a>
 					</td>
 				</tr>
 				<tr data-results-fallback>
@@ -155,15 +155,15 @@ $(function() {
 
 					<ul class="pagination pagination-sm">
 						[? if prevPage !== null ?]
-						<li><a data-page="[[ prevPage ]]"><i class="icon-chevron-left"></i></a></li>
+						<li><a data-page="[[ prevPage ]]"><i class="fa fa-chevron-left"></i></a></li>
 						[? else ?]
-						<li class="disabled"><a><i class="icon-chevron-left"></i></a></li>
+						<li class="disabled"><a><i class="fa fa-chevron-left"></i></a></li>
 						[? endif ?]
 
 						[? if nextPage !== null ?]
-						<li><a  data-page="[[ nextPage ]]"><i class="icon-chevron-right"></i></a></li>
+						<li><a  data-page="[[ nextPage ]]"><i class="fa fa-chevron-right"></i></a></li>
 						[? else ?]
-						<li class="disabled"><a><i class="icon-chevron-right"></i></a></li>
+						<li class="disabled"><a><i class="fa fa-chevron-right"></i></a></li>
 						[? endif ?]
 					</ul>
 

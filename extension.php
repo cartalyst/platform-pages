@@ -446,7 +446,7 @@ return array(
 			array(
 				'slug'  => 'admin-pages',
 				'name'  => 'Pages',
-				'class' => 'icon-file',
+				'class' => 'fa fa-file',
 				'uri'   => 'pages',
 			),
 
