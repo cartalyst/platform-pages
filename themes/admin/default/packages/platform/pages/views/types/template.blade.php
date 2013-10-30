@@ -3,11 +3,7 @@
 
 	<select data-item-form="<%= slug %>" name="children[<%= slug %>][page_uri]" id="<%= slug %>_page_uri" class="form-control">
 		@foreach ($pages as $page)
-		[? if page_uri == '{{ $page->id }}' ?]
-		<option value="{{ $page->id }}" selected="selected">/{{ $page->uri }}</option>
-		[? else ?]
-		<option value="{{ $page->id }}">/{{ $page->uri }}</option>
-		[? endif ?]
+		<option value="{{ $page->id }}"<% if (page_uri == '{{ $page->id }}') { %> selected="selected"<% } %>>/{{ $page->uri }}</option>
 		@endforeach
 	</select>
 </div>
