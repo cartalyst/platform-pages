@@ -20,6 +20,7 @@
 
 use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
+use Platform\Menus\Models\Menu;
 use Platform\Pages\Controllers\Frontend\PagesController;
 use Platform\Pages\Models\Page;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -173,7 +174,10 @@ return array(
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-
+		$app['Platform\Menus\PageType'] = $app->share(function($app)
+		{
+			return new Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
+		});
 	},
 
 	/*
@@ -198,13 +202,13 @@ return array(
 		Page::setTheme($app['config']['cartalyst/themes::active']);
 
 		// Check the environment and app.debug settings
-		if (App::environment() === 'production' or $app['config']['app.debug'] === false)
+		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
 		{
 			$error404 = $app['config']['platform/pages::404'];
 
 			if ( ! is_null($error404))
 			{
-				App::error(function(NotFoundHttpException $exception, $code) use ($error404)
+				$app->error(function(NotFoundHttpException $exception, $code) use ($error404)
 				{
 					Log::error($exception);
 
@@ -221,6 +225,8 @@ return array(
 				});
 			}
 		}
+
+		Menu::registerType($app['Platform\Menus\PageType']);
 	},
 
 	/*

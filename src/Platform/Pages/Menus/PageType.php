@@ -22,97 +22,114 @@ use Platform\Menus\BaseType;
 use Platform\Menus\Models\Menu;
 use Platform\Menus\TypeInterface;
 
-class StaticType extends BaseType implements TypeInterface {
+class PageType extends BaseType implements TypeInterface {
 
-    /**
-     * Get the type identifier.
-     *
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        return 'page';
-    }
+	/**
+	 * Get the type identifier.
+	 *
+	 * @return string
+	 */
+	public function getIdentifier()
+	{
+		return 'page';
+	}
 
-    /**
-     * Get a human friendly name for the type.
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return 'Page';
-    }
+	/**
+	 * Get a human friendly name for the type.
+	 *
+	 * @return string
+	 */
+	public function getName()
+	{
+		return 'Page';
+	}
 
-    /**
-     * Get the name for the menu child.
-     *
-     * @param  Platform\Menus\Models\Menu  $child
-     * @return string
-     */
-    public function getChildName(Menu $child)
-    {
-        return $child->name;
-    }
+	/**
+	 * Get the name for the menu child.
+	 *
+	 * @param  Platform\Menus\Models\Menu  $child
+	 * @return string
+	 */
+	public function getChildName(Menu $child)
+	{
+		return $child->name;
+	}
 
-    /**
-     * Get the URL for the menu child.
-     *
-     * @param  Platform\Menus\Models\Menu  $child
-     * @param  array  $options
-     * @return string
-     */
-    public function getChildUrl(Menu $child, array $options = array())
-    {
-        if ($uri = $child->uri)
-        {
-            if (isset($options['before_uri']))
-            {
-                $uri = $options['before_uri'].'/'.$uri;
-            }
+	/**
+	 * Get the URL for the menu child.
+	 *
+	 * @param  Platform\Menus\Models\Menu  $child
+	 * @param  array  $options
+	 * @return string
+	 */
+	public function getChildUrl(Menu $child, array $options = array())
+	{
+		if ($uri = $child->uri)
+		{
+			if (isset($options['before_uri']))
+			{
+				$uri = $options['before_uri'].'/'.$uri;
+			}
 
-            return $this->url->to($uri);
-        }
-    }
+			return $this->url->to($uri);
+		}
+	}
 
-    /**
-     * Called after a menu child is saved. Attach any links
-     * and relationships.
-     *
-     * @param  Platform\Menus\Models\Menu  $child
-     * @return void
-     */
-    public function afterSave(Menu $child)
-    {
-        $data = $child->getTypeData();
-        $save = false;
+	/**
+	 * Called after a menu child is saved. Attach any links
+	 * and relationships.
+	 *
+	 * @param  Platform\Menus\Models\Menu  $child
+	 * @return void
+	 */
+	public function afterSave(Menu $child)
+	{
+		$data = $child->getTypeData();
+		$save = false;
 
-        if (isset($data['uri']))
-        {
-            $child->uri = $data->uri;
-            $save = true;
-        }
-        if (isset($data['name']))
-        {
-            $child->Name = $data->name;
-            $save = true;
-        }
+		if (isset($data['uri']))
+		{
+			$child->uri = $data->uri;
+			$save = true;
+		}
+		if (isset($data['name']))
+		{
+			$child->Name = $data->name;
+			$save = true;
+		}
 
-        if ($save) $child->save();
-    }
+		if ($save) $child->save();
+	}
 
-    /**
-     * Called before a child is deleted. Detach any links
-     * and relationships.
-     *
-     * @param  Platform\Menus\Models\Menu  $child
-     * @return void
-     */
-    public function beforeDelete(Menu $child) {}
+	/**
+	 * Called before a child is deleted. Detach any links
+	 * and relationships.
+	 *
+	 * @param  Platform\Menus\Models\Menu  $child
+	 * @return void
+	 */
+	public function beforeDelete(Menu $child) {}
 
-    protected function getRelation()
-    {
+	/**
+	 * Return the form HTML template for a edit child of this type as well
+	 * as creating new children.
+	 *
+	 * @param  \Platform\Menus\Models\Menu  $child
+	 * @return \View
+	 */
+	public function getFormHtml(Menu $child = null)
+	{
+		return $this->view->make("platform/pages::types/form", compact('child'));
+	}
 
-    }
+	/**
+	 * Return the HTML template used when creating a menu child of this type.
+	 *
+	 * @return \View
+	 */
+	public function getTemplateHtml()
+	{
+		return $this->view->make("platform/pages::types/template", compact('child'));
+	}
 
 }
