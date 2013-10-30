@@ -18,6 +18,7 @@
  * @link       http://cartalyst.com
  */
 
+use Api;
 use Platform\Menus\BaseType;
 use Platform\Menus\Models\Menu;
 use Platform\Menus\TypeInterface;
@@ -119,7 +120,10 @@ class PageType extends BaseType implements TypeInterface {
 	 */
 	public function getFormHtml(Menu $child = null)
 	{
-		return $this->view->make("platform/pages::types/form", compact('child'));
+		$response = API::get('v1/pages');
+		$pages    = $response['pages'];
+
+		return $this->view->make("platform/pages::types/form", compact('child', 'pages'));
 	}
 
 	/**
@@ -129,7 +133,10 @@ class PageType extends BaseType implements TypeInterface {
 	 */
 	public function getTemplateHtml()
 	{
-		return $this->view->make("platform/pages::types/template", compact('child'));
+		$response = API::get('v1/pages');
+		$pages    = $response['pages'];
+
+		return $this->view->make("platform/pages::types/template", compact('child', 'pages'));
 	}
 
 }
