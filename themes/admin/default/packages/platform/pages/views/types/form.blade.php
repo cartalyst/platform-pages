@@ -3,7 +3,7 @@
 	$childName = ! empty($child) ? "children[{$child->id}][%s]" : 'new-child_%s';
 ?>
 
-<div class="form-group{{ ! empty($child) ? ( $child->type != 'page' ? ' hide' : null ) : ' hide' }}" data-item-type="page">
+<div class="form-group{{ ( ! empty($child) and $child->type != 'page') ? ' hide' : null }}" data-item-type="page">
 	<label class="control-label" for="{{ sprintf($childId, 'page_uri') }}">Select a page</label>
 
 	<select data-item-form="{{{ ! empty($child) ? $child->id : 'new-child' }}}" name="{{ sprintf($childName, 'page_uri') }}" id="{{ sprintf($childId, 'page_uri') }}" class="form-control">
