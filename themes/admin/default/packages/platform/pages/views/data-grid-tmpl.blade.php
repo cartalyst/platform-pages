@@ -18,7 +18,7 @@
 
 				<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/copy/<%= r.slug %>') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="fa fa-copy"></i></a>
 
-				<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/<%= r.slug %>') }}" title="{{{ trans('platform/content::button.delete') }}}"><i class="fa fa-trash-o"></i></a>
+				<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/<%= r.slug %>') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="fa fa-trash-o"></i></a>
 			</td>
 		</tr>
 
