@@ -7,7 +7,7 @@
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('tempo', 'js/tempo/tempo.js', 'jquery') }}
+{{ Asset::queue('underscore', 'js/underscore/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'js/cartalyst/data-grid.js', 'tempo') }}
 
 {{-- Inline scripts --}}
@@ -82,22 +82,7 @@ $(function() {
 			{{-- Data Grid : Applied Filters --}}
 			<div class="col-lg-10">
 
-				<div class="data-grid_applied" data-grid="main">
-
-					<span data-template style="display: none;">
-
-						<button type="button" class="btn btn-info tip" title="Remove filter">
-							[? if column == undefined ?]
-								[[ valueLabel ]]
-							[? else ?]
-								[[ valueLabel ]] {{{ trans('general.in') }}} <em>[[ columnLabel ]]</em>
-							[? endif ?]
-							<i class="fa fa-times"></i>
-						</button>
-
-					</span>
-
-				</div>
+				<div class="data-grid_applied" data-grid="main"></div>
 
 			</div>
 
@@ -119,63 +104,19 @@ $(function() {
 					<th class="col-md-2"></th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr data-template style="display: none;">
-					<td>[[ name ]]</td>
-					<td>[[ slug ]]</td>
-					<td>
-						[? if enabled == 1 ?]
-							{{{ trans('general.enabled') }}}
-						[? else ?]
-							{{{ trans('general.disabled') }}}
-						[? endif ?]
-					</td>
-					<td>[[ created_at ]]</td>
-					<td>
-						<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.edit') }}}"><i class="fa fa-edit"></i></a>
-
-						<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/copy/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="fa fa-copy"></i></a>
-
-						<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/delete/[[ slug ]]') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="fa fa-trash-o"></i></a>
-					</td>
-				</tr>
-				<tr data-results-fallback>
-					<td colspan="5" class="no-results">
-						{{{ trans('table.no_results') }}}
-					</td>
-				</tr>
-			</tbody>
+			<tbody></tbody>
 		</table>
 
 		{{-- Data Grid : Pagination --}}
-		<div class="data-grid_pagination" data-grid="main">
-			<div data-template style="display: none;">
-
-				<div class="pull-right">
-
-					<ul class="pagination pagination-sm">
-						[? if prevPage !== null ?]
-						<li><a data-page="[[ prevPage ]]"><i class="fa fa-chevron-left"></i></a></li>
-						[? else ?]
-						<li class="disabled"><a><i class="fa fa-chevron-left"></i></a></li>
-						[? endif ?]
-
-						[? if nextPage !== null ?]
-						<li><a  data-page="[[ nextPage ]]"><i class="fa fa-chevron-right"></i></a></li>
-						[? else ?]
-						<li class="disabled"><a><i class="fa fa-chevron-right"></i></a></li>
-						[? endif ?]
-					</ul>
-
-				</div>
-
-				{{{ trans('general.showing') }}} [[ pageStart ]] {{{ trans('general.to') }}} [[ pageLimit ]] {{{ trans('general.of') }}} <span class="total"></span>
-
-			</div>
-		</div>
+		<div class="data-grid_pagination" data-grid="main"></div>
 
 	</div>
 
 </div>
+
+@include('platform/pages::data-grid-tmpl')
+@include('platform/pages::data-grid_pagination-tmpl')
+@include('platform/pages::data-grid_applied-tmpl')
+@include('platform/pages::data-grid_no-results-tmpl')
 
 @stop
