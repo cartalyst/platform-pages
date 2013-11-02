@@ -41,9 +41,6 @@ class PagesController extends AdminController {
 	 */
 	public function getIndex()
 	{
-		// Set the current active menu
-		set_active_menu('admin-pages');
-
 		// Show the page
 		return View::make('platform/pages::index');
 	}
@@ -181,9 +178,6 @@ class PagesController extends AdminController {
 	{
 		try
 		{
-			// Set the current active menu
-			set_active_menu('admin-pages');
-
 			// Data fallback
 			$page       = null;
 			$pageGroups = array();
