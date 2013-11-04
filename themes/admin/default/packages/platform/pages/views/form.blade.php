@@ -40,9 +40,9 @@
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
 			{{-- Tabs --}}
-			<ul class="nav nav-tabs" data-toogle="tab">
-				<li class="active"><a href="#general">{{{ trans('platform/pages::general.tabs.general') }}}</a></li>
-				<li><a href="#attributes">{{{ trans('platform/pages::general.tabs.attributes') }}}</a></li>
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#general" data-toggle="tab">{{{ trans('platform/pages::general.tabs.general') }}}</a></li>
+				<li><a href="#attributes" data-toggle="tab">{{{ trans('platform/pages::general.tabs.attributes') }}}</a></li>
 			</ul>
 
 			{{-- Tabs content --}}
