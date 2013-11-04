@@ -10,7 +10,7 @@
 {{ Asset::queue('validate', 'js/platform/validate.js', 'jquery') }}
 {{ Asset::queue('redactor-js', 'js/redactor/redactor.min.js', 'jquery') }}
 {{ Asset::queue('redactor-css', 'css/redactor/redactor.css', 'styles') }}
-{{ Asset::queue('tabs', 'js/bootstrap/tab.js', 'jquery') }}
+{{ Asset::queue('boostrap.tabs', 'js/bootstrap/tab.js', 'jquery') }}
 {{ Asset::queue('slugify', 'js/platform/slugify.js', 'jquery') }}
 {{ Asset::queue('pages-scripts', 'platform/pages::js/scripts.js', 'jquery') }}
 
