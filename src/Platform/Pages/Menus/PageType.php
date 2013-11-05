@@ -18,7 +18,6 @@
  * @link       http://cartalyst.com
  */
 
-use API;
 use DB;
 use Platform\Menus\BaseType;
 use Platform\Menus\Models\Menu;
@@ -55,8 +54,7 @@ class PageType extends BaseType implements TypeInterface {
 	 */
 	public function getFormHtml(Menu $child = null)
 	{
-		$response = API::get('v1/pages');
-		$pages    = $response['pages'];
+		$pages = DB::table('pages')->get();
 
 		return $this->view->make("platform/pages::types/form", compact('child', 'pages'));
 	}
@@ -68,8 +66,7 @@ class PageType extends BaseType implements TypeInterface {
 	 */
 	public function getTemplateHtml()
 	{
-		$response = API::get('v1/pages');
-		$pages    = $response['pages'];
+		$pages = DB::table('pages')->get();
 
 		return $this->view->make("platform/pages::types/template", compact('child', 'pages'));
 	}
@@ -88,7 +85,6 @@ class PageType extends BaseType implements TypeInterface {
 		if ($pageId = array_get($data, 'page_id'))
 		{
 			$page = DB::table('pages')->where('id', $pageId)->first();
-			# can't use API call here, need to figure out why
 
 			$child->uri = $page->uri;
 			$child->page_id = $pageId;
