@@ -18,7 +18,8 @@
  * @link       http://cartalyst.com
  */
 
-use Api;
+use API;
+use DB;
 use Platform\Menus\BaseType;
 use Platform\Menus\Models\Menu;
 use Platform\Menus\TypeInterface;
@@ -77,41 +78,6 @@ class PageType extends BaseType implements TypeInterface {
 	}
 
 	/**
-	 * Called after a menu child is saved. Attach any links
-	 * and relationships.
-	 *
-	 * @param  Platform\Menus\Models\Menu  $child
-	 * @return void
-	 */
-	public function afterSave(Menu $child)
-	{
-		$data = $child->getTypeData();
-		$save = false;
-
-		if (isset($data['uri']))
-		{
-			$child->uri = $data->uri;
-			$save = true;
-		}
-		if (isset($data['name']))
-		{
-			$child->Name = $data->name;
-			$save = true;
-		}
-
-		if ($save) $child->save();
-	}
-
-	/**
-	 * Called before a child is deleted. Detach any links
-	 * and relationships.
-	 *
-	 * @param  Platform\Menus\Models\Menu  $child
-	 * @return void
-	 */
-	public function beforeDelete(Menu $child) {}
-
-	/**
 	 * Return the form HTML template for a edit child of this type as well
 	 * as creating new children.
 	 *
@@ -138,5 +104,34 @@ class PageType extends BaseType implements TypeInterface {
 
 		return $this->view->make("platform/pages::types/template", compact('child', 'pages'));
 	}
+
+	/**
+	 * Called after a menu child is saved. Attach any links
+	 * and relationships.
+	 *
+	 * @param  \Platform\Menus\Models\Menu  $child
+	 * @return void
+	 */
+	public function afterSave(Menu $child)
+	{
+		$data = $child->getTypeData();
+
+		$pageId = $data['page_id'];
+
+		$page = DB::table('pages')->where('id', $pageId)->first();
+		# can't use API call here, need to figure out why
+
+		$child->uri = $page->uri;
+		$child->page_id = $pageId;
+	}
+
+	/**
+	 * Called before a child is deleted. Detach any links
+	 * and relationships.
+	 *
+	 * @param  \Platform\Menus\Models\Menu  $child
+	 * @return void
+	 */
+	public function beforeDelete(Menu $child) {}
 
 }
