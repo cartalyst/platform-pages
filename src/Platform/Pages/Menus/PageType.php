@@ -91,13 +91,4 @@ class PageType extends BaseType implements TypeInterface {
 		}
 	}
 
-	/**
-	 * Called before a child is deleted. Detach any links
-	 * and relationships.
-	 *
-	 * @param  \Platform\Menus\Models\Menu  $child
-	 * @return void
-	 */
-	public function beforeDelete(Menu $child) {}
-
 }
