@@ -47,37 +47,6 @@ class PageType extends BaseType implements TypeInterface {
 	}
 
 	/**
-	 * Get the name for the menu child.
-	 *
-	 * @param  Platform\Menus\Models\Menu  $child
-	 * @return string
-	 */
-	public function getChildName(Menu $child)
-	{
-		return $child->name;
-	}
-
-	/**
-	 * Get the URL for the menu child.
-	 *
-	 * @param  Platform\Menus\Models\Menu  $child
-	 * @param  array  $options
-	 * @return string
-	 */
-	public function getChildUrl(Menu $child, array $options = array())
-	{
-		if ($uri = $child->uri)
-		{
-			if (isset($options['before_uri']))
-			{
-				$uri = $options['before_uri'].'/'.$uri;
-			}
-
-			return $this->url->to($uri);
-		}
-	}
-
-	/**
 	 * Return the form HTML template for a edit child of this type as well
 	 * as creating new children.
 	 *
@@ -116,13 +85,14 @@ class PageType extends BaseType implements TypeInterface {
 	{
 		$data = $child->getTypeData();
 
-		$pageId = $data['page_id'];
+		if ($pageId = array_get($data, 'page_id'))
+		{
+			$page = DB::table('pages')->where('id', $pageId)->first();
+			# can't use API call here, need to figure out why
 
-		$page = DB::table('pages')->where('id', $pageId)->first();
-		# can't use API call here, need to figure out why
-
-		$child->uri = $page->uri;
-		$child->page_id = $pageId;
+			$child->uri = $page->uri;
+			$child->page_id = $pageId;
+		}
 	}
 
 	/**
