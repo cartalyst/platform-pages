@@ -34,9 +34,9 @@ class PagesController extends ApiController {
 	 * @var array
 	 */
 	protected $validationRules = array(
-		'name'       => 'required',
-		'slug'       => 'required|unique:pages,slug',
-		'uri'        => 'required|unique:pages,uri',
+		'name'       => 'required|max:255',
+		'slug'       => 'required|unique:pages,slug|max:255',
+		'uri'        => 'required|unique:pages,uri|max:255',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
 		'visibility' => 'required|in:always,logged_in,admin',
