@@ -10,15 +10,18 @@ jQuery(document).ready(function($) {
 	// When the storage type changes
 	$(document).on('change', '#type', function() {
 
-		$('[class^="type"]').addClass('hide');
-		$('.type-'+$(this).val()).removeClass('hide');
+		var selectedType = $(this).val();
 
-		if ($(this).val() === 'filesystem')
+		$('[data-storage]').addClass('hide');
+
+		$('[data-storage="' + selectedType + '"]').removeClass('hide');
+
+		if (selectedType === 'filesystem')
 		{
 			$('#file').attr('required', true);
 			$('#value').removeAttr('required');
 		}
-		else if ($(this).val() === 'database')
+		else if (selectedType === 'database')
 		{
 			$('#value').attr('required');
 			$('#file').removeAttr('required', true);
@@ -31,12 +34,23 @@ jQuery(document).ready(function($) {
 
 		if ($(this).val() === 'always')
 		{
-			$('#groups').parent().parent().addClass('hide');
+			$('#groups').prop('disabled', 'disabled');
 		}
 		else
 		{
-			$('#groups').parent().parent().removeClass('hide');
+			$('#groups').prop('disabled', false);
 		}
+
+	});
+
+	// When the user selects a menu
+	$('#menu').on('change', function() {
+
+		var menuId = $(this).val();
+
+		$('[data-menu-parent]').addClass('hide');
+
+		$('[data-menu-parent="' + menuId + '"]').removeClass('hide');
 
 	});
 

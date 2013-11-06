@@ -64,6 +64,6 @@ return array(
 	'value_help' => "The page's value. @content call is allowed.",
 
 	'file'      => 'File',
-	'file_help' => 'File to use.',
+	'file_help' => 'Choose the file to use when rendering this page.',
 
 );

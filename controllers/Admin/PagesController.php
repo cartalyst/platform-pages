@@ -206,8 +206,15 @@ class PagesController extends AdminController {
 			// Get all the available page files
 			$files = Page::getPageFiles();
 
+			// Get the root items
+			$response = API::get('v1/menus?root=true');
+			$menus = $response['menus'];
+
 			// Show the page
-			return View::make('platform/pages::form', compact('page', 'groups', 'pageGroups', 'templates', 'defaultTemplate', 'files', 'pageSegment'));
+			return View::make('platform/pages::form', compact(
+				'page', 'groups', 'pageGroups', 'templates', 'defaultTemplate',
+				'files', 'menus', 'pageSegment'
+			));
 		}
 		catch (ApiHttpException $e)
 		{
