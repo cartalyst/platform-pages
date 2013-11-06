@@ -179,18 +179,23 @@ class PagesController extends AdminController {
 		try
 		{
 			// Data fallback
-			$page       = null;
+			$page = null;
 			$pageGroups = array();
+			$menu = null;
 
 			// Do we have a page identifier?
 			if ( ! is_null($slug))
 			{
 				// Get the page information
 				$response = API::get("v1/page/{$slug}");
-				$page     = $response['page'];
+				$page = $response['page'];
 
 				// Get this page groups
 				$pageGroups = $page->groups->lists('name', 'id');
+
+				// See if we have a menu assigned to this page
+				$response = API::get("v1/menus?criteria[page_id]={$page->id}&return=first");
+				$menu = $response['menu'];
 			}
 
 			// Get all the available user groups
@@ -213,7 +218,7 @@ class PagesController extends AdminController {
 			// Show the page
 			return View::make('platform/pages::form', compact(
 				'page', 'groups', 'pageGroups', 'templates', 'defaultTemplate',
-				'files', 'menus', 'pageSegment'
+				'files', 'menus', 'menu', 'pageSegment'
 			));
 		}
 		catch (ApiHttpException $e)
@@ -245,11 +250,8 @@ class PagesController extends AdminController {
 				// Make the request
 				$response = API::post('v1/pages', Input::all());
 
-				// Get the new page slug
-				$slug = $response['page']->slug;
-
-				// Set the success message
-				$bag->add('success', Lang::get('platform/pages::message.success.create'));
+				// Prepare the success message
+				$message = Lang::get('platform/pages::message.success.create');
 			}
 
 			// No, we are updating a page
@@ -258,12 +260,15 @@ class PagesController extends AdminController {
 				// Make the request
 				$response = API::put("v1/pages/{$slug}", Input::all());
 
-				// Get the updated page slug
-				$slug  = $response['page']->slug;
-
-				// Set the success message
-				$bag->add('success', Lang::get('platform/pages::message.success.edit'));
+				// Prepare the success message
+				$message = Lang::get('platform/pages::message.success.edit');
 			}
+
+			// Get the page slug
+			$slug = $response['page']->slug;
+
+			// Set the success message
+			$bag = with(new Bag)->add('success', $message);
 
 			// Redirect to the page edit page
 			return Redirect::toAdmin("pages/edit/{$slug}")->withNotifications($bag);

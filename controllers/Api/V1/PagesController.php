@@ -115,7 +115,7 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ($page = $this->model->create(Input::all()))
+		if ($page = $this->model->create(Input::except('menu', 'parent')))
 		{
 			// Set this page groups
 			$page->setGroups(Input::get('groups', array()));
@@ -195,7 +195,7 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page updated?
-		if ( ! $page->fill(Input::all())->save())
+		if ( ! $page->fill(Input::except('menu', 'parent'))->save())
 		{
 			// There was a problem updating the page
 			return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
