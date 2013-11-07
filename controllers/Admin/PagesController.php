@@ -26,13 +26,31 @@ use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
-use Platform\Pages\Models\Page;
 use Redirect;
 use Symfony\Component\Finder\Finder;
 use Theme;
 use View;
 
 class PagesController extends AdminController {
+
+	/**
+	 * Holds the pages model.
+	 *
+	 * @var \Platform\Pages\Models\Page
+	 */
+	protected $pageModel = null;
+
+	/**
+	 * Constructor.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->pageModel = app('Platform\Pages\Models\Page');
+	}
 
 	/**
 	 * Display a listing of pages.
@@ -180,7 +198,6 @@ class PagesController extends AdminController {
 		{
 			// Data fallback
 			$page = null;
-			$pageGroups = array();
 			$menu = null;
 
 			// Do we have a page identifier?
@@ -189,9 +206,6 @@ class PagesController extends AdminController {
 				// Get the page information
 				$response = API::get("v1/page/{$slug}");
 				$page = $response['page'];
-
-				// Get this page groups
-				$pageGroups = $page->groups->lists('name', 'id');
 
 				// See if we have a menu assigned to this page
 				$response = API::get("v1/menus?criteria[page_id]={$page->id}&return=first");
@@ -203,23 +217,20 @@ class PagesController extends AdminController {
 			$groups   = $response['groups'];
 
 			// Get all the available templates
-			$templates = Page::getTemplates();
+			$templates = $this->pageModel->getTemplates();
 
 			// Get the default template
 			$defaultTemplate = Config::get('platform/pages::template', null);
 
 			// Get all the available page files
-			$files = Page::getPageFiles();
+			$files = $this->pageModel->getPageFiles();
 
 			// Get the root items
 			$response = API::get('v1/menus?root=true');
 			$menus = $response['menus'];
 
 			// Show the page
-			return View::make('platform/pages::form', compact(
-				'page', 'groups', 'pageGroups', 'templates', 'defaultTemplate',
-				'files', 'menus', 'menu', 'pageSegment'
-			));
+			return View::make('platform/pages::form', compact('page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu', 'pageSegment'));
 		}
 		catch (ApiHttpException $e)
 		{
@@ -241,9 +252,6 @@ class PagesController extends AdminController {
 	{
 		try
 		{
-			// Instantiate a new message bag
-			$bag = new Bag;
-
 			// Are we creating a new page?
 			if (is_null($slug))
 			{

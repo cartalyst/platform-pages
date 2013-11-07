@@ -38,6 +38,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('uri');
 			$table->string('type');
 			$table->string('visibility');
+			$table->text('groups')->nullable();
 			$table->string('meta_description');
 			$table->string('meta_title');
 
@@ -57,13 +58,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			// support the indexes, other engines aren't affected.
 			$table->engine = 'InnoDB';
 			$table->unique('slug');
-		});
-
-		Schema::create('pages_groups', function($table)
-		{
-			$table->integer('page_id')->unsigned();
-			$table->integer('group_id')->unsigned();
-			$table->unique(array('page_id', 'group_id'));
 		});
 
 		// Create the welcome page, which will be the default
@@ -90,7 +84,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	public function down()
 	{
 		Schema::drop('pages');
-		Schema::drop('pages_groups');
 	}
 
 }

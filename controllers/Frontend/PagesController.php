@@ -38,7 +38,7 @@ class PagesController extends BaseController {
 	 */
 	public function getPage($slug = null)
 	{
-		// Default the page slug
+		// Make sure we have a page slug
 		$slug = $slug ?: Config::get('platform/pages::default');
 
 		try
@@ -46,33 +46,27 @@ class PagesController extends BaseController {
 			// Find the requested page
 			$response = API::get("v1/page/{$slug}", array('enabled' => true));
 			$page     = $response['page'];
-		}
-		catch (ApiHttpException $e)
-		{
-			throw new NotFoundHttpException("No matching page could be found for the requested URI [$slug].");
-		}
 
-		// @todo: We should have a config item whether invalid
-		// perms for pages should throw a 404, 403 or redirect
-		// to a certain page...
-		if (in_array($page->visibility, array('logged_in', 'admin')))
-		{
-			if ( ! Sentry::check())
+			// @todo: We should have a config item whether invalid
+			// perms for pages should throw a 404, 403 or redirect
+			// to a certain page...
+			if (in_array($page->visibility, array('logged_in', 'admin')))
 			{
-				throw new HttpException(403, "You don't have permission to view this page.");
-			}
+				if ( ! $currentUser = Sentry::getUser())
+				{
+					throw new HttpException(403, "You don't have permission to view this page.");
+				}
 
-			if ( ! Sentry::getUser()->isSuperUser())
-			{
-				if ($page->groups->count())
+				if ( ! $currentUser->isSuperUser() and ! empty($page->groups))
 				{
 					$found = false;
 
-					foreach (Sentry::getUser()->groups() as $group)
+					foreach ($currentUser->groups as $group)
 					{
-						if ($page->groups->find($group->getKey()))
+						if (in_array($group->id, $page->groups))
 						{
 							$found = true;
+
 							break;
 						}
 					}
@@ -83,9 +77,13 @@ class PagesController extends BaseController {
 					}
 				}
 			}
-		}
 
-		return $page->render();
+			return $page->render();
+		}
+		catch (ApiHttpException $e)
+		{
+			throw new NotFoundHttpException("No matching page could be found for the requested URI [{$slug}].");
+		}
 	}
 
 }

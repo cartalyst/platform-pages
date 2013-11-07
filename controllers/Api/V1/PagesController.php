@@ -35,8 +35,8 @@ class PagesController extends ApiController {
 	 */
 	protected $validationRules = array(
 		'name'       => 'required|max:255',
-		'slug'       => 'required|unique:pages,slug|max:255',
-		'uri'        => 'required|unique:pages,uri|max:255',
+		'slug'       => 'required|max:255|unique:pages,slug',
+		'uri'        => 'required|max:255|unique:pages,uri',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
 		'visibility' => 'required|in:always,logged_in,admin',
@@ -88,11 +88,11 @@ class PagesController extends ApiController {
 
 		if ($limit = Input::get('limit'))
 		{
-			$pages = $query->with('groups')->paginate($limit);
+			$pages = $query->paginate($limit);
 		}
 		else
 		{
-			$pages = $query->with('groups')->get();
+			$pages = $query->get();
 		}
 
 		return Response::api(compact('pages'));
@@ -117,9 +117,6 @@ class PagesController extends ApiController {
 		// Was the page created?
 		if ($page = $this->model->create(Input::except('menu', 'parent')))
 		{
-			// Set this page groups
-			$page->setGroups(Input::get('groups', array()));
-
 			// Page successfully created
 			return Response::api(compact('page'));
 		}
@@ -137,7 +134,7 @@ class PagesController extends ApiController {
 	public function show($id = null)
 	{
 		// Get a new query builder
-		$query = $this->model->newQuery()->with('groups');
+		$query = $this->model->newQuery();
 
 		// Search for the page uri, slug or id
 		$query->orWhere('uri', $id);
@@ -185,6 +182,9 @@ class PagesController extends ApiController {
 		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
 		$this->validationRules['uri'] = "required|unique:pages,uri,{$page->uri},uri";
 
+		// Make sure that the groups input get's passed
+		Input::merge(Input::only('groups'));
+
 		// Create a new validator instance from our dynamic rules
 		$validator = Validator::make(Input::all(), $this->validationRules);
 
@@ -200,9 +200,6 @@ class PagesController extends ApiController {
 			// There was a problem updating the page
 			return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
 		}
-
-		// Set this page groups
-		$page->setGroups(Input::get('groups', array()));
 
 		return Response::api(compact('page'));
 	}

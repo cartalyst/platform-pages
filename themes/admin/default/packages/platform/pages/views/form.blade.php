@@ -241,7 +241,7 @@
 
 							<select class="form-control" name="groups[]" id="groups" multiple="multiple"{{ Input::old('visibility', ! empty($page) ? $page->visibility : 'always') == 'always' ? ' disabled="disabled"' : null }}>
 							@foreach ($groups as $group)
-								<option value="{{ $group->id }}"{{ array_key_exists($group->id, $pageGroups) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
+								<option value="{{ $group->id }}"{{ in_array($group->id, Input::get('groups', ! empty($page) ? $page->groups : array())) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
 							@endforeach
 							</select>
 

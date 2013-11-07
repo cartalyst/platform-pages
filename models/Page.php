@@ -22,6 +22,7 @@ use Cartalyst\Themes\ThemeBag;
 use Closure;
 use Config;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 use RuntimeException;
 use Sentry;
 use Str;
@@ -49,6 +50,7 @@ class Page extends Model {
 		'enabled',
 		'type',
 		'visibility',
+		'groups',
 		'meta_title',
 		'meta_description',
 		'template',
@@ -86,6 +88,44 @@ class Page extends Model {
 	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
+	 * Get mutator for the "groups" attribute.
+	 *
+	 * @param  array  $groups
+	 * @return array
+	 * @throws \InvalidArgumentException
+	 */
+	public function getGroupsAttribute($groups)
+	{
+		if ( ! $groups)
+		{
+			return array();
+		}
+
+		if (is_array($groups))
+		{
+			return $groups;
+		}
+
+		if ( ! $_groups = json_decode($groups, true))
+		{
+			throw new InvalidArgumentException("Cannot JSON decode groups [{$groups}].");
+		}
+
+		return $_groups;
+	}
+
+	/**
+	 * Set mutator for the "groups" attribute.
+	 *
+	 * @param  array  $groups
+	 * @return void
+	 */
+	public function setGroupsAttribute($groups)
+	{
+		$this->attributes['groups'] = ! empty($groups) ? json_encode($groups) : '';
+	}
+
+	/**
 	 * Get mutator for the "enabled" attribute.
 	 *
 	 * @param  string  $enabled
@@ -104,9 +144,7 @@ class Page extends Model {
 	 */
 	public function setSlugAttribute($slug)
 	{
-		$slug = str_replace('_', '-', $slug ?: $this->name);
-
-		$this->attributes['slug'] = Str::slug($slug);
+		$this->attributes['slug'] = Str::slug(str_replace('_', '-', $slug ?: $this->name));
 	}
 
 	/**
@@ -117,7 +155,7 @@ class Page extends Model {
 	 */
 	public function setUriAttribute($uri)
 	{
-		$this->attributes['uri'] = Str::slug($uri ?: $this->uri, '/');
+		$this->attributes['uri'] = trim($uri);
 	}
 
 	/**
@@ -162,49 +200,6 @@ class Page extends Model {
 	public function setFileAttribute($file)
 	{
 		$this->attributes['file'] = ($this->type === 'database' ? null : $file);
-	}
-
-	/**
-	 * Get the groups for the page.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-	 */
-	public function groups()
-	{
-		return $this->belongsToMany(static::$groupModel, 'pages_groups', 'page_id', 'group_id');
-	}
-
-	/**
-	 * Set the page groups.
-	 *
-	 * @param  array  $groups
-	 * @return void
-	 */
-	public function setGroups($groups)
-	{
-		// Get the current page groups
-		$pageGroups = $this->groups->lists('id');
-
-		// Groups comparison between the groups the page currently
-		// have and the groups the page will have.
-		$groupsToAdd    = array_diff($groups, $pageGroups);
-		$groupsToRemove = array_diff($pageGroups, $groups);
-
-		// Assign the group to the page
-		foreach ($groupsToAdd as $id)
-		{
-			$group = Sentry::getGroupProvider()->findById($id);
-
-			$this->groups()->attach($group);
-		}
-
-		// Remove the group from the page
-		foreach ($groupsToRemove as $id)
-		{
-			$group = Sentry::getGroupProvider()->findById($id);
-
-			$this->groups()->detach($group);
-		}
 	}
 
 	/**
@@ -266,7 +261,7 @@ class Page extends Model {
 
 			if ( ! is_array($response))
 			{
-				throw new \InvalidArgumentException("Page rendering event listeners must return an array or must not return anything at all.");
+				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
 			}
 
 			foreach ($response as $key => $value)
@@ -277,7 +272,7 @@ class Page extends Model {
 
 		if (array_key_exists('page', $data))
 		{
-			throw new \RuntimeException("Cannot set [page] additional data for a page as it is reserved.");
+			throw new RuntimeException('Cannot set [page] additional data for a page as it is reserved.');
 		}
 
 		return $data;
@@ -435,22 +430,18 @@ class Page extends Model {
 	{
 		$extensions = array_keys(View::getExtensions());
 
-		$paths = array();
+		$paths = array_filter(array_map(function($path) {
 
-		// Loop through the view paths
-		foreach (static::$themeBag->getCascadedViewPaths(static::$theme) as $path)
-		{
 			// Full path to the pages folder
 			$fullPath = implode(DIRECTORY_SEPARATOR, array($path, 'pages'));
 
-			// Check if the path doesn't exist
-			if ( ! is_dir($fullPath))
+			// Check if the path exists
+			if (is_dir($fullPath))
 			{
-				continue;
+				return $fullPath;
 			}
 
-			$paths[] = $fullPath;
-		}
+		}, static::$themeBag->getCascadedViewPaths(static::$theme)));
 
 		$finder = with(new Finder)->files()->in($paths);
 
