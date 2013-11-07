@@ -88,6 +88,56 @@ class Page extends Model {
 	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
+	 * The menu model.
+	 *
+	 * @var string
+	 */
+	protected static $menuModel = 'Platform\Menus\Models\Menu';
+
+	/**
+	 * Save the model to the database.
+	 *
+	 * @param  array  $options
+	 * @return bool
+	 */
+	public function save(array $options = array())
+	{
+		if ( ! empty($options))
+		{
+			$menuModel = with(new static::$menuModel);
+
+			// Find the menu
+			if ($menu = $menuModel->find($options['menu']))
+			{
+				// See if we have a page
+				$page = $menuModel->where('page_id', $this->id)->first();
+
+				// Get the parent id, if applicable
+				$parentId = array_get($options, "parent.{$options['menu']}");
+
+				if (is_null($page))
+				{
+					// Create the menu
+					$page = new static::$menuModel(array(
+						'slug' => $this->slug,
+						'name' => $this->name,
+						'uri'  => $this->uri,
+						'type' => 'page',
+						'enabled' => 1,
+						'page_id' => $this->id,
+					));
+				}
+
+				$destination = $parentId == 0 ? $menu : $menuModel->find($parentId);
+
+				$page->makeLastChildOf($destination);
+			}
+		}
+
+		return parent::save($options);
+	}
+
+	/**
 	 * Get mutator for the "groups" attribute.
 	 *
 	 * @param  array  $groups
@@ -419,6 +469,37 @@ class Page extends Model {
 	public static function unsetContentModel()
 	{
 		static::$contentModel = null;
+	}
+
+	/**
+	 * Get the menu model.
+	 *
+	 * @return string
+	 */
+	public static function getMenuModel()
+	{
+		return static::$menuModel;
+	}
+
+	/**
+	 * Set the menu model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public static function setmenuModel($model)
+	{
+		static::$menuModel = $model;
+	}
+
+	/**
+	 * Unset the menu model.
+	 *
+	 * @return void
+	 */
+	public static function unsetmenuModel()
+	{
+		static::$groupModel = null;
 	}
 
 	/**

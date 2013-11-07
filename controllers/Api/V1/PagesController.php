@@ -115,14 +115,17 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ($page = $this->model->create(Input::except('menu', 'parent')))
+		if ( ! $page = $this->model->create(Input::all()))
 		{
-			// Page successfully created
-			return Response::api(compact('page'));
+			// There was a problem creating the page
+			return Response::api(Lang::get('platform/pages::message.error.create'), 500);
 		}
 
-		// There was a problem creating the page
-		return Response::api(Lang::get('platform/pages::message.error.create'), 500);
+		//
+		$page->save(Input::all());
+
+		// Page successfully created
+		return Response::api(compact('page'));
 	}
 
 	/**
@@ -195,7 +198,7 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page updated?
-		if ( ! $page->fill(Input::except('menu', 'parent'))->save())
+		if ( ! $page->fill(Input::except('menu', 'parent'))->save(Input::all()))
 		{
 			// There was a problem updating the page
 			return Response::api(Lang::get('platform/pages::message.error.edit'), 500);

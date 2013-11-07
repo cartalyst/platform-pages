@@ -276,7 +276,7 @@
 
 						@foreach ($menus as $item)
 							<div{{ ( ! empty($menu) and $menu->menu == $item->menu ) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->id }}}">
-							@widget('platform/menus::dropdown.show', array($item->slug, 0, ! empty($menu) ? $menu->getParent()->id : null, array('id' => 'parent_id', 'name' => "parent[{$item->id}]", 'class' => 'form-control')))
+							@widget('platform/menus::dropdown.show', array($item->slug, 0, ! empty($menu) ? $menu->getParent()->id : null, array('id' => 'parent_id', 'name' => "parent[{$item->id}]", 'class' => 'form-control'), array('0' => '-- Top Level --')))
 							</div>
 						@endforeach
 
