@@ -17,6 +17,7 @@
 				<% } %>
 
 				<i class="fa fa-times"></i>
+
 			</button>
 
 		</span>
