@@ -454,7 +454,7 @@ return array(
 				'name'  => 'Pages',
 				'class' => 'fa fa-file',
 				'uri'   => 'pages',
-				'regex' => '/pages/i',
+				'regex' => '/admin\/pages/i',
 			),
 
 		),
