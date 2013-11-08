@@ -6,9 +6,9 @@
 			<td><%= r.name %></td>
 			<td><%= r.slug %></td>
 			<td>
-				<% if( r.enabled == 1) { %>
+				<% if (r.enabled == 1) { %>
 					{{{ trans('general.enabled') }}}
-				<% }else{ %>
+				<% } else { %>
 					{{{ trans('general.disabled') }}}
 				<% } %>
 			</td>

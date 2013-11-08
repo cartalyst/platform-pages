@@ -8,21 +8,21 @@
 
 				<ul class="pagination pagination-sm">
 
-					<% if( p.prevPage !== null){ %>
+					<% if (p.prevPage !== null) { %>
 
 						<li><a data-page="<%= p.prevPage %>"><i class="fa fa-chevron-left"></i></a></li>
 
-					<% }else{ %>
+					<% } else { %>
 
 						<li class="disabled"><a><i class="fa fa-chevron-left"></i></a></li>
 
 					<% } %>
 
-					<% if( p.nextPage !== null) { %>
+					<% if (p.nextPage !== null) { %>
 
-						<li><a  data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+						<li><a data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
 
-					<% }else{ %>
+					<% } else { %>
 
 						<li class="disabled"><a><i class="fa fa-chevron-right"></i></a></li>
 

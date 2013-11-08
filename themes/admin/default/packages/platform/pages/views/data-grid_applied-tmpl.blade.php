@@ -6,11 +6,11 @@
 
 			<button type="button" class="btn btn-info tip" title="Remove filter">
 
-				<% if( f.column === 'all') { %>
+				<% if (f.column === 'all') { %>
 
 					<%= f.valueLabel %>
 
-				<% }else{ %>
+				<% } else { %>
 
 					<%= f.valueLabel %> {{{ trans('general.in') }}} <em><%= f.columnLabel %></em>
 
