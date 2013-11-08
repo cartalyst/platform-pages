@@ -115,17 +115,18 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page created?
-		if ( ! $page = $this->model->create(Input::all()))
+		if ($page = $this->model->create(Input::all()))
 		{
-			// There was a problem creating the page
-			return Response::api(Lang::get('platform/pages::message.error.create'), 500);
+			// Save the page, this is basically to assign
+			// a page to a menu if necessary.
+			$page->save(Input::all());
+
+			// Page successfully created
+			return Response::api(compact('page'));
 		}
 
-		//
-		$page->save(Input::all());
-
-		// Page successfully created
-		return Response::api(compact('page'));
+		// There was a problem creating the page
+		return Response::api(Lang::get('platform/pages::message.error.create'), 500);
 	}
 
 	/**
@@ -151,12 +152,12 @@ class PagesController extends ApiController {
 		}
 
 		// Grab the page
-		if ( ! $page = $query->first())
+		if ($page = $query->first())
 		{
-			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
+			return Response::api(compact('page'));
 		}
 
-		return Response::api(compact('page'));
+		return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 	}
 
 	/**
@@ -182,8 +183,8 @@ class PagesController extends ApiController {
 		}
 
 		// Update the validation rules
-		$this->validationRules['slug'] = "required|unique:pages,slug,{$page->slug},slug";
-		$this->validationRules['uri'] = "required|unique:pages,uri,{$page->uri},uri";
+		$this->validationRules['slug'] = "required|max:255|unique:pages,slug,{$page->slug},slug";
+		$this->validationRules['uri'] = "required|max:255|unique:pages,uri,{$page->uri},uri";
 
 		// Make sure that the groups input get's passed
 		Input::merge(Input::only('groups'));
@@ -198,13 +199,13 @@ class PagesController extends ApiController {
 		}
 
 		// Was the page updated?
-		if ( ! $page->fill(Input::except('menu', 'parent'))->save(Input::all()))
+		if ($page->fill(Input::except('menu', 'parent'))->save(Input::all()))
 		{
-			// There was a problem updating the page
-			return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
+			return Response::api(compact('page'));
 		}
 
-		return Response::api(compact('page'));
+		// There was a problem updating the page
+		return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
 	}
 
 	/**
@@ -224,16 +225,16 @@ class PagesController extends ApiController {
 		$query->orWhere('id', $id);
 
 		// Grab the page
-		if ( ! $page = $query->first())
+		if ($page = $query->first())
 		{
-			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
+			// Delete the page
+			$page->delete();
+
+			// Page successfully deleted
+			return Response::api(Lang::get('platform/pages::message.success.delete'));
 		}
 
-		// Delete the page
-		$page->delete();
-
-		// Page successfully deleted
-		return Response::api(Lang::get('platform/pages::message.success.delete'));
+		return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 	}
 
 }

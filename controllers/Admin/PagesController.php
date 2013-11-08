@@ -196,10 +196,6 @@ class PagesController extends AdminController {
 	{
 		try
 		{
-			// Data fallback
-			$page = null;
-			$menu = null;
-
 			// Do we have a page identifier?
 			if ( ! is_null($slug))
 			{
@@ -214,7 +210,7 @@ class PagesController extends AdminController {
 
 			// Get all the available user groups
 			$response = API::get('v1/users/groups');
-			$groups   = $response['groups'];
+			$groups = $response['groups'];
 
 			// Get all the available templates
 			$templates = $this->pageModel->getTemplates();
