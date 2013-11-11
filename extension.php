@@ -198,23 +198,23 @@ return array(
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
 		// Set the theme bag and the active theme
-		Page::setThemeBag($app['themes']);
-		Page::setTheme($app['config']['cartalyst/themes::active']);
+		app('Platform\Pages\Models\Page')->setThemeBag($app['themes']);
+		app('Platform\Pages\Models\Page')->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
 		{
-			$error404 = $app['config']['platform/pages::404'];
+			$notFound = $app['config']['platform/pages::not_found'];
 
-			if ( ! is_null($error404))
+			if ( ! is_null($notFound))
 			{
-				$app->error(function(NotFoundHttpException $exception, $code) use ($error404)
+				$app->error(function(NotFoundHttpException $exception, $code) use ($notFound)
 				{
 					Log::error($exception);
 
 					try
 					{
-						$content = with(new PagesController)->getPage($error404);
+						$content = with(new PagesController)->getPage($notFound);
 
 						return Response::make($content, 404);
 					}
@@ -226,7 +226,8 @@ return array(
 			}
 		}
 
-		Menu::registerType($app['Platform\Menus\PageType']);
+		// Register the menu page type
+		app('Platform\Menus\Models\Menu')->registerType($app['Platform\Menus\PageType']);
 	},
 
 	/*
@@ -395,7 +396,7 @@ return array(
 				}
 			),
 
-			'pages::general.404' => array(
+			'pages::general.not_found' => array(
 				'name'    => '404 Error Page',
 				'config'  => 'platform/pages::404',
 				'info'    => 'The page that is shown when a 404 error arises.',
