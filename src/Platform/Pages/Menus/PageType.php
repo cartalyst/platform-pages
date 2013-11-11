@@ -72,8 +72,7 @@ class PageType extends BaseType implements TypeInterface {
 	}
 
 	/**
-	 * Called after a menu child is saved. Attach any links
-	 * and relationships.
+	 * Event that is called after a menu children is saved.
 	 *
 	 * @param  \Platform\Menus\Models\Menu  $child
 	 * @return void
