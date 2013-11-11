@@ -398,7 +398,7 @@ return array(
 
 			'pages::general.not_found' => array(
 				'name'    => '404 Error Page',
-				'config'  => 'platform/pages::404',
+				'config'  => 'platform/pages::not_found',
 				'info'    => 'The page that is shown when a 404 error arises.',
 				'type'    => 'dropdown',
 				'options' => function()
