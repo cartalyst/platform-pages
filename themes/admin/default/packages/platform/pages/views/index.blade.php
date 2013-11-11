@@ -35,7 +35,7 @@ $(function() {
 </script>
 @stop
 
-{{-- Call custom inline styles --}}
+{{-- Inline styles --}}
 @section('styles')
 @parent
 @stop
