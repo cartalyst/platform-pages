@@ -10,7 +10,7 @@
 
 					<% if (p.prevPage !== null) { %>
 
-						<li><a data-page="<%= p.prevPage %>"><i class="fa fa-chevron-left"></i></a></li>
+						<li><a data-grid="main" data-page="<%= p.prevPage %>"><i class="fa fa-chevron-left"></i></a></li>
 
 					<% } else { %>
 
@@ -20,7 +20,7 @@
 
 					<% if (p.nextPage !== null) { %>
 
-						<li><a data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+						<li><a data-grid="main" data-page="<%= p.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
 
 					<% } else { %>
 
@@ -32,7 +32,7 @@
 
 			</div>
 
-			{{{ trans('general.showing') }}} <%= p.pageStart %> {{{ trans('general.to') }}} <%= p.pageLimit %> {{{ trans('general.of') }}} <span class="total"></span>
+			{{{ trans('general.showing') }}} <%= p.pageStart %> {{{ trans('general.to') }}} <%= p.pageLimit %> {{{ trans('general.of') }}} <span class="total"><%= p.filteredCount %></span>
 
 		</div>
 

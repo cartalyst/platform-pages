@@ -8,11 +8,11 @@
 
 				<% if (f.column === 'all') { %>
 
-					<%= f.valueLabel %>
+					<%= f.value %>
 
 				<% } else { %>
 
-					<%= f.valueLabel %> {{{ trans('general.in') }}} <em><%= f.columnLabel %></em>
+					<%= f.value %> {{{ trans('general.in') }}} <em><%= f.column %></em>
 
 				<% } %>
 

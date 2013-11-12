@@ -18,14 +18,13 @@ $(function() {
 
 	$.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
 		loader: '.loading',
-		type: 'single',
-		sort: {
+		paginationType: 'single',
+		defaultSort: {
 			column: 'created_at',
 			direction: 'desc'
 		},
-		callback: function(obj) {
+		callback: function() {
 
-			$('.total').html(obj.filterCount);
 			$('.tip').tooltip();
 
 		}
