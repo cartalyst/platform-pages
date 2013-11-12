@@ -254,11 +254,10 @@ return array(
 			Route::delete('{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
 		});
 
-		App::before(function($app)
+		foreach (app('Platform\Pages\Models\Page')->all() as $page)
 		{
-			Route::get('{slug}', 'Platform\Pages\Controllers\Frontend\PagesController@getPage')
-				->where('slug', '.*?');
-		});
+			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
+		}
 	},
 
 	/*
