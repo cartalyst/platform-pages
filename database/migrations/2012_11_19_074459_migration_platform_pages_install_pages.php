@@ -65,7 +65,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 		$page = new Page(array(
 			'name'              => 'Welcome',
 			'slug'              => 'welcome',
-			'uri'               => 'welcome',
+			'uri'               => '/',
 			'visibility'        => 'always',
 			'meta_title'        => 'Welcome',
 			'meta_description'  => 'The default home page.',
