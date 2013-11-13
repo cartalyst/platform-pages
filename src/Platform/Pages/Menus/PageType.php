@@ -18,12 +18,19 @@
  * @link       http://cartalyst.com
  */
 
-use DB;
+use API;
 use Platform\Menus\BaseType;
 use Platform\Menus\Models\Menu;
 use Platform\Menus\TypeInterface;
 
 class PageType extends BaseType implements TypeInterface {
+
+	/**
+	 * Holds all the available pages.
+	 *
+	 * @var \Platform\Pages\Models\Page
+	 */
+	protected $pages = null;
 
 	/**
 	 * Get the type identifier.
@@ -54,7 +61,7 @@ class PageType extends BaseType implements TypeInterface {
 	 */
 	public function getFormHtml(Menu $child = null)
 	{
-		$pages = DB::table('pages')->get();
+		$pages = $this->getPages();
 
 		return $this->view->make("platform/pages::types/form", compact('child', 'pages'));
 	}
@@ -66,7 +73,7 @@ class PageType extends BaseType implements TypeInterface {
 	 */
 	public function getTemplateHtml()
 	{
-		$pages = DB::table('pages')->get();
+		$pages = $this->getPages();
 
 		return $this->view->make("platform/pages::types/template", compact('child', 'pages'));
 	}
@@ -83,11 +90,35 @@ class PageType extends BaseType implements TypeInterface {
 
 		if ($pageId = array_get($data, 'page_id'))
 		{
-			$page = DB::table('pages')->where('id', $pageId)->first();
+			$response = API::get("v1/pages/{$pageId}");
+			$page = $response['page'];
 
 			$child->uri = $page->uri;
 			$child->page_id = $pageId;
 		}
+	}
+
+	/**
+	 * Return all the available pages.
+	 *
+	 * @return \Platform\Pages\Models\Page
+	 */
+	protected function getPages()
+	{
+		if ( ! is_null($this->pages))
+		{
+			return $this->pages;
+		}
+
+		$response = API::get('v1/pages');
+		$pages = $response['pages'];
+
+		foreach ($pages as &$page)
+		{
+			$page->uri = $page->uri === '/' ? null : $page->uri;
+		}
+
+		return $this->pages = $pages;
 	}
 
 }
