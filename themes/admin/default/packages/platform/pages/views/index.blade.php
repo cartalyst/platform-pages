@@ -30,6 +30,12 @@ $(function() {
 		}
 	});
 
+	$('.data-grid_pagination').on('click', 'a', function() {
+
+		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
+
+	});
+
 });
 </script>
 @stop
