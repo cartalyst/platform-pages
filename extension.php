@@ -32,8 +32,8 @@ return array(
 	| Name
 	|--------------------------------------------------------------------------
 	|
-	| This is your extension name and it is only used for presentational
-	| purposes only.
+	| This is your extension name and it is only required for
+	| presentational purposes.
 	|
 	*/
 
@@ -45,9 +45,10 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| This is your extension unique identifier and should not be changed as
-	| it will be recognized as a new extension. Ideally, this should match
-	| the folder structure within the extensions folder, but this is
-	| completely optional.
+	| it will be recognized as a new extension.
+	|
+	| Ideally, this should match the folder structure within the extensions
+	| folder, but this is completely optional.
 	|
 	*/
 
@@ -93,12 +94,12 @@ return array(
 	| Requirements
 	|--------------------------------------------------------------------------
 	|
-	| You should list here all the extensions this extension requires to work
-	| properly. This is used in conjunction with composer, so you should put
-	| the same extension dependencies on your composer.json require key so
-	| that they get resolved using composer, however you can use without
-	| composer, at which point you'll have to ensure that the required
-	| extensions are available.
+	| List here all the extensions that this extension requires to work.
+	| This is used in conjunction with composer, so you should put the
+	| same extension dependencies on your main composer.json require
+	| key, so that they get resolved using composer, however you
+	| can use without composer, at which point you'll have to
+	| ensure that the required extensions are available.
 	|
 	*/
 
@@ -126,8 +127,8 @@ return array(
 	| If a Closure is defined, it should take two parameters as defined
 	| bellow:
 	|
-	|	object Composer\Autoload\ClassLoader      $loader
-	|	object Illuminate\Foundation\Application  $app
+	|	object \Composer\Autoload\ClassLoader      $loader
+	|	object \Illuminate\Foundation\Application  $app
 	|
 	|
 	| Supported: "composer", "platform", "Closure"
@@ -167,8 +168,8 @@ return array(
 	|
 	| The closure parameters are:
 	|
-	|	object Cartalyst\Extensions\ExtensionInterface
-	|	object Illuminate\Foundation\Application
+	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
+	|	object \Illuminate\Foundation\Application        $app
 	|
 	*/
 
@@ -190,8 +191,8 @@ return array(
 	|
 	| The closure parameters are:
 	|
-	|	object Cartalyst\Extensions\ExtensionInterface
-	|	object Illuminate\Foundation\Application
+	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
+	|	object \Illuminate\Foundation\Application        $app
 	|
 	*/
 
@@ -240,8 +241,8 @@ return array(
 	|
 	| The closure parameters are:
 	|
-	|	object Cartalyst\Extensions\ExtensionInterface
-	|	object Illuminate\Foundation\Application
+	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
+	|	object \Illuminate\Foundation\Application        $app
 	|
 	*/
 
@@ -316,21 +317,6 @@ return array(
 	*/
 
 	'widgets' => array(),
-
-	/*
-	|--------------------------------------------------------------------------
-	| Plugins
-	|--------------------------------------------------------------------------
-	|
-	| List of custom plugins associated with the extension. Like routes, the
-	| value for the plugin key may either be a closure or a class & method
-	| name (joined with an @ symbol). Of course, Platform will guess the
-	| plugin class for you, this is just for custom plugins or if you
-	| do not wish to make a new class for a very small plugin.
-	|
-	*/
-
-	'plugins' => array(),
 
 	/*
 	|--------------------------------------------------------------------------

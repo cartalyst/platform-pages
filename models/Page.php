@@ -21,15 +21,15 @@
 use Cartalyst\Themes\ThemeBag;
 use Closure;
 use Config;
-use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
+use Platform\Attributes\Entity;
 use RuntimeException;
 use Sentry;
 use Str;
 use Symfony\Component\Finder\Finder;
 use View;
 
-class Page extends Model {
+class Page extends Entity {
 
 	/**
 	 * The table associated with the model.
@@ -39,25 +39,29 @@ class Page extends Model {
 	protected $table = 'pages';
 
 	/**
-	 * The attributes that are mass assignable.
+	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array
 	 */
-	protected $fillable = array(
-		'name',
-		'slug',
-		'uri',
-		'enabled',
-		'type',
-		'visibility',
-		'groups',
-		'meta_title',
-		'meta_description',
-		'template',
-		'section',
-		'value',
-		'file',
+	protected $guarded = array(
+		'id',
+		'created_at',
+		'updated_at',
 	);
+
+	/**
+	 * The relations to eager load on every query.
+	 *
+	 * @var array
+	 */
+	protected $with = array('values.attribute');
+
+	/**
+	 * The EAV namespace for the given entity.
+	 *
+	 * @var string
+	 */
+	protected $eavNamespace = 'platform/pages';
 
 	/**
 	 * The theme bag which is used for rendering file-based pages.
@@ -93,6 +97,11 @@ class Page extends Model {
 	 * @var string
 	 */
 	protected static $menuModel = 'Platform\Menus\Models\Menu';
+
+	public function values()
+	{
+		return $this->hasValues('Platform\Attributes\Value', 'entity');
+	}
 
 	/**
 	 * Save the model to the database.

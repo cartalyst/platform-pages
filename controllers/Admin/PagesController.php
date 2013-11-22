@@ -22,7 +22,6 @@ use API;
 use Cartalyst\Api\Http\ApiHttpException;
 use Config;
 use DataGrid;
-use Illuminate\Support\MessageBag as Bag;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
@@ -55,7 +54,7 @@ class PagesController extends AdminController {
 	/**
 	 * Display a listing of pages.
 	 *
-	 * @return \View
+	 * @return \Illuminate\View\View
 	 */
 	public function getIndex()
 	{
@@ -91,13 +90,13 @@ class PagesController extends AdminController {
 	 */
 	public function getCreate()
 	{
-		return $this->showForm(null, 'create');
+		return $this->showForm('create');
 	}
 
 	/**
 	 * Handle posting of the form for creating a new page.
 	 *
-	 * @return \Redirect
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function postCreate()
 	{
@@ -112,20 +111,20 @@ class PagesController extends AdminController {
 	 */
 	public function getEdit($slug = null)
 	{
-		// Do we have a slug?
-		if (is_null($slug))
+		// Do we have a page identifier?
+		if ( ! $slug)
 		{
 			return Redirect::toAdmin('pages');
 		}
 
-		return $this->showForm($slug, 'edit');
+		return $this->showForm('edit', $slug);
 	}
 
 	/**
 	 * Handle posting of the form for updating a page.
 	 *
 	 * @param  mixed  $slug
-	 * @return \Redirect
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function postEdit($slug = null)
 	{
@@ -140,19 +139,19 @@ class PagesController extends AdminController {
 	 */
 	public function getCopy($slug = null)
 	{
-		// Do we have a slug?
-		if (is_null($slug))
+		// Do we have a page identifier?
+		if ( ! $slug)
 		{
 			return Redirect::toAdmin('pages');
 		}
 
-		return $this->showForm($slug, 'copy');
+		return $this->showForm('copy', $slug);
 	}
 
 	/**
 	 * Handle posting of the form for copying a page.
 	 *
-	 * @return \Redirect
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function postCopy()
 	{
@@ -163,41 +162,36 @@ class PagesController extends AdminController {
 	 * Remove the specified page.
 	 *
 	 * @param  mixed  $slug
-	 * @return \Redirect
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	public function getDelete($slug = null)
 	{
 		try
 		{
-			// Delete the page
 			API::delete("v1/page/{$slug}");
 
 			// Set the success message
-			$bag = with(new Bag)->add('success', Lang::get('platform/pages::message.success.delete'));
+			return Redirect::toAdmin('pages')->withSuccess(Lang::get('platform/pages::message.success.delete'));
 		}
 		catch (ApiHttpException $e)
 		{
-			// Set the error message
-			$bag = with(new Bag)->add('error', $e->getMessage());
+			return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.success.delete'));
 		}
-
-		// Redirect to the pages management page
-		return Redirect::toAdmin('pages')->withNotifications($bag);
 	}
 
 	/**
 	 * Shows the form.
 	 *
+	 * @param  string  $mode
 	 * @param  mixed   $slug
-	 * @param  string  $pageSegment
 	 * @return mixed
 	 */
-	protected function showForm($slug = null, $pageSegment = null)
+	protected function showForm($mode = null, $slug = null)
 	{
 		try
 		{
 			// Do we have a page identifier?
-			if ( ! is_null($slug))
+			if ($slug)
 			{
 				// Get the page information
 				$response = API::get("v1/page/{$slug}");
@@ -206,6 +200,10 @@ class PagesController extends AdminController {
 				// See if we have a menu assigned to this page
 				$response = API::get("v1/menus?criteria[page_id]={$page->id}&return=first");
 				$menu = $response['menu'];
+			}
+			else
+			{
+				$page = app('Platform\Pages\Models\Page');
 			}
 
 			// Get all the available user groups
@@ -226,15 +224,11 @@ class PagesController extends AdminController {
 			$menus = $response['menus'];
 
 			// Show the page
-			return View::make('platform/pages::form', compact('page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu', 'pageSegment'));
+			return View::make('platform/pages::form', compact('page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu', 'mode'));
 		}
 		catch (ApiHttpException $e)
 		{
-			// Set the error message
-			$bag = with(new Bag)->add('error', $e->getMessage());
-
-			// Return to the pages management page
-			return Redirect::toAdmin('pages')->withNotifications($bag);
+			return Redirect::toAdmin('pages')->withErrors($e->getMessage());
 		}
 	}
 
@@ -242,14 +236,22 @@ class PagesController extends AdminController {
 	 * Processes the form.
 	 *
 	 * @param  mixed  $slug
-	 * @return \Redirect
+	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	protected function processForm($slug = null)
 	{
 		try
 		{
-			// Are we creating a new page?
-			if (is_null($slug))
+			// Do we have a page identifier?
+			if ($slug)
+			{
+				// Make the request
+				$response = API::put("v1/pages/{$slug}", Input::all());
+
+				// Prepare the success message
+				$message = Lang::get('platform/pages::message.success.edit');
+			}
+			else
 			{
 				// Make the request
 				$response = API::post('v1/pages', Input::all());
@@ -258,24 +260,11 @@ class PagesController extends AdminController {
 				$message = Lang::get('platform/pages::message.success.create');
 			}
 
-			// No, we are updating a page
-			else
-			{
-				// Make the request
-				$response = API::put("v1/pages/{$slug}", Input::all());
-
-				// Prepare the success message
-				$message = Lang::get('platform/pages::message.success.edit');
-			}
-
 			// Get the page slug
 			$slug = $response['page']->slug;
 
-			// Set the success message
-			$bag = with(new Bag)->add('success', $message);
-
 			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/{$slug}")->withNotifications($bag);
+			return Redirect::toAdmin("pages/edit/{$slug}")->withSuccess($message);
 		}
 		catch (ApiHttpException $e)
 		{
