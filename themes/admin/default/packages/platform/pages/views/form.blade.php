@@ -301,7 +301,7 @@
 
 					<a class="btn btn-default" href="{{{ URL::toAdmin('pages') }}}">{{{ trans('button.cancel') }}}</a>
 
-					@if ( $page->exists and $mode != 'copy')
+					@if ($page->exists and $mode != 'copy')
 					<div class="pull-right">
 						<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/delete/{$page->slug}") }}">{{{ trans('platform/pages::button.delete') }}}</a>
 
