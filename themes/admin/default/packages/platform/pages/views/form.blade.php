@@ -302,7 +302,7 @@
 			</div>
 
 			{{-- Attributes tab --}}
-			<div class="tab-pane" id="attributes">
+			<div class="tab-pane clearfix" id="attributes">
 				@widget('platform/attributes::entity.form', array($page))
 			</div>
 
