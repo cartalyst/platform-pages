@@ -31,7 +31,7 @@ class MigrationPlatformPagesUpdateMenusTable extends Migration {
 	{
 		Schema::table('menus', function($table)
 		{
-			$table->boolean('page_id')->nullable();
+			$table->boolean('page_id')->after('type')->nullable();
 		});
 	}
 

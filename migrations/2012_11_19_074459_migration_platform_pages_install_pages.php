@@ -39,8 +39,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('type');
 			$table->string('visibility');
 			$table->text('groups')->nullable();
-			$table->string('meta_description');
-			$table->string('meta_title');
 
 			// Database specific
 			$table->string('template')->nullable();
@@ -60,18 +58,36 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->unique('slug');
 		});
 
+		// Create the meta attributes
+		$test = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+
+		$test->create(array(
+			'namespace' => 'platform/pages',
+			'name'      => 'Meta Title',
+			'type'      => 'string',
+			'slug'      => 'meta_title',
+			'enabled'   => 1,
+		));
+		$test->create(array(
+			'namespace' => 'platform/pages',
+			'name'      => 'Meta Description',
+			'type'      => 'string',
+			'slug'      => 'meta_description',
+			'enabled'   => 1,
+		));
+
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
 		$page = new Page(array(
-			'name'              => 'Welcome',
-			'slug'              => 'welcome',
-			'uri'               => '/',
-			'visibility'        => 'always',
-			'meta_title'        => 'Welcome',
-			'meta_description'  => 'The default home page.',
-			'type'              => 'filesystem',
-			'file'              => 'welcome',
-			'enabled'           => true,
+			'name'             => 'Welcome',
+			'slug'             => 'welcome',
+			'uri'              => '/',
+			'visibility'       => 'always',
+			'meta_title'       => 'Welcome',
+			'meta_description' => 'The default home page.',
+			'type'             => 'filesystem',
+			'file'             => 'welcome',
+			'enabled'          => true,
 		));
 		$page->save();
 	}
