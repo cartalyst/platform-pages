@@ -121,25 +121,6 @@
 							</div>
 						</div>
 
-
-						{{-- Meta title --}}
-						<div class="form-group{{ $errors->first('meta_title', ' has-error') }}">
-							<label for="meta_title" class="control-label">{{{ trans('platform/pages::form.meta_title') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.meta_title_help') }}}"></i></label>
-
-							<input type="text" class="form-control" name="meta_title" id="meta_title" placeholder="{{{ trans('platform/pages::form.meta_title') }}}" value="{{{ Input::old('meta_title', $page->exists ? $page->meta_title : null) }}}">
-
-							<span class="help-block">{{{ $errors->first('meta_title', ':message') }}}</span>
-						</div>
-
-						{{-- Meta description --}}
-						<div class="form-group{{ $errors->first('meta_description', ' has-error') }}">
-							<label for="meta_description" class="control-label">{{{ trans('platform/pages::form.meta_description') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.meta_description_help') }}}"></i></label>
-
-							<input type="text" class="form-control" name="meta_description" id="meta_description" placeholder="{{{ trans('platform/pages::form.meta_description') }}}" value="{{{ Input::old('meta_description', $page->exists ? $page->meta_description : null) }}}">
-
-							<span class="help-block">{{{ $errors->first('meta_description', ':message') }}}</span>
-						</div>
-
 						<div class="row">
 
 							<div class="col-md-6">
