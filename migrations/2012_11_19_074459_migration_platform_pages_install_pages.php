@@ -19,7 +19,6 @@
  */
 
 use Illuminate\Database\Migrations\Migration;
-use Platform\Pages\Models\Page;
 
 class MigrationPlatformPagesInstallPages extends Migration {
 
@@ -78,7 +77,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
-		$page = new Page(array(
+		$page = app('Platform\Pages\Models\Page')->create(array(
 			'name'             => 'Welcome',
 			'slug'             => 'welcome',
 			'uri'              => '/',
@@ -89,7 +88,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			'file'             => 'welcome',
 			'enabled'          => true,
 		));
-		$page->save();
 	}
 
 	/**
