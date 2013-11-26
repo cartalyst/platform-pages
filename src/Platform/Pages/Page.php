@@ -130,12 +130,12 @@ class Page extends Entity {
 				{
 					// Create the menu
 					$page = new static::$menuModel(array(
-						'slug' => $this->slug,
-						'name' => $this->name,
-						'uri'  => $this->uri,
-						'type' => 'page',
-						'enabled' => 1,
+						'slug'    => $this->slug,
+						'name'    => $this->name,
+						'uri'     => $this->uri,
+						'type'    => 'page',
 						'page_id' => $this->id,
+						'enabled' => 1,
 					));
 				}
 

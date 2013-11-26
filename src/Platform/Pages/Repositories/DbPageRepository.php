@@ -117,7 +117,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function create(array $data)
 	{
-		with($model = $this->createModel())->fill($data)->save();
+		with($model = $this->createModel())->fill($data)->save($data);
 
 		return $model;
 	}
@@ -129,7 +129,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		$model = $this->find($id);
 
-		$model->fill($data)->save();
+		$model->fill($data)->save($data);
 
 		return $model;
 	}
