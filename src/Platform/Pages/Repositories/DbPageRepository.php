@@ -80,7 +80,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return $this->createModel()->orWhere('slug', $id)->orWhere('id', $id)->first();
+		return $this->createModel()->orWhere('uri', $id)->orWhere('slug', $id)->orWhere('id', $id)->first();
 	}
 
 	/**
@@ -88,7 +88,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function findEnabled($id)
 	{
-		return $this->createModel()->where('enabled', 1)->orWhere('slug', $id)->where('id', $id)->first();
+		return $this->createModel()->where('enabled', 1)->orWhere('uri', $id)->orWhere('slug', $id)->where('id', $id)->first();
 	}
 
 	/**

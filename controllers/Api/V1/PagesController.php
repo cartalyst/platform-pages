@@ -18,53 +18,33 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Input;
 use Lang;
+use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Routing\Controllers\ApiController;
 use Response;
-use Sentry;
-use Str;
-use Validator;
 
 class PagesController extends ApiController {
 
 	/**
-	 * Holds the form validation rules.
+	 * Pages repository.
 	 *
-	 * @var array
+	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
 	 */
-	protected $validationRules = array(
-		'name'       => 'required|max:255',
-		'slug'       => 'required|max:255|unique:pages,slug',
-		'uri'        => 'required|max:255|unique:pages,uri',
-		'enabled'    => 'required',
-		'type'       => 'required|in:database,filesystem',
-		'visibility' => 'required|in:always,logged_in,admin',
-
-		// Database page
-		'template' => 'required_if:type,database',
-
-		// Filesystem page
-		'file' => 'required_if:type,filesystem',
-	);
+	protected $pages;
 
 	/**
-	 * Holds the pages model.
+	 * Constructor.
 	 *
-	 * @var \Platform\Pages\Models\Page
-	 */
-	protected $model;
-
-	/**
-	 * Initializer.
-	 *
+	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct(PageRepositoryInterface $pages)
 	{
 		parent::__construct();
 
-		$this->model = app('Platform\Pages\Page');
+		$this->pages = $pages;
 	}
 
 	/**
@@ -74,26 +54,7 @@ class PagesController extends ApiController {
 	 */
 	public function index()
 	{
-		$query = $this->model->newQuery();
-
-		foreach (Input::get('criteria', array()) as $column => $criteria)
-		{
-			$query = $query->where($column, $criteria);
-		}
-
-		foreach (Input::get('sort', array()) as $column => $direction)
-		{
-			$query = $query->orderBy($column, $direction);
-		}
-
-		if ($limit = Input::get('limit'))
-		{
-			$pages = $query->paginate($limit);
-		}
-		else
-		{
-			$pages = $query->get();
-		}
+		$pages = $this->pages->all();
 
 		return Response::api(compact('pages'));
 	}
@@ -105,28 +66,25 @@ class PagesController extends ApiController {
 	 */
 	public function create()
 	{
-		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make(Input::all(), $this->validationRules);
-
-		// If validation fails, we'll exit the operation now
-		if ($validator->fails())
+		try
 		{
-			return Response::api(array('errors' => $validator->errors()), 422);
-		}
+			$input = Input::all();
 
-		// Was the page created?
-		if ($page = $this->model->create(Input::all()))
+			$messages = $this->pages->validForCreate($input);
+
+			if ($messages->isEmpty())
+			{
+				$page = $this->pages->create($input);
+
+				return Response::api(compact('page'));
+			}
+
+			return Response::api(array('errors' => $messages), 422);
+		}
+		catch (ModelNotFoundException $e)
 		{
-			// Save the page, this is basically to assign
-			// a page to a menu if necessary.
-			$page->save(Input::all());
-
-			// Page successfully created
-			return Response::api(compact('page'));
+			return Response::api(Lang::get('platform/pages::message.error.create'), 500);
 		}
-
-		// There was a problem creating the page
-		return Response::api(Lang::get('platform/pages::message.error.create'), 500);
 	}
 
 	/**
@@ -137,27 +95,16 @@ class PagesController extends ApiController {
 	 */
 	public function show($id = null)
 	{
-		// Get a new query builder
-		$query = $this->model->newQuery();
-
-		// Search for the page uri, slug or id
-		$query->orWhere('uri', $id);
-		$query->orWhere('slug', $id);
-		$query->orWhere('id', $id);
-
-		// Search for page by it's status
-		if ($status = Input::get('enabled'))
+		try
 		{
-			$query->where('enabled', (int) $status);
-		}
+			$page = $this->pages->find($id);
 
-		// Grab the page
-		if ($page = $query->first())
-		{
 			return Response::api(compact('page'));
 		}
-
-		return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
+		catch (ModelNotFoundException $e)
+		{
+			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
+		}
 	}
 
 	/**
@@ -168,44 +115,25 @@ class PagesController extends ApiController {
 	 */
 	public function update($id = null)
 	{
-		// Get a new query builder
-		$query = $this->model->newQuery();
+		try
+		{
+			$input = Input::all();
 
-		// Search for the page uri, slug or id
-		$query->orWhere('uri', $id);
-		$query->orWhere('slug', $id);
-		$query->orWhere('id', $id);
+			$messages = $this->pages->validForUpdate($id, $input);
 
-		// Grab the page
-		if ( ! $page = $query->first())
+			if ($messages->isEmpty())
+			{
+				$page = $this->pages->update($id, $input);
+
+				return Response::api(compact('page'));
+			}
+
+			return Response::api(array('errors' => $messages), 422);
+		}
+		catch (ModelNotFoundException $e)
 		{
 			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
 		}
-
-		// Update the validation rules
-		$this->validationRules['slug'] = "required|max:255|unique:pages,slug,{$page->slug},slug";
-		$this->validationRules['uri'] = "required|max:255|unique:pages,uri,{$page->uri},uri";
-
-		// Make sure that the groups input get's passed
-		Input::merge(Input::only('groups'));
-
-		// Create a new validator instance from our dynamic rules
-		$validator = Validator::make(Input::all(), $this->validationRules);
-
-		// If validation fails, we'll exit the operation now
-		if ($validator->fails())
-		{
-			return Response::api(array('errors' => $validator->errors()), 422);
-		}
-
-		// Was the page updated?
-		if ($page->fill(Input::except('menu', 'parent'))->save(Input::all()))
-		{
-			return Response::api(compact('page'));
-		}
-
-		// There was a problem updating the page
-		return Response::api(Lang::get('platform/pages::message.error.edit'), 500);
 	}
 
 	/**
@@ -216,25 +144,16 @@ class PagesController extends ApiController {
 	 */
 	public function destroy($id = null)
 	{
-		// Get a new query builder
-		$query = $this->model->newQuery();
-
-		// Search for the page uri, slug or id
-		$query->orWhere('uri', $id);
-		$query->orWhere('slug', $id);
-		$query->orWhere('id', $id);
-
-		// Grab the page
-		if ($page = $query->first())
+		try
 		{
-			// Delete the page
-			$page->delete();
+			$this->pages->delete($id);
 
-			// Page successfully deleted
-			return Response::api(Lang::get('platform/pages::message.success.delete'));
+			return Response::api(Lang::get('platform/pages::message.success.delete'), 204);
 		}
-
-		return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
+		catch (ModelNotFoundException $e)
+		{
+			return Response::api(Lang::get('platform/pages::message.not_found', compact('id')), 404);
+		}
 	}
 
 }
