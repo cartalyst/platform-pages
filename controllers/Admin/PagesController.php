@@ -110,7 +110,7 @@ class PagesController extends AdminController {
 			return Redirect::toAdmin('pages');
 		}
 
-		return $this->showForm('edit', $slug);
+		return $this->showForm('update', $slug);
 	}
 
 	/**

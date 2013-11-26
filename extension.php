@@ -20,7 +20,6 @@
 
 use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
-use Platform\Menus\Models\Menu;
 use Platform\Pages\Controllers\Frontend\PagesController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -351,12 +350,11 @@ return array(
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					$response = API::get('v1/pages');
-					$pages    = $response['pages'];
+					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
 					$options  = array();
 
-					foreach ($pages as $page)
+					foreach ($page->findAll() as $page)
 					{
 						$options[] = array(
 							'value' => $page->slug,
@@ -377,7 +375,9 @@ return array(
 				{
 					$options = array();
 
-					foreach (Page::getTemplates() as $value => $label)
+					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
+					foreach ($page->templates() as $value => $label)
 					{
 						$options[] = array(
 							'value' => $value,
@@ -396,8 +396,8 @@ return array(
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					$response = API::get('v1/pages');
-					$pages    = $response['pages'];
+
+					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
 					$options  = array();
 
@@ -406,7 +406,7 @@ return array(
 						'label' => 'Default',
 					);
 
-					foreach ($pages as $page)
+					foreach ($page->findAll() as $page)
 					{
 						$options[] = array(
 							'value' => $page->slug,
