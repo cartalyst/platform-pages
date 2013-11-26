@@ -110,8 +110,8 @@
 									<label for="enabled" class="control-label">{{{ trans('platform/pages::form.enabled') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.enabled_help') }}}"></i></label>
 									<div class="xcol-lg-4">
 										<select class="form-control" name="enabled" id="enabled" required>
-											<option value="1"{{ (Input::old('enabled', $page->exists ? (int) $page->enabled : 1) == 1 ? ' selected="selected"' : null) }}>{{{ trans('general.enabled') }}}</option>
-											<option value="0"{{ (Input::old('enabled', $page->exists ? (int) $page->enabled : 1) == 0 ? ' selected="selected"' : null) }}>{{{ trans('general.disabled') }}}</option>
+											<option value="1"{{ Input::old('enabled', $page->exists ? (int) $page->enabled : 1) == 1 ? ' selected="selected"' : null }}>{{{ trans('general.enabled') }}}</option>
+											<option value="0"{{ Input::old('enabled', $page->exists ? (int) $page->enabled : 1) == 0 ? ' selected="selected"' : null }}>{{{ trans('general.disabled') }}}</option>
 										</select>
 
 										<span class="help-block">{{{ $errors->first('enabled', ':message') }}}</span>
