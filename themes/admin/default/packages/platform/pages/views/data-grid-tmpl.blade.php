@@ -14,7 +14,7 @@
 			</td>
 			<td><%= r.created_at %></td>
 			<td>
-				<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/<%= r.slug %>') }}" title="{{{ trans('platform/pages::button.edit') }}}"><i class="fa fa-edit"></i></a>
+				<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/edit/<%= r.slug %>') }}" title="{{{ trans('platform/pages::button.update') }}}"><i class="fa fa-edit"></i></a>
 
 				<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/copy/<%= r.slug %>') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="fa fa-copy"></i></a>
 

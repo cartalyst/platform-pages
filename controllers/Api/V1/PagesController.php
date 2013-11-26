@@ -64,7 +64,7 @@ class PagesController extends ApiController {
 	{
 		parent::__construct();
 
-		$this->model = app('Platform\Pages\Models\Page');
+		$this->model = app('Platform\Pages\Page');
 	}
 
 	/**

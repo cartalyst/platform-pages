@@ -22,7 +22,6 @@ use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
 use Platform\Menus\Models\Menu;
 use Platform\Pages\Controllers\Frontend\PagesController;
-use Platform\Pages\Models\Page;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return array(
@@ -178,6 +177,11 @@ return array(
 		{
 			return new Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
 		});
+
+		App::bind('Platform\Pages\Repositories\PageRepositoryInterface', function($app)
+		{
+			return new Platform\Pages\Repositories\DbPageRepository(get_class($app['Platform\Pages\Page']));
+		});
 	},
 
 	/*
@@ -198,11 +202,11 @@ return array(
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
 		// Set the theme bag and the active theme
-		app('Platform\Pages\Models\Page')->setThemeBag($app['themes']);
-		app('Platform\Pages\Models\Page')->setTheme($app['config']['cartalyst/themes::active']);
+		app('Platform\Pages\Page')->setThemeBag($app['themes']);
+		app('Platform\Pages\Page')->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
-		app('Platform\Attributes\Attribute')->registerNamespace(app('Platform\Pages\Models\Page'));
+		app('Platform\Attributes\Attribute')->registerNamespace(app('Platform\Pages\Page'));
 
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
@@ -250,14 +254,16 @@ return array(
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(array('prefix' => '{api}/v1/page'), function()
-		{
-			Route::get('{slug}'   , 'Platform\Pages\Controllers\Api\V1\PagesController@show')
-				->where('slug', '.*?');
-			Route::delete('{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
-		});
+		// Route::group(array('prefix' => '{api}/v1/page'), function()
+		// {
+		// 	Route::get('{slug}'   , 'Platform\Pages\Controllers\Api\V1\PagesController@show')
+		// 		->where('slug', '.*?');
+		// 	Route::delete('{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
+		// });
 
-		foreach (app('Platform\Pages\Models\Page')->all() as $page)
+		$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
+		foreach ($pages->findAll() as $page)
 		{
 			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
 		}

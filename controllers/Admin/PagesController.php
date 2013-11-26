@@ -25,30 +25,29 @@ use DataGrid;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Pages\Repositories\PageRepositoryInterface;
 use Redirect;
-use Symfony\Component\Finder\Finder;
-use Theme;
 use View;
 
 class PagesController extends AdminController {
 
 	/**
-	 * Holds the pages model.
+	 * Pages repository.
 	 *
-	 * @var \Platform\Pages\Models\Page
+	 * @var \Platform\Pages\Repositories\PagesRepositoryInterface
 	 */
-	protected $pageModel = null;
+	protected $pages;
 
 	/**
 	 * Constructor.
 	 *
 	 * @return void
 	 */
-	public function __construct()
+	public function __construct(PageRepositoryInterface $pages)
 	{
 		parent::__construct();
 
-		$this->pageModel = app('Platform\Pages\Models\Page');
+		$this->pages = $pages;
 	}
 
 	/**
@@ -58,7 +57,6 @@ class PagesController extends AdminController {
 	 */
 	public function getIndex()
 	{
-		// Show the page
 		return View::make('platform/pages::index');
 	}
 
@@ -69,11 +67,7 @@ class PagesController extends AdminController {
 	 */
 	public function getGrid()
 	{
-		// Get all the pages
-		$response = API::get('v1/pages');
-
-		// Return the Data Grid object
-		return DataGrid::make($response['pages'], array(
+		return DataGrid::make($this->pages->grid(), array(
 			'id',
 			'name',
 			'slug',
@@ -86,7 +80,7 @@ class PagesController extends AdminController {
 	/**
 	 * Show the form for creating a new page.
 	 *
-	 * @return mixed
+	 * @return \Illuminate\View\View
 	 */
 	public function getCreate()
 	{
@@ -100,7 +94,7 @@ class PagesController extends AdminController {
 	 */
 	public function postCreate()
 	{
-		return $this->processForm();
+		return $this->processForm('create');
 	}
 
 	/**
@@ -111,7 +105,6 @@ class PagesController extends AdminController {
 	 */
 	public function getEdit($slug = null)
 	{
-		// Do we have a page identifier?
 		if ( ! $slug)
 		{
 			return Redirect::toAdmin('pages');
@@ -128,7 +121,7 @@ class PagesController extends AdminController {
 	 */
 	public function postEdit($slug = null)
 	{
-		return $this->processForm($slug);
+		return $this->processForm('update', $slug);
 	}
 
 	/**
@@ -139,7 +132,6 @@ class PagesController extends AdminController {
 	 */
 	public function getCopy($slug = null)
 	{
-		// Do we have a page identifier?
 		if ( ! $slug)
 		{
 			return Redirect::toAdmin('pages');
@@ -155,7 +147,7 @@ class PagesController extends AdminController {
 	 */
 	public function postCopy()
 	{
-		return $this->processForm();
+		return $this->processForm('create');
 	}
 
 	/**
@@ -166,17 +158,20 @@ class PagesController extends AdminController {
 	 */
 	public function getDelete($slug = null)
 	{
-		try
+		// Do we have a page identifier?
+		if ($slug)
 		{
-			API::delete("v1/page/{$slug}");
+			// Delete the page
+			$this->pages->delete($slug);
 
-			// Set the success message
-			return Redirect::toAdmin('pages')->withSuccess(Lang::get('platform/pages::message.success.delete'));
+			// Prepare the success message
+			$message = Lang::get('platform/pages::message.success.delete');
+
+			// Redirect to the pages management page
+			return Redirect::toAdmin('pages')->withSuccess($message);
 		}
-		catch (ApiHttpException $e)
-		{
-			return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.success.delete'));
-		}
+
+		return Redirect::toAdmin('pages');
 	}
 
 	/**
@@ -188,89 +183,93 @@ class PagesController extends AdminController {
 	 */
 	protected function showForm($mode = null, $slug = null)
 	{
-		try
+		// Do we have a page identifier?
+		if ($slug)
 		{
-			// Do we have a page identifier?
-			if ($slug)
-			{
-				// Get the page information
-				$response = API::get("v1/page/{$slug}");
-				$page = $response['page'];
+			$page = $this->pages->find($slug);
 
-				// See if we have a menu assigned to this page
-				$response = API::get("v1/menus?criteria[page_id]={$page->id}&return=first");
-				$menu = $response['menu'];
-			}
-			else
-			{
-				$page = app('Platform\Pages\Models\Page');
-			}
-
-			// Get all the available user groups
-			$response = API::get('v1/users/groups');
-			$groups = $response['groups'];
-
-			// Get all the available templates
-			$templates = $this->pageModel->getTemplates();
-
-			// Get the default template
-			$defaultTemplate = Config::get('platform/pages::template', null);
-
-			// Get all the available page files
-			$files = $this->pageModel->getPageFiles();
-
-			// Get the root items
-			$response = API::get('v1/menus?root=true');
-			$menus = $response['menus'];
-
-			// Show the page
-			return View::make('platform/pages::form', compact('page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu', 'mode'));
+			// See if we have a menu assigned to this page
+			$response = API::get("v1/menus?criteria[page_id]={$page->id}&return=first");
+			$menu = $response['menu'];
+			//$menu = $this->menus->findWhere('page_id', $page->id);
+			# need to figure out the best way to handle these searches..
 		}
-		catch (ApiHttpException $e)
+		else
 		{
-			return Redirect::toAdmin('pages')->withErrors($e->getMessage());
+			$page = $this->pages->createModel();
 		}
+
+		// Get all the available user groups
+		$response = API::get('v1/users/groups');
+		$groups = $response['groups'];
+		//$groups = $this->groups->findAll();
+
+		// Get all the available templates
+		$templates = $this->pages->templates();
+
+		// Get the default template
+		$defaultTemplate = Config::get('platform/pages::template', null);
+
+		// Get all the available page files
+		$files = $this->pages->files();
+
+		// Get the root items
+		$response = API::get('v1/menus?root=true');
+		$menus = $response['menus'];
+		//$menus = $this->menus->findRoot();
+
+		// Show the page
+		return View::make('platform/pages::form', compact('mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'));
 	}
 
 	/**
 	 * Processes the form.
 	 *
+	 * @param  string  $mode
 	 * @param  mixed  $slug
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	protected function processForm($slug = null)
+	protected function processForm($mode, $slug = null)
 	{
-		try
+		// Get the input data
+		$input = Input::all();
+
+		// Do we have a page identifier?
+		if ($slug)
 		{
-			// Do we have a page identifier?
-			if ($slug)
+			// Check if the input is valid
+			$messages = $this->pages->validForUpdate($slug, $input);
+
+			// Do we have any errors?
+			if ($messages->isEmpty())
 			{
-				// Make the request
-				$response = API::put("v1/pages/{$slug}", Input::all());
-
-				// Prepare the success message
-				$message = Lang::get('platform/pages::message.success.edit');
+				// Update the page
+				$page = $this->pages->update($slug, $input);
 			}
-			else
-			{
-				// Make the request
-				$response = API::post('v1/pages', Input::all());
-
-				// Prepare the success message
-				$message = Lang::get('platform/pages::message.success.create');
-			}
-
-			// Get the page slug
-			$slug = $response['page']->slug;
-
-			// Redirect to the page edit page
-			return Redirect::toAdmin("pages/edit/{$slug}")->withSuccess($message);
 		}
-		catch (ApiHttpException $e)
+		else
 		{
-			// Redirect to the appropriate page
-			return Redirect::back()->withInput()->withErrors($e->getErrors());
+			// Check if the input is valid
+			$messages = $this->pages->validForCreation($input);
+
+			// Do we have any errors?
+			if ($messages->isEmpty())
+			{
+				// Create the pages
+				$page = $this->pages->create($input);
+			}
 		}
+
+		// Do we have any errors?
+		if ($messages->isEmpty())
+		{
+			// Prepare the success message
+			$message = Lang::get("platform/pages::message.success.{$mode}");
+
+			return Redirect::toAdmin("pages/edit/{$page->slug}")->withSuccess($message);
+		}
+
+		return Redirect::back()->withInput()->witherrors($messages);
 	}
 
 }

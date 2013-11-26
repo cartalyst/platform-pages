@@ -45,8 +45,6 @@
 		"classmap": [
 			"controllers",
 			"migrations",
-			"models",
-			"tests",
 			"widgets"
 		],
 		"psr-0": {

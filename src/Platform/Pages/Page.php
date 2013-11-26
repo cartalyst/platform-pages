@@ -1,4 +1,4 @@
-<?php namespace Platform\Pages\Models;
+<?php namespace Platform\Pages;
 /**
  * Part of the Platform application.
  *
@@ -47,6 +47,8 @@ class Page extends Entity {
 		'id',
 		'created_at',
 		'updated_at',
+		'menu',
+		'parent',
 	);
 
 	/**
@@ -509,89 +511,6 @@ class Page extends Entity {
 	public static function unsetmenuModel()
 	{
 		static::$groupModel = null;
-	}
-
-	/**
-	 * Returns a list of the available page files on the current active theme.
-	 *
-	 * @return array
-	 */
-	public static function getPageFiles()
-	{
-		$extensions = array_keys(View::getExtensions());
-
-		$paths = array_filter(array_map(function($path) {
-
-			// Full path to the pages folder
-			$fullPath = implode(DIRECTORY_SEPARATOR, array($path, 'pages'));
-
-			// Check if the path exists
-			if (is_dir($fullPath))
-			{
-				return $fullPath;
-			}
-
-		}, static::$themeBag->getCascadedViewPaths(static::$theme)));
-
-		$finder = with(new Finder)->files()->in($paths);
-
-		$files = array();
-
-		// Replace all file extensions with nothing. pathinfo()
-		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad(array(), count($extensions), '');
-
-		foreach ($finder as $file)
-		{
-			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
-
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
-		}
-
-		return $files;
-	}
-
-	/**
-	 * Returns a list of the available templates of the current active theme.
-	 *
-	 * @return array
-	 */
-	public static function getTemplates()
-	{
-		$extensions = array_keys(View::getExtensions());
-
-		$finder = new Finder;
-		$finder->in(static::$themeBag->getCascadedViewPaths(static::$theme));
-		$finder->depth('< 3');
-		$finder->exclude(Config::get('platform/pages::exclude'));
-		$finder->name(sprintf(
-			'/.*?\.(%s)/',
-			implode('|', array_map(function($extension)
-			{
-				return preg_quote($extension, '/');
-			}, $extensions))
-		));
-
-		$files = array();
-
-		// Replace all file extensions with nothing. pathinfo()
-		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad(array(), count($extensions), '');
-
-		foreach ($finder->files() as $file)
-		{
-			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
-
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
-		}
-
-		return $files;
 	}
 
 	/**

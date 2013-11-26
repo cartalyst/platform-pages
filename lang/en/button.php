@@ -21,7 +21,7 @@
 return array(
 
 	'create' => 'Create page',
-	'edit'   => 'Edit page',
+	'update' => 'Edit page',
 	'copy'   => 'Copy page',
 	'delete' => 'Delete page',
 

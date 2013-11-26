@@ -18,22 +18,36 @@
  * @link       http://cartalyst.com
  */
 
-use API;
-use Cartalyst\Api\Http\ApiHttpException;
 use Config;
+use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Routing\Controllers\BaseController;
 use Sentry;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesController extends BaseController {
+
+	/**
+	 * Pages repository.
+	 *
+	 * @var \Platform\Pages\Repositories\PagesRepositoryInterface
+	 */
+	protected $pages;
+
+	/**
+	 * Constructor.
+	 *
+	 * @return void
+	 */
+	public function __construct(PageRepositoryInterface $pages)
+	{
+		$this->pages = $pages;
+	}
 
 	/**
 	 * Render the page.
 	 *
 	 * @param  string  $slug
 	 * @return mixed
-	 * @throws \NotFoundHttpException
 	 * @throws \HttpException
 	 */
 	public function getPage($slug = null)
@@ -41,49 +55,41 @@ class PagesController extends BaseController {
 		// Make sure we have a page slug
 		$slug = $slug ?: Config::get('platform/pages::default');
 
-		try
-		{
-			// Find the requested page
-			$response = API::get("v1/page/{$slug}", array('enabled' => true));
-			$page     = $response['page'];
+		// Find the requested page
+		$page = $this->pages->findEnabled($slug);
 
-			// @todo: We should have a config item whether invalid
-			// perms for pages should throw a 404, 403 or redirect
-			// to a certain page...
-			if (in_array($page->visibility, array('logged_in', 'admin')))
+		// @todo: We should have a config item whether invalid
+		// perms for pages should throw a 404, 403 or redirect
+		// to a certain page...
+		if (in_array($page->visibility, array('logged_in', 'admin')))
+		{
+			if ( ! $currentUser = Sentry::getUser())
 			{
-				if ( ! $currentUser = Sentry::getUser())
+				throw new HttpException(403, "You don't have permission to view this page.");
+			}
+
+			if ( ! $currentUser->isSuperUser() and ! empty($page->groups))
+			{
+				$found = false;
+
+				foreach ($currentUser->groups as $group)
+				{
+					if (in_array($group->id, $page->groups))
+					{
+						$found = true;
+
+						break;
+					}
+				}
+
+				if ( ! $found)
 				{
 					throw new HttpException(403, "You don't have permission to view this page.");
 				}
-
-				if ( ! $currentUser->isSuperUser() and ! empty($page->groups))
-				{
-					$found = false;
-
-					foreach ($currentUser->groups as $group)
-					{
-						if (in_array($group->id, $page->groups))
-						{
-							$found = true;
-
-							break;
-						}
-					}
-
-					if ( ! $found)
-					{
-						throw new HttpException(403, "You don't have permission to view this page.");
-					}
-				}
 			}
+		}
 
-			return $page->render();
-		}
-		catch (ApiHttpException $e)
-		{
-			throw new NotFoundHttpException("No matching page could be found for the requested URI [{$slug}].");
-		}
+		return $page->render();
 	}
 
 }
