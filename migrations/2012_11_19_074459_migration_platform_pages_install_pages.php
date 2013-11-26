@@ -58,16 +58,16 @@ class MigrationPlatformPagesInstallPages extends Migration {
 		});
 
 		// Create the meta attributes
-		$test = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
 
-		$test->create(array(
+		$attribute->create(array(
 			'namespace' => 'platform/pages',
 			'name'      => 'Meta Title',
 			'type'      => 'string',
 			'slug'      => 'meta_title',
 			'enabled'   => 1,
 		));
-		$test->create(array(
+		$attribute->create(array(
 			'namespace' => 'platform/pages',
 			'name'      => 'Meta Description',
 			'type'      => 'string',
@@ -77,7 +77,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
-		$page = app('Platform\Pages\Models\Page')->create(array(
+		$page = app('Platform\Pages\Page')->create(array(
 			'name'             => 'Welcome',
 			'slug'             => 'welcome',
 			'uri'              => '/',

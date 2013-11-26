@@ -226,7 +226,7 @@ class PagesController extends AdminController {
 	 * Processes the form.
 	 *
 	 * @param  string  $mode
-	 * @param  mixed  $slug
+	 * @param  mixed   $slug
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	protected function processForm($mode, $slug = null)

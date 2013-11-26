@@ -42,6 +42,12 @@ interface PageRepositoryInterface {
 	 */
 	public function find($id);
 
+	/**
+	 * Get an page by it's primary key that is enabled.
+	 *
+	 * @param  int  $id
+	 * @return \Platform\Pages\Page
+	 */
 	public function findEnabled($id);
 
 	/**

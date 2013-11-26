@@ -26,7 +26,7 @@ use View;
 class DbPageRepository implements PageRepositoryInterface {
 
 	/**
-	 * The Eloquent content model.
+	 * The Eloquent page model.
 	 *
 	 * @var string
 	 */
@@ -38,12 +38,14 @@ class DbPageRepository implements PageRepositoryInterface {
 	 * @var array
 	 */
 	protected $rules = array(
-		'name'    => 'required|max:255',
-		'slug'    => 'required|max:255|unique:content',
-		'enabled' => 'required',
-		'type'    => 'required|in:database,filesystem',
-		'value'   => 'required_if:type,database',
-		'file'    => 'required_if:type,filesystem',
+		'name'       => 'required|max:255',
+		'slug'       => 'required|max:255|unique:pages,slug',
+		'uri'        => 'required|max:255|unique:pages,uri',
+		'enabled'    => 'required',
+		'type'       => 'required|in:database,filesystem',
+		'visibility' => 'required|in:always,logged_in,admin',
+		'template'   => 'required_if:type,database',
+		'file'       => 'required_if:type,filesystem',
 	);
 
 	/**
@@ -81,6 +83,9 @@ class DbPageRepository implements PageRepositoryInterface {
 		return $this->createModel()->orWhere('slug', $id)->orWhere('id', $id)->first();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function findEnabled($id)
 	{
 		return $this->createModel()->where('enabled', 1)->orWhere('slug', $id)->where('id', $id)->first();
@@ -101,7 +106,8 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		$model = $this->find($id);
 
-		$this->rules['slug'] = "required|max:255|unique:content,slug,{$model->slug},slug";
+		$this->rules['slug'] = "required|max:255|unique:pages,slug,{$model->slug},slug";
+		$this->rules['uri'] = "required|max:255|unique:pages,uri,{$model->uri},uri";
 
 		return $this->validateContent($data);
 	}
@@ -139,7 +145,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Validates a content.
+	 * Validates a page.
 	 *
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
