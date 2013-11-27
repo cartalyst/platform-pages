@@ -96,7 +96,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function validForCreation(array $data)
 	{
-		return $this->validateContent($data);
+		return $this->validatePage($data);
 	}
 
 	/**
@@ -109,7 +109,7 @@ class DbPageRepository implements PageRepositoryInterface {
 		$this->rules['slug'] = "required|max:255|unique:pages,slug,{$model->slug},slug";
 		$this->rules['uri'] = "required|max:255|unique:pages,uri,{$model->uri},uri";
 
-		return $this->validateContent($data);
+		return $this->validatePage($data);
 	}
 
 	/**
@@ -150,7 +150,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	protected function validateContent($data)
+	protected function validatePage($data)
 	{
 		$validator = Validator::make($data, $this->rules);
 

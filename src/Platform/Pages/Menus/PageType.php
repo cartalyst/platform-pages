@@ -19,9 +19,9 @@
  */
 
 use API;
-use Platform\Menus\BaseType;
-use Platform\Menus\Models\Menu;
-use Platform\Menus\TypeInterface;
+use Platform\Menus\Menu;
+use Platform\Menus\Types\BaseType;
+use Platform\Menus\Types\TypeInterface;
 
 class PageType extends BaseType implements TypeInterface {
 
