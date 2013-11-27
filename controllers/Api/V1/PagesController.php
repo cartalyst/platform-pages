@@ -54,7 +54,7 @@ class PagesController extends ApiController {
 	 */
 	public function index()
 	{
-		$pages = $this->pages->all();
+		$pages = $this->pages->findAll();
 
 		return Response::api(compact('pages'));
 	}
