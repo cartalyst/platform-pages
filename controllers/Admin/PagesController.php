@@ -25,6 +25,7 @@ use DataGrid;
 use Input;
 use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Redirect;
 use View;
@@ -34,20 +35,29 @@ class PagesController extends AdminController {
 	/**
 	 * Pages repository.
 	 *
-	 * @var \Platform\Pages\Repositories\PagesRepositoryInterface
+	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
 	 */
 	protected $pages;
+
+	/**
+	 * Menus repository.
+	 *
+	 * @var \Platform\Menus\Repositories\MenuRepositoryInterface
+	 */
+	protected $menus;
 
 	/**
 	 * Constructor.
 	 *
 	 * @return void
 	 */
-	public function __construct(PageRepositoryInterface $pages)
+	public function __construct(PageRepositoryInterface $pages, MenuRepositoryInterface $menus)
 	{
 		parent::__construct();
 
 		$this->pages = $pages;
+
+		$this->menus = $menus;
 	}
 
 	/**
@@ -188,11 +198,7 @@ class PagesController extends AdminController {
 		{
 			$page = $this->pages->find($slug);
 
-			// See if we have a menu assigned to this page
-			$response = API::get("v1/menus?criteria[page_id]={$page->id}&return=first");
-			$menu = $response['menu'];
-			//$menu = $this->menus->findWhere('page_id', $page->id);
-			# need to figure out the best way to handle these searches..
+			$menu = $this->menus->findWhere('page_id', $page->id);
 		}
 		else
 		{
@@ -214,9 +220,7 @@ class PagesController extends AdminController {
 		$files = $this->pages->files();
 
 		// Get the root items
-		$response = API::get('v1/menus?root=true');
-		$menus = $response['menus'];
-		//$menus = $this->menus->findRoot();
+		$menus = $this->menus->findRoot();
 
 		// Show the page
 		return View::make('platform/pages::form', compact('mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'));
