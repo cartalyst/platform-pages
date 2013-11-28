@@ -170,20 +170,13 @@ class PagesController extends AdminController {
 	 */
 	public function delete($slug = null)
 	{
-		// Do we have a page identifier?
-		if ($slug)
+		// Delete the page
+		if ($this->pages->delete($slug))
 		{
-			// Delete the page
-			$this->pages->delete($slug);
-
-			// Prepare the success message
-			$message = Lang::get('platform/pages::message.success.delete');
-
-			// Redirect to the pages management page
-			return Redirect::toAdmin('pages')->withSuccess($message);
+			return Redirect::toAdmin('pages')->withSuccess(Lang::get('platform/pages::message.success.delete'));
 		}
 
-		return Redirect::toAdmin('pages');
+		return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.error.delete'));
 	}
 
 	/**

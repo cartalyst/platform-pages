@@ -39,8 +39,8 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	protected $rules = array(
 		'name'       => 'required|max:255',
-		'slug'       => 'required|max:255|unique:pages,slug',
-		'uri'        => 'required|max:255|unique:pages,uri',
+		'slug'       => 'required|max:255|unique:pages',
+		'uri'        => 'required|max:255|unique:pages',
 		'enabled'    => 'required',
 		'type'       => 'required|in:database,filesystem',
 		'visibility' => 'required|in:always,logged_in,admin',
@@ -104,12 +104,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function validForUpdate($id, array $data)
 	{
-		$model = $this->find($id);
-
-		$this->rules['slug'] = "required|max:255|unique:pages,slug,{$model->slug},slug";
-		$this->rules['uri'] = "required|max:255|unique:pages,uri,{$model->uri},uri";
-
-		return $this->validatePage($data);
+		return $this->validatePage($data, $id);
 	}
 
 	/**
@@ -139,19 +134,33 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		$model = $this->find($id);
+		if ($model = $this->find($id))
+		{
+			$model->delete();
 
-		return $model->delete();
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
 	 * Validates a page.
 	 *
 	 * @param  array  $data
+	 * @param  mixed  $id
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	protected function validatePage($data)
+	protected function validatePage($data, $id = null)
 	{
+		if ($id)
+		{
+			$model = $this->find($id);
+
+			$this->rules['slug'] .= ",slug,{$model->slug},slug";
+			$this->rules['uri'] .= ",uri,{$model->uri},uri";
+		}
+
 		$validator = Validator::make($data, $this->rules);
 
 		$validator->passes();

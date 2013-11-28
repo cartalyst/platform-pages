@@ -88,7 +88,7 @@ interface PageRepositoryInterface {
 	 * Deletes the given page.
 	 *
 	 * @param  int  $id
-	 * @return bool|null
+	 * @return bool
 	 */
 	public function delete($id);
 
