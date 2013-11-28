@@ -136,27 +136,6 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| URI
-	|--------------------------------------------------------------------------
-	|
-	| You can specify the URI that this extension will respond to.
-	|
-	| You can choose to specify a single string, where the URI will be matched
-	| on the 'admin' and 'public' sections of Platform.
-	|
-	| You can provide an array with the 'admin' and 'public' keys to specify
-	| a different URI for admin and public sections, you can have as many
-	| keys as you need in case your applications needs them.
-	|
-	| You can provide an 'override' which is an array of extensions this
-	| extension overrides it's URI from.
-	|
-	*/
-
-	'uri' => 'pages',
-
-	/*
-	|--------------------------------------------------------------------------
 	| Register Callback
 	|--------------------------------------------------------------------------
 	|
@@ -177,7 +156,7 @@ return array(
 			return new Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
 		});
 
-		App::bind('Platform\Pages\Repositories\PageRepositoryInterface', function($app)
+		$app->bind('Platform\Pages\Repositories\PageRepositoryInterface', function($app)
 		{
 			return new Platform\Pages\Repositories\DbPageRepository(get_class($app['Platform\Pages\Page']));
 		});
