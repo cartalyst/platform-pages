@@ -20,7 +20,7 @@
 
 use Config;
 use Platform\Pages\Repositories\PageRepositoryInterface;
-use Platform\Routing\Controllers\BaseController;
+use Platform\Foundation\Controllers\BaseController;
 use Sentry;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Input;
 use Lang;
 use Platform\Pages\Repositories\PageRepositoryInterface;
-use Platform\Routing\Controllers\ApiController;
+use Platform\Foundation\Controllers\ApiController;
 use Response;
 
 class PagesController extends ApiController {
