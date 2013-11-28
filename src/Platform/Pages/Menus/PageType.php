@@ -18,7 +18,6 @@
  * @link       http://cartalyst.com
  */
 
-use API;
 use Platform\Menus\Menu;
 use Platform\Menus\Types\BaseType;
 use Platform\Menus\Types\TypeInterface;
@@ -90,8 +89,8 @@ class PageType extends BaseType implements TypeInterface {
 
 		if ($pageId = array_get($data, 'page_id'))
 		{
-			$response = API::get("v1/pages/{$pageId}");
-			$page = $response['page'];
+			$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+			$page = $repository->find($pageId);
 
 			$child->uri = $page->uri;
 			$child->page_id = $pageId;
@@ -110,8 +109,8 @@ class PageType extends BaseType implements TypeInterface {
 			return $this->pages;
 		}
 
-		$response = API::get('v1/pages');
-		$pages = $response['pages'];
+		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+		$pages = $repository->findAll();
 
 		foreach ($pages as &$page)
 		{
