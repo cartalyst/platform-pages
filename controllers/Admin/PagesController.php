@@ -18,8 +18,6 @@
  * @link       http://cartalyst.com
  */
 
-use API;
-use Cartalyst\Api\Http\ApiHttpException;
 use Config;
 use DataGrid;
 use Input;
@@ -27,6 +25,7 @@ use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
+use Platform\Users\Repositories\GroupRepositoryInterface;
 use Redirect;
 use View;
 
@@ -47,17 +46,30 @@ class PagesController extends AdminController {
 	protected $menus;
 
 	/**
+	 * Groups repository.
+	 *
+	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 */
+	protected $groups;
+
+	/**
 	 * Constructor.
 	 *
 	 * @return void
 	 */
-	public function __construct(PageRepositoryInterface $pages, MenuRepositoryInterface $menus)
+	public function __construct(
+		PageRepositoryInterface $pages,
+		MenuRepositoryInterface $menus,
+		GroupRepositoryInterface $groups
+	)
 	{
 		parent::__construct();
 
 		$this->pages = $pages;
 
 		$this->menus = $menus;
+
+		$this->groups = $groups;
 	}
 
 	/**
@@ -65,7 +77,7 @@ class PagesController extends AdminController {
 	 *
 	 * @return \Illuminate\View\View
 	 */
-	public function getIndex()
+	public function index()
 	{
 		return View::make('platform/pages::index');
 	}
@@ -75,7 +87,7 @@ class PagesController extends AdminController {
 	 *
 	 * @return \Cartalyst\DataGrid\DataGrid
 	 */
-	public function getGrid()
+	public function grid()
 	{
 		return DataGrid::make($this->pages->grid(), array(
 			'id',
@@ -92,7 +104,7 @@ class PagesController extends AdminController {
 	 *
 	 * @return \Illuminate\View\View
 	 */
-	public function getCreate()
+	public function create()
 	{
 		return $this->showForm('create');
 	}
@@ -102,7 +114,7 @@ class PagesController extends AdminController {
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function postCreate()
+	public function store()
 	{
 		return $this->processForm('create');
 	}
@@ -113,7 +125,7 @@ class PagesController extends AdminController {
 	 * @param  mixed  $slug
 	 * @return mixed
 	 */
-	public function getEdit($slug = null)
+	public function edit($slug = null)
 	{
 		if ( ! $slug)
 		{
@@ -129,7 +141,7 @@ class PagesController extends AdminController {
 	 * @param  mixed  $slug
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function postEdit($slug = null)
+	public function update($slug = null)
 	{
 		return $this->processForm('update', $slug);
 	}
@@ -140,7 +152,7 @@ class PagesController extends AdminController {
 	 * @param  mixed  $slug
 	 * @return mixed
 	 */
-	public function getCopy($slug = null)
+	public function copy($slug = null)
 	{
 		if ( ! $slug)
 		{
@@ -151,22 +163,12 @@ class PagesController extends AdminController {
 	}
 
 	/**
-	 * Handle posting of the form for copying a page.
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function postCopy()
-	{
-		return $this->processForm('create');
-	}
-
-	/**
 	 * Remove the specified page.
 	 *
 	 * @param  mixed  $slug
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function getDelete($slug = null)
+	public function delete($slug = null)
 	{
 		// Do we have a page identifier?
 		if ($slug)
@@ -206,9 +208,7 @@ class PagesController extends AdminController {
 		}
 
 		// Get all the available user groups
-		$response = API::get('v1/users/groups');
-		$groups = $response['groups'];
-		//$groups = $this->groups->findAll();
+		$groups = $this->groups->findAll();
 
 		// Get all the available templates
 		$templates = $this->pages->templates();
@@ -270,7 +270,7 @@ class PagesController extends AdminController {
 			// Prepare the success message
 			$message = Lang::get("platform/pages::message.success.{$mode}");
 
-			return Redirect::toAdmin("pages/edit/{$page->slug}")->withSuccess($message);
+			return Redirect::toAdmin("pages/{$page->slug}/edit")->withSuccess($message);
 		}
 
 		return Redirect::back()->withInput()->witherrors($messages);

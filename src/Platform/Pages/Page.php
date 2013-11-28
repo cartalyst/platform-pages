@@ -84,21 +84,21 @@ class Page extends Entity {
 	 *
 	 * @var string
 	 */
-	protected static $groupModel = 'Platform\Users\Models\Group';
+	protected static $groupModel = 'Platform\Users\Group';
 
 	/**
 	 * The content model.
 	 *
 	 * @var string
 	 */
-	protected static $contentModel = 'Platform\Content\Models\Content';
+	protected static $contentModel = 'Platform\Content\Content';
 
 	/**
 	 * The menu model.
 	 *
 	 * @var string
 	 */
-	protected static $menuModel = 'Platform\Menus\Models\Menu';
+	protected static $menuModel = 'Platform\Menus\Menu';
 
 	public function values()
 	{

@@ -253,17 +253,24 @@ return array(
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		// Route::group(array('prefix' => '{api}/v1/page'), function()
-		// {
-		// 	Route::get('{slug}'   , 'Platform\Pages\Controllers\Api\V1\PagesController@show')
-		// 		->where('slug', '.*?');
-		// 	Route::delete('{slug}', 'Platform\Pages\Controllers\Api\V1\PagesController@destroy');
-		// });
+		Route::group(array('prefix' => admin_uri().'/pages', 'namespace' => 'Platform\Pages\Controllers\Admin'), function()
+		{
+			Route::get('/', 'PagesController@index');
+			Route::get('grid', 'PagesController@grid');
+			Route::get('create', 'PagesController@create');
+			Route::post('create', 'PagesController@store');
+			Route::get('{id}/edit', 'PagesController@edit');
+			Route::post('{id}/edit', 'PagesController@update');
+			Route::get('{id}/copy', 'PagesController@copy');
+			Route::post('{id}/copy', 'PagesController@store');
+			Route::get('{id}/delete', 'PagesController@delete');
+		});
 
 		$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
 		foreach ($pages->findAll() as $page)
 		{
+
 			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
 		}
 	},
