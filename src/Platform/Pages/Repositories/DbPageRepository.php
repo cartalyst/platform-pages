@@ -153,15 +153,17 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	protected function validatePage($data, $id = null)
 	{
+		$rules = $this->rules;
+
 		if ($id)
 		{
 			$model = $this->find($id);
 
-			$this->rules['slug'] .= ",slug,{$model->slug},slug";
-			$this->rules['uri'] .= ",uri,{$model->uri},uri";
+			$rules['slug'] .= ",slug,{$model->slug},slug";
+			$rules['uri'] .= ",uri,{$model->uri},uri";
 		}
 
-		$validator = Validator::make($data, $this->rules);
+		$validator = Validator::make($data, $rules);
 
 		$validator->passes();
 

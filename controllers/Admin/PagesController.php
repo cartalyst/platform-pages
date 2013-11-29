@@ -192,13 +192,18 @@ class PagesController extends AdminController {
 		if ($slug)
 		{
 			$page = $this->pages->find($slug);
-
-			$menu = $this->menus->findWhere('page_id', $page->id);
 		}
 		else
 		{
 			$page = $this->pages->createModel();
 		}
+
+		if ( ! $page)
+		{
+			return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', array('id' => $slug)));
+		}
+
+		$menu = $this->menus->findWhere('page_id', $page->id);
 
 		// Get all the available user groups
 		$groups = $this->groups->findAll();
