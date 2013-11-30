@@ -35,6 +35,13 @@ interface PageRepositoryInterface {
 	public function findAll();
 
 	/**
+	 * Return all the enabled page entries.
+	 *
+	 * @return \Platform\Pages\Page
+	 */
+	public function findAllEnabled();
+
+	/**
 	 * Get an page by it's primary key.
 	 *
 	 * @param  int  $id

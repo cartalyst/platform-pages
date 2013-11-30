@@ -78,6 +78,14 @@ class DbPageRepository implements PageRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
+	public function findAllEnabled()
+	{
+		return $this->createModel()->newQuery()->where('enabled', 1)->get();
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public function find($id)
 	{
 		return $this->createModel()->orWhere('uri', $id)->orWhere('slug', $id)->orWhere('id', $id)->first();
