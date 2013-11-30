@@ -21,6 +21,7 @@
 use Config;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Foundation\Controllers\BaseController;
+use Route;
 use Sentry;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -46,14 +47,13 @@ class PagesController extends BaseController {
 	/**
 	 * Render the page.
 	 *
-	 * @param  string  $slug
 	 * @return mixed
 	 * @throws \HttpException
 	 */
-	public function getPage($slug = null)
+	public function page()
 	{
 		// Make sure we have a page slug
-		$slug = $slug ?: Config::get('platform/pages::default');
+		$slug = Route::current()->getUri() ?: Config::get('platform/pages::default');
 
 		// Find the requested page
 		$page = $this->pages->findEnabled($slug);

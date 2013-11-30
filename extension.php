@@ -249,7 +249,7 @@ return array(
 
 		foreach ($pages->findAll() as $page)
 		{
-			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@getPage');
+			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@page');
 		}
 	},
 
