@@ -261,7 +261,7 @@ class PagesController extends AdminController {
 			return Redirect::toAdmin("pages/{$page->id}/edit")->withSuccess($message);
 		}
 
-		return Redirect::back()->withInput()->witherrors($messages);
+		return Redirect::back()->withInput()->withErrors($messages);
 	}
 
 }
