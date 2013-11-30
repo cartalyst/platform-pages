@@ -247,7 +247,7 @@ return array(
 
 		$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
-		foreach ($pages->findAll() as $page)
+		foreach ($pages->findAllEnabled() as $page)
 		{
 			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@page');
 		}
