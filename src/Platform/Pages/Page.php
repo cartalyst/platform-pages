@@ -113,6 +113,8 @@ class Page extends Entity {
 	 */
 	public function save(array $options = array())
 	{
+		parent::save($options);
+
 		if ( ! empty($options))
 		{
 			$menuModel = with(new static::$menuModel);
@@ -145,7 +147,7 @@ class Page extends Entity {
 			}
 		}
 
-		return parent::save($options);
+		return true;
 	}
 
 	/**
