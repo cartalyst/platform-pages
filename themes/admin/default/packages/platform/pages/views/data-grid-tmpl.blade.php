@@ -14,11 +14,11 @@
 			</td>
 			<td><%= r.created_at %></td>
 			<td>
-				<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/<%= r.slug %>/edit') }}" title="{{{ trans('platform/pages::button.update') }}}"><i class="fa fa-edit"></i></a>
+				<a class="btn btn-primary tip" href="{{ URL::toAdmin('pages/<%= r.id %>/edit') }}" title="{{{ trans('platform/pages::button.update') }}}"><i class="fa fa-edit"></i></a>
 
-				<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/<%= r.slug %>/copy') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="fa fa-copy"></i></a>
+				<a class="btn btn-warning tip" href="{{ URL::toAdmin('pages/<%= r.id %>/copy') }}" title="{{{ trans('platform/pages::button.copy') }}}"><i class="fa fa-copy"></i></a>
 
-				<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/<%= r.slug %>/delete') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="fa fa-trash-o"></i></a>
+				<a class="btn btn-danger tip" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin('pages/<%= r.id %>/delete') }}" title="{{{ trans('platform/pages::button.delete') }}}"><i class="fa fa-trash-o"></i></a>
 			</td>
 		</tr>
 
