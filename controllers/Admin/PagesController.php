@@ -55,13 +55,12 @@ class PagesController extends AdminController {
 	/**
 	 * Constructor.
 	 *
+	 * @param  \Platform\Users\Repositories\PageRepositoryInterface  $pages
+	 * @param  \Platform\Users\Repositories\MenuRepositoryInterface  $menus
+	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
 	 * @return void
 	 */
-	public function __construct(
-		PageRepositoryInterface $pages,
-		MenuRepositoryInterface $menus,
-		GroupRepositoryInterface $groups
-	)
+	public function __construct(PageRepositoryInterface $pages, MenuRepositoryInterface $menus, GroupRepositoryInterface $groups)
 	{
 		parent::__construct();
 
@@ -179,20 +178,19 @@ class PagesController extends AdminController {
 	protected function showForm($mode, $id = null)
 	{
 		// Do we have a page identifier?
-		if ($id)
+		if ( ! is_null($id))
 		{
-			$page = $this->pages->find($id);
+			if ( ! $page = $this->pages->find($id))
+			{
+				return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', compact('id')));
+			}
 		}
 		else
 		{
 			$page = $this->pages->createModel();
 		}
 
-		if ( ! $page)
-		{
-			return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', array('id' => $id)));
-		}
-
+		// Get this page menu, if available
 		$menu = $this->menus->findWhere('page_id', $page->id);
 
 		// Get all the available user groups
