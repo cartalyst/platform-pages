@@ -58,6 +58,11 @@ class PagesController extends BaseController {
 		// Find the requested page
 		$page = $this->pages->findEnabled($slug);
 
+		if ( ! $page)
+		{
+			throw new HttpException(403, "Page does not exist.");
+		}
+
 		// @todo: We should have a config item whether invalid
 		// perms for pages should throw a 404, 403 or redirect
 		// to a certain page...

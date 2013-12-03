@@ -100,11 +100,6 @@ class Page extends Entity {
 	 */
 	protected static $menuModel = 'Platform\Menus\Menu';
 
-	public function values()
-	{
-		return $this->hasValues('Platform\Attributes\Value', 'entity');
-	}
-
 	/**
 	 * Save the model to the database.
 	 *
@@ -288,7 +283,7 @@ class Page extends Entity {
 				$value = $contentModel->prepareContent($this->value);
 
 				// We'll inject the section with the value, i.e. @content()
-				static::$themeBag->getViewEnvironment()->inject($this->section, $value);
+				$result = static::$themeBag->getViewEnvironment()->inject($this->section, $value);
 
 				$view = $this->template;
 			}
@@ -500,7 +495,7 @@ class Page extends Entity {
 	 * @param  string  $model
 	 * @return void
 	 */
-	public static function setmenuModel($model)
+	public static function setMenuModel($model)
 	{
 		static::$menuModel = $model;
 	}
@@ -510,7 +505,7 @@ class Page extends Entity {
 	 *
 	 * @return void
 	 */
-	public static function unsetmenuModel()
+	public static function unsetMenuModel()
 	{
 		static::$groupModel = null;
 	}
