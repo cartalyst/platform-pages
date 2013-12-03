@@ -91,7 +91,12 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		$query = $this->createModel()->newQuery();
 
-		return $this->findPage($query, $id);
+		return $this
+			->createModel()
+			->orWhere('slug', $id)
+			->orWhere('uri', $id)
+			->orWhere('id', $id)
+			->first();
 	}
 
 	/**
@@ -101,7 +106,17 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		$query = $this->createModel()->where('enabled', 1);
 
-		return $this->findPage($query, $id);
+		return $this
+			->createModel()
+			->where('enabled', 1)
+			->whereNested(function($query) use ($id)
+			{
+				$query
+					->orWhere('slug', $id)
+					->orWhere('uri', $id)
+					->orWhere('id', $id);
+			})
+			->first();
 	}
 
 	/**
@@ -155,28 +170,6 @@ class DbPageRepository implements PageRepositoryInterface {
 		}
 
 		return false;
-	}
-
-	/**
-	 * Takes the given query and attempts to find a page to match it.
-	 *
-	 * @param  \Illuminate\Database\Eloquent\Builder  $query
-	 * @param  mixed  $id
-	 * @return \Platform\Pages\Page
-	 */
-	protected function findPage(Builder $query, $id)
-	{
-		$conditions = array('slug', 'uri', 'id');
-
-		foreach ($conditions as $condition)
-		{
-			$page = $query->where($condition, $id)->first();
-
-			if ($page)
-			{
-				return $page;
-			}
-		}
 	}
 
 	/**
