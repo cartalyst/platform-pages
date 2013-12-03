@@ -55,13 +55,12 @@ class PagesController extends AdminController {
 	/**
 	 * Constructor.
 	 *
+	 * @param  \Platform\Users\Repositories\PageRepositoryInterface  $pages
+	 * @param  \Platform\Users\Repositories\MenuRepositoryInterface  $menus
+	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
 	 * @return void
 	 */
-	public function __construct(
-		PageRepositoryInterface $pages,
-		MenuRepositoryInterface $menus,
-		GroupRepositoryInterface $groups
-	)
+	public function __construct(PageRepositoryInterface $pages, MenuRepositoryInterface $menus, GroupRepositoryInterface $groups)
 	{
 		parent::__construct();
 
@@ -122,56 +121,46 @@ class PagesController extends AdminController {
 	/**
 	 * Show the form for updating a page.
 	 *
-	 * @param  mixed  $slug
+	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function edit($slug = null)
+	public function edit($id)
 	{
-		if ( ! $slug)
-		{
-			return Redirect::toAdmin('pages');
-		}
-
-		return $this->showForm('update', $slug);
+		return $this->showForm('update', $id);
 	}
 
 	/**
 	 * Handle posting of the form for updating a page.
 	 *
-	 * @param  mixed  $slug
+	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function update($slug = null)
+	public function update($id)
 	{
-		return $this->processForm('update', $slug);
+		return $this->processForm('update', $id);
 	}
 
 	/**
 	 * Show the form for copying a page.
 	 *
-	 * @param  mixed  $slug
+	 * @param  int  $id
 	 * @return mixed
 	 */
-	public function copy($slug = null)
+	public function copy($id)
 	{
-		if ( ! $slug)
-		{
-			return Redirect::toAdmin('pages');
-		}
-
-		return $this->showForm('copy', $slug);
+		return $this->showForm('copy', $id);
 	}
 
 	/**
 	 * Remove the specified page.
 	 *
-	 * @param  mixed  $slug
+	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	public function delete($slug = null)
+	public function delete($id)
 	{
 		// Delete the page
-		if ($this->pages->delete($slug))
+		if ($this->pages->delete($id))
 		{
 			return Redirect::toAdmin('pages')->withSuccess(Lang::get('platform/pages::message.success.delete'));
 		}
@@ -183,26 +172,25 @@ class PagesController extends AdminController {
 	 * Shows the form.
 	 *
 	 * @param  string  $mode
-	 * @param  mixed   $slug
+	 * @param  int     $id
 	 * @return mixed
 	 */
-	protected function showForm($mode = null, $slug = null)
+	protected function showForm($mode, $id = null)
 	{
 		// Do we have a page identifier?
-		if ($slug)
+		if ( ! is_null($id))
 		{
-			$page = $this->pages->find($slug);
+			if ( ! $page = $this->pages->find($id))
+			{
+				return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', compact('id')));
+			}
 		}
 		else
 		{
 			$page = $this->pages->createModel();
 		}
 
-		if ( ! $page)
-		{
-			return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', array('id' => $slug)));
-		}
-
+		// Get this page menu, if available
 		$menu = $this->menus->findWhere('page_id', $page->id);
 
 		// Get all the available user groups
@@ -228,25 +216,25 @@ class PagesController extends AdminController {
 	 * Processes the form.
 	 *
 	 * @param  string  $mode
-	 * @param  mixed   $slug
+	 * @param  int     $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-	protected function processForm($mode, $slug = null)
+	protected function processForm($mode, $id = null)
 	{
 		// Get the input data
 		$input = Input::all();
 
 		// Do we have a page identifier?
-		if ($slug)
+		if ($id)
 		{
 			// Check if the input is valid
-			$messages = $this->pages->validForUpdate($slug, $input);
+			$messages = $this->pages->validForUpdate($id, $input);
 
 			// Do we have any errors?
 			if ($messages->isEmpty())
 			{
 				// Update the page
-				$page = $this->pages->update($slug, $input);
+				$page = $this->pages->update($id, $input);
 			}
 		}
 		else
@@ -268,10 +256,10 @@ class PagesController extends AdminController {
 			// Prepare the success message
 			$message = Lang::get("platform/pages::message.success.{$mode}");
 
-			return Redirect::toAdmin("pages/{$page->slug}/edit")->withSuccess($message);
+			return Redirect::toAdmin("pages/{$page->id}/edit")->withSuccess($message);
 		}
 
-		return Redirect::back()->withInput()->witherrors($messages);
+		return Redirect::back()->withInput()->withErrors($messages);
 	}
 
 }
