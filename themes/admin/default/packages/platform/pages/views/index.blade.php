@@ -55,6 +55,25 @@ $(function() {
 
 		<span class="pull-right">
 
+			<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('platform/pages::button.create') }}}</a>
+
+		</span>
+
+		<h1>{{{ trans('platform/pages::general.title') }}}</h1>
+
+	</div>
+
+	<div class="row">
+
+		{{-- Data Grid : Applied Filters --}}
+		<div class="col-lg-7">
+
+			<div class="data-grid_applied" data-grid="main"></div>
+
+		</div>
+
+		<div class="col-lg-5 text-right">
+
 			<form method="post" action="" accept-charset="utf-8" data-search data-grid="main" class="form-inline" role="form">
 
 				<div class="form-group">
@@ -80,23 +99,6 @@ $(function() {
 
 			</form>
 
-		</span>
-
-		<h1>{{{ trans('platform/pages::general.title') }}}</h1>
-
-	</div>
-
-	<div class="row">
-
-		{{-- Data Grid : Applied Filters --}}
-		<div class="col-lg-10">
-
-			<div class="data-grid_applied" data-grid="main"></div>
-
-		</div>
-
-		<div class="col-lg-2 text-right">
-			<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('platform/pages::button.create') }}}</a>
 		</div>
 
 	</div>
