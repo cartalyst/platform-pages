@@ -21,7 +21,6 @@
 return array(
 
 	'index'  => 'List Pages',
-	'grid'   => 'List Pages [Grid]',
 	'create' => 'Create new Pages',
 	'copy'   => 'Copy Page',
 	'edit'   => 'View / Edit Pages',
