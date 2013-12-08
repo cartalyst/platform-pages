@@ -2,7 +2,7 @@
 
 {{-- Page title --}}
 @section('title')
-{{{ trans("platform/pages::general.{$mode}.title") }}} {{{ $page->exists ? '- ' . $page->name : null }}} ::
+{{{ trans("platform/pages::general.{$mode}") }}} {{{ $page->exists ? '- ' . $page->name : null }}} ::
 @parent
 @stop
 
@@ -32,7 +32,7 @@
 	{{-- Page header --}}
 	<div class="page-header">
 
-		<h1>{{{ trans("platform/pages::general.{$mode}.title") }}} <small>{{{ $page->exists ? $page->name : null }}}</small></h1>
+		<h1>{{{ trans("platform/pages::general.{$mode}") }}} <small>{{{ $page->exists ? $page->name : null }}}</small></h1>
 
 	</div>
 

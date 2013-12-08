@@ -20,23 +20,10 @@
 
 return array(
 
-	'title'       => 'Pages',
-	'description' => 'Manage your website pages.',
-
-	'create' => array(
-		'title'       => 'Create Page',
-		'description' => 'Please supply the following information.',
-	),
-
-	'update' => array(
-		'title'       => 'Update Page',
-		'description' => 'Please update the following information.',
-	),
-
-	'copy' => array(
-		'title'       => 'Copy Page',
-		'description' => 'Please update the following information.',
-	),
+	'title'  => 'Pages',
+	'create' => 'Create Page',
+	'update' => 'Update Page',
+	'copy'   => 'Copy Page',
 
 	'tabs' => array(
 		'general'    => 'General',
