@@ -266,23 +266,12 @@ return array(
 	|
 	| When writing permissions, if you put a 'key' => 'value' pair, the 'value'
 	| will be the label for the permission which is going to be displayed
-	| when editing the permissions.
+	| when editing the permissions and when access is denied.
 	|
 	| The permissions should follow the following structure:
 	|
-	|     vendor/extension::area.controller@method
-	|     vendor/extension::area.controller@method1,method2, ...
-	|
-	| Examples:
-	|
-	|    Platform\Users\Controllers\Admin\UsersController@index
-	|
-	|      =>  platform/users::admin.usersController@index
-	|
-	|    Platform\Users\Controllers\Admin\UsersController@index
-	|    Platform\Users\Controllers\Admin\UsersController@grid
-	|
-	|      =>  platform/users::admin.usersController@index,grid
+	|     Vendor\Namespace\Controller@method
+	|     Vendor\Namespace\Controller@method1,method2, ...
 	|
 	*/
 
@@ -290,11 +279,11 @@ return array(
 	{
 		return array(
 
-			'platform/pages::admin.pagesController@index,grid' => Lang::get('platform/pages::permissions.index'),
-			'platform/pages::admin.pagesController@create'     => Lang::get('platform/pages::permissions.create'),
-			'platform/pages::admin.pagesController@copy'       => Lang::get('platform/pages::permissions.copy'),
-			'platform/pages::admin.pagesController@edit'       => Lang::get('platform/pages::permissions.edit'),
-			'platform/pages::admin.pagesController@delete'     => Lang::get('platform/pages::permissions.delete'),
+			'Platform\Pages\Controllers\Admin\PagesController@index,grid' => Lang::get('platform/pages::permissions.index'),
+			'Platform\Pages\Controllers\Admin\PagesController@create'     => Lang::get('platform/pages::permissions.create'),
+			'Platform\Pages\Controllers\Admin\PagesController@copy'       => Lang::get('platform/pages::permissions.copy'),
+			'Platform\Pages\Controllers\Admin\PagesController@edit'       => Lang::get('platform/pages::permissions.edit'),
+			'Platform\Pages\Controllers\Admin\PagesController@delete'     => Lang::get('platform/pages::permissions.delete'),
 
 		);
 	},
