@@ -40,7 +40,7 @@ return array(
 	|
 	*/
 
-	'template' => 'templates/default',
+	'template' => 'layouts/default',
 
 	/*
 	|--------------------------------------------------------------------------
