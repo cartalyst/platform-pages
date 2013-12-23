@@ -74,7 +74,7 @@ class PageType extends BaseType implements TypeInterface {
 	{
 		$pages = $this->getPages();
 
-		return $this->view->make("platform/pages::types/template", compact('child', 'pages'));
+		return $this->view->make("platform/pages::types/template", compact('pages'));
 	}
 
 	/**
