@@ -4,7 +4,7 @@
 
 		<span>
 
-			<button type="button" class="btn btn-info tip" title="Remove filter">
+			<button type="button" class="btn btn-info tip" title="{{{ trans('general.remove_filter') }}}">
 
 				<% if (f.column === 'all') { %>
 
