@@ -63,14 +63,14 @@ class MigrationPlatformPagesInstallPages extends Migration {
 		$attribute->create(array(
 			'namespace' => 'platform/pages',
 			'name'      => 'Meta Title',
-			'type'      => 'string',
+			'type'      => 'input',
 			'slug'      => 'meta_title',
 			'enabled'   => 1,
 		));
 		$attribute->create(array(
 			'namespace' => 'platform/pages',
 			'name'      => 'Meta Description',
-			'type'      => 'string',
+			'type'      => 'input',
 			'slug'      => 'meta_description',
 			'enabled'   => 1,
 		));
