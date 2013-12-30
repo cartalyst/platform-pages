@@ -304,7 +304,9 @@
 					@if ($page->exists and $mode != 'copy')
 					<a class="btn btn-info" href="{{ URL::toAdmin("pages/{$page->slug}/copy") }}">{{{ trans('button.copy') }}}</a>
 
-					<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/{$page->slug}/delete") }}">{{{ trans('button.delete') }}}</a>
+					<div class="pull-right">
+						<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/{$page->slug}/delete") }}">{{{ trans('button.delete') }}}</a>
+					</div>
 					@endif
 
 				</div>
