@@ -297,14 +297,14 @@
 				{{-- Form actions --}}
 				<div class="form-group">
 
-					<button class="btn btn-success" type="submit">{{{ trans("platform/pages::button.{$mode}") }}}</button>
+					<button class="btn btn-success" type="submit">{{{ trans("button.{$mode}") }}}</button>
 
 					<a class="btn btn-default" href="{{{ URL::toAdmin('pages') }}}">{{{ trans('button.cancel') }}}</a>
 
 					@if ($page->exists and $mode != 'copy')
-					<a class="btn btn-info" href="{{ URL::toAdmin("pages/{$page->slug}/copy") }}">{{{ trans('platform/pages::button.copy') }}}</a>
+					<a class="btn btn-info" href="{{ URL::toAdmin("pages/{$page->slug}/copy") }}">{{{ trans('button.copy') }}}</a>
 
-					<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/{$page->slug}/delete") }}">{{{ trans('platform/pages::button.delete') }}}</a>
+					<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/{$page->slug}/delete") }}">{{{ trans('button.delete') }}}</a>
 					@endif
 
 				</div>

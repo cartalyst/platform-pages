@@ -55,7 +55,7 @@ $(function() {
 
 		<span class="pull-right">
 
-			<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('platform/pages::button.create') }}}</a>
+			<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('button.create') }}}</a>
 
 		</span>
 
