@@ -351,7 +351,7 @@ return array(
 				'type'    => 'text',
 			),
 
-			'pages::general.template' => array(
+			'pages::general.default_template' => array(
 				'name'    => 'Default Template',
 				'config'  => 'platform/pages::default_template',
 				'info'    => 'The default template that is used for pages.',
