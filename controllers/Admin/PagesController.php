@@ -200,7 +200,7 @@ class PagesController extends AdminController {
 		$templates = $this->pages->templates();
 
 		// Get the default template
-		$defaultTemplate = Config::get('platform/pages::template', null);
+		$defaultTemplate = Config::get('platform/pages::default_template', null);
 
 		// Get all the available page files
 		$files = $this->pages->files();

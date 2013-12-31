@@ -29,7 +29,19 @@ return array(
 	|
 	*/
 
-	'default' => 'welcome',
+	'default_page' => 'welcome',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Default Section area
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify the default section when using database storage
+	| type.
+	|
+	*/
+
+	'default_section' => 'content',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -40,7 +52,7 @@ return array(
 	|
 	*/
 
-	'template' => 'layouts/default',
+	'default_template' => 'layouts/default',
 
 	/*
 	|--------------------------------------------------------------------------

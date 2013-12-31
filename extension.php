@@ -321,9 +321,9 @@ return array(
 
 			'pages::general' => array('name' => 'General'),
 
-			'pages::general.default' => array(
+			'pages::general.default_page' => array(
 				'name'    => 'Default Page',
-				'config'  => 'platform/pages::default',
+				'config'  => 'platform/pages::default_page',
 				'info'    => 'The page that is shown on the root route.',
 				'type'    => 'dropdown',
 				'options' => function()
@@ -344,9 +344,16 @@ return array(
 				}
 			),
 
+			'pages::general.default_section' => array(
+				'name'    => 'Default Section',
+				'config'  => 'platform/pages::default_section',
+				'info'    => 'The default section when using the database storage type.',
+				'type'    => 'text',
+			),
+
 			'pages::general.template' => array(
 				'name'    => 'Default Template',
-				'config'  => 'platform/pages::template',
+				'config'  => 'platform/pages::default_template',
 				'info'    => 'The default template that is used for pages.',
 				'type'    => 'dropdown',
 				'options' => function()
