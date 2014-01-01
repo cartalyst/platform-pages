@@ -95,7 +95,7 @@ class DbPageRepository implements PageRepositoryInterface {
 			->createModel()
 			->orWhere('slug', $id)
 			->orWhere('uri', $id)
-			->orWhere('id', $id)
+			->orWhere('id', (int) $id)
 			->first();
 	}
 
@@ -114,7 +114,7 @@ class DbPageRepository implements PageRepositoryInterface {
 				$query
 					->orWhere('slug', $id)
 					->orWhere('uri', $id)
-					->orWhere('id', $id);
+					->orWhere('id', (int) $id);
 			})
 			->first();
 	}
