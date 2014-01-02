@@ -188,7 +188,7 @@
 							<div class="form-group{{ $errors->first('section', ' has-error') }}">
 								<label for="section" class="control-label">{{{ trans('platform/pages::form.section') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.section_help') }}}"></i></label>
 
-								<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::form.section') }}}" value="{{{ Input::old('section', $page->exists ? $page->section : Config::get('platform/pages::default_section')) }}}">
+								<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::form.section') }}}" value="{{{ Input::old('section', ($page->exists and $page->section) ? $page->section : Config::get('platform/pages::default_section')) }}}">
 
 								<span class="help-block">{{{ $errors->first('section', ':message') }}}</span>
 							</div>
