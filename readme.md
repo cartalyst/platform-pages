@@ -2,7 +2,7 @@
 
 A Platform 2 Extension to manage your website pages.
 
-Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.md). Code well, rock on.
+Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, rock on.
 
 Extension Story
 ----------
