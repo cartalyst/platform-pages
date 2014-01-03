@@ -6,6 +6,8 @@ Part of the Cartalyst Arsenal & licensed [OSI BSD 3](license.txt). Code well, ro
 
 ## Extension Story
 
+History and future capabilities.
+
 #### Incomplete
 
 - User can create multiple content sections.
