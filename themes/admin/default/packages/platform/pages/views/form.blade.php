@@ -259,7 +259,7 @@
 								<p>Add this page to your navigation.</p>
 
 								<div class="form-group{{ $errors->first('menu', ' has-error') }}">
-									<label for="menu" class="control-label">Menu <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.groups_help') }}}"></i></label>
+									<label for="menu" class="control-label">Menu</label>
 
 									<select class="form-control" name="menu" id="menu">
 									<option value="-">-- Select a menu --</option>
