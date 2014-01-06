@@ -48,6 +48,15 @@ return array(
 	'groups'      => 'Groups',
 	'groups_help' => 'What user groups should be able to see this page?',
 
+	'navigation' => array(
+		'legend' => 'Navigation',
+
+		'menu'        => 'Menu',
+		'select_menu' => '-- Select a Menu --',
+		'top_level'   => '-- Top Level --',
+	),
+	'navigation_help' => 'Add this page to your navigation.',
+
 	'template'      => 'Template',
 	'template_help' => 'Page template to use.',
 

@@ -216,7 +216,7 @@
 
 							<fieldset>
 
-								<legend>Visibility</legend>
+								<legend>{{{ trans('platform/pages::form.visibility.legend') }}}</legend>
 
 								<div class="form-group{{ $errors->first('visibility', ' has-error') }}">
 									<label for="visibility" class="control-label">{{{ trans('platform/pages::form.visibility.legend') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.visibility_help') }}}"></i></label>
@@ -254,15 +254,15 @@
 
 							<fieldset>
 
-								<legend>Navigation</legend>
+								<legend>{{{ trans('platform/pages::form.navigation.legend') }}}</legend>
 
-								<p>Add this page to your navigation.</p>
+								<p>{{{ trans('platform/pages::form.navigation_help') }}}</p>
 
 								<div class="form-group{{ $errors->first('menu', ' has-error') }}">
-									<label for="menu" class="control-label">Menu</label>
+									<label for="menu" class="control-label">{{{ trans('platform/pages::form.navigation.menu') }}}</label>
 
 									<select class="form-control" name="menu" id="menu">
-									<option value="-">-- Select a menu --</option>
+									<option value="-">{{{ trans('platform/pages::form.navigation.select_menu') }}}</option>
 									@foreach ($menus as $item)
 										<option value="{{ $item->id }}"{{ ( ! empty($menu) and $menu->menu == $item->menu) ? ' selected="selected"' : null }}>{{ $item->name }}</option>
 									@endforeach
@@ -271,7 +271,7 @@
 
 								@foreach ($menus as $item)
 									<div{{ ( ! empty($menu) and $menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->id }}}">
-									@widget('platform/menus::dropdown.show', array($item->slug, 0, ! empty($menu) ? $menu->getParent()->id : null, array('id' => 'parent_id', 'name' => "parent[{$item->id}]", 'class' => 'form-control'), array('0' => '-- Top Level --')))
+									@widget('platform/menus::dropdown.show', array($item->slug, 0, ! empty($menu) ? $menu->getParent()->id : null, array('id' => 'parent_id', 'name' => "parent[{$item->id}]", 'class' => 'form-control'), array('0' => trans('platform/pages::form.navigation.top_level'))))
 									</div>
 								@endforeach
 
