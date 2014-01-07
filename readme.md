@@ -12,22 +12,23 @@ History and future capabilities.
 
 - User can create multiple content sections.
 
-#### Complete
+### Complete
 
-- *xx-01-14* - v1.0.0
-	- User can create a new page.
-		- User can set the page name.
-		- User can set the page url.
-		- User can set the page visibility.
-		- User can set the page storage type (filesystem or database).
-		- User can set the page file, only if the storage type is filesystem.
-		- User can set the page template file, only if the storage type is database.
-		- User can set the page value, only if the storage type is database.
-		- User can set the page status.
-		- User can set page attributes.
-	- User can update a page.
-	- User can copy/clone a page.
-	- User can delete a page.
+#### xx-Jan-14 - v1.0.0
+
+- User can create a new page.
+	- User can set the page name.
+	- User can set the page url.
+	- User can set the page visibility.
+	- User can set the page storage type (filesystem or database).
+	- User can set the page file, only if the storage type is filesystem.
+	- User can set the page template file, only if the storage type is database.
+	- User can set the page value, only if the storage type is database.
+	- User can set the page status.
+	- User can set page attributes.
+- User can update a page.
+- User can copy/clone a page.
+- User can delete a page.
 
 ## Versioning
 
