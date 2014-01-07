@@ -117,28 +117,40 @@ class Page extends Entity {
 			// Find the menu
 			if ($menu = $menuModel->find($options['menu']))
 			{
-				// See if we have a page
-				$page = $menuModel->where('page_id', $this->id)->first();
+				// See if we have a menu for this page
+				$pageMenu = $menuModel->where('page_id', $this->id)->first();
 
 				// Get the parent id, if applicable
 				$parentId = array_get($options, "parent.{$options['menu']}");
 
-				if (is_null($page))
+				if (is_null($pageMenu))
 				{
-					// Create the menu
-					$page = new static::$menuModel(array(
+					// Menu attributes
+					$attrs = array(
 						'slug'    => $this->slug,
 						'name'    => $this->name,
 						'uri'     => $this->uri,
 						'type'    => 'page',
 						'page_id' => $this->id,
 						'enabled' => 1,
-					));
+					);
 				}
+				else
+				{
+					$guardedAttributes = $pageMenu->getGuarded();
+					array_push($guardedAttributes, 'id');
+
+					// Store menu attributes
+					$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
+
+					$pageMenu->delete();
+				}
+
+				$pageMenu = new static::$menuModel($attrs);
 
 				$destination = $parentId == 0 ? $menu : $menuModel->find($parentId);
 
-				$page->makeLastChildOf($destination);
+				$pageMenu->makeLastChildOf($destination);
 			}
 		}
 
