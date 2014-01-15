@@ -32,16 +32,12 @@ use View;
 class Page extends Entity {
 
 	/**
-	 * The table associated with the model.
-	 *
-	 * @var string
+	 * {@inheritDoc}
 	 */
 	protected $table = 'pages';
 
 	/**
-	 * The attributes that aren't mass assignable.
-	 *
-	 * @var array
+	 * {@inheritDoc}
 	 */
 	protected $guarded = array(
 		'id',
@@ -52,9 +48,7 @@ class Page extends Entity {
 	);
 
 	/**
-	 * The relations to eager load on every query.
-	 *
-	 * @var array
+	 * {@inheritDoc}
 	 */
 	protected $with = array('values.attribute');
 
@@ -101,10 +95,7 @@ class Page extends Entity {
 	protected static $menuModel = 'Platform\Menus\Menu';
 
 	/**
-	 * Save the model to the database.
-	 *
-	 * @param  array  $options
-	 * @return bool
+	 * {@inheritDoc}
 	 */
 	public function save(array $options = array())
 	{
