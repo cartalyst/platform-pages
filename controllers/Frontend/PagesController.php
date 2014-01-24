@@ -60,7 +60,7 @@ class PagesController extends BaseController {
 
 		if ( ! $page)
 		{
-			throw new HttpException(403, "Page does not exist.");
+			throw new HttpException(404, 'Page does not exist.');
 		}
 
 		// @todo: We should have a config item whether invalid
