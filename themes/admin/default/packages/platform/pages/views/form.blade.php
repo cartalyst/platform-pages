@@ -2,17 +2,18 @@
 
 {{-- Page title --}}
 @section('title')
-{{{ trans("platform/pages::general.{$mode}") }}} {{{ $page->exists ? '- ' . $page->name : null }}} ::
-@parent
+	@parent
+	: {{{ trans("platform/pages::general.{$mode}") }}} {{{ $page->exists ? '- ' . $page->name : null }}}
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('slugify', 'js/platform/slugify.js', 'jquery') }}
-{{ Asset::queue('validate', 'js/platform/validate.js', 'jquery') }}
-{{ Asset::queue('bootstrap.tabs', 'js/bootstrap/tab.js', 'jquery') }}
-{{ Asset::queue('redactor.css', 'css/imperavi/redactor.css', 'styles') }}
-{{ Asset::queue('redactor.js', 'js/imperavi/redactor.min.js', 'jquery') }}
-{{ Asset::queue('pages.js', 'platform/pages::js/scripts.js', 'jquery') }}
+{{ Asset::queue('redactor', 'imperavi/css/redactor.css', array('styles')) }}
+
+{{ Asset::queue('slugify', 'platform/js/slugify.js', array('jquery')) }}
+{{ Asset::queue('validate', 'platform/js/validate.js', array('jquery')) }}
+{{ Asset::queue('bootstrap.tabs', 'bootstrap/js/tab.js', array('jquery')) }}
+{{ Asset::queue('redactor', 'imperavi/js/redactor.min.js', array('jquery')) }}
+{{ Asset::queue('pages', 'platform/pages::js/scripts.js', array('jquery')) }}
 
 {{-- Inline scripts --}}
 @section('scripts')
