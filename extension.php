@@ -245,12 +245,15 @@ return array(
 			Route::get('{id}/delete', 'PagesController@delete');
 		});
 
-		$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-		foreach ($pages->findAllEnabled() as $page)
+		App::before(function()
 		{
-			Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@page');
-		}
+			$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
+			foreach ($pages->findAllEnabled() as $page)
+			{
+				Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@page');
+			}
+		});
 	},
 
 	/*
