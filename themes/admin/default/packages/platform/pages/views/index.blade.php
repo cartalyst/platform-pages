@@ -7,8 +7,8 @@
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('underscore', 'underscore/js/underscore.js', array('jquery')) }}
-{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', array('underscore')) }}
+{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
+{{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
 
 {{-- Inline scripts --}}
 @section('scripts')

@@ -7,13 +7,13 @@
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('redactor', 'imperavi/css/redactor.css', array('styles')) }}
+{{ Asset::queue('redactor', 'imperavi/css/redactor.css', styles') }}
 
-{{ Asset::queue('slugify', 'platform/js/slugify.js', array('jquery')) }}
-{{ Asset::queue('validate', 'platform/js/validate.js', array('jquery')) }}
-{{ Asset::queue('bootstrap.tabs', 'bootstrap/js/tab.js', array('jquery')) }}
-{{ Asset::queue('redactor', 'imperavi/js/redactor.min.js', array('jquery')) }}
-{{ Asset::queue('pages', 'platform/pages::js/scripts.js', array('jquery')) }}
+{{ Asset::queue('slugify', 'platform/js/slugify.js', 'jquery') }}
+{{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
+{{ Asset::queue('bootstrap.tabs', 'bootstrap/js/tab.js', 'jquery') }}
+{{ Asset::queue('redactor', 'imperavi/js/redactor.min.js', 'jquery') }}
+{{ Asset::queue('pages', 'platform/pages::js/scripts.js', 'jquery') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
