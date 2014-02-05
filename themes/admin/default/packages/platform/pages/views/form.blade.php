@@ -7,7 +7,7 @@
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('redactor', 'imperavi/css/redactor.css', styles') }}
+{{ Asset::queue('redactor', 'imperavi/css/redactor.css', 'styles') }}
 
 {{ Asset::queue('slugify', 'platform/js/slugify.js', 'jquery') }}
 {{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
