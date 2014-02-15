@@ -227,7 +227,7 @@ class DbPageRepository implements PageRepositoryInterface {
 			$fullPath = implode(DIRECTORY_SEPARATOR, array($path, 'pages'));
 
 			// Check if the path exists
-			if (is_dir($fullPath))
+			if (is_dir($fullPath) && strpos($fullPath, 'admin') == false)
 			{
 				return $fullPath;
 			}
@@ -266,8 +266,16 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		$extensions = array_keys(View::getExtensions());
 
+		$paths = array_filter(array_map(function($path)
+		{
+			if (strpos($path, 'admin') == false)
+			{
+				return $path;
+			}
+		}, $model::getThemeBag()->getCascadedViewPaths($model::getTheme())));
+
 		$finder = new Finder;
-		$finder->in($model::getThemeBag()->getCascadedViewPaths($model::getTheme()));
+		$finder->in($paths);
 		$finder->depth('< 3');
 		$finder->exclude(Config::get('platform/pages::exclude'));
 		$finder->name(sprintf(
