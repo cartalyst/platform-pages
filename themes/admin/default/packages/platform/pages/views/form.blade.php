@@ -141,7 +141,7 @@
 						<div class="col-md-6">
 
 							{{-- Type : Database --}}
-							<div data-storage="database" class="{{ Input::old('type', $page->exists ? $page->type : 'database') == 'filesystem' ? ' hide' : null }}">
+							<div data-storage="database" class="{{ Input::old('type', $page->exists ? $page->type : 'database') != 'database' ? ' hide' : null }}">
 
 								{{-- Template --}}
 								<div class="form-group{{ $errors->first('template', ' error') }}">
@@ -159,7 +159,7 @@
 							</div>
 
 							{{-- Type : Filesystem --}}
-							<div data-storage="filesystem" class="{{ Input::old('type', $page->exists ? $page->type : 'database') == 'database' ? ' hide' : null }}">
+							<div data-storage="filesystem" class="{{ Input::old('type', $page->exists ? $page->type : 'database') != 'filesystem' ? ' hide' : null }}">
 
 								{{-- File --}}
 								<div class="form-group{{ $errors->first('file', ' error') }}">
@@ -181,7 +181,7 @@
 					</div>
 
 					{{-- Type : Database --}}
-					<div data-storage="database" class="{{ Input::old('type', $page->exists ? $page->type : 'database') == 'filesystem' ? ' hide' : null }}">
+					<div data-storage="database" class="{{ Input::old('type', $page->exists ? $page->type : 'database') != 'database' ? ' hide' : null }}">
 
 						{{-- Section --}}
 						<div class="form-group{{ $errors->first('section', ' has-error') }}">
