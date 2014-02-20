@@ -147,7 +147,7 @@
 								<div class="form-group{{ $errors->first('template', ' error') }}">
 									<label for="template" class="control-label">{{{ trans('platform/pages::form.template') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.template_help') }}}"></i></label>
 
-									<select class="form-control" name="template" id="template"{{ Input::old('type', $page->exists ? $page->type : null) == 'templatesystem' ? ' required' : null }}>
+									<select class="form-control" name="template" id="template"{{ Input::old('type', $page->exists ? $page->type : null) == 'template' ? ' required' : null }}>
 									@foreach ($templates as $value => $name)
 										<option value="{{ $value }}"{{ Input::old('template', $page->exists ? $page->template : $defaultTemplate) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 									@endforeach
