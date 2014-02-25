@@ -73,7 +73,7 @@ class PagesController extends BaseController {
 				throw new HttpException(403, "You don't have permission to view this page.");
 			}
 
-			if ( ! $currentUser->isSuperUser() and ! empty($page->groups))
+			if ( ! Sentry::hasAccess('admin') and ! empty($page->groups))
 			{
 				$found = false;
 
