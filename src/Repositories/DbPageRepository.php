@@ -38,7 +38,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 *
 	 * @var array
 	 */
-	protected $rules = array(
+	protected $rules = [
 		'name'       => 'required|max:255',
 		'slug'       => 'required|max:255|unique:pages',
 		'uri'        => 'required|max:255|unique:pages',
@@ -47,7 +47,7 @@ class DbPageRepository implements PageRepositoryInterface {
 		'visibility' => 'required|in:always,logged_in,admin',
 		'template'   => 'required_if:type,database',
 		'file'       => 'required_if:type,filesystem',
-	);
+	];
 
 	/**
 	 * Start it up.
@@ -81,7 +81,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function findAllEnabled()
 	{
-		return $this->createModel()->newQuery()->where('enabled', 1)->get();
+		return $this->createModel()->newQuery()->whereEnabled(1)->get();
 	}
 
 	/**
@@ -224,7 +224,7 @@ class DbPageRepository implements PageRepositoryInterface {
 		$paths = array_filter(array_map(function($path) {
 
 			// Full path to the pages folder
-			$fullPath = implode(DIRECTORY_SEPARATOR, array($path, 'pages'));
+			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages'));
 
 			// Check if the path exists
 			if (is_dir($fullPath) && strpos($fullPath, 'admin') == false)
@@ -236,11 +236,11 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		$finder = with(new Finder)->files()->in($paths);
 
-		$files = array();
+		$files = [);
 
 		// Replace all file extensions with nothing. pathinfo()
 		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad(array(), count($extensions), '');
+		$replacements = array_pad([), count($extensions), '');
 
 		foreach ($finder as $file)
 		{
@@ -286,11 +286,11 @@ class DbPageRepository implements PageRepositoryInterface {
 			}, $extensions))
 		));
 
-		$files = array();
+		$files = [);
 
 		// Replace all file extensions with nothing. pathinfo()
 		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad(array(), count($extensions), '');
+		$replacements = array_pad([), count($extensions), '');
 
 		foreach ($finder->files() as $file)
 		{

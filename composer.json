@@ -2,7 +2,13 @@
 	"name": "platform/pages",
 	"type": "platform-extension",
 	"description": "An extension to manage your website pages.",
-	"keywords": ["pages", "cms", "cartalyst", "platform", "laravel", "extension"],
+	"keywords": [
+		"pages",
+		"cms", "cartalyst",
+		"platform",
+		"laravel",
+		"extension"
+	],
 	"license": "BSD License (3-clause)",
 	"authors": [
 		{
@@ -32,29 +38,24 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.0",
+		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.0.*",
 
 		"platform/admin": "dev-develop",
-		"platform/content": "dev-develop"
-	},
-	"require-dev": {
-		"mockery/mockery": "0.7.*"
+		"platform/content": "feature/psr-4-php-54"
 	},
 	"autoload": {
 		"classmap": [
-			"controllers",
-			"migrations",
-			"widgets"
+			"migrations"
 		],
-		"psr-0": {
-			"Platform\\Pages" : "src/"
+		"psr-4": {
+			"Platform\\Pages\\" : "/"
 		}
 	},
 	"extra": {
 		"component": "extension",
 		"branch-alias": {
-			"dev-master": "1.0.x-dev"
+			"dev-master": "2.0.x-dev"
 		}
 	},
 	"minimum-stability": "dev"

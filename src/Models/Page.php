@@ -1,4 +1,4 @@
-<?php namespace Platform\Pages;
+<?php namespace Platform\Pages\Models;
 /**
  * Part of the Platform application.
  *
@@ -39,23 +39,21 @@ class Page extends Entity {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $guarded = array(
+	protected $guarded = [
 		'id',
 		'created_at',
 		'updated_at',
 		'menu',
 		'parent',
-	);
+	];
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $with = array('values.attribute');
+	protected $with = ['values.attribute'];
 
 	/**
-	 * The EAV namespace for the given entity.
-	 *
-	 * @var string
+	 * {@inheritDoc}
 	 */
 	protected $eavNamespace = 'platform/pages';
 
@@ -85,7 +83,7 @@ class Page extends Entity {
 	 *
 	 * @var string
 	 */
-	protected static $contentModel = 'Platform\Content\Content';
+	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
 	 * The menu model.
@@ -97,7 +95,7 @@ class Page extends Entity {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function save(array $options = array())
+	public function save(array $options = [])
 	{
 		parent::save($options);
 
@@ -117,14 +115,14 @@ class Page extends Entity {
 				if (is_null($pageMenu))
 				{
 					// Menu attributes
-					$attrs = array(
+					$attrs = [
 						'slug'    => $this->slug,
 						'name'    => $this->name,
 						'uri'     => $this->uri,
 						'type'    => 'page',
 						'page_id' => $this->id,
 						'enabled' => 1,
-					);
+					];
 				}
 				else
 				{
@@ -159,7 +157,7 @@ class Page extends Entity {
 	{
 		if ( ! $groups)
 		{
-			return array();
+			return [];
 		}
 
 		if (is_array($groups))
@@ -275,7 +273,7 @@ class Page extends Entity {
 
 		$type = $this->type;
 
-		if (in_array($type, array('filesystem', 'database')))
+		if (in_array($type, ['filesystem', 'database']))
 		{
 			$view = "pages/{$this->file}";
 
@@ -312,7 +310,7 @@ class Page extends Entity {
 		$page = $this;
 
 		$responses = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
-		$data      = array();
+		$data      = [];
 
 		foreach ($responses as $response)
 		{
@@ -320,7 +318,7 @@ class Page extends Entity {
 			// modified or something else occured.
 			if (is_null($response)) continue;
 
-			if ( ! is_array($response))
+			if ( ! is_[$response))
 			{
 				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
 			}
@@ -346,11 +344,11 @@ class Page extends Entity {
 	 * @param  array  $columns
 	 * @return \Illuminate\Database\Eloquent\Model|Collection
 	 */
-	public static function find($id, $columns = array('*'))
+	public static function find($id, $columns = ['*'])
 	{
 		$instance = new static;
 
-		if ($page = $instance->newQuery()->where('slug', $id)->first($columns))
+		if ($page = $instance->newQuery()->whereSlug($id)->first($columns))
 		{
 			return $page;
 		}
