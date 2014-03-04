@@ -49,7 +49,7 @@
 			"migrations"
 		],
 		"psr-4": {
-			"Platform\\Pages\\" : "/"
+			"Platform\\Pages\\" : "src/"
 		}
 	},
 	"extra": {
