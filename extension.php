@@ -180,8 +180,8 @@ return [
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
 		// Set the theme bag and the active theme
-		app('Platform\Pages\Page')->setThemeBag($app['themes']);
-		app('Platform\Pages\Page')->setTheme($app['config']['cartalyst/themes::active']);
+		app('Platform\Pages\Models\Page')->setThemeBag($app['themes']);
+		app('Platform\Pages\Models\Page')->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
 		app('Platform\Attributes\Attribute')->registerNamespace(app('Platform\Pages\Models\Page'));
@@ -345,7 +345,7 @@ return [
 
 					return $options;
 				}
-			),
+			],
 
 			'pages::general.default_section' => [
 				'name'    => 'Default Section',
@@ -406,7 +406,7 @@ return [
 				}
 			],
 
-		);
+		];
 	},
 
 	/*

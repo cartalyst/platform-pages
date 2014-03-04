@@ -318,7 +318,7 @@ class Page extends Entity {
 			// modified or something else occured.
 			if (is_null($response)) continue;
 
-			if ( ! is_[$response))
+			if ( ! is_array($response))
 			{
 				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
 			}

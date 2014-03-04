@@ -224,7 +224,7 @@ class DbPageRepository implements PageRepositoryInterface {
 		$paths = array_filter(array_map(function($path) {
 
 			// Full path to the pages folder
-			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages'));
+			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
 
 			// Check if the path exists
 			if (is_dir($fullPath) && strpos($fullPath, 'admin') == false)
@@ -236,11 +236,11 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		$finder = with(new Finder)->files()->in($paths);
 
-		$files = [);
+		$files = [];
 
 		// Replace all file extensions with nothing. pathinfo()
 		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad([), count($extensions), '');
+		$replacements = array_pad([], count($extensions), '');
 
 		foreach ($finder as $file)
 		{
@@ -286,11 +286,11 @@ class DbPageRepository implements PageRepositoryInterface {
 			}, $extensions))
 		));
 
-		$files = [);
+		$files = [];
 
 		// Replace all file extensions with nothing. pathinfo()
 		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad([), count($extensions), '');
+		$replacements = array_pad([], count($extensions), '');
 
 		foreach ($finder->files() as $file)
 		{
