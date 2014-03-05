@@ -50,7 +50,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	];
 
 	/**
-	 * Start it up.
+	 * Constructor.
 	 *
 	 * @param  string  $model
 	 * @return void
@@ -65,7 +65,8 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function grid()
 	{
-		return $this->createModel();
+		return $this
+			->createModel();
 	}
 
 	/**
@@ -73,7 +74,10 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function findAll()
 	{
-		return $this->createModel()->newQuery()->get();
+		return $this
+			->createModel()
+			->newQuery()
+			->get();
 	}
 
 	/**
@@ -81,7 +85,11 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function findAllEnabled()
 	{
-		return $this->createModel()->newQuery()->whereEnabled(1)->get();
+		return $this
+			->createModel()
+			->newQuery()
+			->whereEnabled(1)
+			->get();
 	}
 
 	/**
@@ -89,8 +97,6 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		$query = $this->createModel()->newQuery();
-
 		return $this
 			->createModel()
 			->orWhere('slug', $id)
@@ -104,8 +110,6 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function findEnabled($id)
 	{
-		$query = $this->createModel()->where('enabled', 1);
-
 		return $this
 			->createModel()
 			->where('enabled', 1)

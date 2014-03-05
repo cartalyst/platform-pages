@@ -41,6 +41,8 @@ class PagesController extends BaseController {
 	 */
 	public function __construct(PageRepositoryInterface $pages)
 	{
+		parent::__construct();
+
 		$this->pages = $pages;
 	}
 
@@ -56,9 +58,7 @@ class PagesController extends BaseController {
 		$slug = Route::current()->getUri() ?: Config::get('platform/pages::default');
 
 		// Find the requested page
-		$page = $this->pages->findEnabled($slug);
-
-		if ( ! $page)
+		if ( ! $page = $this->pages->findEnabled($slug))
 		{
 			throw new HttpException(404, 'Page does not exist.');
 		}

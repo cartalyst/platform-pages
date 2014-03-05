@@ -41,16 +41,18 @@ class Page extends Entity {
 	 */
 	protected $guarded = [
 		'id',
-		'created_at',
-		'updated_at',
 		'menu',
 		'parent',
+		'created_at',
+		'updated_at',
 	];
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $with = ['values.attribute'];
+	protected $with = [
+		'values.attribute',
+	];
 
 	/**
 	 * {@inheritDoc}
@@ -91,6 +93,21 @@ class Page extends Entity {
 	 * @var string
 	 */
 	protected static $menuModel = 'Platform\Menus\Menu';
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public static function find($id, $columns = ['*'])
+	{
+		$instance = new static;
+
+		if ($page = $instance->newQuery()->whereSlug($id)->first($columns))
+		{
+			return $page;
+		}
+
+		return parent::find($id, $columns);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -310,7 +327,8 @@ class Page extends Entity {
 		$page = $this;
 
 		$responses = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
-		$data      = [];
+
+		$data = [];
 
 		foreach ($responses as $response)
 		{
@@ -335,25 +353,6 @@ class Page extends Entity {
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Find a model by its primary key.
-	 *
-	 * @param  mixed  $id
-	 * @param  array  $columns
-	 * @return \Illuminate\Database\Eloquent\Model|Collection
-	 */
-	public static function find($id, $columns = ['*'])
-	{
-		$instance = new static;
-
-		if ($page = $instance->newQuery()->whereSlug($id)->first($columns))
-		{
-			return $page;
-		}
-
-		return parent::find($id, $columns);
 	}
 
 	/**

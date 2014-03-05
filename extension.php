@@ -296,15 +296,17 @@ return [
 	| Widgets
 	|--------------------------------------------------------------------------
 	|
-	| List of custom widgets associated with the extension. Like routes, the
-	| value for the widget key may either be a closure or a class & method
-	| name (joined with an @ symbol). Of course, Platform will guess the
+	| Closure that is called when the extension is started. You can register
+	| all your custom widgets here. Of course, Platform will guess the
 	| widget class for you, this is just for custom widgets or if you
 	| do not wish to make a new class for a very small widget.
 	|
 	*/
 
-	'widgets' => [],
+	'widgets' => function()
+	{
+
+	},
 
 	/*
 	|--------------------------------------------------------------------------
@@ -384,10 +386,9 @@ return [
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-
 					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
-					$options  = [];
+					$options = [];
 
 					$options[] = [
 						'value' => null,

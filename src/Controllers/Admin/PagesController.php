@@ -88,14 +88,14 @@ class PagesController extends AdminController {
 	 */
 	public function grid()
 	{
-		return DataGrid::make($this->pages->grid(), array(
+		return DataGrid::make($this->pages->grid(), [
 			'id',
 			'name',
 			'slug',
 			'uri',
 			'enabled',
 			'created_at',
-		));
+		]);
 	}
 
 	/**
