@@ -3,11 +3,12 @@
 	"type": "platform-extension",
 	"description": "An extension to manage your website pages.",
 	"keywords": [
-		"pages",
-		"cms", "cartalyst",
+		"cartalyst",
 		"platform",
 		"laravel",
-		"extension"
+		"extension",
+		"pages",
+		"cms",
 	],
 	"license": "BSD License (3-clause)",
 	"authors": [
