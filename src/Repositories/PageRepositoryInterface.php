@@ -68,7 +68,7 @@ interface PageRepositoryInterface {
 	/**
 	 * Determines if the given page is valid for updating.
 	 *
-	 * @param  int    $id
+	 * @param  int  $id
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
@@ -85,7 +85,7 @@ interface PageRepositoryInterface {
 	/**
 	 * Updates a page with the given data.
 	 *
-	 * @param  int    $id
+	 * @param  int  $id
 	 * @param  array  $data
 	 * @return \Cartalyst\Pages\Models\Page
 	 */
