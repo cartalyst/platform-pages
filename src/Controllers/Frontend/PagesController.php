@@ -65,7 +65,7 @@ class PagesController extends BaseController {
 
 		if (in_array($page->visibility, array('logged_in', 'admin')))
 		{
-			$canView = true;
+			$canView = false;
 
 			if ($currentUser = Sentry::getUser())
 			{
