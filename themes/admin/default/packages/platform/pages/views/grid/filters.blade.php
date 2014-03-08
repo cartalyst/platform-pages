@@ -12,7 +12,7 @@
 
 				<% } else { %>
 
-					<%= f.label %> <em><%= f.from + ' - ' + f.to %></em>
+					<%= f.label %> <em><%= f.from %> - <%= f.to %></em>
 
 				<% } %>
 
