@@ -22,7 +22,7 @@ use Cartalyst\Themes\ThemeBag;
 use Closure;
 use Config;
 use InvalidArgumentException;
-use Platform\Attributes\Entity;
+use Platform\Attributes\Models\Entity;
 use RuntimeException;
 use Sentry;
 use Str;

@@ -184,7 +184,7 @@ return [
 		app('Platform\Pages\Models\Page')->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
-		app('Platform\Attributes\Attribute')->registerNamespace(app('Platform\Pages\Models\Page'));
+		app('Platform\Attributes\Models\Attribute')->registerNamespace(app('Platform\Pages\Models\Page'));
 
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
