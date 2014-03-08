@@ -63,34 +63,39 @@ class PagesController extends BaseController {
 			throw new HttpException(404, 'Page does not exist.');
 		}
 
-		// @todo: We should have a config item whether invalid
-		// perms for pages should throw a 404, 403 or redirect
-		// to a certain page...
 		if (in_array($page->visibility, array('logged_in', 'admin')))
 		{
-			if ( ! $currentUser = Sentry::getUser())
-			{
-				throw new HttpException(403, "You don't have permission to view this page.");
-			}
+			$canView = true;
 
-			if ( ! Sentry::hasAccess('admin') and ! empty($page->groups))
+			if ($currentUser = Sentry::getUser())
 			{
-				$found = false;
+				$canView = true;
 
-				foreach ($currentUser->groups as $group)
+				$hasAdminAccess = Sentry::hasAccess('admin');
+
+				if ($page->visibility === 'admin' && ! $hasAdminAccess)
 				{
-					if (in_array($group->id, $page->groups))
-					{
-						$found = true;
+					$canView = false;
+				}
+				else if ( ! $hasAdminAccess && ! empty($page->groups))
+				{
+					$canView = false;
 
-						break;
+					foreach ($currentUser->groups as $group)
+					{
+						if (in_array($group->id, $page->groups))
+						{
+							$canView = true;
+
+							break;
+						}
 					}
 				}
+			}
 
-				if ( ! $found)
-				{
-					throw new HttpException(403, "You don't have permission to view this page.");
-				}
+			if ( ! $canView)
+			{
+				throw new HttpException(403, "You don't have permission to view this page.");
 			}
 		}
 
