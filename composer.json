@@ -8,7 +8,7 @@
 		"laravel",
 		"extension",
 		"pages",
-		"cms",
+		"cms"
 	],
 	"license": "BSD License (3-clause)",
 	"authors": [
