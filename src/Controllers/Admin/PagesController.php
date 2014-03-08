@@ -185,10 +185,14 @@ class PagesController extends AdminController {
 	{
 		if ($this->pages->delete($id))
 		{
-			return Redirect::toAdmin('pages')->withSuccess(Lang::get('platform/pages::message.success.delete'));
+			$message = Lang::get('platform/pages::message.success.delete');
+
+			return Redirect::toAdmin('pages')->withSuccess($message);
 		}
 
-		return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.error.delete'));
+		$message = Lang::get('platform/pages::message.error.delete');
+
+		return Redirect::toAdmin('pages')->withErrors($message);
 	}
 
 	/**
@@ -227,7 +231,9 @@ class PagesController extends AdminController {
 		{
 			if ( ! $page = $this->pages->find($id))
 			{
-				return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', compact('id')));
+				$message = Lang::get('platform/pages::message.not_found', compact('id'));
+
+				return Redirect::toAdmin('pages')->withErrors($message);
 			}
 		}
 		else
@@ -254,7 +260,9 @@ class PagesController extends AdminController {
 		$menus = $this->menus->findRoot();
 
 		// Show the page
-		return View::make('platform/pages::form', compact('mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'));
+		return View::make('platform/pages::form', compact(
+			'mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'
+		));
 	}
 
 	/**
