@@ -9,33 +9,52 @@
 {{-- Queue assets --}}
 {{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'underscore') }}
+{{ Asset::queue('moment', 'moment/js/moment.js') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
 @parent
 <script>
-$(function() {
-
-	$.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+$(function()
+{
+	var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
 		loader: '.loading',
-		paginationType: 'single',
-		defaultSort: {
-			column: 'created_at',
-			direction: 'desc'
-		},
-		callback: function() {
-
-			$('.tip').tooltip();
-
+		scroll: '.data-grid',
+		callback: function()
+		{
+			$('#checkAll').prop('checked', false);
 		}
 	});
 
-	$('.data-grid_pagination').on('click', 'a', function() {
-
-		$(document.body).animate({ scrollTop: $('.data-grid').offset().top }, 200);
-
+	$('#checkAll').click(function()
+	{
+		$('input:checkbox').not(this).prop('checked', this.checked);
 	});
 
+	$(document).on('click', '[data-action]', function(e)
+	{
+		e.preventDefault();
+
+		var action = $(this).data('action');
+
+		var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
+		{
+			return +e.value;
+		});
+
+		$.ajax({
+			type: 'POST',
+			url: '{{ URL::toAdmin('pages') }}',
+			data: {
+				action  : action,
+				entries : entries
+			},
+			success: function(response)
+			{
+				dg.refresh();
+			}
+		});
+	});
 });
 </script>
 @stop
@@ -51,21 +70,15 @@ $(function() {
 {{-- Page header --}}
 <div class="page-header">
 
-	<span class="pull-right">
-
-		<a class="btn btn-warning" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('button.create') }}}</a>
-
-	</span>
-
 	<h1>{{{ trans('platform/pages::general.title') }}}</h1>
 
 </div>
 
 <div class="row">
 
-	{{-- Data Grid : Applied Filters --}}
 	<div class="col-lg-7">
 
+		{{-- Data Grid : Applied Filters --}}
 		<div class="data-grid_applied" data-grid="main"></div>
 
 	</div>
@@ -80,20 +93,29 @@ $(function() {
 
 			</div>
 
-			<div class="form-group">
-				<select class="form-control" name="column">
-					<option value="all">{{{ trans('general.all') }}}</option>
-					<option value="name">{{{ trans('platform/pages::table.name') }}}</option>
-					<option value="slug">{{{ trans('platform/pages::table.slug') }}}</option>
-					<option value="created_at">{{{ trans('platform/pages::table.created_at') }}}</option>
-				</select>
+			<div class="btn-group text-left">
+
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+					{{{ trans('general.filters') }}} <span class="caret"></span>
+				</button>
+
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="#" data-grid="main" data-reset>{{{ trans('general.show_all') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="enabled:1" data-label="enabled:{{{ trans('general.status') }}}:{{{ trans('general.all_enabled') }}}">{{{ trans('general.show_enabled') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="enabled:0" data-label="enabled:{{{ trans('general.status') }}}:{{{ trans('general.all_disabled') }}}">{{{ trans('general.show_disabled') }}}</a></li>
+				</ul>
+
 			</div>
 
-			<div class="form-group">
+			<div class="form-group has-feedback">
+
 				<input name="filter" type="text" placeholder="{{{ trans('general.search') }}}" class="form-control">
+
+				<span class="glyphicon fa fa-search form-control-feedback"></span>
+
 			</div>
 
-			<button class="btn btn-default"><i class="fa fa-search"></i></button>
+			<a class="btn btn-primary" href="{{ URL::toAdmin('pages/create') }}"><i class="fa fa-plus"></i> {{{ trans('button.create') }}}</a>
 
 		</form>
 
@@ -106,11 +128,11 @@ $(function() {
 <table data-source="{{ URL::toAdmin('pages/grid') }}" data-grid="main" class="data-grid table table-striped table-bordered table-hover">
 	<thead>
 		<tr>
-			<th data-sort="name" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/pages::table.name') }}}</th>
-			<th data-sort="slug" data-grid="main" class="col-md-2 sortable">{{{ trans('platform/pages::table.slug') }}}</th>
-			<th data-sort="enabled" data-grid="main" class="col-md-2 sortable">{{{ trans('platform/pages::table.enabled') }}}</th>
-			<th data-sort="created_at" data-grid="main" class="col-md-3 sortable">{{{ trans('platform/pages::table.created_at') }}}</th>
-			<th class="col-md-2"></th>
+			<th><input type="checkbox" name="checkAll" id="checkAll"></th>
+			<th data-sort="name" class="col-md-5 sortable">{{{ trans('platform/pages::table.name') }}}</th>
+			<th data-sort="slug" class="col-md-2 sortable">{{{ trans('platform/pages::table.slug') }}}</th>
+			<th data-sort="enabled" class="col-md-2 sortable">{{{ trans('platform/pages::table.enabled') }}}</th>
+			<th data-sort="created_at" class="col-md-3 sortable">{{{ trans('platform/pages::table.created_at') }}}</th>
 		</tr>
 	</thead>
 	<tbody></tbody>
@@ -119,9 +141,9 @@ $(function() {
 {{-- Data Grid : Pagination --}}
 <div class="data-grid_pagination" data-grid="main"></div>
 
-@include('platform/pages::data-grid-tmpl')
-@include('platform/pages::data-grid_pagination-tmpl')
-@include('platform/pages::data-grid_applied-tmpl')
-@include('platform/pages::data-grid_no-results-tmpl')
+@include('platform/pages::grid/results')
+@include('platform/pages::grid/pagination')
+@include('platform/pages::grid/filters')
+@include('platform/pages::grid/no-results')
 
 @stop

@@ -121,42 +121,45 @@ class Page extends Entity {
 			$menuModel = with(new static::$menuModel);
 
 			// Find the menu
-			if ($menu = $menuModel->find($options['menu']))
+			if ($menu = array_get($options, 'menu'))
 			{
-				// See if we have a menu for this page
-				$pageMenu = $menuModel->where('page_id', $this->id)->first();
-
-				// Get the parent id, if applicable
-				$parentId = array_get($options, "parent.{$options['menu']}");
-
-				if (is_null($pageMenu))
+				if ($menu = $menuModel->find($menu))
 				{
-					// Menu attributes
-					$attrs = [
-						'slug'    => $this->slug,
-						'name'    => $this->name,
-						'uri'     => $this->uri,
-						'type'    => 'page',
-						'page_id' => $this->id,
-						'enabled' => 1,
-					];
+					// See if we have a menu for this page
+					$pageMenu = $menuModel->where('page_id', $this->id)->first();
+
+					// Get the parent id, if applicable
+					$parentId = array_get($options, "parent.{$options['menu']}");
+
+					if (is_null($pageMenu))
+					{
+						// Menu attributes
+						$attrs = [
+							'slug'    => $this->slug,
+							'name'    => $this->name,
+							'uri'     => $this->uri,
+							'type'    => 'page',
+							'page_id' => $this->id,
+							'enabled' => 1,
+						];
+					}
+					else
+					{
+						$guardedAttributes = $pageMenu->getGuarded();
+						array_push($guardedAttributes, 'id');
+
+						// Store menu attributes
+						$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
+
+						$pageMenu->delete();
+					}
+
+					$pageMenu = new static::$menuModel($attrs);
+
+					$destination = $parentId == 0 ? $menu : $menuModel->find($parentId);
+
+					$pageMenu->makeLastChildOf($destination);
 				}
-				else
-				{
-					$guardedAttributes = $pageMenu->getGuarded();
-					array_push($guardedAttributes, 'id');
-
-					// Store menu attributes
-					$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
-
-					$pageMenu->delete();
-				}
-
-				$pageMenu = new static::$menuModel($attrs);
-
-				$destination = $parentId == 0 ? $menu : $menuModel->find($parentId);
-
-				$pageMenu->makeLastChildOf($destination);
 			}
 		}
 

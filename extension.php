@@ -235,6 +235,7 @@ return [
 		Route::group(['prefix' => admin_uri().'/pages', 'namespace' => 'Platform\Pages\Controllers\Admin'], function()
 		{
 			Route::get('/', 'PagesController@index');
+			Route::post('/', 'PagesController@executeAction');
 			Route::get('grid', 'PagesController@grid');
 			Route::get('create', 'PagesController@create');
 			Route::post('create', 'PagesController@store');
@@ -333,9 +334,9 @@ return [
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
+					$options = [];
 
-					$options  = [];
+					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
 					foreach ($page->findAll() as $page)
 					{
@@ -369,10 +370,7 @@ return [
 
 					foreach ($page->templates() as $value => $label)
 					{
-						$options[] = [
-							'value' => $value,
-							'label' => $label,
-						];
+						$options[] = compact('value', 'label');
 					}
 
 					return $options;

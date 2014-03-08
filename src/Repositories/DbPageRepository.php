@@ -177,6 +177,22 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	public function enable($id)
+	{
+		return $this->update($id, ['enabled' => 1]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function disable($id)
+	{
+		return $this->update($id, ['enabled' => 0]);
+	}
+
+	/**
 	 * Validates a page.
 	 *
 	 * @param  array  $data

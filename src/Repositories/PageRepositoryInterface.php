@@ -23,7 +23,7 @@ interface PageRepositoryInterface {
 	/**
 	 * Returns a dataset compatible with data grid.
 	 *
-	 * @return mixed
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function grid();
 
@@ -98,5 +98,21 @@ interface PageRepositoryInterface {
 	 * @return bool
 	 */
 	public function delete($id);
+
+	/**
+	 * Enables the given page.
+	 *
+	 * @param  int  $id
+	 * @return \Cartalyst\Pages\Models\Page
+	 */
+	public function enable($id);
+
+	/**
+	 * Disables the given page.
+	 *
+	 * @param  int  $id
+	 * @return \Cartalyst\Pages\Models\Page
+	 */
+	public function disable($id);
 
 }
