@@ -71,23 +71,24 @@ class PagesController extends BaseController {
 			{
 				$canView = true;
 
-				$hasAdminAccess = Sentry::hasAccess('admin');
-
-				if ($page->visibility === 'admin' && ! $hasAdminAccess)
+				if ( ! Sentry::hasAccess('admin'))
 				{
-					$canView = false;
-				}
-				else if ( ! $hasAdminAccess && ! empty($page->groups))
-				{
-					$canView = false;
-
-					foreach ($currentUser->groups as $group)
+					if ($page->visibility === 'admin')
 					{
-						if (in_array($group->id, $page->groups))
-						{
-							$canView = true;
+						$canView = false;
+					}
+					else if ( ! empty($page->groups))
+					{
+						$canView = false;
 
-							break;
+						foreach ($currentUser->groups as $group)
+						{
+							if (in_array($group->id, $page->groups))
+							{
+								$canView = true;
+
+								break;
+							}
 						}
 					}
 				}
