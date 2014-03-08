@@ -221,7 +221,7 @@ class PagesController extends AdminController {
 	 * Shows the form.
 	 *
 	 * @param  string  $mode
-	 * @param  int     $id
+	 * @param  int  $id
 	 * @return mixed
 	 */
 	protected function showForm($mode, $id = null)
@@ -269,7 +269,7 @@ class PagesController extends AdminController {
 	 * Processes the form.
 	 *
 	 * @param  string  $mode
-	 * @param  int     $id
+	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	protected function processForm($mode, $id = null)
@@ -280,7 +280,7 @@ class PagesController extends AdminController {
 		// Do we have a page identifier?
 		if ($id)
 		{
-			// Check if the input is valid
+			// Check if the data is valid
 			$messages = $this->pages->validForUpdate($id, $data);
 
 			// Do we have any errors?
@@ -292,7 +292,7 @@ class PagesController extends AdminController {
 		}
 		else
 		{
-			// Check if the input is valid
+			// Check if the data is valid
 			$messages = $this->pages->validForCreation($data);
 
 			// Do we have any errors?
