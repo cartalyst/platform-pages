@@ -23,12 +23,35 @@ $(function()
 		callback: function()
 		{
 			$('#checkAll').prop('checked', false);
+
+			$('#actions').prop('disabled', true);
 		}
 	});
 
 	$('#checkAll').click(function()
 	{
 		$('input:checkbox').not(this).prop('checked', this.checked);
+
+		if ($('input[name="entries[]"]:checked').length > 0)
+		{
+			$('#actions').prop('disabled', false);
+		}
+		else
+		{
+			$('#actions').prop('disabled', true);
+		}
+	});
+
+	$(document).on('click', 'input[name="entries[]"]', function()
+	{
+		if ($('input[name="entries[]"]:checked').length > 0)
+		{
+			$('#actions').prop('disabled', false);
+		}
+		else
+		{
+			$('#actions').prop('disabled', true);
+		}
 	});
 
 	$(document).on('click', '[data-action]', function(e)

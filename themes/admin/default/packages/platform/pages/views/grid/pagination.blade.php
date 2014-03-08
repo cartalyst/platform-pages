@@ -5,7 +5,7 @@
 		<div class="pull-left">
 
 			<div class="btn-group dropup">
-				<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
+				<button id="actions" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" disabled>
 					{{{ trans('general.actions') }}} <span class="caret"></span>
 				</button>
 				<ul class="dropdown-menu" role="menu">
