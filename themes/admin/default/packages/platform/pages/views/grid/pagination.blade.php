@@ -5,14 +5,17 @@
 		<div class="pull-left">
 
 			<div class="btn-group dropup">
+
 				<button id="actions" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" disabled>
 					{{{ trans('general.actions') }}} <span class="caret"></span>
 				</button>
+
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#" data-action="delete">Delete selected</a></li>
 					<li><a href="#" data-action="enable">Enable selected</a></li>
 					<li><a href="#" data-action="disable">Disable selected</a></li>
 				</ul>
+
 			</div>
 
 			&nbsp;&nbsp;
