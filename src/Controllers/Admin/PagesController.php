@@ -35,9 +35,9 @@ class PagesController extends AdminController {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $csrfWhitelist = array(
+	protected $csrfWhitelist = [
 		'executeAction',
-	);
+	];
 
 	/**
 	 * Pages repository.
