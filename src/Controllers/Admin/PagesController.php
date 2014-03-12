@@ -105,6 +105,8 @@ class PagesController extends AdminController {
 	 */
 	public function grid()
 	{
+		$data = $this->pages->grid();
+
 		$columns = [
 			'id',
 			'name',
@@ -119,7 +121,7 @@ class PagesController extends AdminController {
 			'direction' => 'desc',
 		];
 
-		return DataGrid::make($this->pages->grid(), $columns, $settings);
+		return DataGrid::make($data, $columns, $settings);
 	}
 
 	/**
