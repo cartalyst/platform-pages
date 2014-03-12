@@ -263,14 +263,14 @@
 								<select class="form-control" name="menu" id="menu">
 								<option value="-">{{{ trans('platform/pages::form.navigation.select_menu') }}}</option>
 								@foreach ($menus as $item)
-									<option value="{{ $item->id }}"{{ ( ! empty($menu) and $menu->menu == $item->menu) ? ' selected="selected"' : null }}>{{ $item->name }}</option>
+									<option value="{{ $item->menu }}"{{ ( ! empty($menu) and $menu->menu == $item->menu) ? ' selected="selected"' : null }}>{{ $item->name }}</option>
 								@endforeach
 								</select>
 							</div>
 
 							@foreach ($menus as $item)
-								<div{{ ( ! empty($menu) and $menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->id }}}">
-								@widget('platform/menus::dropdown.show', array($item->slug, 0, ! empty($menu) ? $menu->getParent()->id : null, array('id' => 'parent_id', 'name' => "parent[{$item->id}]", 'class' => 'form-control'), array('0' => trans('platform/pages::form.navigation.top_level'))))
+								<div{{ ( ! empty($menu) and $menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->menu }}}">
+								@widget('platform/menus::dropdown.show', array($item->slug, 0, ! empty($menu) ? $menu->getParent()->id : null, array('id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'), array('0' => trans('platform/pages::form.navigation.top_level'))))
 								</div>
 							@endforeach
 

@@ -120,45 +120,78 @@ class Page extends Entity {
 		{
 			$menuModel = with(new static::$menuModel);
 
+			// Get the menu that this page will be stored
+			$pageMenuTree = (int) array_get($options, 'menu', null);
+
+			// Get the menu parent id, if applicable
+			$pageMenuParent = (int) array_get($options, "parent.{$options['menu']}");
+
 			// Find the menu
-			if ($menu = array_get($options, 'menu'))
+			if ($pageMenuTree)
 			{
-				if ($menu = $menuModel->find($menu))
+				// Check if the menu tree exists
+				if ($menu = $menuModel->whereMenu($pageMenuTree)->first())
 				{
-					// See if we have a menu for this page
+					// Check if we have a menu for this page
 					$pageMenu = $menuModel->where('page_id', $this->id)->first();
 
-					// Get the parent id, if applicable
-					$parentId = array_get($options, "parent.{$options['menu']}");
+					$createMenu = false;
 
 					if (is_null($pageMenu))
 					{
-						// Menu attributes
-						$attrs = [
+						$createMenu = true;
+
+						$destination = $pageMenuParent == 0 ? $menu : $menuModel->find($pageMenuParent);
+					}
+					else
+					{
+						if ((int) $pageMenu->menu !== $pageMenuTree)
+						{
+							$createMenu = true;
+
+							// Delete from the current menu tree
+							$pageMenu->delete();
+
+							$destination = $menuModel->whereMenu($pageMenuTree)->first();
+						}
+						else
+						{
+							$guardedAttributes = $pageMenu->getGuarded();
+							array_push($guardedAttributes, 'id');
+
+							// Store menu attributes
+							$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
+
+							$pageMenu->fill($attrs)->save();
+
+							// Make it a top level item
+							if ($pageMenuParent === 0 && (int) $pageMenu->getDepth() !== 1)
+							{
+								$pageMenu->makeLastChildOf($menu);
+							}
+							else if ($pageMenuParent !== (int) $pageMenu->getParent()->id)
+							{
+								$destination = $pageMenuParent == 0 ? $menu : $menuModel->find($pageMenuParent);
+
+								$pageMenu->makeLastChildOf($destination);
+							}
+						}
+					}
+
+					// Are we creating the page menu?
+					if ($createMenu)
+					{
+						$pageMenu = new static::$menuModel(array(
 							'slug'    => $this->slug,
 							'name'    => $this->name,
 							'uri'     => $this->uri,
 							'type'    => 'page',
 							'page_id' => $this->id,
 							'enabled' => 1,
-						];
+						));
+
+						$pageMenu->makeLastChildOf($destination);
 					}
-					else
-					{
-						$guardedAttributes = $pageMenu->getGuarded();
-						array_push($guardedAttributes, 'id');
-
-						// Store menu attributes
-						$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
-
-						$pageMenu->delete();
-					}
-
-					$pageMenu = new static::$menuModel($attrs);
-
-					$destination = $parentId == 0 ? $menu : $menuModel->find($parentId);
-
-					$pageMenu->makeLastChildOf($destination);
 				}
 			}
 		}
