@@ -212,7 +212,7 @@ return [
 		}
 
 		// Register the menu page type
-		app('Platform\Menus\Menu')->registerType($app['Platform\Menus\PageType']);
+		app('Platform\Menus\Models\Menu')->registerType($app['Platform\Menus\PageType']);
 	},
 
 	/*

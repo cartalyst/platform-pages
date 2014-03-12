@@ -23,7 +23,7 @@ return array(
 	'index'  => 'List Pages',
 	'create' => 'Create new Pages',
 	'copy'   => 'Copy Page',
-	'edit'   => 'View / Edit Pages',
+	'edit'   => 'Edit Pages',
 	'delete' => 'Delete Pages',
 
 );
