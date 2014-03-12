@@ -6,7 +6,7 @@
 <div class="form-group{{ (empty($child) or ( ! empty($child) and $child->type != 'page')) ? ' hide' : null }}" data-item-type="page">
 	<label class="control-label" for="{{ sprintf($childId, 'page_id') }}">Select a page</label>
 
-	<select data-item-form="{{{ ! empty($child) ? $child->id : 'new-child' }}}" name="{{ sprintf($childName, '[page][page_id]') }}" id="{{ sprintf($childId, 'page_id') }}" class="form-control">
+	<select data-item-form="{{{ ! empty($child) ? $child->id : 'new-child' }}}" name="{{ sprintf($childName, '[page][page_id]') }}" id="{{ sprintf($childId, 'page_uri') }}" class="form-control">
 		@foreach ($pages as $page)
 		<option value="{{ $page->id }}"{{ Input::old('page.page_id', ! empty($child) ? $child->page_id : null) == $page->id ? ' selected="selected"' : null }}>/{{ $page->uri }}</option>
 		@endforeach
