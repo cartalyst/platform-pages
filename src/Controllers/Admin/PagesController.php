@@ -259,7 +259,7 @@ class PagesController extends AdminController {
 		$files = $this->pages->files();
 
 		// Get the root items
-		$menus = $this->menus->findRoot();
+		$menus = $this->menus->findAllRoot();
 
 		// Show the page
 		return View::make('platform/pages::form', compact(
