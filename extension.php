@@ -246,6 +246,15 @@ return [
 			Route::get('{id}/delete', 'PagesController@delete');
 		});
 
+		Route::group(['prefix' => 'api/v1/pages', 'namespace' => 'Platform\Pages\Controllers\Api\V1'], function()
+		{
+			Route::get('/', 'PagesController@index');
+			Route::post('/', 'PagesController@store');
+			Route::get('{id}', 'PagesController@show');
+			Route::put('{id}', 'PagesController@update');
+			Route::delete('{id}', 'PagesController@destroy');
+		});
+
 		App::before(function()
 		{
 			$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');

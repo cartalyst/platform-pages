@@ -28,7 +28,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class PagesController extends BaseController {
 
 	/**
-	 * Pages repository.
+	 * The Pages repository.
 	 *
 	 * @var \Platform\Pages\Repositories\PagesRepositoryInterface
 	 */

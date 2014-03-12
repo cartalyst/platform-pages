@@ -40,7 +40,7 @@ class PagesController extends AdminController {
 	];
 
 	/**
-	 * Pages repository.
+	 * The Pages repository.
 	 *
 	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
 	 */
