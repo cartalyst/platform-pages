@@ -92,7 +92,7 @@ class Page extends Entity {
 	 *
 	 * @var string
 	 */
-	protected static $menuModel = 'Platform\Menus\Menu';
+	protected static $menuModel = 'Platform\Menus\Models\Menu';
 
 	/**
 	 * {@inheritDoc}
