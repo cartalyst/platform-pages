@@ -67,7 +67,15 @@
 
 					<% for(i; i <= j; i++) { %>
 
-						<li <%= ( p.page === i ? 'class="active"' : '') %>><a data-grid="single" data-page="<%= i %>"><%= i %></a></li>
+						<% if (p.page === i) { %>
+
+						<li class="active"><span><%= i %></span></li>
+
+						<% } else { %>
+
+						<li><a data-grid="single" data-page="<%= i %>"><%= i %></a></li>
+
+						<% } %>
 
 					<% } %>
 
