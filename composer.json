@@ -41,8 +41,8 @@
 	"require": {
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.0.*",
-		"platform/admin": "dev-develop",
-		"platform/content": "dev-develop"
+		"platform/admin": "dev-master",
+		"platform/content": "dev-master"
 	},
 	"autoload": {
 		"classmap": [
