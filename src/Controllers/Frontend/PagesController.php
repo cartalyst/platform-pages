@@ -63,7 +63,7 @@ class PagesController extends BaseController {
 			throw new HttpException(404, 'Page does not exist.');
 		}
 
-		if (in_array($page->visibility, array('logged_in', 'admin')))
+		if (in_array($page->visibility, ['logged_in', 'admin']))
 		{
 			$canView = false;
 

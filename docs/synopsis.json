@@ -1,7 +1,0 @@
-{
-	"name" : "Pages Extension",
-	"branch" : "master",
-	"github" : "cartalyst/platform-pages",
-	"travis" : false,
-	"demo" : false
-}

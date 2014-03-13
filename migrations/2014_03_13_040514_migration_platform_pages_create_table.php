@@ -20,7 +20,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 
-class MigrationPlatformPagesInstallPages extends Migration {
+class MigrationPlatformPagesCreateTable extends Migration {
 
 	/**
 	 * Run the migrations.
