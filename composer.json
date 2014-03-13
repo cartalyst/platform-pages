@@ -42,7 +42,7 @@
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.0.*",
 		"platform/admin": "dev-develop",
-		"platform/content": "dev-feature/psr-4-php-54"
+		"platform/content": "dev-develop"
 	},
 	"autoload": {
 		"classmap": [
