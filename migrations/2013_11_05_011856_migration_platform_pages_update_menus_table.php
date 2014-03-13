@@ -18,16 +18,34 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+use Illuminate\Database\Migrations\Migration;
 
-	'title'  => 'Pages',
-	'create' => 'Create Page',
-	'update' => 'Update Page',
-	'copy'   => 'Copy Page',
+class MigrationPlatformPagesUpdateMenusTable extends Migration {
 
-	'tabs' => array(
-		'general'    => 'General',
-		'attributes' => 'Attributes',
-	),
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::table('menus', function($table)
+		{
+			$table->integer('page_id')->after('type')->nullable();
+		});
+	}
 
-);
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::table('menus', function($table)
+		{
+			$table->dropColumn('page_id');
+		});
+	}
+
+}

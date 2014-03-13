@@ -14,11 +14,11 @@
  * @version    2.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -29,7 +29,19 @@ return array(
 	|
 	*/
 
-	'default' => 'welcome',
+	'default_page' => 'welcome',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Default Section area
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify the default section when using database storage
+	| type.
+	|
+	*/
+
+	'default_section' => 'content',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -40,7 +52,18 @@ return array(
 	|
 	*/
 
-	'template' => 'templates/default',
+	'default_template' => 'layouts/default',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Default 404 Error Page
+	|--------------------------------------------------------------------------
+	|
+	| Here you may specify the default 404 page used for 404 error pages.
+	|
+	*/
+
+	'not_found' => null,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -52,11 +75,12 @@ return array(
 	|
 	*/
 
-	'exclude' => array(
-		'errors',
+	'exclude' => [
+
 		'modals',
 		'pages',
 		'partials',
-	),
 
-);
+	],
+
+];

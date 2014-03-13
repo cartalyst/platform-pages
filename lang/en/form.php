@@ -14,7 +14,7 @@
  * @version    2.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
@@ -48,6 +48,15 @@ return array(
 	'groups'      => 'Groups',
 	'groups_help' => 'What user groups should be able to see this page?',
 
+	'navigation' => array(
+		'legend' => 'Navigation',
+
+		'menu'        => 'Menu',
+		'select_menu' => '-- Select a Menu --',
+		'top_level'   => '-- Top Level --',
+	),
+	'navigation_help' => 'Add this page to your navigation.',
+
 	'template'      => 'Template',
 	'template_help' => 'Page template to use.',
 
@@ -64,21 +73,6 @@ return array(
 	'value_help' => "The page's value. @content call is allowed.",
 
 	'file'      => 'File',
-	'file_help' => 'File to use.',
-
-	'create' => array(
-		'legend'  => 'Add Page',
-		'summary' => 'Please supply the following information.',
-	),
-
-	'update' => array(
-		'legend'  => 'Edit Page',
-		'summary' => 'Please supply the following information.',
-	),
-
-	'copy' => array(
-		'legend'  => 'Copy Page',
-		'summary' => 'Please supply the following information.',
-	),
+	'file_help' => 'Choose the file to use when rendering this page.',
 
 );

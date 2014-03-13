@@ -14,12 +14,11 @@
  * @version    2.0.0
  * @author     Cartalyst LLC
  * @license    BSD License (3-clause)
- * @copyright  (c) 2011 - 2013, Cartalyst LLC
+ * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
 use Illuminate\Database\Migrations\Migration;
-use Platform\Pages\Models\Page;
 
 class MigrationPlatformPagesInstallPages extends Migration {
 
@@ -38,8 +37,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->string('uri');
 			$table->string('type');
 			$table->string('visibility');
-			$table->string('meta_description');
-			$table->string('meta_title');
+			$table->text('groups')->nullable();
 
 			// Database specific
 			$table->string('template')->nullable();
@@ -59,27 +57,37 @@ class MigrationPlatformPagesInstallPages extends Migration {
 			$table->unique('slug');
 		});
 
-		Schema::create('pages_groups', function($table)
-		{
-			$table->integer('page_id')->unsigned();
-			$table->integer('group_id')->unsigned();
-			$table->unique(array('page_id', 'group_id'));
-		});
+		// Create the meta attributes
+		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+
+		$attribute->create(array(
+			'namespace' => 'platform/pages',
+			'name'      => 'Meta Title',
+			'type'      => 'input',
+			'slug'      => 'meta_title',
+			'enabled'   => 1,
+		));
+		$attribute->create(array(
+			'namespace' => 'platform/pages',
+			'name'      => 'Meta Description',
+			'type'      => 'input',
+			'slug'      => 'meta_description',
+			'enabled'   => 1,
+		));
 
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
-		$page = new Page(array(
-			'name'              => 'Welcome',
-			'slug'              => 'welcome',
-			'uri'               => 'welcome',
-			'visibility'        => 'always',
-			'meta_title'        => 'Welcome',
-			'meta_description'  => 'The default home page.',
-			'type'              => 'filesystem',
-			'file'              => 'welcome',
-			'enabled'           => true,
+		$page = app('Platform\Pages\Models\Page')->create(array(
+			'name'             => 'Welcome',
+			'slug'             => 'welcome',
+			'uri'              => '/',
+			'visibility'       => 'always',
+			'meta_title'       => 'Welcome',
+			'meta_description' => 'The default home page.',
+			'type'             => 'filesystem',
+			'file'             => 'welcome',
+			'enabled'          => true,
 		));
-		$page->save();
 	}
 
 	/**
@@ -90,7 +98,6 @@ class MigrationPlatformPagesInstallPages extends Migration {
 	public function down()
 	{
 		Schema::drop('pages');
-		Schema::drop('pages_groups');
 	}
 
 }
