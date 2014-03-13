@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -75,12 +75,12 @@ return array(
 	|
 	*/
 
-	'exclude' => array(
+	'exclude' => [
 
 		'modals',
 		'pages',
 		'partials',
 
-	),
+	],
 
-);
+];

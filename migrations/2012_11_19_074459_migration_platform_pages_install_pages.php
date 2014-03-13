@@ -77,7 +77,7 @@ class MigrationPlatformPagesInstallPages extends Migration {
 
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
-		$page = app('Platform\Pages\Page')->create(array(
+		$page = app('Platform\Pages\Models\Page')->create(array(
 			'name'             => 'Welcome',
 			'slug'             => 'welcome',
 			'uri'              => '/',

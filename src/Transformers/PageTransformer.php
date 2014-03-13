@@ -1,4 +1,4 @@
-<?php
+<?php namespace Platform\Pages\Transformers;
 /**
  * Part of the Platform application.
  *
@@ -18,12 +18,23 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+use League\Fractal\TransformerAbstract;
+use Platform\Pages\Models\Page;
 
-	'index'  => 'List Pages',
-	'create' => 'Create new Pages',
-	'copy'   => 'Copy Page',
-	'edit'   => 'Edit Pages',
-	'delete' => 'Delete Pages',
+class PageTransformer extends TransformerAbstract {
 
-);
+	/**
+	 * {@inheritDoc}
+	 */
+	public function transform(Page $content)
+	{
+		return [
+			'id'         => (int) $content->id,
+			'name'       => $content->name,
+			'slug'       => $content->slug,
+			'body'       => $content->render(),
+			'created_at' => (string) $content->created_at,
+		];
+	}
+
+}

@@ -1,4 +1,4 @@
-<?php namespace Platform\Pages;
+<?php namespace Platform\Pages\Models;
 /**
  * Part of the Platform application.
  *
@@ -22,7 +22,7 @@ use Cartalyst\Themes\ThemeBag;
 use Closure;
 use Config;
 use InvalidArgumentException;
-use Platform\Attributes\Entity;
+use Platform\Attributes\Models\Entity;
 use RuntimeException;
 use Sentry;
 use Str;
@@ -39,23 +39,23 @@ class Page extends Entity {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $guarded = array(
+	protected $guarded = [
 		'id',
-		'created_at',
-		'updated_at',
 		'menu',
 		'parent',
-	);
+		'created_at',
+		'updated_at',
+	];
 
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $with = array('values.attribute');
+	protected $with = [
+		'values.attribute',
+	];
 
 	/**
-	 * The EAV namespace for the given entity.
-	 *
-	 * @var string
+	 * {@inheritDoc}
 	 */
 	protected $eavNamespace = 'platform/pages';
 
@@ -85,19 +85,34 @@ class Page extends Entity {
 	 *
 	 * @var string
 	 */
-	protected static $contentModel = 'Platform\Content\Content';
+	protected static $contentModel = 'Platform\Content\Models\Content';
 
 	/**
 	 * The menu model.
 	 *
 	 * @var string
 	 */
-	protected static $menuModel = 'Platform\Menus\Menu';
+	protected static $menuModel = 'Platform\Menus\Models\Menu';
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function save(array $options = array())
+	public static function find($id, $columns = ['*'])
+	{
+		$instance = new static;
+
+		if ($page = $instance->newQuery()->whereSlug($id)->first($columns))
+		{
+			return $page;
+		}
+
+		return parent::find($id, $columns);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function save(array $options = [])
 	{
 		parent::save($options);
 
@@ -195,7 +210,7 @@ class Page extends Entity {
 	{
 		if ( ! $groups)
 		{
-			return array();
+			return [];
 		}
 
 		if (is_array($groups))
@@ -311,7 +326,7 @@ class Page extends Entity {
 
 		$type = $this->type;
 
-		if (in_array($type, array('filesystem', 'database')))
+		if (in_array($type, ['filesystem', 'database']))
 		{
 			$view = "pages/{$this->file}";
 
@@ -348,7 +363,8 @@ class Page extends Entity {
 		$page = $this;
 
 		$responses = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
-		$data      = array();
+
+		$data = [];
 
 		foreach ($responses as $response)
 		{
@@ -373,25 +389,6 @@ class Page extends Entity {
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Find a model by its primary key.
-	 *
-	 * @param  mixed  $id
-	 * @param  array  $columns
-	 * @return \Illuminate\Database\Eloquent\Model|Collection
-	 */
-	public static function find($id, $columns = array('*'))
-	{
-		$instance = new static;
-
-		if ($page = $instance->newQuery()->where('slug', $id)->first($columns))
-		{
-			return $page;
-		}
-
-		return parent::find($id, $columns);
 	}
 
 	/**

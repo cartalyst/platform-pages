@@ -21,44 +21,44 @@
 interface PageRepositoryInterface {
 
 	/**
-	 * Return a dataset compatible with the data grid.
+	 * Returns a dataset compatible with data grid.
 	 *
-	 * @return mixed
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function grid();
 
 	/**
-	 * Return all the page entries.
+	 * Returns all the page entries.
 	 *
-	 * @return \Platform\Pages\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function findAll();
 
 	/**
-	 * Return all the enabled page entries.
+	 * Returns all the enabled page entries.
 	 *
-	 * @return \Platform\Pages\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function findAllEnabled();
 
 	/**
-	 * Get an page by it's primary key.
+	 * Returns a page by its primary key.
 	 *
 	 * @param  int  $id
-	 * @return \Platform\Pages\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function find($id);
 
 	/**
-	 * Get an page by it's primary key that is enabled.
+	 * Returns a page by its primary key that is enabled.
 	 *
 	 * @param  int  $id
-	 * @return \Platform\Pages\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function findEnabled($id);
 
 	/**
-	 * Determine if the given page is valid for creation.
+	 * Determines if the given page is valid for creation.
 	 *
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
@@ -66,9 +66,9 @@ interface PageRepositoryInterface {
 	public function validForCreation(array $data);
 
 	/**
-	 * Determine if the given page is valid for updating.
+	 * Determines if the given page is valid for updating.
 	 *
-	 * @param  int    $id
+	 * @param  int  $id
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
@@ -78,16 +78,16 @@ interface PageRepositoryInterface {
 	 * Creates a page with the given data.
 	 *
 	 * @param  array  $data
-	 * @return \Cartalyst\Pages\Page
+	 * @return \Cartalyst\Pages\Models\Page
 	 */
 	public function create(array $data);
 
 	/**
 	 * Updates a page with the given data.
 	 *
-	 * @param  int    $id
+	 * @param  int  $id
 	 * @param  array  $data
-	 * @return \Cartalyst\Pages\Page
+	 * @return \Cartalyst\Pages\Models\Page
 	 */
 	public function update($id, array $data);
 
@@ -98,5 +98,21 @@ interface PageRepositoryInterface {
 	 * @return bool
 	 */
 	public function delete($id);
+
+	/**
+	 * Enables the given page.
+	 *
+	 * @param  int  $id
+	 * @return \Cartalyst\Pages\Models\Page
+	 */
+	public function enable($id);
+
+	/**
+	 * Disables the given page.
+	 *
+	 * @param  int  $id
+	 * @return \Cartalyst\Pages\Models\Page
+	 */
+	public function disable($id);
 
 }

@@ -27,12 +27,20 @@ use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Users\Repositories\GroupRepositoryInterface;
 use Redirect;
+use Response;
 use View;
 
 class PagesController extends AdminController {
 
 	/**
-	 * Pages repository.
+	 * {@inheritDoc}
+	 */
+	protected $csrfWhitelist = [
+		'executeAction',
+	];
+
+	/**
+	 * The Pages repository.
 	 *
 	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
 	 */
@@ -51,6 +59,15 @@ class PagesController extends AdminController {
 	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
 	 */
 	protected $groups;
+
+	/**
+	 * Holds all the mass actions we can execute.
+	 *
+	 * @var array
+	 */
+	protected $actions = [
+		'delete', 'enable', 'disable',
+	];
 
 	/**
 	 * Constructor.
@@ -88,14 +105,23 @@ class PagesController extends AdminController {
 	 */
 	public function grid()
 	{
-		return DataGrid::make($this->pages->grid(), array(
+		$data = $this->pages->grid();
+
+		$columns = [
 			'id',
 			'name',
 			'slug',
 			'uri',
 			'enabled',
 			'created_at',
-		));
+		];
+
+		$settings = [
+			'sort'      => 'created_at',
+			'direction' => 'desc',
+		];
+
+		return DataGrid::make($data, $columns, $settings);
 	}
 
 	/**
@@ -159,20 +185,45 @@ class PagesController extends AdminController {
 	 */
 	public function delete($id)
 	{
-		// Delete the page
 		if ($this->pages->delete($id))
 		{
-			return Redirect::toAdmin('pages')->withSuccess(Lang::get('platform/pages::message.success.delete'));
+			$message = Lang::get('platform/pages::message.success.delete');
+
+			return Redirect::toAdmin('pages')->withSuccess($message);
 		}
 
-		return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.error.delete'));
+		$message = Lang::get('platform/pages::message.error.delete');
+
+		return Redirect::toAdmin('pages')->withErrors($message);
+	}
+
+	/**
+	 * Executes the mass action.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function executeAction()
+	{
+		$action = Input::get('action');
+
+		if (in_array($action, $this->actions))
+		{
+			foreach (Input::get('entries', []) as $entry)
+			{
+				$this->pages->{$action}($entry);
+			}
+
+			return Response::make('Success');
+		}
+
+		return Response::make('Failed', 500);
 	}
 
 	/**
 	 * Shows the form.
 	 *
 	 * @param  string  $mode
-	 * @param  int     $id
+	 * @param  int  $id
 	 * @return mixed
 	 */
 	protected function showForm($mode, $id = null)
@@ -182,7 +233,9 @@ class PagesController extends AdminController {
 		{
 			if ( ! $page = $this->pages->find($id))
 			{
-				return Redirect::toAdmin('pages')->withErrors(Lang::get('platform/pages::message.not_found', compact('id')));
+				$message = Lang::get('platform/pages::message.not_found', compact('id'));
+
+				return Redirect::toAdmin('pages')->withErrors($message);
 			}
 		}
 		else
@@ -206,47 +259,49 @@ class PagesController extends AdminController {
 		$files = $this->pages->files();
 
 		// Get the root items
-		$menus = $this->menus->findRoot();
+		$menus = $this->menus->findAllRoot();
 
 		// Show the page
-		return View::make('platform/pages::form', compact('mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'));
+		return View::make('platform/pages::form', compact(
+			'mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'
+		));
 	}
 
 	/**
 	 * Processes the form.
 	 *
 	 * @param  string  $mode
-	 * @param  int     $id
+	 * @param  int  $id
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
 	protected function processForm($mode, $id = null)
 	{
 		// Get the input data
-		$input = Input::all();
+		$data = Input::all();
 
 		// Do we have a page identifier?
 		if ($id)
 		{
-			// Check if the input is valid
-			$messages = $this->pages->validForUpdate($id, $input);
+			// Check if the data is valid
+			$messages = $this->pages->validForUpdate($id, $data);
 
 			// Do we have any errors?
 			if ($messages->isEmpty())
 			{
 				// Update the page
-				$page = $this->pages->update($id, $input);
+				$page = $this->pages->update($id, $data);
 			}
 		}
 		else
 		{
-			// Check if the input is valid
-			$messages = $this->pages->validForCreation($input);
+			// Check if the data is valid
+			$messages = $this->pages->validForCreation($data);
 
 			// Do we have any errors?
 			if ($messages->isEmpty())
 			{
 				// Create the pages
-				$page = $this->pages->create($input);
+				$page = $this->pages->create($data);
 			}
 		}
 

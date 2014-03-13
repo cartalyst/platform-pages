@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Platform\Menus\Menu;
+use Platform\Menus\Models\Menu;
 use Platform\Menus\Types\BaseType;
 use Platform\Menus\Types\TypeInterface;
 

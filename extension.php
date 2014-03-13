@@ -23,7 +23,7 @@ use Illuminate\Foundation\Application;
 use Platform\Pages\Controllers\Frontend\PagesController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-return array(
+return [
 
 	/*
 	|--------------------------------------------------------------------------
@@ -101,12 +101,12 @@ return array(
 	|
 	*/
 
-	'require' => array(
+	'require' => [
 
 		'platform/admin',
 		'platform/content',
 
-	),
+	],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -158,7 +158,7 @@ return array(
 
 		$app->bind('Platform\Pages\Repositories\PageRepositoryInterface', function($app)
 		{
-			return new Platform\Pages\Repositories\DbPageRepository(get_class($app['Platform\Pages\Page']));
+			return new Platform\Pages\Repositories\DbPageRepository(get_class($app['Platform\Pages\Models\Page']));
 		});
 	},
 
@@ -180,11 +180,11 @@ return array(
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
 		// Set the theme bag and the active theme
-		app('Platform\Pages\Page')->setThemeBag($app['themes']);
-		app('Platform\Pages\Page')->setTheme($app['config']['cartalyst/themes::active']);
+		app('Platform\Pages\Models\Page')->setThemeBag($app['themes']);
+		app('Platform\Pages\Models\Page')->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
-		app('Platform\Attributes\Attribute')->registerNamespace(app('Platform\Pages\Page'));
+		app('Platform\Attributes\Models\Attribute')->registerNamespace(app('Platform\Pages\Models\Page'));
 
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
@@ -212,7 +212,7 @@ return array(
 		}
 
 		// Register the menu page type
-		app('Platform\Menus\Menu')->registerType($app['Platform\Menus\PageType']);
+		app('Platform\Menus\Models\Menu')->registerType($app['Platform\Menus\PageType']);
 	},
 
 	/*
@@ -232,9 +232,10 @@ return array(
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(array('prefix' => admin_uri().'/pages', 'namespace' => 'Platform\Pages\Controllers\Admin'), function()
+		Route::group(['prefix' => admin_uri().'/pages', 'namespace' => 'Platform\Pages\Controllers\Admin'], function()
 		{
 			Route::get('/', 'PagesController@index');
+			Route::post('/', 'PagesController@executeAction');
 			Route::get('grid', 'PagesController@grid');
 			Route::get('create', 'PagesController@create');
 			Route::post('create', 'PagesController@store');
@@ -243,6 +244,15 @@ return array(
 			Route::get('{id}/copy', 'PagesController@copy');
 			Route::post('{id}/copy', 'PagesController@store');
 			Route::get('{id}/delete', 'PagesController@delete');
+		});
+
+		Route::group(['prefix' => 'api/v1/pages', 'namespace' => 'Platform\Pages\Controllers\Api\V1'], function()
+		{
+			Route::get('/', 'PagesController@index');
+			Route::post('/', 'PagesController@store');
+			Route::get('{id}', 'PagesController@show');
+			Route::put('{id}', 'PagesController@update');
+			Route::delete('{id}', 'PagesController@destroy');
 		});
 
 		App::before(function()
@@ -280,7 +290,7 @@ return array(
 
 	'permissions' => function()
 	{
-		return array(
+		return [
 
 			'Platform\Pages\Controllers\Admin\PagesController@index,grid' => Lang::get('platform/pages::permissions.index'),
 			'Platform\Pages\Controllers\Admin\PagesController@create'     => Lang::get('platform/pages::permissions.create'),
@@ -288,7 +298,7 @@ return array(
 			'Platform\Pages\Controllers\Admin\PagesController@edit'       => Lang::get('platform/pages::permissions.edit'),
 			'Platform\Pages\Controllers\Admin\PagesController@delete'     => Lang::get('platform/pages::permissions.delete'),
 
-		);
+		];
 	},
 
 	/*
@@ -296,15 +306,17 @@ return array(
 	| Widgets
 	|--------------------------------------------------------------------------
 	|
-	| List of custom widgets associated with the extension. Like routes, the
-	| value for the widget key may either be a closure or a class & method
-	| name (joined with an @ symbol). Of course, Platform will guess the
+	| Closure that is called when the extension is started. You can register
+	| all your custom widgets here. Of course, Platform will guess the
 	| widget class for you, this is just for custom widgets or if you
 	| do not wish to make a new class for a very small widget.
 	|
 	*/
 
-	'widgets' => array(),
+	'widgets' => function()
+	{
+
+	},
 
 	/*
 	|--------------------------------------------------------------------------
@@ -318,95 +330,91 @@ return array(
 
 	'settings' => function()
 	{
-		return array(
+		return [
 
-			'pages' => array('name' => 'Pages'),
+			'pages' => ['name' => 'Pages'],
 
-			'pages::general' => array('name' => 'General'),
+			'pages::general' => ['name' => 'General'],
 
-			'pages::general.default_page' => array(
+			'pages::general.default_page' => [
 				'name'    => 'Default Page',
 				'config'  => 'platform/pages::default_page',
 				'info'    => 'The page that is shown on the root route.',
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
+					$options = [];
 
-					$options  = array();
+					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
 					foreach ($page->findAll() as $page)
 					{
-						$options[] = array(
+						$options[] = [
 							'value' => $page->slug,
 							'label' => $page->name,
-						);
+						];
 					}
 
 					return $options;
 				}
-			),
+			],
 
-			'pages::general.default_section' => array(
+			'pages::general.default_section' => [
 				'name'    => 'Default Section',
 				'config'  => 'platform/pages::default_section',
 				'info'    => 'The default section when using the database storage type.',
 				'type'    => 'text',
-			),
+			],
 
-			'pages::general.default_template' => array(
+			'pages::general.default_template' => [
 				'name'    => 'Default Template',
 				'config'  => 'platform/pages::default_template',
 				'info'    => 'The default template that is used for pages.',
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-					$options = array();
+					$options = [];
 
 					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
 					foreach ($page->templates() as $value => $label)
 					{
-						$options[] = array(
-							'value' => $value,
-							'label' => $label,
-						);
+						$options[] = compact('value', 'label');
 					}
 
 					return $options;
 				}
-			),
+			],
 
-			'pages::general.not_found' => array(
+			'pages::general.not_found' => [
 				'name'    => '404 Error Page',
 				'config'  => 'platform/pages::not_found',
 				'info'    => 'The page that is shown when a 404 error arises.',
 				'type'    => 'dropdown',
 				'options' => function()
 				{
-
 					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
-					$options  = array();
+					$options = [];
 
-					$options[] = array(
+					$options[] = [
 						'value' => null,
 						'label' => 'Default',
-					);
+					];
 
 					foreach ($page->findAll() as $page)
 					{
-						$options[] = array(
+						$options[] = [
 							'value' => $page->slug,
 							'label' => $page->name,
-						);
+						];
 					}
 
 					return $options;
 				}
-			),
+			],
 
-		);
+		];
 	},
 
 	/*
@@ -427,20 +435,20 @@ return array(
 	|
 	*/
 
-	'menus' => array(
+	'menus' => [
 
-		'admin' => array(
+		'admin' => [
 
-			array(
+			[
 				'slug'  => 'admin-pages',
 				'name'  => 'Pages',
 				'class' => 'fa fa-file',
 				'uri'   => 'pages',
 				'regex' => '/admin\/pages/i',
-			),
+			],
 
-		),
+		],
 
-	),
+	],
 
-);
+];

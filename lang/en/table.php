@@ -24,7 +24,7 @@ return array(
 	'name'       => 'Name',
 	'slug'       => 'Short name',
 	'type'       => 'Storage Type',
-	'enabled'    => 'Enabled',
+	'enabled'    => 'Status',
 	'created_at' => 'Created at',
 
 );
