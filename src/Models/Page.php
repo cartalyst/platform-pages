@@ -24,10 +24,8 @@ use Config;
 use InvalidArgumentException;
 use Platform\Attributes\Models\Entity;
 use RuntimeException;
-use Sentry;
 use Str;
 use Symfony\Component\Finder\Finder;
-use View;
 
 class Page extends Entity {
 
@@ -200,6 +198,17 @@ class Page extends Entity {
 	}
 
 	/**
+	 * Get mutator for the "type" attribute.
+	 *
+	 * @param  string  $type
+	 * @return string
+	 */
+	public function getTypeAttribute($type)
+	{
+		return $this->exists ? $type : 'database';
+	}
+
+	/**
 	 * Get mutator for the "groups" attribute.
 	 *
 	 * @param  array  $groups
@@ -271,6 +280,17 @@ class Page extends Entity {
 	}
 
 	/**
+	 * Get mutator for the "template" attribute.
+	 *
+	 * @param  string  $template
+	 * @return string
+	 */
+	public function getTemplateAttribute($template)
+	{
+		return $this->exists ? $template : Config::get('platform/pages::default_template');
+	}
+
+	/**
 	 * Set mutator for the "template" attribute.
 	 *
 	 * @param  string  $template
@@ -279,6 +299,17 @@ class Page extends Entity {
 	public function setTemplateAttribute($template)
 	{
 		$this->attributes['template'] = ($this->type === 'filesystem' ? null : $template);
+	}
+
+	/**
+	 * Get mutator for the "section" attribute.
+	 *
+	 * @param  string  $section
+	 * @return string
+	 */
+	public function getSectionAttribute($section)
+	{
+		return $this->exists ? $section : Config::get('platform/pages::default_section');
 	}
 
 	/**
@@ -312,6 +343,17 @@ class Page extends Entity {
 	public function setFileAttribute($file)
 	{
 		$this->attributes['file'] = ($this->type === 'database' ? null : $file);
+	}
+
+	/**
+	 * Get mutator for the "visibility" attribute.
+	 *
+	 * @param  string  $visibility
+	 * @return string
+	 */
+	public function getVisibilityAttribute($visibility)
+	{
+		return $this->exists ? $visibility : 'always';
 	}
 
 	/**

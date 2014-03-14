@@ -252,9 +252,6 @@ class PagesController extends AdminController {
 		// Get all the available templates
 		$templates = $this->pages->templates();
 
-		// Get the default template
-		$defaultTemplate = Config::get('platform/pages::default_template', null);
-
 		// Get all the available page files
 		$files = $this->pages->files();
 
@@ -263,7 +260,7 @@ class PagesController extends AdminController {
 
 		// Show the page
 		return View::make('platform/pages::form', compact(
-			'mode', 'page', 'groups', 'templates', 'defaultTemplate', 'files', 'menus', 'menu'
+			'mode', 'page', 'groups', 'templates', 'files', 'menus', 'menu'
 		));
 	}
 

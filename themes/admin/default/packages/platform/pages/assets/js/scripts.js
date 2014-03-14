@@ -1,57 +1,41 @@
-jQuery(document).ready(function($) {
-
+jQuery(document).ready(function($)
+{
 	// When the page name changes, we generate the slug
-	$(document).on('keyup', '#name', function() {
-
+	$(document).on('keyup', '#name', function()
+	{
 		$('#slug').val($(this).val().slugify());
-
 	});
 
 	// When the storage type changes
-	$(document).on('change', '#type', function() {
+	$(document).on('change', '#type', function()
+	{
+		var val = $(this).val();
 
-		var selectedType = $(this).val();
+		$('[data-type]').addClass('hide');
 
-		$('[data-storage]').addClass('hide');
+		$('[data-type="' + val + '"]').removeClass('hide');
 
-		$('[data-storage="' + selectedType + '"]').removeClass('hide');
+		$((val == 'filesystem' ? '#file' : '#value')).attr('required', true);
 
-		if (selectedType === 'filesystem')
-		{
-			$('#file').attr('required', true);
-			$('#value').removeAttr('required');
-		}
-		else if (selectedType === 'database')
-		{
-			$('#value').attr('required');
-			$('#file').removeAttr('required', true);
-		}
-
+		$((val == 'filesystem' ? '#value' : '#file')).removeAttr('required');
 	});
 
 	// When the page visibility changes
-	$(document).on('change', '#visibility', function() {
+	$(document).on('change', '#visibility', function()
+	{
+		var status = $(this).val() === 'always';
 
-		if ($(this).val() === 'always')
-		{
-			$('#groups').prop('disabled', 'disabled');
-		}
-		else
-		{
-			$('#groups').prop('disabled', false);
-		}
-
+		$('#groups').prop('disabled', status);
 	});
 
 	// When the user selects a menu
-	$('#menu').on('change', function() {
-
+	$('#menu').on('change', function()
+	{
 		var menuId = $(this).val();
 
 		$('[data-menu-parent]').addClass('hide');
 
 		$('[data-menu-parent="' + menuId + '"]').removeClass('hide');
-
 	});
 
 	// Instantiate the editor
@@ -62,5 +46,4 @@ jQuery(document).ready(function($) {
 
 	// Validate the form
 	H5F.setup(document.getElementById('pages-form'));
-
 });

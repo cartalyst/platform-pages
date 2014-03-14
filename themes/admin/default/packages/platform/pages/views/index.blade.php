@@ -15,70 +15,60 @@
 @section('scripts')
 @parent
 <script>
-$(function()
-{
-	var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
-		loader: '.loading',
-		scroll: '.data-grid',
-		callback: function()
-		{
-			$('#checkAll').prop('checked', false);
-
-			$('#actions').prop('disabled', true);
-		}
-	});
-
-	$('#checkAll').click(function()
+	$(function()
 	{
-		$('input:checkbox').not(this).prop('checked', this.checked);
-
-		if ($('input[name="entries[]"]:checked').length > 0)
-		{
-			$('#actions').prop('disabled', false);
-		}
-		else
-		{
-			$('#actions').prop('disabled', true);
-		}
-	});
-
-	$(document).on('click', 'input[name="entries[]"]', function()
-	{
-		if ($('input[name="entries[]"]:checked').length > 0)
-		{
-			$('#actions').prop('disabled', false);
-		}
-		else
-		{
-			$('#actions').prop('disabled', true);
-		}
-	});
-
-	$(document).on('click', '[data-action]', function(e)
-	{
-		e.preventDefault();
-
-		var action = $(this).data('action');
-
-		var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
-		{
-			return +e.value;
-		});
-
-		$.ajax({
-			type: 'POST',
-			url: '{{ URL::toAdmin('pages') }}',
-			data: {
-				action  : action,
-				entries : entries
-			},
-			success: function(response)
+		var dg = $.datagrid('main', '.data-grid', '.data-grid_pagination', '.data-grid_applied', {
+			loader: '.loading',
+			scroll: '.data-grid',
+			callback: function()
 			{
-				dg.refresh();
+				$('#checkAll').prop('checked', false);
+
+				$('#actions').prop('disabled', true);
 			}
 		});
+
+		$('#checkAll').click(function()
+		{
+			$('input:checkbox').not(this).prop('checked', this.checked);
+
+			var status = $('input[name="entries[]"]:checked').length > 0;
+
+			$('#actions').prop('disabled', ! status);
+		});
+
+		$(document).on('click', 'input[name="entries[]"]', function()
+		{
+			var status = $('input[name="entries[]"]:checked').length > 0;
+
+			$('#actions').prop('disabled', ! status);
+		});
+
+		$(document).on('click', '[data-action]', function(e)
+		{
+			e.preventDefault();
+
+			var action = $(this).data('action');
+
+			var entries = $.map($('input[name="entries[]"]:checked'), function(e, i)
+			{
+				return +e.value;
+			});
+
+			$.ajax({
+				type: 'POST',
+				url: '{{ URL::toAdmin('pages') }}',
+				data: {
+					action  : action,
+					entries : entries
+				},
+				success: function(response)
+				{
+					dg.refresh();
+				}
+			});
+		});
 	});
-});
 </script>
 @stop
 
@@ -124,8 +114,8 @@ $(function()
 
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="#" data-grid="main" data-reset>{{{ trans('general.show_all') }}}</a></li>
-					<li><a href="#" data-grid="main" data-filter="enabled:1" data-label="enabled:{{{ trans('general.status') }}}:{{{ trans('general.all_enabled') }}}">{{{ trans('general.show_enabled') }}}</a></li>
-					<li><a href="#" data-grid="main" data-filter="enabled:0" data-label="enabled:{{{ trans('general.status') }}}:{{{ trans('general.all_disabled') }}}">{{{ trans('general.show_disabled') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="enabled:1" data-label="enabled::{{{ trans('general.all_enabled') }}}" data-reset-filter>{{{ trans('general.show_enabled') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('general.all_disabled') }}}" data-reset-filter>{{{ trans('general.show_disabled') }}}</a></li>
 				</ul>
 
 			</div>
