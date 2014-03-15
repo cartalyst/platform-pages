@@ -237,14 +237,15 @@ class PagesController extends AdminController {
 
 				return Redirect::toAdmin('pages')->withErrors($message);
 			}
+
+			$menu = $this->menus->findWhere('page_id', $page->id);
 		}
 		else
 		{
 			$page = $this->pages->createModel();
-		}
 
-		// Get this page menu, if available
-		$menu = $this->menus->findWhere('page_id', $page->id);
+			$menu = $this->menus->createModel();
+		}
 
 		// Get all the available user groups
 		$groups = $this->groups->findAll();
