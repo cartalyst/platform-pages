@@ -122,7 +122,7 @@ class Page extends Entity {
 			$pageMenuTree = (int) array_get($options, 'menu', null);
 
 			// Get the menu parent id, if applicable
-			$pageMenuParent = (int) array_get($options, "parent.{$options['menu']}");
+			$pageMenuParent = (int) array_get($options, "parent.{$pageMenuTree}");
 
 			// Find the menu
 			if ($pageMenuTree)
