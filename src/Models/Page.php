@@ -128,50 +128,51 @@ class Page extends Entity {
 			if ($pageMenuTree)
 			{
 				// Check if the menu tree exists
-				if ($menu = $menuModel->whereMenu($pageMenuTree)->first())
+				if ($menuTree = $menuModel->whereMenu($pageMenuTree)->first())
 				{
-					// Check if we have a menu for this page
-					$pageMenu = $menuModel->where('page_id', $this->id)->first();
-
 					$createMenu = false;
 
-					if (is_null($pageMenu))
+					// Check if we have a menu for this page
+					if ( ! $pageMenu = $menuModel->where('page_id', $this->id)->first())
 					{
 						$createMenu = true;
 
-						$destination = $pageMenuParent == 0 ? $menu : $menuModel->find($pageMenuParent);
+						$destination = $pageMenuParent === 0 ? $menuTree : $menuModel->find($pageMenuParent);
 					}
 					else
 					{
+						// Are we changing from menu trees?
 						if ((int) $pageMenu->menu !== $pageMenuTree)
 						{
 							$createMenu = true;
 
-							// Delete from the current menu tree
-							$pageMenu->delete();
-
-							$destination = $menuModel->whereMenu($pageMenuTree)->first();
-						}
-						else
-						{
 							$guardedAttributes = $pageMenu->getGuarded();
 							array_push($guardedAttributes, 'id');
 
 							// Store menu attributes
 							$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
 
-							$pageMenu->fill($attrs)->save();
+							// Delete from the current menu tree
+							$pageMenu->delete();
 
-							// Make it a top level item
-							if ($pageMenuParent === 0 && (int) $pageMenu->getDepth() !== 1)
-							{
-								$pageMenu->makeLastChildOf($menu);
-							}
-							else if ($pageMenuParent !== (int) $pageMenu->getParent()->id)
-							{
-								$destination = $pageMenuParent == 0 ? $menu : $menuModel->find($pageMenuParent);
+							$destination = $menuModel->whereMenu($pageMenuTree)->first();
+						}
 
-								$pageMenu->makeLastChildOf($destination);
+						// Make it a top level item
+						else if ($pageMenuParent === 0 && (int) $pageMenu->getDepth() !== 1)
+						{
+							$pageMenu->makeLastChildOf($menuTree);
+						}
+						else if ($pageMenuParent !== 0 && $pageMenuParent != $pageMenu->id)
+						{
+							if ($menuParent = $menuModel->find($pageMenuParent))
+							{
+								if ($pageMenu->getParent()->id != $menuParent->id)
+								{
+									$destination = $menuParent;
+
+									$pageMenu->makeLastChildOf($destination);
+								}
 							}
 						}
 					}
@@ -189,6 +190,11 @@ class Page extends Entity {
 						));
 
 						$pageMenu->makeLastChildOf($destination);
+
+						if (isset($attrs))
+						{
+							$pageMenu->fill($attrs)->save();
+						}
 					}
 				}
 			}
@@ -254,7 +260,7 @@ class Page extends Entity {
 	 */
 	public function getEnabledAttribute($enabled)
 	{
-		return (bool) $enabled;
+		return (bool) $this->exists ? $enabled : true;
 	}
 
 	/**

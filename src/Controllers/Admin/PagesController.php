@@ -237,13 +237,15 @@ class PagesController extends AdminController {
 
 				return Redirect::toAdmin('pages')->withErrors($message);
 			}
-
-			$menu = $this->menus->findWhere('page_id', $page->id);
 		}
 		else
 		{
 			$page = $this->pages->createModel();
+		}
 
+		// Find this page menu
+		if ( ! $menu = $this->menus->findWhere('page_id', (int) $page->id))
+		{
 			$menu = $this->menus->createModel();
 		}
 
