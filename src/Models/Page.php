@@ -211,7 +211,7 @@ class Page extends Entity {
 	 */
 	public function getTypeAttribute($type)
 	{
-		return $this->exists ? $type : 'database';
+		return ($this->exists || $type) ? $type : 'database';
 	}
 
 	/**
@@ -260,7 +260,7 @@ class Page extends Entity {
 	 */
 	public function getEnabledAttribute($enabled)
 	{
-		return (bool) $this->exists ? $enabled : true;
+		return ($this->exists || $enabled) ? (bool) $enabled : true;
 	}
 
 	/**
@@ -293,7 +293,7 @@ class Page extends Entity {
 	 */
 	public function getTemplateAttribute($template)
 	{
-		return $this->exists ? $template : Config::get('platform/pages::default_template');
+		return ($this->exists || $template) ? $template : Config::get('platform/pages::default_template');
 	}
 
 	/**
@@ -315,7 +315,7 @@ class Page extends Entity {
 	 */
 	public function getSectionAttribute($section)
 	{
-		return $this->exists ? $section : Config::get('platform/pages::default_section');
+		return ($this->exists || $section) ? $section : Config::get('platform/pages::default_section');
 	}
 
 	/**
@@ -359,7 +359,7 @@ class Page extends Entity {
 	 */
 	public function getVisibilityAttribute($visibility)
 	{
-		return $this->exists ? $visibility : 'always';
+		return ($this->exists || $visibility) ? $visibility : 'always';
 	}
 
 	/**
