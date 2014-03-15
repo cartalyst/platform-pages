@@ -158,7 +158,9 @@ return [
 
 		$app->bind('Platform\Pages\Repositories\PageRepositoryInterface', function($app)
 		{
-			return new Platform\Pages\Repositories\DbPageRepository(get_class($app['Platform\Pages\Models\Page']));
+			$model = get_class($app['Platform\Pages\Models\Page']);
+
+			return new Platform\Pages\Repositories\DbPageRepository($model);
 		});
 	},
 
@@ -179,12 +181,15 @@ return [
 
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
+		// Get the page model
+		$model = app('Platform\Pages\Models\Page');
+
 		// Set the theme bag and the active theme
-		app('Platform\Pages\Models\Page')->setThemeBag($app['themes']);
-		app('Platform\Pages\Models\Page')->setTheme($app['config']['cartalyst/themes::active']);
+		$model->setThemeBag($app['themes']);
+		$model->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
-		app('Platform\Attributes\Models\Attribute')->registerNamespace(app('Platform\Pages\Models\Page'));
+		app('Platform\Attributes\Models\Attribute')->registerNamespace($model);
 
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
