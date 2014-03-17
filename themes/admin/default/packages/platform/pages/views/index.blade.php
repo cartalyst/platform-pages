@@ -113,9 +113,9 @@
 				</button>
 
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="#" data-grid="main" data-reset>{{{ trans('general.show_all') }}}</a></li>
-					<li><a href="#" data-grid="main" data-filter="enabled:1" data-label="enabled::{{{ trans('general.all_enabled') }}}" data-reset-filter>{{{ trans('general.show_enabled') }}}</a></li>
-					<li><a href="#" data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('general.all_disabled') }}}" data-reset-filter>{{{ trans('general.show_disabled') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter-reset>{{{ trans('general.show_all') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="enabled:1" data-label="enabled::{{{ trans('general.all_enabled') }}}" data-filter-reset>{{{ trans('general.show_enabled') }}}</a></li>
+					<li><a href="#" data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('general.all_disabled') }}}" data-filter-reset>{{{ trans('general.show_disabled') }}}</a></li>
 				</ul>
 
 			</div>
