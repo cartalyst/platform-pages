@@ -18,6 +18,7 @@
  * @link       http://cartalyst.com
  */
 
+use Input;
 use Lang;
 use League\Fractal\Manager;
 use Platform\Pages\Repositories\PageRepositoryInterface;
