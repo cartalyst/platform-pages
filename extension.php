@@ -253,11 +253,11 @@ return [
 
 		Route::group(['prefix' => 'api/v1/pages', 'namespace' => 'Platform\Pages\Controllers\Api\V1'], function()
 		{
-			Route::get('/', 'PagesController@index');
-			Route::post('/', 'PagesController@store');
-			Route::get('{id}', 'PagesController@show');
-			Route::put('{id}', 'PagesController@update');
-			Route::delete('{id}', 'PagesController@destroy');
+			Route::get('/', ['as' => 'api.v1.pages.all', 'uses' => 'PagesController@index']);
+			Route::post('/', ['as' => 'api.v1.pages.create', 'uses' => 'PagesController@store']);
+			Route::get('{id}', ['as' => 'api.v1.pages.show', 'uses' => 'PagesController@show']);
+			Route::put('{id}', ['as' => 'api.v1.pages.update', 'uses' => 'PagesController@update']);
+			Route::delete('{id}', ['as' => 'api.v1.pages.delete', 'uses' => 'PagesController@destroy']);
 		});
 
 		App::before(function()
