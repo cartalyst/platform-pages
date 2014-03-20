@@ -46,7 +46,8 @@
 	},
 	"autoload": {
 		"classmap": [
-			"migrations"
+			"database/migrations",
+			"database/seeds"
 		],
 		"psr-4": {
 			"Platform\\Pages\\" : "src/"
