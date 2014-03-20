@@ -282,6 +282,8 @@ return [
 
 	'seeds' => [
 
+		'Platform\Pages\Database\Seeds\PagesSeeder',
+
 	],
 
 	/*

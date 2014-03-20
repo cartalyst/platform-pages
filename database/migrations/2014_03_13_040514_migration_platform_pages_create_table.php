@@ -56,38 +56,6 @@ class MigrationPlatformPagesCreateTable extends Migration {
 			$table->engine = 'InnoDB';
 			$table->unique('slug');
 		});
-
-		// Create the meta attributes
-		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
-
-		$attribute->create(array(
-			'namespace' => 'platform/pages',
-			'name'      => 'Meta Title',
-			'type'      => 'input',
-			'slug'      => 'meta_title',
-			'enabled'   => 1,
-		));
-		$attribute->create(array(
-			'namespace' => 'platform/pages',
-			'name'      => 'Meta Description',
-			'type'      => 'input',
-			'slug'      => 'meta_description',
-			'enabled'   => 1,
-		));
-
-		// Create the welcome page, which will be the default
-		// for a Platform installation.
-		$page = app('Platform\Pages\Models\Page')->create(array(
-			'name'             => 'Welcome',
-			'slug'             => 'welcome',
-			'uri'              => '/',
-			'visibility'       => 'always',
-			'meta_title'       => 'Welcome',
-			'meta_description' => 'The default home page.',
-			'type'             => 'filesystem',
-			'file'             => 'welcome',
-			'enabled'          => true,
-		));
 	}
 
 	/**
