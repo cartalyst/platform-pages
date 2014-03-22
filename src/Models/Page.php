@@ -79,13 +79,6 @@ class Page extends Entity {
 	protected static $groupModel = 'Platform\Users\Group';
 
 	/**
-	 * The content model.
-	 *
-	 * @var string
-	 */
-	protected static $contentModel = 'Platform\Content\Models\Content';
-
-	/**
 	 * The menu model.
 	 *
 	 * @var string
@@ -380,9 +373,9 @@ class Page extends Entity {
 
 			if ($type === 'database')
 			{
-				// Get the content model
-				$contentModel = app($this->getContentModel());
-				$value = $contentModel->prepareContent($this->value);
+				// Get the content repository
+				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
+				$value = $repository->prepareContent(0, $this->value);
 
 				// We'll inject the section with the value, i.e. @content()
 				$result = static::$themeBag->getViewEnvironment()->inject($this->section, $value);
@@ -461,16 +454,6 @@ class Page extends Entity {
 	}
 
 	/**
-	 * Unset the theme bag for models.
-	 *
-	 * @return void
-	 */
-	public static function unsetThemeBag()
-	{
-		static::$themeBag = null;
-	}
-
-	/**
 	 * Get the theme name.
 	 *
 	 * @return string
@@ -489,16 +472,6 @@ class Page extends Entity {
 	public static function setTheme($theme)
 	{
 		static::$theme = $theme;
-	}
-
-	/**
-	 * Unset the theme bag for models.
-	 *
-	 * @return void
-	 */
-	public static function unsetTheme()
-	{
-		static::$theme = null;
 	}
 
 	/**
@@ -523,47 +496,6 @@ class Page extends Entity {
 	}
 
 	/**
-	 * Unset the group model.
-	 *
-	 * @return void
-	 */
-	public static function unsetGroupModel()
-	{
-		static::$groupModel = null;
-	}
-
-	/**
-	 * Get the content model.
-	 *
-	 * @return string
-	 */
-	public static function getContentModel()
-	{
-		return static::$contentModel;
-	}
-
-	/**
-	 * Set the content model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setContentModel($model)
-	{
-		static::$contentModel = $model;
-	}
-
-	/**
-	 * Unset the content model.
-	 *
-	 * @return void
-	 */
-	public static function unsetContentModel()
-	{
-		static::$contentModel = null;
-	}
-
-	/**
 	 * Get the menu model.
 	 *
 	 * @return string
@@ -582,16 +514,6 @@ class Page extends Entity {
 	public static function setMenuModel($model)
 	{
 		static::$menuModel = $model;
-	}
-
-	/**
-	 * Unset the menu model.
-	 *
-	 * @return void
-	 */
-	public static function unsetMenuModel()
-	{
-		static::$groupModel = null;
 	}
 
 	/**
