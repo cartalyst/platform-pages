@@ -18,7 +18,6 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Themes\ThemeBag;
 use Closure;
 use Config;
 use InvalidArgumentException;
@@ -58,34 +57,6 @@ class Page extends Entity {
 	protected $eavNamespace = 'platform/pages';
 
 	/**
-	 * The theme bag which is used for rendering file-based pages.
-	 *
-	 * @var \Illuminate\View\Environment
-	 */
-	protected static $themeBag;
-
-	/**
-	 * The theme in which we render pages.
-	 *
-	 * @var string
-	 */
-	protected static $theme = null;
-
-	/**
-	 * The group model.
-	 *
-	 * @var string
-	 */
-	protected static $groupModel = 'Platform\Users\Group';
-
-	/**
-	 * The menu model.
-	 *
-	 * @var string
-	 */
-	protected static $menuModel = 'Platform\Menus\Models\Menu';
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public static function find($id, $columns = ['*'])
@@ -103,7 +74,7 @@ class Page extends Entity {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function save(array $options = [])
+	public function _save(array $options = [])
 	{
 		parent::save($options);
 
@@ -355,6 +326,13 @@ class Page extends Entity {
 		return ($this->exists || $visibility) ? $visibility : 'always';
 	}
 
+
+
+
+
+
+
+
 	/**
 	 * Renders the page.
 	 *
@@ -363,6 +341,7 @@ class Page extends Entity {
 	 */
 	public function render()
 	{
+		return 'foo';
 		$page = $this;
 
 		$type = $this->type;
@@ -430,90 +409,6 @@ class Page extends Entity {
 		}
 
 		return $data;
-	}
-
-	/**
-	 * Get the theme bag instance.
-	 *
-	 * @return \Cartalyst\Themes\ThemeBag
-	 */
-	public static function getThemeBag()
-	{
-		return static::$themeBag;
-	}
-
-	/**
-	 * Set the theme bag instance.
-	 *
-	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
-	 * @return void
-	 */
-	public static function setThemeBag(ThemeBag $themeBag)
-	{
-		static::$themeBag = $themeBag;
-	}
-
-	/**
-	 * Get the theme name.
-	 *
-	 * @return string
-	 */
-	public static function getTheme()
-	{
-		return static::$theme;
-	}
-
-	/**
-	 * Set the theme name.
-	 *
-	 * @param  string  $theme
-	 * @return void
-	 */
-	public static function setTheme($theme)
-	{
-		static::$theme = $theme;
-	}
-
-	/**
-	 * Get the group model.
-	 *
-	 * @return string
-	 */
-	public static function getGroupModel()
-	{
-		return static::$groupModel;
-	}
-
-	/**
-	 * Set the group model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setGroupModel($model)
-	{
-		static::$groupModel = $model;
-	}
-
-	/**
-	 * Get the menu model.
-	 *
-	 * @return string
-	 */
-	public static function getMenuModel()
-	{
-		return static::$menuModel;
-	}
-
-	/**
-	 * Set the menu model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setMenuModel($model)
-	{
-		static::$menuModel = $model;
 	}
 
 	/**

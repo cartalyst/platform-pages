@@ -160,7 +160,9 @@ return [
 		{
 			$model = get_class($app['Platform\Pages\Models\Page']);
 
-			return new Platform\Pages\Repositories\DbPageRepository($model);
+			return (new Platform\Pages\Repositories\DbPageRepository($model))
+				->setThemeBag($app['themes'])
+				->setTheme($app['config']['cartalyst/themes::active']);
 		});
 	},
 
@@ -183,10 +185,6 @@ return [
 	{
 		// Get the page model
 		$model = app('Platform\Pages\Models\Page');
-
-		// Set the theme bag and the active theme
-		$model->setThemeBag($app['themes']);
-		$model->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
 		app('Platform\Attributes\Models\Attribute')->registerNamespace($model);

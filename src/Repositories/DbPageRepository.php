@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Themes\ThemeBag;
+
 use Config;
 use Illuminate\Database\Eloquent\Builder;
 use Symfony\Component\Finder\Finder;
@@ -48,6 +50,34 @@ class DbPageRepository implements PageRepositoryInterface {
 		'template'   => 'required_if:type,database',
 		'file'       => 'required_if:type,filesystem',
 	];
+
+	/**
+	 * The theme bag which is used for rendering file-based pages.
+	 *
+	 * @var \Illuminate\View\Environment
+	 */
+	protected $themeBag;
+
+	/**
+	 * The theme in which we render pages.
+	 *
+	 * @var string
+	 */
+	protected $theme = null;
+
+	/**
+	 * The group model.
+	 *
+	 * @var string
+	 */
+	protected $groupModel = 'Platform\Users\Group';
+
+	/**
+	 * The menu model.
+	 *
+	 * @var string
+	 */
+	protected $menuModel = 'Platform\Menus\Models\Menu';
 
 	/**
 	 * Constructor.
@@ -237,8 +267,6 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function files()
 	{
-		$model = $this->model;
-
 		$extensions = array_keys(View::getExtensions());
 
 		$paths = array_filter(array_map(function($path) {
@@ -252,7 +280,7 @@ class DbPageRepository implements PageRepositoryInterface {
 				return $fullPath;
 			}
 
-		}, $model::getThemeBag()->getCascadedViewPaths($model::getTheme())));
+		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
 
 		$finder = with(new Finder)->files()->in($paths);
 
@@ -282,8 +310,6 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function templates()
 	{
-		$model = $this->model;
-
 		$extensions = array_keys(View::getExtensions());
 
 		$paths = array_filter(array_map(function($path)
@@ -292,7 +318,7 @@ class DbPageRepository implements PageRepositoryInterface {
 			{
 				return $path;
 			}
-		}, $model::getThemeBag()->getCascadedViewPaths($model::getTheme())));
+		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
 
 		$finder = new Finder;
 		$finder->in($paths);
@@ -324,5 +350,99 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		return $files;
 	}
+
+
+	/**
+	 * Get the theme bag instance.
+	 *
+	 * @return \Cartalyst\Themes\ThemeBag
+	 */
+	public function getThemeBag()
+	{
+		return $this->themeBag;
+	}
+
+	/**
+	 * Set the theme bag instance.
+	 *
+	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
+	 * @return void
+	 */
+	public function setThemeBag(ThemeBag $themeBag)
+	{
+		$this->themeBag = $themeBag;
+
+		return $this;
+	}
+
+	/**
+	 * Get the theme name.
+	 *
+	 * @return string
+	 */
+	public function getTheme()
+	{
+		return $this->theme;
+	}
+
+	/**
+	 * Set the theme name.
+	 *
+	 * @param  string  $theme
+	 * @return void
+	 */
+	public function setTheme($theme)
+	{
+		$this->theme = $theme;
+
+		return $this;
+	}
+
+	/**
+	 * Get the group model.
+	 *
+	 * @return string
+	 */
+	public function getGroupModel()
+	{
+		return $this->groupModel;
+	}
+
+	/**
+	 * Set the group model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public function setGroupModel($model)
+	{
+		$this->groupModel = $model;
+
+		return $this;
+	}
+
+	/**
+	 * Get the menu model.
+	 *
+	 * @return string
+	 */
+	public function getMenuModel()
+	{
+		return $this->menuModel;
+	}
+
+	/**
+	 * Set the menu model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public function setMenuModel($model)
+	{
+		$this->menuModel = $model;
+
+		return $this;
+	}
+
 
 }

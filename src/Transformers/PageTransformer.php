@@ -26,14 +26,14 @@ class PageTransformer extends TransformerAbstract {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function transform(Page $content)
+	public function transform(Page $page)
 	{
 		return [
-			'id'         => (int) $content->id,
-			'name'       => $content->name,
-			'slug'       => $content->slug,
-			'body'       => $content->render(),
-			'created_at' => (string) $content->created_at,
+			'id'         => (int) $page->id,
+			'name'       => $page->name,
+			'slug'       => $page->slug,
+			'body'       => $page->render(),
+			'created_at' => (string) $page->created_at,
 		];
 	}
 
