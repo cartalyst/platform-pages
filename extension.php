@@ -204,9 +204,11 @@ return [
 
 					try
 					{
-						$content = with(new PagesController)->getPage($notFound);
+						$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
-						return Response::make($content, 404);
+						$content = $repository->find($notFound);
+
+						return Response::make($content->render(), 404);
 					}
 					catch (Exception $e)
 					{
@@ -237,27 +239,30 @@ return [
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['prefix' => admin_uri().'/pages', 'namespace' => 'Platform\Pages\Controllers\Admin'], function()
+		Route::group(['namespace' => 'Platform\Pages\Controllers'], function()
 		{
-			Route::get('/', 'PagesController@index');
-			Route::post('/', 'PagesController@executeAction');
-			Route::get('grid', 'PagesController@grid');
-			Route::get('create', 'PagesController@create');
-			Route::post('create', 'PagesController@store');
-			Route::get('{id}/edit', 'PagesController@edit');
-			Route::post('{id}/edit', 'PagesController@update');
-			Route::get('{id}/copy', 'PagesController@copy');
-			Route::post('{id}/copy', 'PagesController@store');
-			Route::get('{id}/delete', 'PagesController@delete');
-		});
+			Route::group(['prefix' => admin_uri().'/pages', 'namespace' => 'Admin'], function()
+			{
+				Route::get('/', 'PagesController@index');
+				Route::post('/', 'PagesController@executeAction');
+				Route::get('grid', 'PagesController@grid');
+				Route::get('create', 'PagesController@create');
+				Route::post('create', 'PagesController@store');
+				Route::get('{id}/edit', 'PagesController@edit');
+				Route::post('{id}/edit', 'PagesController@update');
+				Route::get('{id}/copy', 'PagesController@copy');
+				Route::post('{id}/copy', 'PagesController@store');
+				Route::get('{id}/delete', 'PagesController@delete');
+			});
 
-		Route::group(['prefix' => 'api/v1/pages', 'namespace' => 'Platform\Pages\Controllers\Api\V1'], function()
-		{
-			Route::get('/', ['as' => 'api.v1.pages.all', 'uses' => 'PagesController@index']);
-			Route::post('/', ['as' => 'api.v1.pages.create', 'uses' => 'PagesController@store']);
-			Route::get('{id}', ['as' => 'api.v1.pages.show', 'uses' => 'PagesController@show']);
-			Route::put('{id}', ['as' => 'api.v1.pages.update', 'uses' => 'PagesController@update']);
-			Route::delete('{id}', ['as' => 'api.v1.pages.delete', 'uses' => 'PagesController@destroy']);
+			Route::group(['prefix' => 'api/v1/pages', 'namespace' => 'Api\V1'], function()
+			{
+				Route::get('/', ['as' => 'api.v1.pages.all', 'uses' => 'PagesController@index']);
+				Route::post('/', ['as' => 'api.v1.pages.create', 'uses' => 'PagesController@store']);
+				Route::get('{id}', ['as' => 'api.v1.pages.show', 'uses' => 'PagesController@show']);
+				Route::put('{id}', ['as' => 'api.v1.pages.update', 'uses' => 'PagesController@update']);
+				Route::delete('{id}', ['as' => 'api.v1.pages.delete', 'uses' => 'PagesController@destroy']);
+			});
 		});
 
 		App::before(function()
@@ -350,6 +355,8 @@ return [
 
 	'settings' => function()
 	{
+		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
 		return [
 
 			'pages' => ['name' => 'Pages'],
@@ -361,13 +368,11 @@ return [
 				'config'  => 'platform/pages::default_page',
 				'info'    => 'The page that is shown on the root route.',
 				'type'    => 'dropdown',
-				'options' => function()
+				'options' => function() use ($repository)
 				{
 					$options = [];
 
-					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-					foreach ($page->findAll() as $page)
+					foreach ($repository->findAll() as $page)
 					{
 						$options[] = [
 							'value' => $page->slug,
@@ -391,13 +396,11 @@ return [
 				'config'  => 'platform/pages::default_template',
 				'info'    => 'The default template that is used for pages.',
 				'type'    => 'dropdown',
-				'options' => function()
+				'options' => function() use ($repository)
 				{
 					$options = [];
 
-					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-					foreach ($page->templates() as $value => $label)
+					foreach ($repository->templates() as $value => $label)
 					{
 						$options[] = compact('value', 'label');
 					}
@@ -411,10 +414,8 @@ return [
 				'config'  => 'platform/pages::not_found',
 				'info'    => 'The page that is shown when a 404 error arises.',
 				'type'    => 'dropdown',
-				'options' => function()
+				'options' => function() use ($repository)
 				{
-					$page = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
 					$options = [];
 
 					$options[] = [
@@ -422,7 +423,7 @@ return [
 						'label' => 'Default',
 					];
 
-					foreach ($page->findAll() as $page)
+					foreach ($repository->findAll() as $page)
 					{
 						$options[] = [
 							'value' => $page->slug,
