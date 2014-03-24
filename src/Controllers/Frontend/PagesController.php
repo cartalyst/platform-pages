@@ -30,7 +30,7 @@ class PagesController extends BaseController {
 	/**
 	 * The Pages repository.
 	 *
-	 * @var \Platform\Pages\Repositories\PagesRepositoryInterface
+	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
 	 */
 	protected $pages;
 
