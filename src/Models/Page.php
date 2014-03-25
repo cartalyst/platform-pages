@@ -341,7 +341,8 @@ class Page extends Entity {
 	 */
 	public function render()
 	{
-		return 'foo';
+		$pageRepo = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
 		$page = $this;
 
 		$type = $this->type;
@@ -357,14 +358,14 @@ class Page extends Entity {
 				$value = $repository->prepareContent(0, $this->value);
 
 				// We'll inject the section with the value, i.e. @content()
-				$result = static::$themeBag->getViewEnvironment()->inject($this->section, $value);
+				$result = $pageRepo->getThemeBag()->getViewEnvironment()->inject($this->section, $value);
 
 				$view = $this->template;
 			}
 
 			$data = array_merge($this->additionalRenderData(), compact('page'));
 
-			return static::$themeBag->view($view, $data, static::$theme)->render();
+			return $pageRepo->getThemeBag()->view($view, $data, $pageRepo->getTheme())->render();
 		}
 
 		throw new RuntimeException("Invalid storage type [{$type}] for page [{$this->getKey()}].");
