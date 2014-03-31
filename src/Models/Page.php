@@ -375,7 +375,7 @@ class Page extends Entity {
 			{
 				// Get the content repository
 				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
-				$value = $repository->prepareContent(0, $this->value);
+				$value = $repository->prepareForRendering(0, $this->value);
 
 				// We'll inject the section with the value, i.e. @content()
 				$result = static::$themeBag->getViewEnvironment()->inject($this->section, $value);
