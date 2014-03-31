@@ -19,9 +19,9 @@
  */
 
 use Cartalyst\Themes\ThemeBag;
-
 use Config;
-use Illuminate\Database\Eloquent\Builder;
+use Platform\Pages\Models\Page;
+use RuntimeException;
 use Symfony\Component\Finder\Finder;
 use Validator;
 use View;
@@ -220,6 +220,37 @@ class DbPageRepository implements PageRepositoryInterface {
 	public function disable($id)
 	{
 		return $this->update($id, ['enabled' => 0]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function render(Page $page)
+	{
+		$type = $page->type;
+
+		if (in_array($type, ['filesystem', 'database']))
+		{
+			$view = "pages/{$page->file}";
+
+			if ($type === 'database')
+			{
+				// Get the content repository
+				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
+				$value = $repository->prepareForRendering(0, $page->value);
+
+				// We'll inject the section with the value, i.e. @content()
+				$result = $this->getThemeBag()->getViewEnvironment()->inject($page->section, $value);
+
+				$view = $page->template;
+			}
+
+			$data = array_merge($this->additionalRenderData($page), compact('page'));
+
+			return $this->getThemeBag()->view($view, $data, $this->getTheme())->render();
+		}
+
+		throw new RuntimeException("Invalid storage type [{$type}] for page [{$page->getKey()}].");
 	}
 
 	/**
@@ -444,5 +475,48 @@ class DbPageRepository implements PageRepositoryInterface {
 		return $this;
 	}
 
+
+
+
+	/**
+	 * Grabs additional rendering data by firing a callback which
+	 * people can listen into.
+	 *
+	 * @return array
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
+	 */
+	protected function additionalRenderData($page)
+	{
+		$dispatcher = $page->getEventDispatcher();
+
+		$responses = $dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
+
+		$data = [];
+
+		foreach ($responses as $response)
+		{
+			// If nothing was returned, the page was probably
+			// modified or something else occured.
+			if (is_null($response)) continue;
+
+			if ( ! is_array($response))
+			{
+				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
+			}
+
+			foreach ($response as $key => $value)
+			{
+				$data[$key] = $value;
+			}
+		}
+
+		if (array_key_exists('page', $data))
+		{
+			throw new RuntimeException('Cannot set [page] additional data for a page as it is reserved.');
+		}
+
+		return $data;
+	}
 
 }

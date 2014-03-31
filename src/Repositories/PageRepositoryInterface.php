@@ -18,6 +18,8 @@
  * @link       http://cartalyst.com
  */
 
+use Platform\Pages\Models\Page;
+
 interface PageRepositoryInterface {
 
 	/**
@@ -114,5 +116,14 @@ interface PageRepositoryInterface {
 	 * @return \Cartalyst\Pages\Models\Page
 	 */
 	public function disable($id);
+
+	/**
+	 * Renders the page.
+	 *
+	 * @param  \Platform\Pages\Models\Page  $page
+	 * @return string
+	 * @throws \RuntimeException
+	 */
+	public function render(Page $page);
 
 }

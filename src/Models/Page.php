@@ -22,7 +22,6 @@ use Closure;
 use Config;
 use InvalidArgumentException;
 use Platform\Attributes\Models\Entity;
-use RuntimeException;
 use Str;
 use Symfony\Component\Finder\Finder;
 
@@ -74,7 +73,7 @@ class Page extends Entity {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function _save(array $options = [])
+	/*public function _save(array $options = [])
 	{
 		parent::save($options);
 
@@ -165,7 +164,7 @@ class Page extends Entity {
 		}
 
 		return true;
-	}
+	}*/
 
 	/**
 	 * Get mutator for the "type" attribute.
@@ -324,92 +323,6 @@ class Page extends Entity {
 	public function getVisibilityAttribute($visibility)
 	{
 		return ($this->exists || $visibility) ? $visibility : 'always';
-	}
-
-
-
-
-
-
-
-
-	/**
-	 * Renders the page.
-	 *
-	 * @return string
-	 * @throws \RuntimeException
-	 */
-	public function render()
-	{
-		$pageRepo = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-		$page = $this;
-
-		$type = $this->type;
-
-		if (in_array($type, ['filesystem', 'database']))
-		{
-			$view = "pages/{$this->file}";
-
-			if ($type === 'database')
-			{
-				// Get the content repository
-				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
-				$value = $repository->prepareContent(0, $this->value);
-
-				// We'll inject the section with the value, i.e. @content()
-				$result = $pageRepo->getThemeBag()->getViewEnvironment()->inject($this->section, $value);
-
-				$view = $this->template;
-			}
-
-			$data = array_merge($this->additionalRenderData(), compact('page'));
-
-			return $pageRepo->getThemeBag()->view($view, $data, $pageRepo->getTheme())->render();
-		}
-
-		throw new RuntimeException("Invalid storage type [{$type}] for page [{$this->getKey()}].");
-	}
-
-	/**
-	 * Grabs additional rendering data by firing a callback which
-	 * people can listen into.
-	 *
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 * @throws \RuntimeException
-	 */
-	protected function additionalRenderData()
-	{
-		$page = $this;
-
-		$responses = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
-
-		$data = [];
-
-		foreach ($responses as $response)
-		{
-			// If nothing was returned, the page was probably
-			// modified or something else occured.
-			if (is_null($response)) continue;
-
-			if ( ! is_array($response))
-			{
-				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
-			}
-
-			foreach ($response as $key => $value)
-			{
-				$data[$key] = $value;
-			}
-		}
-
-		if (array_key_exists('page', $data))
-		{
-			throw new RuntimeException('Cannot set [page] additional data for a page as it is reserved.');
-		}
-
-		return $data;
 	}
 
 	/**

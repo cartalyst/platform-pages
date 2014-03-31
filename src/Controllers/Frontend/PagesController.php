@@ -100,7 +100,7 @@ class PagesController extends BaseController {
 			}
 		}
 
-		return $page->render();
+		return $this->pages->render($page);
 	}
 
 }
