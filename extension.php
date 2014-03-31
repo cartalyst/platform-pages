@@ -378,17 +378,14 @@ return [
 				'type'    => 'dropdown',
 				'options' => function() use ($repository)
 				{
-					$options = [];
-
-					foreach ($repository->findAll() as $page)
+					return array_map(function($page)
 					{
-						$options[] = [
-							'value' => $page->slug,
-							'label' => $page->name,
+						return [
+							'value' => $page['slug'],
+							'label' => $page['name'],
 						];
-					}
 
-					return $options;
+					}, $repository->findAll()->toArray());
 				}
 			],
 
@@ -431,15 +428,14 @@ return [
 						'label' => 'Default',
 					];
 
-					foreach ($repository->findAll() as $page)
+					return array_merge($options, array_map(function($page)
 					{
-						$options[] = [
-							'value' => $page->slug,
-							'label' => $page->name,
+						return [
+							'value' => $page['slug'],
+							'label' => $page['name'],
 						];
-					}
 
-					return $options;
+					}, $repository->findAll()->toArray()));
 				}
 			],
 
