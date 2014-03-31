@@ -70,7 +70,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	 *
 	 * @var string
 	 */
-	protected $groupModel = 'Platform\Users\Group';
+	protected $groupModel = 'Platform\Users\Models\Group';
 
 	/**
 	 * The menu model.
