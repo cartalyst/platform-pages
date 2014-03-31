@@ -18,8 +18,10 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Themes\ThemeBag;
 use Config;
-use Illuminate\Database\Eloquent\Builder;
+use Platform\Pages\Models\Page;
+use RuntimeException;
 use Symfony\Component\Finder\Finder;
 use Validator;
 use View;
@@ -48,6 +50,34 @@ class DbPageRepository implements PageRepositoryInterface {
 		'template'   => 'required_if:type,database',
 		'file'       => 'required_if:type,filesystem',
 	];
+
+	/**
+	 * The theme bag which is used for rendering file-based pages.
+	 *
+	 * @var \Illuminate\View\Environment
+	 */
+	protected $themeBag;
+
+	/**
+	 * The theme in which we render pages.
+	 *
+	 * @var string
+	 */
+	protected $theme = null;
+
+	/**
+	 * The group model.
+	 *
+	 * @var string
+	 */
+	protected $groupModel = 'Platform\Users\Group';
+
+	/**
+	 * The menu model.
+	 *
+	 * @var string
+	 */
+	protected $menuModel = 'Platform\Menus\Models\Menu';
 
 	/**
 	 * Constructor.
@@ -88,7 +118,7 @@ class DbPageRepository implements PageRepositoryInterface {
 		return $this
 			->createModel()
 			->newQuery()
-			->whereEnabled(1)
+			->where('enabled', 1)
 			->get();
 	}
 
@@ -146,6 +176,8 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		with($model = $this->createModel())->fill($data)->save($data);
 
+		$this->setPageMenu($model, $data);
+
 		return $model;
 	}
 
@@ -157,6 +189,8 @@ class DbPageRepository implements PageRepositoryInterface {
 		$model = $this->find($id);
 
 		$model->fill($data)->save($data);
+
+		$this->setPageMenu($model, $data);
 
 		return $model;
 	}
@@ -190,6 +224,196 @@ class DbPageRepository implements PageRepositoryInterface {
 	public function disable($id)
 	{
 		return $this->update($id, ['enabled' => 0]);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function render(Page $page)
+	{
+		$type = $page->type;
+
+		if (in_array($type, ['filesystem', 'database']))
+		{
+			$view = "pages/{$page->file}";
+
+			if ($type === 'database')
+			{
+				// Get the content repository
+				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
+				$value = $repository->prepareForRendering(0, $page->value);
+
+				// We'll inject the section with the value, i.e. @content()
+				$result = $this->getThemeBag()->getViewEnvironment()->inject($page->section, $value);
+
+				$view = $page->template;
+			}
+
+			$data = array_merge($this->additionalRenderData($page), compact('page'));
+
+			return $this->getThemeBag()->view($view, $data, $this->getTheme())->render();
+		}
+
+		throw new RuntimeException("Invalid storage type [{$type}] for page [{$page->getKey()}].");
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function files()
+	{
+		$extensions = array_keys(View::getExtensions());
+
+		$paths = array_filter(array_map(function($path) {
+
+			// Full path to the pages folder
+			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
+
+			// Check if the path exists
+			if (is_dir($fullPath) && strpos($fullPath, 'admin') == false)
+			{
+				return $fullPath;
+			}
+
+		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
+
+		$finder = with(new Finder)->files()->in($paths);
+
+		$files = [];
+
+		// Replace all file extensions with nothing. pathinfo()
+		// won't tackle ".blade.php" so this is our best shot.
+		$replacements = array_pad([], count($extensions), '');
+
+		foreach ($finder as $file)
+		{
+			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+
+			// Because we want to save a valid source for the view loader, we
+			// simply want to store the view name as if the view loader was
+			// loading it.
+			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
+		}
+
+		return $files;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function templates()
+	{
+		$extensions = array_keys(View::getExtensions());
+
+		$paths = array_filter(array_map(function($path)
+		{
+			if (strpos($path, 'admin') == false)
+			{
+				return $path;
+			}
+		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
+
+		$finder = new Finder;
+		$finder->in($paths);
+		$finder->depth('< 3');
+		$finder->exclude(Config::get('platform/pages::exclude'));
+		$finder->name(sprintf(
+			'/.*?\.(%s)/',
+			implode('|', array_map(function($extension)
+			{
+				return preg_quote($extension, '/');
+			}, $extensions))
+		));
+
+		$files = [];
+
+		// Replace all file extensions with nothing. pathinfo()
+		// won't tackle ".blade.php" so this is our best shot.
+		$replacements = array_pad([], count($extensions), '');
+
+		foreach ($finder->files() as $file)
+		{
+			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+
+			// Because we want to save a valid source for the view loader, we
+			// simply want to store the view name as if the view loader was
+			// loading it.
+			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
+		}
+
+		return $files;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getThemeBag()
+	{
+		return $this->themeBag;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setThemeBag(ThemeBag $themeBag)
+	{
+		$this->themeBag = $themeBag;
+
+		return $this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getTheme()
+	{
+		return $this->theme;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setTheme($theme)
+	{
+		$this->theme = $theme;
+
+		return $this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getGroupModel()
+	{
+		return $this->groupModel;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setGroupModel($model)
+	{
+		$this->groupModel = $model;
+
+		return $this;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getMenuModel()
+	{
+		return $this->menuModel;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function setMenuModel($model)
+	{
+		$this->menuModel = $model;
+
+		return $this;
 	}
 
 	/**
@@ -229,100 +453,140 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		return new $class;
 	}
-
 	/**
-	 * Returns a list of the available page files on the current active theme.
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
-	public function files()
+	protected function setPageMenu($page, array $options = [])
 	{
-		$model = $this->model;
-
-		$extensions = array_keys(View::getExtensions());
-
-		$paths = array_filter(array_map(function($path) {
-
-			// Full path to the pages folder
-			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
-
-			// Check if the path exists
-			if (is_dir($fullPath) && strpos($fullPath, 'admin') == false)
-			{
-				return $fullPath;
-			}
-
-		}, $model::getThemeBag()->getCascadedViewPaths($model::getTheme())));
-
-		$finder = with(new Finder)->files()->in($paths);
-
-		$files = [];
-
-		// Replace all file extensions with nothing. pathinfo()
-		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad([], count($extensions), '');
-
-		foreach ($finder as $file)
+		if ( ! empty($options))
 		{
-			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
+			$menuModel = with(new $this->menuModel);
 
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
+			// Get the menu that this page will be stored
+			$pageMenuTree = (int) array_get($options, 'menu', null);
+
+			// Get the menu parent id, if applicable
+			$pageMenuParent = (int) array_get($options, "parent.{$pageMenuTree}");
+
+			// Find the menu
+			if ($pageMenuTree)
+			{
+				// Check if the menu tree exists
+				if ($menuTree = $menuModel->whereMenu($pageMenuTree)->first())
+				{
+					$createMenu = false;
+
+					// Check if we have a menu for this page
+					if ( ! $pageMenu = $menuModel->where('page_id', $page->id)->first())
+					{
+						$createMenu = true;
+
+						$destination = $pageMenuParent === 0 ? $menuTree : $menuModel->find($pageMenuParent);
+					}
+					else
+					{
+						// Are we changing from menu trees?
+						if ((int) $pageMenu->menu !== $pageMenuTree)
+						{
+							$createMenu = true;
+
+							$guardedAttributes = $pageMenu->getGuarded();
+							array_push($guardedAttributes, 'id');
+
+							// Store menu attributes
+							$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
+
+							// Delete from the current menu tree
+							$pageMenu->delete();
+
+							$destination = $menuModel->whereMenu($pageMenuTree)->first();
+						}
+
+						// Make it a top level item
+						else if ($pageMenuParent === 0 && (int) $pageMenu->getDepth() !== 1)
+						{
+							$pageMenu->makeLastChildOf($menuTree);
+						}
+						else if ($pageMenuParent !== 0 && $pageMenuParent != $pageMenu->id)
+						{
+							if ($menuParent = $menuModel->find($pageMenuParent))
+							{
+								if ($pageMenu->getParent()->id != $menuParent->id)
+								{
+									$destination = $menuParent;
+
+									$pageMenu->makeLastChildOf($destination);
+								}
+							}
+						}
+					}
+
+					// Are we creating the page menu?
+					if ($createMenu)
+					{
+						$pageMenu = new $this->menuModel(array(
+							'slug'    => $page->slug,
+							'name'    => $page->name,
+							'uri'     => $page->uri,
+							'type'    => 'page',
+							'page_id' => $page->id,
+							'enabled' => 1,
+						));
+
+						$pageMenu->makeLastChildOf($destination);
+
+						if (isset($attrs))
+						{
+							$pageMenu->fill($attrs)->save();
+						}
+					}
+				}
+			}
 		}
 
-		return $files;
+		return true;
 	}
 
 	/**
-	 * Returns a list of the available templates of the current active theme.
+	 * Grabs additional rendering data by firing a callback which
+	 * people can listen into.
 	 *
+	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return array
+	 * @throws \InvalidArgumentException
+	 * @throws \RuntimeException
 	 */
-	public function templates()
+	protected function additionalRenderData(Page $page)
 	{
-		$model = $this->model;
+		$dispatcher = $page->getEventDispatcher();
 
-		$extensions = array_keys(View::getExtensions());
+		$responses = $dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
 
-		$paths = array_filter(array_map(function($path)
+		$data = [];
+
+		foreach ($responses as $response)
 		{
-			if (strpos($path, 'admin') == false)
+			// If nothing was returned, the page was probably
+			// modified or something else occured.
+			if (is_null($response)) continue;
+
+			if ( ! is_array($response))
 			{
-				return $path;
+				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
 			}
-		}, $model::getThemeBag()->getCascadedViewPaths($model::getTheme())));
 
-		$finder = new Finder;
-		$finder->in($paths);
-		$finder->depth('< 3');
-		$finder->exclude(Config::get('platform/pages::exclude'));
-		$finder->name(sprintf(
-			'/.*?\.(%s)/',
-			implode('|', array_map(function($extension)
+			foreach ($response as $key => $value)
 			{
-				return preg_quote($extension, '/');
-			}, $extensions))
-		));
-
-		$files = [];
-
-		// Replace all file extensions with nothing. pathinfo()
-		// won't tackle ".blade.php" so this is our best shot.
-		$replacements = array_pad([], count($extensions), '');
-
-		foreach ($finder->files() as $file)
-		{
-			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
-
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
+				$data[$key] = $value;
+			}
 		}
 
-		return $files;
+		if (array_key_exists('page', $data))
+		{
+			throw new RuntimeException('Cannot set [page] additional data for a page as it is reserved.');
+		}
+
+		return $data;
 	}
 
 }

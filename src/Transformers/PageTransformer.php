@@ -20,20 +20,39 @@
 
 use League\Fractal\TransformerAbstract;
 use Platform\Pages\Models\Page;
+use Platform\Pages\Repositories\PageRepositoryInterface;
 
 class PageTransformer extends TransformerAbstract {
 
 	/**
+	 * The Page repository.
+	 *
+	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
+	 */
+	protected $pages;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $pages
+	 * @return void
+	 */
+	public function __construct(PageRepositoryInterface $pages)
+	{
+		$this->pages = $pages;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
-	public function transform(Page $content)
+	public function transform(Page $page)
 	{
 		return [
-			'id'         => (int) $content->id,
-			'name'       => $content->name,
-			'slug'       => $content->slug,
-			'body'       => $content->render(),
-			'created_at' => (string) $content->created_at,
+			'id'         => (int) $page->id,
+			'name'       => $page->name,
+			'slug'       => $page->slug,
+			'body'       => $this->pages->render($page),
+			'created_at' => (string) $page->created_at,
 		];
 	}
 

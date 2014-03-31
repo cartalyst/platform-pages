@@ -28,7 +28,7 @@
 			}
 		});
 
-		$('#checkAll').click(function()
+		$(document).on('click', '#checkAll', function()
 		{
 			$('input:checkbox').not(this).prop('checked', this.checked);
 
@@ -59,8 +59,8 @@
 				type: 'POST',
 				url: '{{ URL::toAdmin('pages') }}',
 				data: {
-					action  : action,
-					entries : entries
+					action : action,
+					entries: entries
 				},
 				success: function(response)
 				{

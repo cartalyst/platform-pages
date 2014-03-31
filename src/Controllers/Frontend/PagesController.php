@@ -18,11 +18,11 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Sentry\Sentry;
 use Config;
-use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Foundation\Controllers\BaseController;
+use Platform\Pages\Repositories\PageRepositoryInterface;
 use Route;
-use Sentry;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PagesController extends BaseController {
@@ -50,7 +50,7 @@ class PagesController extends BaseController {
 	 * Render the page.
 	 *
 	 * @return mixed
-	 * @throws \HttpException
+	 * @throws \Symfony\Component\HttpKernel\Exception\HttpException
 	 */
 	public function page()
 	{
@@ -100,7 +100,7 @@ class PagesController extends BaseController {
 			}
 		}
 
-		return $page->render();
+		return $this->pages->render($page);
 	}
 
 }

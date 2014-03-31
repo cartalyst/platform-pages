@@ -160,7 +160,9 @@ return [
 		{
 			$model = get_class($app['Platform\Pages\Models\Page']);
 
-			return new Platform\Pages\Repositories\DbPageRepository($model);
+			return (new Platform\Pages\Repositories\DbPageRepository($model))
+				->setThemeBag($app['themes'])
+				->setTheme($app['config']['cartalyst/themes::active']);
 		});
 	},
 
@@ -183,10 +185,6 @@ return [
 	{
 		// Get the page model
 		$model = app('Platform\Pages\Models\Page');
-
-		// Set the theme bag and the active theme
-		$model->setThemeBag($app['themes']);
-		$model->setTheme($app['config']['cartalyst/themes::active']);
 
 		// Register a new attribute namespace
 		app('Platform\Attributes\Models\Attribute')->registerNamespace($model);
@@ -281,7 +279,17 @@ return [
 	| Database Seeds
 	|--------------------------------------------------------------------------
 	|
-	| Specify all the seeder classes you want to run to seed your database.
+	| Platform provides a very simple way to seed your database with test
+	| data using seed classes. All seed classes should be stored on the
+	| `database/seeds` directory within your extension folder.
+	|
+	| The order you register your seed classes on the array below
+	| matters, as they will be ran in the exact same order.
+	|
+	| The seeds array should follow the following structure:
+	|
+	|	Vendor\Namespace\Database\Seeds\FooSeeder
+	|	Vendor\Namespace\Database\Seeds\BarSeeder
 	|
 	*/
 
@@ -370,17 +378,14 @@ return [
 				'type'    => 'dropdown',
 				'options' => function() use ($repository)
 				{
-					$options = [];
-
-					foreach ($repository->findAll() as $page)
+					return array_map(function($page)
 					{
-						$options[] = [
-							'value' => $page->slug,
-							'label' => $page->name,
+						return [
+							'value' => $page['slug'],
+							'label' => $page['name'],
 						];
-					}
 
-					return $options;
+					}, $repository->findAll()->toArray());
 				}
 			],
 
@@ -423,15 +428,14 @@ return [
 						'label' => 'Default',
 					];
 
-					foreach ($repository->findAll() as $page)
+					return array_merge($options, array_map(function($page)
 					{
-						$options[] = [
-							'value' => $page->slug,
-							'label' => $page->name,
+						return [
+							'value' => $page['slug'],
+							'label' => $page['name'],
 						];
-					}
 
-					return $options;
+					}, $repository->findAll()->toArray()));
 				}
 			],
 

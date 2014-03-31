@@ -18,12 +18,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Themes\ThemeBag;
 use Closure;
 use Config;
 use InvalidArgumentException;
 use Platform\Attributes\Models\Entity;
-use RuntimeException;
 use Str;
 use Symfony\Component\Finder\Finder;
 
@@ -58,34 +56,6 @@ class Page extends Entity {
 	protected $eavNamespace = 'platform/pages';
 
 	/**
-	 * The theme bag which is used for rendering file-based pages.
-	 *
-	 * @var \Illuminate\View\Environment
-	 */
-	protected static $themeBag;
-
-	/**
-	 * The theme in which we render pages.
-	 *
-	 * @var string
-	 */
-	protected static $theme = null;
-
-	/**
-	 * The group model.
-	 *
-	 * @var string
-	 */
-	protected static $groupModel = 'Platform\Users\Group';
-
-	/**
-	 * The menu model.
-	 *
-	 * @var string
-	 */
-	protected static $menuModel = 'Platform\Menus\Models\Menu';
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public static function find($id, $columns = ['*'])
@@ -98,102 +68,6 @@ class Page extends Entity {
 		}
 
 		return parent::find($id, $columns);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function save(array $options = [])
-	{
-		parent::save($options);
-
-		if ( ! empty($options))
-		{
-			$menuModel = with(new static::$menuModel);
-
-			// Get the menu that this page will be stored
-			$pageMenuTree = (int) array_get($options, 'menu', null);
-
-			// Get the menu parent id, if applicable
-			$pageMenuParent = (int) array_get($options, "parent.{$pageMenuTree}");
-
-			// Find the menu
-			if ($pageMenuTree)
-			{
-				// Check if the menu tree exists
-				if ($menuTree = $menuModel->whereMenu($pageMenuTree)->first())
-				{
-					$createMenu = false;
-
-					// Check if we have a menu for this page
-					if ( ! $pageMenu = $menuModel->where('page_id', $this->id)->first())
-					{
-						$createMenu = true;
-
-						$destination = $pageMenuParent === 0 ? $menuTree : $menuModel->find($pageMenuParent);
-					}
-					else
-					{
-						// Are we changing from menu trees?
-						if ((int) $pageMenu->menu !== $pageMenuTree)
-						{
-							$createMenu = true;
-
-							$guardedAttributes = $pageMenu->getGuarded();
-							array_push($guardedAttributes, 'id');
-
-							// Store menu attributes
-							$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
-
-							// Delete from the current menu tree
-							$pageMenu->delete();
-
-							$destination = $menuModel->whereMenu($pageMenuTree)->first();
-						}
-
-						// Make it a top level item
-						else if ($pageMenuParent === 0 && (int) $pageMenu->getDepth() !== 1)
-						{
-							$pageMenu->makeLastChildOf($menuTree);
-						}
-						else if ($pageMenuParent !== 0 && $pageMenuParent != $pageMenu->id)
-						{
-							if ($menuParent = $menuModel->find($pageMenuParent))
-							{
-								if ($pageMenu->getParent()->id != $menuParent->id)
-								{
-									$destination = $menuParent;
-
-									$pageMenu->makeLastChildOf($destination);
-								}
-							}
-						}
-					}
-
-					// Are we creating the page menu?
-					if ($createMenu)
-					{
-						$pageMenu = new static::$menuModel(array(
-							'slug'    => $this->slug,
-							'name'    => $this->name,
-							'uri'     => $this->uri,
-							'type'    => 'page',
-							'page_id' => $this->id,
-							'enabled' => 1,
-						));
-
-						$pageMenu->makeLastChildOf($destination);
-
-						if (isset($attrs))
-						{
-							$pageMenu->fill($attrs)->save();
-						}
-					}
-				}
-			}
-		}
-
-		return true;
 	}
 
 	/**
@@ -353,167 +227,6 @@ class Page extends Entity {
 	public function getVisibilityAttribute($visibility)
 	{
 		return ($this->exists || $visibility) ? $visibility : 'always';
-	}
-
-	/**
-	 * Renders the page.
-	 *
-	 * @return string
-	 * @throws \RuntimeException
-	 */
-	public function render()
-	{
-		$page = $this;
-
-		$type = $this->type;
-
-		if (in_array($type, ['filesystem', 'database']))
-		{
-			$view = "pages/{$this->file}";
-
-			if ($type === 'database')
-			{
-				// Get the content repository
-				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
-				$value = $repository->prepareForRendering(0, $this->value);
-
-				// We'll inject the section with the value, i.e. @content()
-				$result = static::$themeBag->getViewEnvironment()->inject($this->section, $value);
-
-				$view = $this->template;
-			}
-
-			$data = array_merge($this->additionalRenderData(), compact('page'));
-
-			return static::$themeBag->view($view, $data, static::$theme)->render();
-		}
-
-		throw new RuntimeException("Invalid storage type [{$type}] for page [{$this->getKey()}].");
-	}
-
-	/**
-	 * Grabs additional rendering data by firing a callback which
-	 * people can listen into.
-	 *
-	 * @return array
-	 * @throws \InvalidArgumentException
-	 * @throws \RuntimeException
-	 */
-	protected function additionalRenderData()
-	{
-		$page = $this;
-
-		$responses = static::$dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
-
-		$data = [];
-
-		foreach ($responses as $response)
-		{
-			// If nothing was returned, the page was probably
-			// modified or something else occured.
-			if (is_null($response)) continue;
-
-			if ( ! is_array($response))
-			{
-				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
-			}
-
-			foreach ($response as $key => $value)
-			{
-				$data[$key] = $value;
-			}
-		}
-
-		if (array_key_exists('page', $data))
-		{
-			throw new RuntimeException('Cannot set [page] additional data for a page as it is reserved.');
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Get the theme bag instance.
-	 *
-	 * @return \Cartalyst\Themes\ThemeBag
-	 */
-	public static function getThemeBag()
-	{
-		return static::$themeBag;
-	}
-
-	/**
-	 * Set the theme bag instance.
-	 *
-	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
-	 * @return void
-	 */
-	public static function setThemeBag(ThemeBag $themeBag)
-	{
-		static::$themeBag = $themeBag;
-	}
-
-	/**
-	 * Get the theme name.
-	 *
-	 * @return string
-	 */
-	public static function getTheme()
-	{
-		return static::$theme;
-	}
-
-	/**
-	 * Set the theme name.
-	 *
-	 * @param  string  $theme
-	 * @return void
-	 */
-	public static function setTheme($theme)
-	{
-		static::$theme = $theme;
-	}
-
-	/**
-	 * Get the group model.
-	 *
-	 * @return string
-	 */
-	public static function getGroupModel()
-	{
-		return static::$groupModel;
-	}
-
-	/**
-	 * Set the group model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setGroupModel($model)
-	{
-		static::$groupModel = $model;
-	}
-
-	/**
-	 * Get the menu model.
-	 *
-	 * @return string
-	 */
-	public static function getMenuModel()
-	{
-		return static::$menuModel;
-	}
-
-	/**
-	 * Set the menu model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public static function setMenuModel($model)
-	{
-		static::$menuModel = $model;
 	}
 
 	/**

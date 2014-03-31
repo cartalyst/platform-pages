@@ -35,6 +35,13 @@ class PagesController extends ApiController {
 	protected $pages;
 
 	/**
+	 * The Page transformer.
+	 *
+	 * @var \Platform\Page\Transformers\PageTransformer
+	 */
+	protected $transformer;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  \League\Fractal\Manager  $fractal
@@ -46,6 +53,8 @@ class PagesController extends ApiController {
 		parent::__construct($fractal);
 
 		$this->pages = $pages;
+
+		$this->transformer = new PageTransformer($pages);
 	}
 
 	/**
@@ -57,7 +66,7 @@ class PagesController extends ApiController {
 	{
 		$page = $this->pages->findAll();
 
-		return $this->respondWithCollection($page, new PageTransformer);
+		return $this->respondWithCollection($page, $this->transformer);
 	}
 
 	/**
@@ -75,7 +84,7 @@ class PagesController extends ApiController {
 		{
 			$page = $this->pages->create($data);
 
-			return $this->respondWithItem($page, new PageTransformer);
+			return $this->respondWithItem($page, $this->transformer);
 		}
 
 		return $this->responseWithErrors($messages, 422);
@@ -91,7 +100,7 @@ class PagesController extends ApiController {
 	{
 		if ($page = $this->pages->find($id))
 		{
-			return $this->respondWithItem($page, new PageTransformer);
+			return $this->respondWithItem($page, $this->transformer);
 		}
 
 		$message = Lang::get('platform/pages::message.not_found', compact('id'));
@@ -115,7 +124,7 @@ class PagesController extends ApiController {
 		{
 			$page = $this->pages->update($id, $data);
 
-			return $this->respondWithItem($page, new PageTransformer);
+			return $this->respondWithItem($page, $this->transformer);
 		}
 
 		return $this->responseWithErrors($messages, 422);
