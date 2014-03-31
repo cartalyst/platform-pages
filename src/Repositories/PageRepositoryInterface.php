@@ -18,6 +18,7 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Themes\ThemeBag;
 use Platform\Pages\Models\Page;
 
 interface PageRepositoryInterface {
@@ -125,5 +126,79 @@ interface PageRepositoryInterface {
 	 * @throws \RuntimeException
 	 */
 	public function render(Page $page);
+
+	/**
+	 * Returns a list of the available page files on the current active theme.
+	 *
+	 * @return array
+	 */
+	public function files();
+
+	/**
+	 * Returns a list of the available templates of the current active theme.
+	 *
+	 * @return array
+	 */
+	public function templates();
+
+	/**
+	 * Get the theme bag instance.
+	 *
+	 * @return \Cartalyst\Themes\ThemeBag
+	 */
+	public function getThemeBag();
+
+	/**
+	 * Set the theme bag instance.
+	 *
+	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
+	 * @return void
+	 */
+	public function setThemeBag(ThemeBag $themeBag);
+
+	/**
+	 * Get the theme name.
+	 *
+	 * @return string
+	 */
+	public function getTheme();
+
+	/**
+	 * Set the theme name.
+	 *
+	 * @param  string  $theme
+	 * @return void
+	 */
+	public function setTheme($theme);
+
+	/**
+	 * Get the group model.
+	 *
+	 * @return string
+	 */
+	public function getGroupModel();
+
+	/**
+	 * Set the group model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public function setGroupModel($model);
+
+	/**
+	 * Get the menu model.
+	 *
+	 * @return string
+	 */
+	public function getMenuModel();
+
+	/**
+	 * Set the menu model.
+	 *
+	 * @param  string  $model
+	 * @return void
+	 */
+	public function setMenuModel($model);
 
 }

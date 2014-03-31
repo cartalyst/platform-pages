@@ -118,7 +118,7 @@ class DbPageRepository implements PageRepositoryInterface {
 		return $this
 			->createModel()
 			->newQuery()
-			->whereEnabled(1)
+			->where('enabled', 1)
 			->get();
 	}
 
@@ -176,6 +176,8 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		with($model = $this->createModel())->fill($data)->save($data);
 
+		$this->setPageMenu($model, $data);
+
 		return $model;
 	}
 
@@ -187,6 +189,8 @@ class DbPageRepository implements PageRepositoryInterface {
 		$model = $this->find($id);
 
 		$model->fill($data)->save($data);
+
+		$this->setPageMenu($model, $data);
 
 		return $model;
 	}
@@ -254,47 +258,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Validates a page.
-	 *
-	 * @param  array  $data
-	 * @param  mixed  $id
-	 * @return \Illuminate\Support\MessageBag
-	 */
-	protected function validatePage($data, $id = null)
-	{
-		$rules = $this->rules;
-
-		if ($id)
-		{
-			$model = $this->find($id);
-
-			$rules['slug'] .= ",slug,{$model->slug},slug";
-			$rules['uri'] .= ",uri,{$model->uri},uri";
-		}
-
-		$validator = Validator::make($data, $rules);
-
-		$validator->passes();
-
-		return $validator->errors();
-	}
-
-	/**
-	 * Create a new instance of the model.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Model
-	 */
-	public function createModel()
-	{
-		$class = '\\'.ltrim($this->model, '\\');
-
-		return new $class;
-	}
-
-	/**
-	 * Returns a list of the available page files on the current active theme.
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function files()
 	{
@@ -335,9 +299,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Returns a list of the available templates of the current active theme.
-	 *
-	 * @return array
+	 * {@inheritDoc}
 	 */
 	public function templates()
 	{
@@ -382,11 +344,8 @@ class DbPageRepository implements PageRepositoryInterface {
 		return $files;
 	}
 
-
 	/**
-	 * Get the theme bag instance.
-	 *
-	 * @return \Cartalyst\Themes\ThemeBag
+	 * {@inheritDoc}
 	 */
 	public function getThemeBag()
 	{
@@ -394,10 +353,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Set the theme bag instance.
-	 *
-	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function setThemeBag(ThemeBag $themeBag)
 	{
@@ -407,9 +363,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Get the theme name.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getTheme()
 	{
@@ -417,10 +371,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Set the theme name.
-	 *
-	 * @param  string  $theme
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function setTheme($theme)
 	{
@@ -430,9 +381,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Get the group model.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getGroupModel()
 	{
@@ -440,10 +389,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Set the group model.
-	 *
-	 * @param  string  $model
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function setGroupModel($model)
 	{
@@ -453,9 +399,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Get the menu model.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getMenuModel()
 	{
@@ -463,10 +407,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	}
 
 	/**
-	 * Set the menu model.
-	 *
-	 * @param  string  $model
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function setMenuModel($model)
 	{
@@ -475,18 +416,147 @@ class DbPageRepository implements PageRepositoryInterface {
 		return $this;
 	}
 
+	/**
+	 * Validates a page.
+	 *
+	 * @param  array  $data
+	 * @param  mixed  $id
+	 * @return \Illuminate\Support\MessageBag
+	 */
+	protected function validatePage($data, $id = null)
+	{
+		$rules = $this->rules;
 
+		if ($id)
+		{
+			$model = $this->find($id);
 
+			$rules['slug'] .= ",slug,{$model->slug},slug";
+			$rules['uri'] .= ",uri,{$model->uri},uri";
+		}
+
+		$validator = Validator::make($data, $rules);
+
+		$validator->passes();
+
+		return $validator->errors();
+	}
+
+	/**
+	 * Create a new instance of the model.
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model
+	 */
+	public function createModel()
+	{
+		$class = '\\'.ltrim($this->model, '\\');
+
+		return new $class;
+	}
+	/**
+	 * {@inheritDoc}
+	 */
+	protected function setPageMenu($page, array $options = [])
+	{
+		if ( ! empty($options))
+		{
+			$menuModel = with(new $this->menuModel);
+
+			// Get the menu that this page will be stored
+			$pageMenuTree = (int) array_get($options, 'menu', null);
+
+			// Get the menu parent id, if applicable
+			$pageMenuParent = (int) array_get($options, "parent.{$pageMenuTree}");
+
+			// Find the menu
+			if ($pageMenuTree)
+			{
+				// Check if the menu tree exists
+				if ($menuTree = $menuModel->whereMenu($pageMenuTree)->first())
+				{
+					$createMenu = false;
+
+					// Check if we have a menu for this page
+					if ( ! $pageMenu = $menuModel->where('page_id', $page->id)->first())
+					{
+						$createMenu = true;
+
+						$destination = $pageMenuParent === 0 ? $menuTree : $menuModel->find($pageMenuParent);
+					}
+					else
+					{
+						// Are we changing from menu trees?
+						if ((int) $pageMenu->menu !== $pageMenuTree)
+						{
+							$createMenu = true;
+
+							$guardedAttributes = $pageMenu->getGuarded();
+							array_push($guardedAttributes, 'id');
+
+							// Store menu attributes
+							$attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
+
+							// Delete from the current menu tree
+							$pageMenu->delete();
+
+							$destination = $menuModel->whereMenu($pageMenuTree)->first();
+						}
+
+						// Make it a top level item
+						else if ($pageMenuParent === 0 && (int) $pageMenu->getDepth() !== 1)
+						{
+							$pageMenu->makeLastChildOf($menuTree);
+						}
+						else if ($pageMenuParent !== 0 && $pageMenuParent != $pageMenu->id)
+						{
+							if ($menuParent = $menuModel->find($pageMenuParent))
+							{
+								if ($pageMenu->getParent()->id != $menuParent->id)
+								{
+									$destination = $menuParent;
+
+									$pageMenu->makeLastChildOf($destination);
+								}
+							}
+						}
+					}
+
+					// Are we creating the page menu?
+					if ($createMenu)
+					{
+						$pageMenu = new $this->menuModel(array(
+							'slug'    => $page->slug,
+							'name'    => $page->name,
+							'uri'     => $page->uri,
+							'type'    => 'page',
+							'page_id' => $page->id,
+							'enabled' => 1,
+						));
+
+						$pageMenu->makeLastChildOf($destination);
+
+						if (isset($attrs))
+						{
+							$pageMenu->fill($attrs)->save();
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
 
 	/**
 	 * Grabs additional rendering data by firing a callback which
 	 * people can listen into.
 	 *
+	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 * @throws \RuntimeException
 	 */
-	protected function additionalRenderData($page)
+	protected function additionalRenderData(Page $page)
 	{
 		$dispatcher = $page->getEventDispatcher();
 
