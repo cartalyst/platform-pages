@@ -11,10 +11,10 @@
 				</button>
 
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="#" data-action="delete">Delete selected</a></li>
+					<li><a href="#" data-action="delete">{{{ trans('button.bulk.delete') }}}</a></li>
 					<li class="divider"></li>
-					<li><a href="#" data-action="enable">Enable selected</a></li>
-					<li><a href="#" data-action="disable">Disable selected</a></li>
+					<li><a href="#" data-action="enable">{{{ trans('button.bulk.enable') }}}</a></li>
+					<li><a href="#" data-action="disable">{{{ trans('button.bulk.disable') }}}</a></li>
 				</ul>
 
 			</div>
