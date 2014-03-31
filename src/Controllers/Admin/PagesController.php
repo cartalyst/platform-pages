@@ -66,7 +66,9 @@ class PagesController extends AdminController {
 	 * @var array
 	 */
 	protected $actions = [
-		'delete', 'enable', 'disable',
+		'delete',
+		'enable',
+		'disable',
 	];
 
 	/**

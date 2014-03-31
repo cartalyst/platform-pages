@@ -166,7 +166,13 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function validForUpdate($id, array $data)
 	{
-		return $this->validatePage($data, $id);
+		$model = $this->find($id);
+
+		$this->rules['slug'] .= ",slug,{$model->slug},slug";
+
+		$this->rules['uri'] .= ",uri,{$model->uri},uri";
+
+		return $this->validatePage($data);
 	}
 
 	/**
@@ -420,22 +426,11 @@ class DbPageRepository implements PageRepositoryInterface {
 	 * Validates a page.
 	 *
 	 * @param  array  $data
-	 * @param  mixed  $id
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	protected function validatePage($data, $id = null)
+	protected function validatePage($data)
 	{
-		$rules = $this->rules;
-
-		if ($id)
-		{
-			$model = $this->find($id);
-
-			$rules['slug'] .= ",slug,{$model->slug},slug";
-			$rules['uri'] .= ",uri,{$model->uri},uri";
-		}
-
-		$validator = Validator::make($data, $rules);
+		$validator = Validator::make($data, $this->rules);
 
 		$validator->passes();
 
