@@ -151,7 +151,7 @@ return [
 
 	'register' => function(ExtensionInterface $extension, Application $app)
 	{
-		$app['Platform\Menus\PageType'] = $app->share(function($app)
+		$app['Platform\Menus\Types\PageType'] = $app->share(function($app)
 		{
 			return new Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
 		});
@@ -189,6 +189,9 @@ return [
 		// Register a new attribute namespace
 		app('Platform\Attributes\Models\Attribute')->registerNamespace($model);
 
+		// Register the menu page type
+		app('Platform\Menus\Models\Menu')->registerType($app['Platform\Menus\Types\PageType']);
+
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
 		{
@@ -215,9 +218,6 @@ return [
 				});
 			}
 		}
-
-		// Register the menu page type
-		app('Platform\Menus\Models\Menu')->registerType($app['Platform\Menus\PageType']);
 	},
 
 	/*
