@@ -49,6 +49,7 @@ class MigrationPlatformPagesCreateTable extends Migration {
 
 			// Common
 			$table->boolean('enabled');
+			$table->boolean('ssl')->default(0);
 			$table->timestamps();
 
 			// We'll need to ensure that MySQL uses the InnoDB engine to
