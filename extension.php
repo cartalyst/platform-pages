@@ -30,8 +30,7 @@ return [
 	| Name
 	|--------------------------------------------------------------------------
 	|
-	| This is your extension name and it is only required for
-	| presentational purposes.
+	| Your extension name (it's only required for presentational purposes).
 	|
 	*/
 
@@ -42,8 +41,8 @@ return [
 	| Slug
 	|--------------------------------------------------------------------------
 	|
-	| This is your extension unique identifier and should not be changed as
-	| it will be recognized as a new extension.
+	| Your extension unique identifier and should not be changed as
+	| it will be recognized as a whole new extension.
 	|
 	| Ideally, this should match the folder structure within the extensions
 	| folder, but this is completely optional.
@@ -68,8 +67,8 @@ return [
 	| Description
 	|--------------------------------------------------------------------------
 	|
-	| One or two sentences describing the extension for users to view when
-	| they are installing the extension.
+	| One or two sentences describing what the extension do for
+	| users to view when they are installing the extension.
 	|
 	*/
 
@@ -81,7 +80,6 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| Version should be a string that can be used with version_compare().
-	| This is how the extensions versions are compared.
 	|
 	*/
 
@@ -93,6 +91,7 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| List here all the extensions that this extension requires to work.
+	|
 	| This is used in conjunction with composer, so you should put the
 	| same extension dependencies on your main composer.json require
 	| key, so that they get resolved using composer, however you
@@ -269,7 +268,10 @@ return [
 
 			foreach ($pages->findAllEnabled() as $page)
 			{
-				Route::get($page->uri, 'Platform\Pages\Controllers\Frontend\PagesController@page');
+				Route::get($page->uri, [
+					'before' => $page->force_ssl ? 'ssl' : null,
+					'uses'   => 'Platform\Pages\Controllers\Frontend\PagesController@page',
+				]);
 			}
 		});
 	},
@@ -283,8 +285,7 @@ return [
 	| data using seed classes. All seed classes should be stored on the
 	| `database/seeds` directory within your extension folder.
 	|
-	| The order you register your seed classes on the array below
-	| matters, as they will be ran in the exact same order.
+	| The order you register your seed classes is the order they'll run.
 	|
 	| The seeds array should follow the following structure:
 	|
@@ -448,15 +449,17 @@ return [
 	|--------------------------------------------------------------------------
 	|
 	| You may specify the default various menu hierarchy for your extension.
+	|
 	| You can provide a recursive array of menu children and their children.
+	|
 	| These will be created upon installation, synchronized upon upgrading
 	| and removed upon uninstallation.
 	|
-	| Menu children are automatically put at the end of the menu for extensions
-	| installed through the Operations extension.
+	| Menu children are automatically put at the end of the menu for
+	| extensions installed through the Operations extension.
 	|
 	| The default order (for extensions installed initially) can be
-	| found by editing app/config/platform.php.
+	| found by editing the file "app/config/platform.php".
 	|
 	*/
 
