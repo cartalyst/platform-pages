@@ -231,7 +231,7 @@ class PagesController extends AdminController {
 	protected function showForm($mode, $id = null)
 	{
 		// Do we have a page identifier?
-		if ($id)
+		if ($id || $id == 0)
 		{
 			if ( ! $page = $this->pages->find($id))
 			{
