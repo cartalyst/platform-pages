@@ -18,16 +18,16 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'title'  => 'Pages',
 	'create' => 'Create Page',
 	'update' => 'Update Page',
 	'copy'   => 'Copy Page',
 
-	'tabs' => array(
+	'tabs' => [
 		'general'    => 'General',
 		'attributes' => 'Attributes',
-	),
+	],
 
-);
+];

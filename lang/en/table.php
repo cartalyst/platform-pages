@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'id'         => 'Id',
 	'name'       => 'Name',
@@ -27,4 +27,4 @@ return array(
 	'enabled'    => 'Status',
 	'created_at' => 'Created at',
 
-);
+];

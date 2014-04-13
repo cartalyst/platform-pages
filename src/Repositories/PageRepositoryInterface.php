@@ -81,7 +81,7 @@ interface PageRepositoryInterface {
 	 * Creates a page with the given data.
 	 *
 	 * @param  array  $data
-	 * @return \Cartalyst\Pages\Models\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function create(array $data);
 
@@ -90,7 +90,7 @@ interface PageRepositoryInterface {
 	 *
 	 * @param  int  $id
 	 * @param  array  $data
-	 * @return \Cartalyst\Pages\Models\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function update($id, array $data);
 
@@ -106,7 +106,7 @@ interface PageRepositoryInterface {
 	 * Enables the given page.
 	 *
 	 * @param  int  $id
-	 * @return \Cartalyst\Pages\Models\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function enable($id);
 
@@ -114,7 +114,7 @@ interface PageRepositoryInterface {
 	 * Disables the given page.
 	 *
 	 * @param  int  $id
-	 * @return \Cartalyst\Pages\Models\Page
+	 * @return \Platform\Pages\Models\Page
 	 */
 	public function disable($id);
 
@@ -142,7 +142,7 @@ interface PageRepositoryInterface {
 	public function templates();
 
 	/**
-	 * Get the theme bag instance.
+	 * Returns the theme bag instance.
 	 *
 	 * @return \Cartalyst\Themes\ThemeBag
 	 */
@@ -157,7 +157,7 @@ interface PageRepositoryInterface {
 	public function setThemeBag(ThemeBag $themeBag);
 
 	/**
-	 * Get the theme name.
+	 * Returns the theme name.
 	 *
 	 * @return string
 	 */
@@ -172,7 +172,7 @@ interface PageRepositoryInterface {
 	public function setTheme($theme);
 
 	/**
-	 * Get the group model.
+	 * Returns the group model.
 	 *
 	 * @return string
 	 */
@@ -187,7 +187,7 @@ interface PageRepositoryInterface {
 	public function setGroupModel($model);
 
 	/**
-	 * Get the menu model.
+	 * Returns the menu model.
 	 *
 	 * @return string
 	 */

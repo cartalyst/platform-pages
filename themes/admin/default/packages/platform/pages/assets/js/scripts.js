@@ -23,7 +23,7 @@ jQuery(document).ready(function($)
 	// When the page visibility changes
 	$(document).on('change', '#visibility', function()
 	{
-		var status = $(this).val() === 'always';
+		var status = $(this).val() !== 'logged_in';
 
 		$('#groups').prop('disabled', status);
 	});

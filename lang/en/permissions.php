@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	'index'  => 'List Pages',
 	'create' => 'Create new Pages',
@@ -26,4 +26,4 @@ return array(
 	'edit'   => 'Edit Pages',
 	'delete' => 'Delete Pages',
 
-);
+];

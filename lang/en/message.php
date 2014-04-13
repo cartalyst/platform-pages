@@ -18,23 +18,23 @@
  * @link       http://cartalyst.com
  */
 
-return array(
+return [
 
 	// General messages
 	'not_found' => 'Page [:id] does not exist.',
 
 	// Success messages
-	'success' => array(
+	'success' => [
 		'create' => 'Page was successfully created.',
 		'update' => 'Page was successfully updated.',
 		'delete' => 'Page was successfully deleted.',
-	),
+	],
 
 	// Error messages
-	'error' => array(
+	'error' => [
 		'create' => 'There was an issue creating the page. Please try again.',
 		'update' => 'There was an issue updating the page. Please try again.',
 		'delete' => 'There was an issue deleting the page. Please try again.',
-	),
+	],
 
-);
+];

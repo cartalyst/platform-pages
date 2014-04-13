@@ -366,6 +366,8 @@ return [
 	{
 		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
+		$allPages = $repository->findAll()->toArray();
+
 		return [
 
 			'pages' => ['name' => 'Pages'],
@@ -377,7 +379,7 @@ return [
 				'config'  => 'platform/pages::default_page',
 				'info'    => 'The page that is shown on the root route.',
 				'type'    => 'dropdown',
-				'options' => function() use ($repository)
+				'options' => function() use ($allPages)
 				{
 					return array_map(function($page)
 					{
@@ -386,7 +388,7 @@ return [
 							'label' => $page['name'],
 						];
 
-					}, $repository->findAll()->toArray());
+					}, $allPages);
 				}
 			],
 
@@ -420,7 +422,7 @@ return [
 				'config'  => 'platform/pages::not_found',
 				'info'    => 'The page that is shown when a 404 error arises.',
 				'type'    => 'dropdown',
-				'options' => function() use ($repository)
+				'options' => function() use ($allPages)
 				{
 					$options = [];
 
@@ -436,7 +438,7 @@ return [
 							'label' => $page['name'],
 						];
 
-					}, $repository->findAll()->toArray()));
+					}, $allPages));
 				}
 			],
 

@@ -241,7 +241,7 @@
 							<div class="form-group{{ $errors->first('groups', ' has-error') }}">
 								<label for="groups" class="control-label">{{{ trans('platform/pages::form.groups') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.groups_help') }}}"></i></label>
 
-								<select class="form-control" name="groups[]" id="groups" multiple="multiple"{{ Input::old('visibility', $page->visibility) == 'always' ? ' disabled="disabled"' : null }}>
+								<select class="form-control" name="groups[]" id="groups" multiple="multiple"{{ Input::old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
 								@foreach ($groups as $group)
 									<option value="{{ $group->id }}"{{ in_array($group->id, Input::get('groups', $page->groups)) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
 								@endforeach

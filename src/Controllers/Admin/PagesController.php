@@ -47,14 +47,14 @@ class PagesController extends AdminController {
 	protected $pages;
 
 	/**
-	 * Menus repository.
+	 * The Menus repository.
 	 *
 	 * @var \Platform\Menus\Repositories\MenuRepositoryInterface
 	 */
 	protected $menus;
 
 	/**
-	 * Groups repository.
+	 * The Groups repository.
 	 *
 	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
 	 */
@@ -79,7 +79,11 @@ class PagesController extends AdminController {
 	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
 	 * @return void
 	 */
-	public function __construct(PageRepositoryInterface $pages, MenuRepositoryInterface $menus, GroupRepositoryInterface $groups)
+	public function __construct(
+		PageRepositoryInterface $pages,
+		MenuRepositoryInterface $menus,
+		GroupRepositoryInterface $groups
+	)
 	{
 		parent::__construct();
 
@@ -278,6 +282,10 @@ class PagesController extends AdminController {
 	 */
 	protected function processForm($mode, $id = null)
 	{
+		// Check in case the groups input is disabled but we had groups
+		// that were previously selected, we want to remove those.
+		Input::merge(['groups' => Input::get('groups', [])]);
+
 		// Get the input data
 		$data = Input::all();
 

@@ -247,6 +247,7 @@ class DbPageRepository implements PageRepositoryInterface {
 			{
 				// Get the content repository
 				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
+
 				$value = $repository->prepareForRendering(0, $page->value);
 
 				// We'll inject the section with the value, i.e. @content()

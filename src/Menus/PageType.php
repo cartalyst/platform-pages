@@ -90,9 +90,11 @@ class PageType extends BaseType implements TypeInterface {
 		if ($pageId = array_get($data, 'page_id'))
 		{
 			$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
 			$page = $repository->find($pageId);
 
 			$child->uri = $page->uri;
+
 			$child->page_id = $pageId;
 		}
 	}
@@ -110,6 +112,7 @@ class PageType extends BaseType implements TypeInterface {
 		}
 
 		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
 		$pages = $repository->findAll();
 
 		foreach ($pages as &$page)
