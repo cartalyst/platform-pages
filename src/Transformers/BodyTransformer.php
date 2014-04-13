@@ -22,14 +22,7 @@ use League\Fractal\TransformerAbstract;
 use Platform\Pages\Models\Page;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 
-class PageTransformer extends TransformerAbstract {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $availableEmbeds = [
-		'body'
-	];
+class BodyTransformer extends TransformerAbstract {
 
 	/**
 	 * The Page repository.
@@ -55,23 +48,8 @@ class PageTransformer extends TransformerAbstract {
 	public function transform(Page $page)
 	{
 		return [
-			'id'         => (int) $page->id,
-			'name'       => $page->name,
-			'slug'       => $page->slug,
-			'created_at' => (string) $page->created_at,
+			'body' => $this->pages->render($page),
 		];
-	}
-
-	/**
-	 * Embed the Page body.
-	 *
-	 * @return \League\Fractal\ItemResource
-	 */
-	public function embedBody(Page $page)
-	{
-		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-		return $this->item($page, new BodyTransformer($repository));
 	}
 
 }
