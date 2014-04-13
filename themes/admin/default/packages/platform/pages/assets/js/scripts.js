@@ -4,6 +4,8 @@ jQuery(document).ready(function($)
 	$(document).on('keyup', '#name', function()
 	{
 		$('#slug').val($(this).val().slugify());
+
+		$('#uri').val($(this).val().slugify());
 	});
 
 	// When the storage type changes
