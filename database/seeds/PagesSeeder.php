@@ -60,4 +60,5 @@ class PagesSeeder {
 			'enabled'          => true,
 		]);
 	}
+
 }
