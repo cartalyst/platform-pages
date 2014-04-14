@@ -183,13 +183,13 @@ return [
 	'boot' => function(ExtensionInterface $extension, Application $app)
 	{
 		// Get the page model
-		$model = app('Platform\Pages\Models\Page');
+		$model = $app['Platform\Pages\Models\Page'];
 
 		// Register a new attribute namespace
-		app('Platform\Attributes\Models\Attribute')->registerNamespace($model);
+		$app['Platform\Attributes\Models\Attribute']->registerNamespace($model);
 
 		// Register the menu page type
-		app('Platform\Menus\Models\Menu')->registerType($app['Platform\Menus\Types\PageType']);
+		$app['Platform\Menus\Models\Menu']->registerType($app['Platform\Menus\Types\PageType']);
 
 		// Check the environment and app.debug settings
 		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
@@ -198,13 +198,13 @@ return [
 
 			if ( ! is_null($notFound))
 			{
-				$app->error(function(NotFoundHttpException $exception, $code) use ($notFound)
+				$app->error(function(NotFoundHttpException $exception, $code) use ($app, $notFound)
 				{
 					Log::error($exception);
 
 					try
 					{
-						$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+						$repository = $app['Platform\Pages\Repositories\PageRepositoryInterface'];
 
 						$content = $repository->find($notFound);
 
