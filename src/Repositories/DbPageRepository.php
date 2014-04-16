@@ -331,7 +331,11 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		$paths = array_filter(array_map(function($path)
 		{
-			if (strpos($path, 'admin') == false)
+			$pathConfig = head(Config::get('cartalyst/themes::paths'));
+
+			$searchPath = str_replace($pathConfig, '', $path);
+
+			if (strpos($searchPath, 'admin') == false)
 			{
 				return $path;
 			}
