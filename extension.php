@@ -159,7 +159,7 @@ return [
 		{
 			$model = get_class($app['Platform\Pages\Models\Page']);
 
-			return (new Platform\Pages\Repositories\DbPageRepository($model))
+			return (new Platform\Pages\Repositories\DbPageRepository($model, $app['events']))
 				->setThemeBag($app['themes'])
 				->setTheme($app['config']['cartalyst/themes::active']);
 		});

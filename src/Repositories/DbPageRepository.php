@@ -20,6 +20,7 @@
 
 use Cartalyst\Themes\ThemeBag;
 use Config;
+use Illuminate\Events\Dispatcher;
 use Platform\Pages\Models\Page;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
@@ -34,6 +35,13 @@ class DbPageRepository implements PageRepositoryInterface {
 	 * @var string
 	 */
 	protected $model;
+
+	/**
+	 * The event dispatcher instance.
+	 *
+	 * @var \Illuminate\Events\Dispatcher
+	 */
+	protected $dispatcher;
 
 	/**
 	 * Holds the form validation rules.
@@ -83,11 +91,14 @@ class DbPageRepository implements PageRepositoryInterface {
 	 * Constructor.
 	 *
 	 * @param  string  $model
+	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
-	public function __construct($model)
+	public function __construct($model, Dispatcher $dispatcher)
 	{
 		$this->model = $model;
+
+		$this->dispatcher = $dispatcher;
 	}
 
 	/**
@@ -166,11 +177,11 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function validForUpdate($id, array $data)
 	{
-		$model = $this->find($id);
+		$page = $this->find($id);
 
-		$this->rules['slug'] .= ",slug,{$model->slug},slug";
+		$this->rules['slug'] .= ",slug,{$page->slug},slug";
 
-		$this->rules['uri'] .= ",uri,{$model->uri},uri";
+		$this->rules['uri'] .= ",uri,{$page->uri},uri";
 
 		return $this->validatePage($data);
 	}
@@ -180,11 +191,13 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function create(array $data)
 	{
-		with($model = $this->createModel())->fill($data)->save($data);
+		with($page = $this->createModel())->fill($data)->save($data);
 
-		$this->setPageMenu($model, $data);
+		$this->setPageMenu($page, $data);
 
-		return $model;
+		$this->dispatcher->fire('platform.page.created', $page);
+
+		return $page;
 	}
 
 	/**
@@ -192,13 +205,15 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function update($id, array $data)
 	{
-		$model = $this->find($id);
+		$page = $this->find($id);
 
-		$model->fill($data)->save($data);
+		$page->fill($data)->save($data);
 
-		$this->setPageMenu($model, $data);
+		$this->setPageMenu($page, $data);
 
-		return $model;
+		$this->dispatcher->fire('platform.page.updated', $page);
+
+		return $page;
 	}
 
 	/**
@@ -206,9 +221,11 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function delete($id)
 	{
-		if ($model = $this->find($id))
+		if ($page = $this->find($id))
 		{
-			$model->delete();
+			$this->dispatcher->fire('platform.page.deleted', $page);
+
+			$page->delete();
 
 			return true;
 		}
