@@ -18,7 +18,7 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Sentry\Sentry;
+use Sentry;
 use Config;
 use Platform\Foundation\Controllers\BaseController;
 use Platform\Pages\Repositories\PageRepositoryInterface;
