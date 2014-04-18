@@ -326,11 +326,11 @@ return [
 	{
 		return [
 
-			'Platform\Pages\Controllers\Admin\PagesController@index,grid' => Lang::get('platform/pages::permissions.index'),
-			'Platform\Pages\Controllers\Admin\PagesController@create'     => Lang::get('platform/pages::permissions.create'),
-			'Platform\Pages\Controllers\Admin\PagesController@copy'       => Lang::get('platform/pages::permissions.copy'),
-			'Platform\Pages\Controllers\Admin\PagesController@edit'       => Lang::get('platform/pages::permissions.edit'),
-			'Platform\Pages\Controllers\Admin\PagesController@delete'     => Lang::get('platform/pages::permissions.delete'),
+			'Platform\Pages\Controllers\Admin\PagesController@index,grid'   => Lang::get('platform/pages::permissions.index'),
+			'Platform\Pages\Controllers\Admin\PagesController@create,store' => Lang::get('platform/pages::permissions.create'),
+			'Platform\Pages\Controllers\Admin\PagesController@copy'         => Lang::get('platform/pages::permissions.copy'),
+			'Platform\Pages\Controllers\Admin\PagesController@edit,update'  => Lang::get('platform/pages::permissions.edit'),
+			'Platform\Pages\Controllers\Admin\PagesController@delete'       => Lang::get('platform/pages::permissions.delete'),
 
 		];
 	},
