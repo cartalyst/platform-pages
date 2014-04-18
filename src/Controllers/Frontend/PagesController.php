@@ -18,11 +18,11 @@
  * @link       http://cartalyst.com
  */
 
-use Sentry;
 use Config;
 use Platform\Foundation\Controllers\BaseController;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Route;
+use Sentry;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PagesController extends BaseController {
