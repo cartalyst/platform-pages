@@ -294,7 +294,11 @@ class DbPageRepository implements PageRepositoryInterface {
 			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
 
 			// Check if the path exists
-			if (is_dir($fullPath) && strpos($fullPath, 'admin') == false)
+			$pathConfig = head(Config::get('cartalyst/themes::paths'));
+
+			$searchPath = str_replace($pathConfig, '', $path);
+
+			if (is_dir($fullPath) && strpos($searchPath, 'admin') == false)
 			{
 				return $fullPath;
 			}
