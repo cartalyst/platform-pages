@@ -157,6 +157,6 @@
 @include('platform/pages::grid/results')
 @include('platform/pages::grid/pagination')
 @include('platform/pages::grid/filters')
-@include('platform/pages::grid/no-results')
+@include('platform/pages::grid/no_results')
 
 @stop
