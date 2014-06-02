@@ -61,7 +61,7 @@ class DbPageRepository implements PageRepositoryInterface {
 	/**
 	 * The theme bag which is used for rendering file-based pages.
 	 *
-	 * @var \Illuminate\View\Environment
+	 * @var \Illuminate\View\Factory
 	 */
 	protected $themeBag;
 
@@ -267,7 +267,7 @@ class DbPageRepository implements PageRepositoryInterface {
 				$value = $repository->prepareForRendering(0, $page->value);
 
 				// We'll inject the section with the value, i.e. @content()
-				$result = $this->getThemeBag()->getViewEnvironment()->inject($page->section, $value);
+				$result = $this->getThemeBag()->getViewFactory()->inject($page->section, $value);
 
 				$view = $page->template;
 			}
