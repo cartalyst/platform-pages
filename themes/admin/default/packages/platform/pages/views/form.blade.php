@@ -305,12 +305,12 @@
 	{{-- Form actions --}}
 	<div class="row">
 
-		<div class="col-md-12">
+		<div class="col-lg-12 text-right">
 
 			{{-- Form actions --}}
 			<div class="form-group">
 
-				<button class="btn btn-success" type="submit">{{{ trans("button.{$mode}") }}}</button>
+				<button class="btn btn-success" type="submit">{{{ trans('button.save') }}}</button>
 
 				<a class="btn btn-default" href="{{{ URL::toAdmin('pages') }}}">{{{ trans('button.cancel') }}}</a>
 
