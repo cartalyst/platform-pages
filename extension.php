@@ -273,7 +273,7 @@ return [
 			foreach ($pages->findAllEnabled() as $page)
 			{
 				Route::get($page->uri, [
-					'before' => $page->ssl ? 'ssl' : null,
+					'before' => $page->https ? 'https' : null,
 					'uses'   => 'Platform\Pages\Controllers\Frontend\PagesController@page',
 				]);
 			}

@@ -84,15 +84,15 @@
 						{{-- SSL --}}
 						<div class="col-md-4">
 
-							<div class="form-group{{ $errors->first('ssl', ' has-error') }}">
-								<label for="ssl" class="control-label">{{{ trans('platform/pages::form.ssl') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.ssl_help') }}}"></i></label>
+							<div class="form-group{{ $errors->first('https', ' has-error') }}">
+								<label for="https" class="control-label">{{{ trans('platform/pages::form.https') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.https_help') }}}"></i></label>
 
-								<select class="form-control" name="ssl" id="ssl" required>
-									<option value="1"{{ Input::old('ssl', $page->ssl) == 1 ? ' selected="selected"' : null }}>{{{ trans('general.yes') }}}</option>
-									<option value="0"{{ Input::old('ssl', $page->ssl) == 0 ? ' selected="selected"' : null }}>{{{ trans('general.no') }}}</option>
+								<select class="form-control" name="https" id="https" required>
+									<option value="1"{{ Input::old('https', $page->https) == 1 ? ' selected="selected"' : null }}>{{{ trans('general.yes') }}}</option>
+									<option value="0"{{ Input::old('https', $page->https) == 0 ? ' selected="selected"' : null }}>{{{ trans('general.no') }}}</option>
 								</select>
 
-								<span class="help-block">{{{ $errors->first('ssl', ':message') }}}</span>
+								<span class="help-block">{{{ $errors->first('https', ':message') }}}</span>
 							</div>
 
 						</div>

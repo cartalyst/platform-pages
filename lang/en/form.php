@@ -28,8 +28,8 @@ return [
 	'uri'      => 'Uri',
 	'uri_help' => 'Your page uri.',
 
-	'ssl'         => 'Https (SSL)?',
-	'ssl_enabled' => 'Select yes if you want this page to be presented over SSL.',
+	'https'      => 'Https',
+	'https_help' => 'Should this page be presented over HTTPS?',
 
 	'enabled'      => 'Status',
 	'enabled_help' => 'What is the status of this page?',
