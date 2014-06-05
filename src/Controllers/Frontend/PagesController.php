@@ -21,7 +21,7 @@ use Config;
 use Platform\Foundation\Controllers\BaseController;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Route;
-use Sentry;
+use Sentinel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PagesController extends BaseController {
@@ -66,11 +66,11 @@ class PagesController extends BaseController {
 		{
 			$canView = false;
 
-			if ($currentUser = Sentry::getUser())
+			if ($currentUser = Sentinel::getUser())
 			{
 				$canView = true;
 
-				if ( ! Sentry::hasAccess('admin'))
+				if ( ! Sentinel::hasAccess('admin'))
 				{
 					if ($page->visibility === 'admin')
 					{
