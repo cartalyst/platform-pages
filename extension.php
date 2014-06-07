@@ -154,14 +154,19 @@ return [
 			return new Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
 		});
 
-		$app->bind('Platform\Pages\Repositories\PageRepositoryInterface', function($app)
-		{
-			$model = get_class($app['Platform\Pages\Models\Page']);
+		$pageRepository = 'Platform\Pages\Repositories\PageRepositoryInterface';
 
-			return (new Platform\Pages\Repositories\DbPageRepository($model, $app['events']))
-				->setThemeBag($app['themes'])
-				->setTheme($app['config']['cartalyst/themes::active']);
-		});
+		if ( ! $app->bound($pageRepository))
+		{
+			$app->bind($pageRepository, function($app)
+			{
+				$model = get_class($app['Platform\Pages\Models\Page']);
+
+				return (new Platform\Pages\Repositories\DbPageRepository($model, $app['events']))
+					->setThemeBag($app['themes'])
+					->setTheme($app['config']['cartalyst/themes::active']);
+			});
+		}
 	},
 
 	/*
@@ -268,7 +273,7 @@ return [
 			foreach ($pages->findAllEnabled() as $page)
 			{
 				Route::get($page->uri, [
-					'before' => $page->ssl ? 'ssl' : null,
+					'before' => $page->https ? 'https' : null,
 					'uses'   => 'Platform\Pages\Controllers\Frontend\PagesController@page',
 				]);
 			}
