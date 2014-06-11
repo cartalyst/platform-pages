@@ -26,8 +26,8 @@ class PageTransformer extends TransformerAbstract {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $availableEmbeds = [
-		'body'
+	protected $availableIncludes = [
+		'body',
 	];
 
 	/**
@@ -62,11 +62,11 @@ class PageTransformer extends TransformerAbstract {
 	}
 
 	/**
-	 * Embed the Page body.
+	 * Include the Page body.
 	 *
 	 * @return \League\Fractal\ItemResource
 	 */
-	public function embedBody(Page $page)
+	public function includeBody(Page $page)
 	{
 		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
 
