@@ -212,7 +212,7 @@ return [
 
 						$content = $repository->find($notFound);
 
-						return Response::make($content->render(), 404);
+						return Response::make($repository->render($content), 404);
 					}
 					catch (Exception $e)
 					{
