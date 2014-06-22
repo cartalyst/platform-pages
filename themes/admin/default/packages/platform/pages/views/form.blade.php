@@ -151,7 +151,7 @@
 							<div data-type="database" class="{{ Input::old('type', $page->type) != 'database' ? ' hide' : null }}">
 
 								{{-- Template --}}
-								<div class="form-group{{ $errors->first('template', ' error') }}">
+								<div class="form-group{{ $errors->first('template', ' has-error') }}">
 									<label for="template" class="control-label">{{{ trans('platform/pages::form.template') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.template_help') }}}"></i></label>
 
 									@if (empty($templates))
@@ -175,7 +175,7 @@
 							<div data-type="filesystem" class="{{ Input::old('type', $page->type) != 'filesystem' ? ' hide' : null }}">
 
 								{{-- File --}}
-								<div class="form-group{{ $errors->first('file', ' error') }}">
+								<div class="form-group{{ $errors->first('file', ' has-error') }}">
 								<label for="file" class="control-label">{{{ trans('platform/pages::form.file') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.file_help') }}}"></i></label>
 
 									@if (empty($files))
