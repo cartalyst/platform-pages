@@ -304,6 +304,8 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
 
+		if (empty($paths)) return [];
+
 		$finder = with(new Finder)->files()->in($paths);
 
 		$files = [];
@@ -343,6 +345,8 @@ class DbPageRepository implements PageRepositoryInterface {
 				return $path;
 			}
 		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
+
+		if (empty($paths)) return [];
 
 		$finder = new Finder;
 		$finder->in($paths);
@@ -473,6 +477,7 @@ class DbPageRepository implements PageRepositoryInterface {
 
 		return new $class;
 	}
+
 	/**
 	 * {@inheritDoc}
 	 */

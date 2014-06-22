@@ -154,11 +154,17 @@
 								<div class="form-group{{ $errors->first('template', ' error') }}">
 									<label for="template" class="control-label">{{{ trans('platform/pages::form.template') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.template_help') }}}"></i></label>
 
+									@if (empty($templates))
+									<p class="form-control-static">
+										<i>No templates available for the current frontend theme.</i>
+									</p>
+									@else
 									<select class="form-control" name="template" id="template"{{ Input::old('type', $page->type) == 'database' ? ' required' : null }}>
 									@foreach ($templates as $value => $name)
 										<option value="{{ $value }}"{{ Input::old('template', $page->template) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 									@endforeach
 									</select>
+									@endif
 
 									<span class="help-block">{{{ $errors->first('template', ':message') }}}</span>
 								</div>
@@ -172,11 +178,17 @@
 								<div class="form-group{{ $errors->first('file', ' error') }}">
 								<label for="file" class="control-label">{{{ trans('platform/pages::form.file') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.file_help') }}}"></i></label>
 
+									@if (empty($files))
+									<p class="form-control-static">
+										<i>No pages available for the current frontend theme.</i>
+									</p>
+									@else
 									<select class="form-control" name="file" id="file"{{ Input::old('type', $page->type) == 'filesystem' ? ' required' : null }}>
 									@foreach ($files as $value => $name)
 										<option value="{{ $value }}"{{ Input::old('file', $page->file) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 									@endforeach
 									</select>
+									@endif
 
 									<span class="help-block">{{{ $errors->first('file', ':message') }}}</span>
 								</div>
