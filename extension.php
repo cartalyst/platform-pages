@@ -266,20 +266,17 @@ return [
 			});
 		});
 
-		App::before(function()
+		Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@page');
+
+		$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
+
+		foreach ($pages->findAllEnabled() as $page)
 		{
-			Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@page');
-
-			$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-			foreach ($pages->findAllEnabled() as $page)
-			{
-				Route::get($page->uri, [
-					'before' => $page->https ? 'https' : null,
-					'uses'   => 'Platform\Pages\Controllers\Frontend\PagesController@page',
-				]);
-			}
-		});
+			Route::get($page->uri, [
+				'before' => $page->https ? 'https' : null,
+				'uses'   => 'Platform\Pages\Controllers\Frontend\PagesController@page',
+			]);
+		}
 	},
 
 	/*
