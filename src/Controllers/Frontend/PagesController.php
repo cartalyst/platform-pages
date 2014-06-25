@@ -53,8 +53,14 @@ class PagesController extends BaseController {
 	 */
 	public function page()
 	{
+		// Get the current uri
+		$slug = Route::current()->getUri();
+
 		// Make sure we have a page slug
-		$slug = Route::current()->getUri() ?: Config::get('platform/pages::default');
+		if ($slug === '/')
+		{
+			$slug = Config::get('platform/pages::default_page');
+		}
 
 		// Find the requested page
 		if ( ! $page = $this->pages->findEnabled($slug))
