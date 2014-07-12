@@ -268,7 +268,7 @@ return [
 
 		Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@page');
 
-		$pages = app('Platform\Pages\Repositories\PageRepositoryInterface');
+		$pages = $app['Platform\Pages\Repositories\PageRepositoryInterface'];
 
 		foreach ($pages->findAllEnabled() as $page)
 		{
