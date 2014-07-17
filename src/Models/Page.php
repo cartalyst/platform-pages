@@ -20,11 +20,13 @@
 use Closure;
 use Config;
 use InvalidArgumentException;
-use Platform\Attributes\Models\Entity;
+use Platform\Attributes\Traits\EntityTrait;
 use Str;
 use Symfony\Component\Finder\Finder;
 
-class Page extends Entity {
+class Page extends \Eloquent {
+
+	use EntityTrait;
 
 	/**
 	 * {@inheritDoc}
