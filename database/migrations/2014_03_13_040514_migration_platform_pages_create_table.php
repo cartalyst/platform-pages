@@ -56,6 +56,25 @@ class MigrationPlatformPagesCreateTable extends Migration {
 			$table->engine = 'InnoDB';
 			$table->unique('slug');
 		});
+
+		// Create the meta attributes
+		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+
+		$attribute->create([
+			'namespace' => 'platform/pages',
+			'name'      => 'Meta Title',
+			'type'      => 'input',
+			'slug'      => 'meta_title',
+			'enabled'   => 1,
+		]);
+
+		$attribute->create([
+			'namespace' => 'platform/pages',
+			'name'      => 'Meta Description',
+			'type'      => 'input',
+			'slug'      => 'meta_description',
+			'enabled'   => 1,
+		]);
 	}
 
 	/**
@@ -66,6 +85,15 @@ class MigrationPlatformPagesCreateTable extends Migration {
 	public function down()
 	{
 		Schema::drop('pages');
+
+		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+
+		$attributeIds = $attribute->createModel()->where('namespace', 'platform/pages')->lists('id');
+
+		foreach ($attributeIds as $id)
+		{
+			$attribute->delete($id);
+		}
 	}
 
 }

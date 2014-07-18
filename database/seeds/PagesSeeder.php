@@ -26,32 +26,6 @@ class PagesSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		// Create the meta attributes
-		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
-
-		$attributeIds = $attribute->createModel()->where('namespace', 'platform/pages')->lists('id');
-
-		foreach ($attributeIds as $id)
-		{
-			$attribute->delete($id);
-		}
-
-		$attribute->create([
-			'namespace' => 'platform/pages',
-			'name'      => 'Meta Title',
-			'type'      => 'input',
-			'slug'      => 'meta_title',
-			'enabled'   => 1,
-		]);
-
-		$attribute->create([
-			'namespace' => 'platform/pages',
-			'name'      => 'Meta Description',
-			'type'      => 'input',
-			'slug'      => 'meta_description',
-			'enabled'   => 1,
-		]);
-
 		// Create the welcome page, which will be the default
 		// for a Platform installation.
 		$page = app('Platform\Pages\Models\Page')->create([
