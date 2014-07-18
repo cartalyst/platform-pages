@@ -281,30 +281,6 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Database Seeds
-	|--------------------------------------------------------------------------
-	|
-	| Platform provides a very simple way to seed your database with test
-	| data using seed classes. All seed classes should be stored on the
-	| `database/seeds` directory within your extension folder.
-	|
-	| The order you register your seed classes is the order they'll run.
-	|
-	| The seeds array should follow the following structure:
-	|
-	|	Vendor\Namespace\Database\Seeds\FooSeeder
-	|	Vendor\Namespace\Database\Seeds\BarSeeder
-	|
-	*/
-
-	'seeds' => [
-
-		'Platform\Pages\Database\Seeds\PagesSeeder',
-
-	],
-
-	/*
-	|--------------------------------------------------------------------------
 	| Permissions
 	|--------------------------------------------------------------------------
 	|

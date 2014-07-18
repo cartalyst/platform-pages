@@ -17,12 +17,12 @@
  * @link       http://cartalyst.com
  */
 
-class PagesSeeder {
+use Illuminate\Database\Seeder;
+
+class PagesSeeder extends Seeder {
 
 	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function run()
 	{
