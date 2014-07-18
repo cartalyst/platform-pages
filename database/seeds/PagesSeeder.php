@@ -17,17 +17,19 @@
  * @link       http://cartalyst.com
  */
 
-class PagesSeeder {
+use Illuminate\Database\Seeder;
+
+class PagesSeeder extends Seeder {
 
 	/**
-	 * Run the database seeds.
-	 *
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function run()
 	{
 		// Create the meta attributes
 		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
+
+		$attribute->createModel()->where('namespace', 'platform/pages')->delete();
 
 		$attribute->create([
 			'namespace' => 'platform/pages',
