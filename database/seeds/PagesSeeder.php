@@ -29,6 +29,8 @@ class PagesSeeder extends Seeder {
 		// Create the meta attributes
 		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
 
+		$attribute->createModel()->where('namespace', 'platform/pages')->delete();
+
 		$attribute->create([
 			'namespace' => 'platform/pages',
 			'name'      => 'Meta Title',
