@@ -29,7 +29,12 @@ class PagesSeeder extends Seeder {
 		// Create the meta attributes
 		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
 
-		$attribute->createModel()->where('namespace', 'platform/pages')->delete();
+		$attributeIds = $attribute->createModel()->where('namespace', 'platform/pages')->lists('id');
+
+		foreach ($attributeIds as $id)
+		{
+			$attribute->delete($id);
+		}
 
 		$attribute->create([
 			'namespace' => 'platform/pages',
