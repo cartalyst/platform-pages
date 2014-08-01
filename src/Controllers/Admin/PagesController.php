@@ -24,7 +24,7 @@ use Lang;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
-use Platform\Users\Repositories\GroupRepositoryInterface;
+use Platform\Users\Repositories\RoleRepositoryInterface;
 use Redirect;
 use Response;
 use View;
@@ -53,11 +53,11 @@ class PagesController extends AdminController {
 	protected $menus;
 
 	/**
-	 * The Groups repository.
+	 * The Roles repository.
 	 *
-	 * @var \Platform\Users\Repositories\GroupRepositoryInterface
+	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
 	 */
-	protected $groups;
+	protected $roles;
 
 	/**
 	 * Holds all the mass actions we can execute.
@@ -75,13 +75,13 @@ class PagesController extends AdminController {
 	 *
 	 * @param  \Platform\Users\Repositories\PageRepositoryInterface  $pages
 	 * @param  \Platform\Users\Repositories\MenuRepositoryInterface  $menus
-	 * @param  \Platform\Users\Repositories\GroupRepositoryInterface  $groups
+	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
 	 * @return void
 	 */
 	public function __construct(
 		PageRepositoryInterface $pages,
 		MenuRepositoryInterface $menus,
-		GroupRepositoryInterface $groups
+		RoleRepositoryInterface $roles
 	)
 	{
 		parent::__construct();
@@ -90,7 +90,7 @@ class PagesController extends AdminController {
 
 		$this->menus = $menus;
 
-		$this->groups = $groups;
+		$this->roles = $roles;
 	}
 
 	/**
@@ -254,8 +254,8 @@ class PagesController extends AdminController {
 			$menu = $this->menus->createModel();
 		}
 
-		// Get all the available user groups
-		$groups = $this->groups->findAll();
+		// Get all the available user roles
+		$roles = $this->roles->findAll();
 
 		// Get all the available templates
 		$templates = $this->pages->templates();
@@ -268,7 +268,7 @@ class PagesController extends AdminController {
 
 		// Show the page
 		return View::make('platform/pages::form', compact(
-			'mode', 'page', 'groups', 'templates', 'files', 'menus', 'menu'
+			'mode', 'page', 'roles', 'templates', 'files', 'menus', 'menu'
 		));
 	}
 
@@ -281,9 +281,9 @@ class PagesController extends AdminController {
 	 */
 	protected function processForm($mode, $id = null)
 	{
-		// Check in case the groups input is disabled but we had groups
+		// Check in case the roles input is disabled but we had roles
 		// that were previously selected, we want to remove those.
-		Input::merge(['groups' => Input::get('groups', [])]);
+		Input::merge(['roles' => Input::get('roles', [])]);
 
 		// Get the input data
 		$data = Input::all();

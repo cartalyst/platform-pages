@@ -73,11 +73,11 @@ class DbPageRepository implements PageRepositoryInterface {
 	protected $theme = null;
 
 	/**
-	 * The group model.
+	 * The role model.
 	 *
 	 * @var string
 	 */
-	protected $groupModel = 'Platform\Users\Models\Group';
+	protected $roleModel = 'Platform\Users\Models\Role';
 
 	/**
 	 * The menu model.
@@ -418,17 +418,17 @@ class DbPageRepository implements PageRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getGroupModel()
+	public function getRoleModel()
 	{
-		return $this->groupModel;
+		return $this->roleModel;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setGroupModel($model)
+	public function setRoleModel($model)
 	{
-		$this->groupModel = $model;
+		$this->roleModel = $model;
 
 		return $this;
 	}

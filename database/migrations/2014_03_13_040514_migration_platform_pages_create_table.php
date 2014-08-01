@@ -36,7 +36,7 @@ class MigrationPlatformPagesCreateTable extends Migration {
 			$table->string('uri');
 			$table->string('type');
 			$table->string('visibility');
-			$table->text('groups')->nullable();
+			$table->text('roles')->nullable();
 
 			// Database specific
 			$table->string('template')->nullable();

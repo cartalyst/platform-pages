@@ -82,13 +82,13 @@ class PagesController extends BaseController {
 					{
 						$canView = false;
 					}
-					else if ( ! empty($page->groups))
+					else if ( ! empty($page->roles))
 					{
 						$canView = false;
 
-						foreach ($currentUser->groups as $group)
+						foreach ($currentUser->roles as $role)
 						{
-							if (in_array($group->id, $page->groups))
+							if (in_array($role->id, $page->roles))
 							{
 								$canView = true;
 

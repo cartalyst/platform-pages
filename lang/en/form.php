@@ -47,8 +47,8 @@ return [
 	],
 	'visibility_help' => 'When should this page be seen?',
 
-	'groups'      => 'Groups',
-	'groups_help' => 'What user groups should be able to see this page?',
+	'roles'      => 'Roles',
+	'roles_help' => 'What user roles should be able to see this page?',
 
 	'navigation' => [
 		'legend' => 'Navigation',

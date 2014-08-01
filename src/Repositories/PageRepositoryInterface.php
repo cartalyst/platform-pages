@@ -171,19 +171,19 @@ interface PageRepositoryInterface {
 	public function setTheme($theme);
 
 	/**
-	 * Returns the group model.
+	 * Returns the role model.
 	 *
 	 * @return string
 	 */
-	public function getGroupModel();
+	public function getRoleModel();
 
 	/**
-	 * Set the group model.
+	 * Set the role model.
 	 *
 	 * @param  string  $model
 	 * @return void
 	 */
-	public function setGroupModel($model);
+	public function setRoleModel($model);
 
 	/**
 	 * Returns the menu model.

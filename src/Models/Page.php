@@ -85,41 +85,41 @@ class Page extends Model implements EntityInterface {
 	}
 
 	/**
-	 * Get mutator for the "groups" attribute.
+	 * Get mutator for the "roles" attribute.
 	 *
-	 * @param  array  $groups
+	 * @param  array  $roles
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 */
-	public function getGroupsAttribute($groups)
+	public function getRolesAttribute($roles)
 	{
-		if ( ! $groups)
+		if ( ! $roles)
 		{
 			return [];
 		}
 
-		if (is_array($groups))
+		if (is_array($roles))
 		{
-			return $groups;
+			return $roles;
 		}
 
-		if ( ! $_groups = json_decode($groups, true))
+		if ( ! $_roles = json_decode($roles, true))
 		{
-			throw new InvalidArgumentException("Cannot JSON decode groups [{$groups}].");
+			throw new InvalidArgumentException("Cannot JSON decode roles [{$roles}].");
 		}
 
-		return $_groups;
+		return $_roles;
 	}
 
 	/**
-	 * Set mutator for the "groups" attribute.
+	 * Set mutator for the "roles" attribute.
 	 *
-	 * @param  array  $groups
+	 * @param  array  $roles
 	 * @return void
 	 */
-	public function setGroupsAttribute($groups)
+	public function setRolesAttribute($roles)
 	{
-		$this->attributes['groups'] = ! empty($groups) ? json_encode($groups) : '';
+		$this->attributes['roles'] = ! empty($roles) ? json_encode($roles) : '';
 	}
 
 	/**
