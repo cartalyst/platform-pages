@@ -55,6 +55,10 @@ class MigrationPlatformPagesCreateTable extends Migration {
 			// support the indexes, other engines aren't affected.
 			$table->engine = 'InnoDB';
 			$table->unique('slug');
+			$table->index('uri');
+			$table->index('type');
+			$tabel->index('visibility');
+			$table->index('enabled');
 		});
 
 		// Create the meta attributes
