@@ -134,94 +134,19 @@ return [
 
 	/*
 	|--------------------------------------------------------------------------
-	| Register Callback
+	| Service Providers
 	|--------------------------------------------------------------------------
 	|
-	| Closure that is called when the extension is registered. This can do
-	| all the needed custom logic upon registering.
-	|
-	| The closure parameters are:
-	|
-	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
-	|	object \Illuminate\Foundation\Application        $app
+	| Define your extension service providers here. They will be dynamically
+	| registered without having to include them in app/config/app.php.
 	|
 	*/
 
-	'register' => function(ExtensionInterface $extension, Application $app)
-	{
-		$app['Platform\Menus\Types\PageType'] = $app->share(function($app)
-		{
-			return new Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
-		});
+	'providers' => [
 
-		$pageRepository = 'Platform\Pages\Repositories\PageRepositoryInterface';
+		'Platform\Pages\PagesServiceProvider',
 
-		if ( ! $app->bound($pageRepository))
-		{
-			$app->bind($pageRepository, function($app)
-			{
-				$model = get_class($app['Platform\Pages\Models\Page']);
-
-				return (new Platform\Pages\Repositories\DbPageRepository($model, $app['events']))
-					->setThemeBag($app['themes'])
-					->setTheme($app['config']['cartalyst/themes::active']);
-			});
-		}
-	},
-
-	/*
-	|--------------------------------------------------------------------------
-	| Boot Callback
-	|--------------------------------------------------------------------------
-	|
-	| Closure that is called when the extension is booted. This can do
-	| all the needed custom logic upon booting.
-	|
-	| The closure parameters are:
-	|
-	|	object \Cartalyst\Extensions\ExtensionInterface  $extension
-	|	object \Illuminate\Foundation\Application        $app
-	|
-	*/
-
-	'boot' => function(ExtensionInterface $extension, Application $app)
-	{
-		// Get the page model
-		$model = $app['Platform\Pages\Models\Page'];
-
-		// Register a new attribute namespace
-		$app['Platform\Attributes\Models\Attribute']->registerNamespace($model);
-
-		// Register the menu page type
-		$app['Platform\Menus\Models\Menu']->registerType($app['Platform\Menus\Types\PageType']);
-
-		// Check the environment and app.debug settings
-		if ($app->environment() === 'production' or $app['config']['app.debug'] === false)
-		{
-			$notFound = $app['config']['platform/pages::not_found'];
-
-			if ( ! is_null($notFound))
-			{
-				$app->error(function(NotFoundHttpException $exception, $code) use ($app, $notFound)
-				{
-					Log::error($exception);
-
-					try
-					{
-						$repository = $app['Platform\Pages\Repositories\PageRepositoryInterface'];
-
-						$content = $repository->find($notFound);
-
-						return Response::make($repository->render($content), 404);
-					}
-					catch (Exception $e)
-					{
-
-					}
-				});
-			}
-		}
-	},
+	],
 
 	/*
 	|--------------------------------------------------------------------------

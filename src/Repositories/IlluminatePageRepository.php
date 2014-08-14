@@ -17,16 +17,20 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Support\Traits\EventTrait;
+use Cartalyst\Support\Traits\RepositoryTrait;
+use Cartalyst\Support\Traits\ValidatorTrait;
 use Cartalyst\Themes\ThemeBag;
 use Config;
 use Illuminate\Events\Dispatcher;
 use Platform\Pages\Models\Page;
 use RuntimeException;
 use Symfony\Component\Finder\Finder;
-use Validator;
 use View;
 
-class DbPageRepository implements PageRepositoryInterface {
+class IlluminatePageRepository implements PageRepositoryInterface {
+
+	use EventTrait, RepositoryTrait, ValidatorTrait;
 
 	/**
 	 * The Eloquent page model.
@@ -34,29 +38,6 @@ class DbPageRepository implements PageRepositoryInterface {
 	 * @var string
 	 */
 	protected $model;
-
-	/**
-	 * The event dispatcher instance.
-	 *
-	 * @var \Illuminate\Events\Dispatcher
-	 */
-	protected $dispatcher;
-
-	/**
-	 * Holds the form validation rules.
-	 *
-	 * @var array
-	 */
-	protected $rules = [
-		'name'       => 'required|max:255',
-		'slug'       => 'required|max:255|unique:pages',
-		'uri'        => 'required|max:255|unique:pages',
-		'enabled'    => 'required',
-		'type'       => 'required|in:database,filesystem',
-		'visibility' => 'required|in:always,logged_in,admin',
-		'template'   => 'required_if:type,database',
-		'file'       => 'required_if:type,filesystem',
-	];
 
 	/**
 	 * The theme bag which is used for rendering file-based pages.
@@ -168,7 +149,8 @@ class DbPageRepository implements PageRepositoryInterface {
 	 */
 	public function validForCreation(array $data)
 	{
-		return $this->validatePage($data);
+		return $this->validator
+			->validate($data);
 	}
 
 	/**
@@ -178,11 +160,10 @@ class DbPageRepository implements PageRepositoryInterface {
 	{
 		$page = $this->find($id);
 
-		$this->rules['slug'] .= ",slug,{$page->slug},slug";
-
-		$this->rules['uri'] .= ",uri,{$page->uri},uri";
-
-		return $this->validatePage($data);
+		return $this->validator
+			->on('update')
+			->bind(['slug' => $page->slug, 'uri' => $page->uri])
+			->validate($data);
 	}
 
 	/**
@@ -449,21 +430,6 @@ class DbPageRepository implements PageRepositoryInterface {
 		$this->menuModel = $model;
 
 		return $this;
-	}
-
-	/**
-	 * Validates a page.
-	 *
-	 * @param  array  $data
-	 * @return \Illuminate\Support\MessageBag
-	 */
-	protected function validatePage($data)
-	{
-		$validator = Validator::make($data, $this->rules);
-
-		$validator->passes();
-
-		return $validator->errors();
 	}
 
 	/**
