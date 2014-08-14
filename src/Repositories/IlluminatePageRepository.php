@@ -175,7 +175,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 
 		$this->setPageMenu($page, $data);
 
-		$this->dispatcher->fire('platform.page.created', $page);
+		$this->fireEvent('platform.page.created', $page);
 
 		return $page;
 	}
@@ -191,7 +191,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 
 		$this->setPageMenu($page, $data);
 
-		$this->dispatcher->fire('platform.page.updated', $page);
+		$this->fireEvent('platform.page.updated', $page);
 
 		return $page;
 	}
@@ -203,7 +203,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	{
 		if ($page = $this->find($id))
 		{
-			$this->dispatcher->fire('platform.page.deleted', $page);
+			$this->fireEvent('platform.page.deleted', $page);
 
 			$page->delete();
 
