@@ -39,7 +39,7 @@ class PagesServiceProvider extends ServiceProvider {
 
 			if ( ! is_null($notFound))
 			{
-				$this->app->error(function(NotFoundHttpException $exception, $code) use ($app, $notFound)
+				$this->app->error(function(NotFoundHttpException $exception, $code) use ($notFound)
 				{
 					Log::error($exception);
 
