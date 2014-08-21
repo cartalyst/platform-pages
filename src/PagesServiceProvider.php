@@ -58,6 +58,9 @@ class PagesServiceProvider extends ServiceProvider {
 				});
 			}
 		}
+
+		// Register the menu page type
+		$this->app['Platform\Menus\Models\Menu']->registerType($this->app['Platform\Menus\Types\PageType']);
 	}
 
 	/**
@@ -68,6 +71,11 @@ class PagesServiceProvider extends ServiceProvider {
 		$this->registerPagesValidator();
 
 		$this->registerPageRepository();
+
+		$this->app['Platform\Menus\Types\PageType'] = $this->app->share(function($app)
+		{
+			return new \Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
+		});
 	}
 
 	/**
