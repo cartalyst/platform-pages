@@ -145,7 +145,6 @@ return [
 	'providers' => [
 
 		'Platform\Pages\PagesServiceProvider',
-		'Platform\Pages\SettingsServiceProvider',
 
 	],
 
@@ -269,85 +268,81 @@ return [
 
 	'settings' => function()
 	{
-		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+		app('platform.settings')->section('pages', function($section)
+		{
+			$section->name = 'Pages';
 
-		$allPages = $repository->findAll()->toArray();
+			$section->fieldset('general', function($fieldset)
+			{
+				$fieldset->name = 'General';
 
-		return [
+				#
+				$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
+				$allPages = $repository->findAll();
 
-			'pages' => ['name' => 'Pages'],
 
-			'pages::general' => ['name' => 'General'],
-
-			'pages::general.default_page' => [
-				'name'    => 'Default Page',
-				'config'  => 'platform/pages::default_page',
-				'info'    => 'The page that is shown on the root route.',
-				'type'    => 'dropdown',
-				'options' => function() use ($allPages)
+				$fieldset->field('default_page', function($field) use ($allPages)
 				{
-					return array_map(function($page)
+					$field->name = 'Default Page';
+					$field->config = 'platform/pages::default_page';
+					$field->info = 'The page that is shown on the root route.';
+
+					foreach ($allPages as $page)
 					{
-						return [
-							'value' => $page['slug'],
-							'label' => $page['name'],
-						];
+						$field->option($page->slug, function($option) use ($page)
+						{
+							$option->value = $page->slug;
+							$option->label = $page->name;
+						});
+					}
+				});
 
-					}, $allPages);
-				}
-			],
-
-			'pages::general.default_section' => [
-				'name'    => 'Default Section',
-				'config'  => 'platform/pages::default_section',
-				'info'    => 'The default section when using the database storage type.',
-				'type'    => 'text',
-			],
-
-			'pages::general.default_template' => [
-				'name'    => 'Default Template',
-				'config'  => 'platform/pages::default_template',
-				'info'    => 'The default template that is used for pages.',
-				'type'    => 'dropdown',
-				'options' => function() use ($repository)
+				$fieldset->field('default_section', function($field)
 				{
-					$options = [];
+					$field->name = 'Default Section';
+					$field->config = 'platform/pages::default_section';
+					$field->info = 'The default section when using the database storage type.';
+				});
+
+				$fieldset->field('default_template', function($field) use ($repository)
+				{
+					$field->name = 'Default Template';
+					$field->config = 'platform/pages::default_template';
+					$field->info = 'The default template that is used for pages.';
 
 					foreach ($repository->templates() as $value => $label)
 					{
-						$options[] = compact('value', 'label');
+						$field->option($value, function($option) use ($value, $label)
+						{
+							$option->value = $value;
+							$option->label = $label;
+						});
 					}
+				});
 
-					return $options;
-				}
-			],
-
-			'pages::general.not_found' => [
-				'name'    => '404 Error Page',
-				'config'  => 'platform/pages::not_found',
-				'info'    => 'The page that is shown when a 404 error arises.',
-				'type'    => 'dropdown',
-				'options' => function() use ($allPages)
+				$fieldset->field('not_found', function($field) use ($allPages)
 				{
-					$options = [];
+					$field->name = '404 Error Page';
+					$field->config = 'platform/pages::not_found';
+					$field->info = 'The page that is shown when a 404 error arises.';
 
-					$options[] = [
-						'value' => null,
-						'label' => 'Default',
-					];
-
-					return array_merge($options, array_map(function($page)
+					$field->option(null, function($option)
 					{
-						return [
-							'value' => $page['slug'],
-							'label' => $page['name'],
-						];
+						$option->value = null;
+						$option->label = 'Default';
+					});
 
-					}, $allPages));
-				}
-			],
-
-		];
+					foreach ($allPages as $page)
+					{
+						$field->option($page->slug, function($option) use ($page)
+						{
+							$option->value = $page->slug;
+							$option->label = $page->name;
+						});
+					}
+				});
+			});
+		});
 	},
 
 	/*
