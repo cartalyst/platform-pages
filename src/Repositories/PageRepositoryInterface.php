@@ -10,7 +10,7 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
@@ -171,19 +171,19 @@ interface PageRepositoryInterface {
 	public function setTheme($theme);
 
 	/**
-	 * Returns the group model.
+	 * Returns the role model.
 	 *
 	 * @return string
 	 */
-	public function getGroupModel();
+	public function getRoleModel();
 
 	/**
-	 * Set the group model.
+	 * Set the role model.
 	 *
 	 * @param  string  $model
 	 * @return void
 	 */
-	public function setGroupModel($model);
+	public function setRoleModel($model);
 
 	/**
 	 * Returns the menu model.

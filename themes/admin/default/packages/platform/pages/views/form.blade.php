@@ -250,17 +250,17 @@
 								</span>
 							</div>
 
-							<div class="form-group{{ $errors->first('groups', ' has-error') }}">
-								<label for="groups" class="control-label">{{{ trans('platform/pages::form.groups') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.groups_help') }}}"></i></label>
+							<div class="form-group{{ $errors->first('roles', ' has-error') }}">
+								<label for="roles" class="control-label">{{{ trans('platform/pages::form.roles') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.roles_help') }}}"></i></label>
 
-								<select class="form-control" name="groups[]" id="groups" multiple="multiple"{{ Input::old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
-								@foreach ($groups as $group)
-									<option value="{{ $group->id }}"{{ in_array($group->id, Input::get('groups', $page->groups)) ? ' selected="selected"' : null }}>{{ $group->name }}</option>
+								<select class="form-control" name="roles[]" id="roles" multiple="multiple"{{ Input::old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
+								@foreach ($roles as $role)
+									<option value="{{ $role->id }}"{{ in_array($role->id, Input::get('roles', $page->roles)) ? ' selected="selected"' : null }}>{{ $role->name }}</option>
 								@endforeach
 								</select>
 
 								<span class="help-block">
-									{{{ $errors->first('groups', ':message') }}}
+									{{{ $errors->first('roles', ':message') }}}
 								</span>
 							</div>
 

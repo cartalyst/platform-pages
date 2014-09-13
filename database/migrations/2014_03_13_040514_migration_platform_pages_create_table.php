@@ -10,7 +10,7 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
@@ -36,7 +36,7 @@ class MigrationPlatformPagesCreateTable extends Migration {
 			$table->string('uri');
 			$table->string('type');
 			$table->string('visibility');
-			$table->text('groups')->nullable();
+			$table->text('roles')->nullable();
 
 			// Database specific
 			$table->string('template')->nullable();

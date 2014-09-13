@@ -27,7 +27,7 @@ jQuery(document).ready(function($)
 	{
 		var status = $(this).val() !== 'logged_in';
 
-		$('#groups').prop('disabled', status);
+		$('#roles').prop('disabled', status);
 	});
 
 	// When the user selects a menu

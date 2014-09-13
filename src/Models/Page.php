@@ -10,21 +10,25 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Attributes\EntityInterface;
 use Closure;
 use Config;
+use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
-use Platform\Attributes\Models\Entity;
+use Platform\Attributes\Traits\EntityTrait;
 use Str;
 use Symfony\Component\Finder\Finder;
 
-class Page extends Entity {
+class Page extends Model implements EntityInterface {
+
+	use EntityTrait;
 
 	/**
 	 * {@inheritDoc}
@@ -81,41 +85,41 @@ class Page extends Entity {
 	}
 
 	/**
-	 * Get mutator for the "groups" attribute.
+	 * Get mutator for the "roles" attribute.
 	 *
-	 * @param  array  $groups
+	 * @param  array  $roles
 	 * @return array
 	 * @throws \InvalidArgumentException
 	 */
-	public function getGroupsAttribute($groups)
+	public function getRolesAttribute($roles)
 	{
-		if ( ! $groups)
+		if ( ! $roles)
 		{
 			return [];
 		}
 
-		if (is_array($groups))
+		if (is_array($roles))
 		{
-			return $groups;
+			return $roles;
 		}
 
-		if ( ! $_groups = json_decode($groups, true))
+		if ( ! $_roles = json_decode($roles, true))
 		{
-			throw new InvalidArgumentException("Cannot JSON decode groups [{$groups}].");
+			throw new InvalidArgumentException("Cannot JSON decode roles [{$roles}].");
 		}
 
-		return $_groups;
+		return $_roles;
 	}
 
 	/**
-	 * Set mutator for the "groups" attribute.
+	 * Set mutator for the "roles" attribute.
 	 *
-	 * @param  array  $groups
+	 * @param  array  $roles
 	 * @return void
 	 */
-	public function setGroupsAttribute($groups)
+	public function setRolesAttribute($roles)
 	{
-		$this->attributes['groups'] = ! empty($groups) ? json_encode($groups) : '';
+		$this->attributes['roles'] = ! empty($roles) ? json_encode($roles) : '';
 	}
 
 	/**

@@ -30,6 +30,11 @@
 			"name": "Dan Syme",
 			"email": "dan.syme@cartalyst.com",
 			"role": "Creator & Designer"
+		},
+		{
+			"name": "Suhayb Wardany",
+			"email": "su.wardany@cartalyst.com",
+			"role": "Developer"
 		}
 	],
 	"repositories": [
@@ -41,8 +46,8 @@
 	"require": {
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.1.*",
-		"platform/admin": "dev-master",
-		"platform/content": "dev-master"
+		"platform/admin": "dev-feature/traits",
+		"platform/content": "dev-feature/traits"
 	},
 	"autoload": {
 		"classmap": [
@@ -56,7 +61,7 @@
 	"extra": {
 		"component": "extension",
 		"branch-alias": {
-			"dev-master": "2.0.x-dev"
+			"dev-master": "1.0.x-dev"
 		}
 	},
 	"minimum-stability": "dev"

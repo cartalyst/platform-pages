@@ -10,7 +10,7 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
@@ -82,13 +82,13 @@ class PagesController extends BaseController {
 					{
 						$canView = false;
 					}
-					else if ( ! empty($page->groups))
+					else if ( ! empty($page->roles))
 					{
 						$canView = false;
 
-						foreach ($currentUser->groups as $group)
+						foreach ($currentUser->roles as $role)
 						{
-							if (in_array($group->id, $page->groups))
+							if (in_array($role->id, $page->roles))
 							{
 								$canView = true;
 

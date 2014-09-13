@@ -1,4 +1,4 @@
-<?php
+<?php namespace Platform\Pages\Validator;
 /**
  * Part of the Platform Pages extension.
  *
@@ -17,16 +17,13 @@
  * @link       http://cartalyst.com
  */
 
-return [
+interface PagesValidatorInterface {
 
-	'title'  => 'Pages',
-	'create' => 'Create Page',
-	'update' => 'Update Page',
-	'copy'   => 'Copy Page',
+	/**
+	 * Updating a page scenario.
+	 *
+	 * @return void
+	 */
+	public function onUpdate();
 
-	'tabs' => [
-		'general'    => 'General',
-		'attributes' => 'Attributes',
-	],
-
-];
+}

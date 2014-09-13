@@ -10,7 +10,7 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    2.0.0
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
@@ -47,8 +47,8 @@ return [
 	],
 	'visibility_help' => 'When should this page be seen?',
 
-	'groups'      => 'Groups',
-	'groups_help' => 'What user groups should be able to see this page?',
+	'roles'      => 'Roles',
+	'roles_help' => 'What user roles should be able to see this page?',
 
 	'navigation' => [
 		'legend' => 'Navigation',
