@@ -22,6 +22,7 @@ use Cartalyst\Support\Traits\RepositoryTrait;
 use Cartalyst\Support\Traits\ValidatorTrait;
 use Cartalyst\Themes\ThemeBag;
 use Config;
+use Illuminate\Cache\CacheManager;
 use Illuminate\Events\Dispatcher;
 use Platform\Pages\Models\Page;
 use RuntimeException;
@@ -38,6 +39,13 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 * @var string
 	 */
 	protected $model;
+
+	/**
+	 * The Illuminate Cache manager instance.
+	 *
+	 * @var \Illuminate\Cache\CacheManager
+	 */
+	protected $cache;
 
 	/**
 	 * The theme bag which is used for rendering file-based pages.
@@ -74,11 +82,13 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
 	 * @return void
 	 */
-	public function __construct($model, Dispatcher $dispatcher)
+	public function __construct($model, Dispatcher $dispatcher, CacheManager $cache)
 	{
 		$this->model = $model;
 
 		$this->dispatcher = $dispatcher;
+
+		$this->cache = $cache;
 	}
 
 	/**
@@ -95,10 +105,13 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function findAll()
 	{
-		return $this
-			->createModel()
-			->newQuery()
-			->get();
+		return $this->cache->rememberForever('platform.page.all', function()
+		{
+			return $this
+				->createModel()
+				->newQuery()
+				->get();
+		});
 	}
 
 	/**
@@ -106,11 +119,14 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function findAllEnabled()
 	{
-		return $this
-			->createModel()
-			->newQuery()
-			->where('enabled', 1)
-			->get();
+		return $this->cache->rememberForever('platform.page.all.enabled', function()
+		{
+			return $this
+				->createModel()
+				->newQuery()
+				->where('enabled', 1)
+				->get();
+		});
 	}
 
 	/**
@@ -118,12 +134,15 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return $this
-			->createModel()
-			->orWhere('slug', $id)
-			->orWhere('uri', $id)
-			->orWhere('id', (int) $id)
-			->first();
+		return $this->cache->rememberForever("platform.page.{$id}", function() use ($id)
+		{
+			return $this
+				->createModel()
+				->orWhere('slug', $id)
+				->orWhere('uri', $id)
+				->orWhere('id', (int) $id)
+				->first();
+		});
 	}
 
 	/**
@@ -131,17 +150,20 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function findEnabled($id)
 	{
-		return $this
-			->createModel()
-			->where('enabled', 1)
-			->whereNested(function($query) use ($id)
-			{
-				$query
-					->orWhere('slug', $id)
-					->orWhere('uri', $id)
-					->orWhere('id', (int) $id);
-			})
-			->first();
+		return $this->cache->rememberForever("platform.page.enabled.{$id}", function() use ($id)
+		{
+			return $this
+				->createModel()
+				->where('enabled', 1)
+				->whereNested(function($query) use ($id)
+				{
+					$query
+						->orWhere('slug', $id)
+						->orWhere('uri', $id)
+						->orWhere('id', (int) $id);
+				})
+				->first();
+		});
 	}
 
 	/**
