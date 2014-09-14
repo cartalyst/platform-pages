@@ -33,11 +33,11 @@ class PageEventHandler implements PageEventHandlerInterface {
 	protected $app;
 
 	/**
-	 * The content repository.
+	 * The pages repository.
 	 *
 	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
 	 */
-	protected $content;
+	protected $pages;
 
  	/**
 	 * The Cache manager instance.
@@ -49,18 +49,18 @@ class PageEventHandler implements PageEventHandlerInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $content
+	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $pages
 	 * @param  \Illuminate\Container\Container  $app
 	 * @param  \Illuminate\Cache\CacheManager  $cache
 	 * @return void
 	 */
-	public function __construct(PageRepositoryInterface $content, Container $app, CacheManager $cache)
+	public function __construct(PageRepositoryInterface $pages, Container $app, CacheManager $cache)
 	{
 		$this->app = $app;
 
 		$this->cache = $cache;
 
-		$this->content = $content;
+		$this->pages = $pages;
 
 	}
 
@@ -84,7 +84,7 @@ class PageEventHandler implements PageEventHandlerInterface {
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
 
-		$this->content->find($page->id);
+		$this->pages->find($page->id);
 	}
 
 	/**
@@ -92,8 +92,6 @@ class PageEventHandler implements PageEventHandlerInterface {
 	 */
 	public function onUpdate(Page $page)
 	{
-		\Log::debug("--- HEY ---- EDITING PAGE {$page->id}");
-
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
 
@@ -104,7 +102,7 @@ class PageEventHandler implements PageEventHandlerInterface {
 		$this->cache->forget("platform.page.enabled.{$page->slug}");
 		$this->cache->forget("platform.page.enabled.{$page->uri}");
 
-		$this->content->find($page->id);
+		$this->pages->find($page->id);
 	}
 
 	/**
