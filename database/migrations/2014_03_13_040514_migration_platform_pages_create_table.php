@@ -57,7 +57,7 @@ class MigrationPlatformPagesCreateTable extends Migration {
 			$table->unique('slug');
 			$table->index('uri');
 			$table->index('type');
-			$tabel->index('visibility');
+			$table->index('visibility');
 			$table->index('enabled');
 		});
 
