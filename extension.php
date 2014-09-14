@@ -19,6 +19,7 @@
 
 use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
+use Cartalyst\Settings\Repository as Settings;
 use Platform\Pages\Controllers\Frontend\PagesController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -266,9 +267,9 @@ return [
 	|
 	*/
 
-	'settings' => function()
+	'settings' => function(Settings $settings)
 	{
-		app('platform.settings')->section('pages', function($section)
+		$settings->find('platform')->section('pages', function($section)
 		{
 			$section->name = 'Pages';
 
