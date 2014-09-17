@@ -17,11 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Extensions\ExtensionInterface;
 use Illuminate\Foundation\Application;
+use Cartalyst\Extensions\ExtensionInterface;
 use Cartalyst\Settings\Repository as Settings;
-use Platform\Pages\Controllers\Frontend\PagesController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Cartalyst\Permissions\Container as Permissions;
 
 return [
 
@@ -210,24 +209,16 @@ return [
 	| Permissions
 	|--------------------------------------------------------------------------
 	|
-	| List of permissions this extension has. These are shown in the user
-	| management area to build a graphical interface where permissions
-	| can be selected to allow or deny user access.
+	| Register here all the permissions that this extension has. These will
+	| be shown in the user management area to build a graphical interface
+	| where permissions can be selected to allow or deny user access.
 	|
-	| You can protect single or multiple controller methods at once.
-	|
-	| When writing permissions, if you put a 'key' => 'value' pair, the 'value'
-	| will be the label for the permission which is going to be displayed
-	| when editing the permissions and when access is denied.
-	|
-	| The permissions should follow the following structure:
-	|
-	|     Vendor\Namespace\Controller@method
-	|     Vendor\Namespace\Controller@method1,method2, ...
+	| For detailed instructions on how to register the permissions, please
+	| refer to the following url https://cartalyst.com/manual/permissions
 	|
 	*/
 
-	'permissions' => function()
+	'permissions' => function(Permissions $permissions)
 	{
 		return [
 
@@ -245,8 +236,10 @@ return [
 	| Settings
 	|--------------------------------------------------------------------------
 	|
-	| Register any settings for your extension. You may can also configure
-	| the namespace and group that a setting belongs to.
+	| Register here all the settings that this extension has.
+	|
+	| For detailed instructions on how to register the settings, please
+	| refer to the following url https://cartalyst.com/manual/settings
 	|
 	*/
 

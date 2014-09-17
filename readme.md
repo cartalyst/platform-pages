@@ -6,13 +6,7 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well
 
 ## Extension Story
 
-History and future capabilities.
-
-#### Incomplete
-
-- User can create multiple content sections.
-
-### Complete
+Extension history and capabilities.
 
 #### xx-Jan-14 - v1.0.0
 
@@ -30,6 +24,18 @@ History and future capabilities.
 - User can copy/clone a page.
 - User can delete a page.
 
+## Installation
+
+Platform Pages is installable with Composer. Read further information on how to install.
+
+[Installation Guide](https://cartalyst.com/manual/platform-pages/1.0#installation)
+
+## Documentation
+
+Refer to the following guide on how to use the Platform Pages extension.
+
+[Documentation](https://cartalyst.com/manual/platform-pages/1.0)
+
 ## Versioning
 
 We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
@@ -44,11 +50,13 @@ And constructed with the following guidelines:
 * New additions without breaking backward compatibility bumps the minor (and resets the patch)
 * Bug fixes and misc changes bumps the patch
 
+## Contributing
+
+Please read the [Contributing](contributing.md) guidelines.
+
 ## Support
 
-Have a bug? Please create an issue here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
-
-https://github.com/cartalyst/platform-pages/issues
+Have a bug? Please create an [issue](https://github.com/cartalyst/platform-pages/issues) here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
 
 Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
 
@@ -56,3 +64,5 @@ Join us for a chat on IRC.
 
 Server: irc.freenode.net
 Channel: #cartalyst
+
+Email: help@cartalyst.com
