@@ -18,6 +18,7 @@
  */
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Response;
 use Platform\Pages\Repositories\IlluminatePageRepository;
 
 class PagesServiceProvider extends ServiceProvider {
@@ -41,7 +42,7 @@ class PagesServiceProvider extends ServiceProvider {
 			{
 				$this->app->error(function(NotFoundHttpException $exception, $code) use ($notFound)
 				{
-					Log::error($exception);
+					$this->app['log']->error($exception);
 
 					try
 					{
