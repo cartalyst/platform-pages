@@ -27,7 +27,7 @@ class PagesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('platform/pages', 'platform/pages'. __DIR__.'/..');
+		$this->package('platform/pages', 'platform/pages'. __DIR__.'/../..');
 
 		// Register the attributes namespace
 		$this->registerAttributesNamespaces();
