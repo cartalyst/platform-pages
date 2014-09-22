@@ -1,4 +1,4 @@
-<?php namespace Platform\Pages;
+<?php namespace Platform\Pages\Providers;
 /**
  * Part of the Platform Pages extension.
  *

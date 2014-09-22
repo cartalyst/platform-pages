@@ -144,7 +144,7 @@ return [
 
 	'providers' => [
 
-		'Platform\Pages\PagesServiceProvider',
+		'Platform\Pages\Providers\PagesServiceProvider',
 
 	],
 
