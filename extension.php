@@ -220,15 +220,45 @@ return [
 
 	'permissions' => function(Permissions $permissions)
 	{
-		return [
+		$permissions->group('pages', function($g)
+		{
+			$g->name = 'Pages';
 
-			'Platform\Pages\Controllers\Admin\PagesController@index,grid'   => Lang::get('platform/pages::permissions.index'),
-			'Platform\Pages\Controllers\Admin\PagesController@create,store' => Lang::get('platform/pages::permissions.create'),
-			'Platform\Pages\Controllers\Admin\PagesController@copy'         => Lang::get('platform/pages::permissions.copy'),
-			'Platform\Pages\Controllers\Admin\PagesController@edit,update'  => Lang::get('platform/pages::permissions.edit'),
-			'Platform\Pages\Controllers\Admin\PagesController@delete'       => Lang::get('platform/pages::permissions.delete'),
+			$g->permission('pages.index', function($p)
+			{
+				$p->label = trans('platform/pages::permissions.index');
 
-		];
+				$p->controller('Platform\Pages\Controllers\Admin\PagesController', 'index, grid');
+			});
+
+			$g->permission('pages.create', function($p)
+			{
+				$p->label = trans('platform/pages::permissions.create');
+
+				$p->controller('Platform\Pages\Controllers\Admin\PagesController', 'create, store');
+			});
+
+			$g->permission('pages.copy', function($p)
+			{
+				$p->label = trans('platform/pages::permissions.copy');
+
+				$p->controller('Platform\Pages\Controllers\Admin\PagesController', 'copy');
+			});
+
+			$g->permission('pages.edit', function($p)
+			{
+				$p->label = trans('platform/pages::permissions.edit');
+
+				$p->controller('Platform\Pages\Controllers\Admin\PagesController', 'edit, update');
+			});
+
+			$g->permission('pages.delete', function($p)
+			{
+				$p->label = trans('platform/pages::permissions.delete');
+
+				$p->controller('Platform\Pages\Controllers\Admin\PagesController', 'delete');
+			});
+		});
 	},
 
 	/*
