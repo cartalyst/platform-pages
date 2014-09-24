@@ -62,6 +62,9 @@ class PagesServiceProvider extends ServiceProvider {
 
 		// Register the menu page type
 		$this->app['Platform\Menus\Models\Menu']->registerType($this->app['Platform\Menus\Types\PageType']);
+
+		// Subscribe the registered event handlers
+		$this->app['events']->subscribe('Platform\Pages\Handlers\PageEventHandlerInterface');
 	}
 
 	/**
@@ -72,6 +75,8 @@ class PagesServiceProvider extends ServiceProvider {
 		$this->registerPagesValidator();
 
 		$this->registerPageRepository();
+
+		$this->registerEventHandlers();
 
 		$this->app['Platform\Menus\Types\PageType'] = $this->app->share(function($app)
 		{
@@ -103,18 +108,15 @@ class PagesServiceProvider extends ServiceProvider {
 	{
 		$pageRepository = 'Platform\Pages\Repositories\PageRepositoryInterface';
 
-		if ( ! $this->app->bound($pageRepository))
+		$this->app->bindIf($pageRepository, function($app)
 		{
-			$this->app->bind($pageRepository, function($app)
-			{
-				$model = get_class($app['Platform\Pages\Models\Page']);
+			$model = get_class($app['Platform\Pages\Models\Page']);
 
-				return (new IlluminatePageRepository($model, $app['events']))
-					->setThemeBag($app['themes'])
-					->setTheme($app['config']['cartalyst/themes::active'])
-					->setValidator($app['Platform\Pages\Validator\PagesValidatorInterface']);
-			});
-		}
+			return (new IlluminatePageRepository($model, $app['events'], $app['cache']))
+				->setThemeBag($app['themes'])
+				->setTheme($app['config']['cartalyst/themes::active'])
+				->setValidator($app['Platform\Pages\Validator\PagesValidatorInterface']);
+		});
 	}
 
 	/**
@@ -127,6 +129,19 @@ class PagesServiceProvider extends ServiceProvider {
 		$model = $this->app['Platform\Attributes\Models\Attribute'];
 
 		$model->registerNamespace($this->app['Platform\Pages\Models\Page']);
+	}
+
+	/**
+	 * Register the event handlers.
+	 *
+	 * @return void
+	 */
+	protected function registerEventHandlers()
+	{
+		$this->app->bindIf(
+			'Platform\Pages\Handlers\PageEventHandlerInterface',
+			'Platform\Pages\Handlers\PageEventHandler'
+		);
 	}
 
 }
