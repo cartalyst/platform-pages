@@ -17,52 +17,12 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Support\Base\EventHandler as BaseHandler;
 use Illuminate\Events\Dispatcher;
-use Illuminate\Cache\CacheManager;
-use Illuminate\Container\Container;
 use Platform\Pages\Models\Page;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 
-class PageEventHandler implements PageEventHandlerInterface {
-
-	/**
-	 * The container instance.
-	 *
-	 * @var \Illuminate\Container\Container
-	 */
-	protected $app;
-
-	/**
-	 * The pages repository.
-	 *
-	 * @var \Platform\Pages\Repositories\PageRepositoryInterface
-	 */
-	protected $pages;
-
- 	/**
-	 * The Cache manager instance.
-	 *
-	 * @var \Illuminate\Cache\CacheManager
-	 */
-	protected $cache;
-
-	/**
-	 * Constructor.
-	 *
-	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $pages
-	 * @param  \Illuminate\Container\Container  $app
-	 * @param  \Illuminate\Cache\CacheManager  $cache
-	 * @return void
-	 */
-	public function __construct(PageRepositoryInterface $pages, Container $app, CacheManager $cache)
-	{
-		$this->app = $app;
-
-		$this->cache = $cache;
-
-		$this->pages = $pages;
-
-	}
+class PageEventHandler extends BaseHandler implements PageEventHandlerInterface {
 
 	/**
 	 * {@inheritDoc}
@@ -84,7 +44,7 @@ class PageEventHandler implements PageEventHandlerInterface {
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
 
-		$this->pages->find($page->id);
+		$this->app['Platform\Pages\Repositories\PageRepositoryInterface']->find($page->id);
 	}
 
 	/**
@@ -102,7 +62,7 @@ class PageEventHandler implements PageEventHandlerInterface {
 		$this->cache->forget("platform.page.enabled.{$page->slug}");
 		$this->cache->forget("platform.page.enabled.{$page->uri}");
 
-		$this->pages->find($page->id);
+		$this->app['Platform\Pages\Repositories\PageRepositoryInterface']->find($page->id);
 	}
 
 	/**
