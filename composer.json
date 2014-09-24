@@ -45,7 +45,7 @@
 	],
 	"require": {
 		"php": ">=5.4.0",
-		"cartalyst/composer-installers": "1.1.*",
+		"cartalyst/composer-installers": "~1.1",
 		"platform/admin": "dev-feature/settings",
 		"platform/content": "dev-feature/settings"
 	},
