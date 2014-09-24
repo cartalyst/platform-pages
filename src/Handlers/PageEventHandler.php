@@ -17,9 +17,9 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Support\Base\EventHandler as BaseHandler;
-use Illuminate\Events\Dispatcher;
 use Platform\Pages\Models\Page;
+use Illuminate\Events\Dispatcher;
+use Cartalyst\Support\Base\EventHandler as BaseHandler;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 
 class PageEventHandler extends BaseHandler implements PageEventHandlerInterface {

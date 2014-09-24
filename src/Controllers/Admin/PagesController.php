@@ -17,17 +17,17 @@
  * @link       http://cartalyst.com
  */
 
+use Lang;
+use View;
+use Input;
 use Config;
 use DataGrid;
-use Input;
-use Lang;
+use Redirect;
+use Response;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Users\Repositories\RoleRepositoryInterface;
-use Redirect;
-use Response;
-use View;
 
 class PagesController extends AdminController {
 

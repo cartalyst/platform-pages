@@ -17,11 +17,11 @@
  * @link       http://cartalyst.com
  */
 
+use Route;
 use Config;
+use Sentinel;
 use Platform\Foundation\Controllers\Controller;
 use Platform\Pages\Repositories\PageRepositoryInterface;
-use Route;
-use Sentinel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PagesController extends Controller {
