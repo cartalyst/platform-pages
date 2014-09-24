@@ -18,13 +18,13 @@
  */
 
 use Config;
-use Platform\Foundation\Controllers\BaseController;
+use Platform\Foundation\Controllers\Controller;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Route;
 use Sentinel;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class PagesController extends BaseController {
+class PagesController extends Controller {
 
 	/**
 	 * The Pages repository.
