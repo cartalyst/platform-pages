@@ -47,7 +47,7 @@
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "~1.1",
 		"platform/admin": "dev-feature/traits",
-		"platform/content": "dev-feature/cache-2"
+		"platform/content": "dev-feature/traits"
 	},
 	"autoload": {
 		"classmap": [
