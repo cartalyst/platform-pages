@@ -19,10 +19,10 @@
 
 use Platform\Pages\Models\Page;
 use Illuminate\Events\Dispatcher;
-use Cartalyst\Support\Base\EventHandler as BaseHandler;
+use Cartalyst\Support\Handlers\EventHandler;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 
-class PageEventHandler extends BaseHandler implements PageEventHandlerInterface {
+class PageEventHandler extends EventHandler implements PageEventHandlerInterface {
 
 	/**
 	 * {@inheritDoc}
