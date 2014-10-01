@@ -73,8 +73,8 @@ class PagesController extends AdminController {
 	/**
 	 * Constructor.
 	 *
-	 * @param  \Platform\Users\Repositories\PageRepositoryInterface  $pages
-	 * @param  \Platform\Users\Repositories\MenuRepositoryInterface  $menus
+	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $pages
+	 * @param  \Platform\Menus\Repositories\MenuRepositoryInterface  $menus
 	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
 	 * @return void
 	 */
