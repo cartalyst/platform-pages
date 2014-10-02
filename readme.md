@@ -1,5 +1,7 @@
 # Pages
 
+[![Build Status](http://ci.cartalyst.com/build-status/svg/25)](http://ci.cartalyst.com/build-status/view/25)
+
 A Platform 2 Extension to manage your website pages.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
