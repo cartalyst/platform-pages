@@ -25,10 +25,11 @@ use Symfony\Component\Finder\Finder;
 use Illuminate\Database\Eloquent\Model;
 use Cartalyst\Attributes\EntityInterface;
 use Platform\Attributes\Traits\EntityTrait;
+use Cartalyst\Support\Traits\NamespacedEntityTrait;
 
 class Page extends Model implements EntityInterface {
 
-	use EntityTrait;
+	use EntityTrait, NamespacedEntityTrait;
 
 	/**
 	 * {@inheritDoc}
@@ -56,7 +57,7 @@ class Page extends Model implements EntityInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	protected $eavNamespace = 'platform/pages';
+	protected static $entityNamespace = 'platform/pages';
 
 	/**
 	 * {@inheritDoc}
