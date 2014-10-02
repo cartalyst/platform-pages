@@ -62,7 +62,7 @@ class ApiPagesControllerTest extends PHPUnit_Framework_TestCase {
 	{
 		$app = new Container;
 		$app['request'] = m::mock('Illuminate\Http\Request');
-		$app['request']->shouldReceive('input')
+		$app['request']->shouldReceive('get')
 			->with('include', [])
 			->once()
 			->andReturn([]);
