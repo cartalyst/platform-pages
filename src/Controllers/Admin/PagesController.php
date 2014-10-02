@@ -17,13 +17,13 @@
  * @link       http://cartalyst.com
  */
 
-use Lang;
-use View;
-use Input;
-use Config;
-use DataGrid;
-use Redirect;
-use Response;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Cartalyst\DataGrid\Laravel\Facades\DataGrid;
 use Platform\Admin\Controllers\Admin\AdminController;
 use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
@@ -218,10 +218,10 @@ class PagesController extends AdminController {
 				$this->pages->{$action}($entry);
 			}
 
-			return Response::make('Success');
+			return Response::json('Success');
 		}
 
-		return Response::make('Failed', 500);
+		return Response::json('Failed', 500);
 	}
 
 	/**

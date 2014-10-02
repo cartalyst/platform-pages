@@ -17,14 +17,14 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Attributes\EntityInterface;
-use Closure;
 use Config;
-use Illuminate\Database\Eloquent\Model;
+use Closure;
+use Illuminate\Support\Str;
 use InvalidArgumentException;
-use Platform\Attributes\Traits\EntityTrait;
-use Str;
 use Symfony\Component\Finder\Finder;
+use Illuminate\Database\Eloquent\Model;
+use Cartalyst\Attributes\EntityInterface;
+use Platform\Attributes\Traits\EntityTrait;
 
 class Page extends Model implements EntityInterface {
 

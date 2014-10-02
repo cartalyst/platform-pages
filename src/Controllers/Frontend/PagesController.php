@@ -17,10 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Route;
-use Config;
-use Sentinel;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Config;
 use Platform\Foundation\Controllers\Controller;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 

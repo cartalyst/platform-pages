@@ -17,8 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use Input;
-use Lang;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Lang;
 use League\Fractal\Manager;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Pages\Transformers\PageTransformer;
