@@ -20,6 +20,7 @@
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
 use Platform\Pages\Repositories\IlluminatePageRepository;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesServiceProvider extends ServiceProvider {
 
