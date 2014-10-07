@@ -24,10 +24,10 @@ use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Cartalyst\DataGrid\Laravel\Facades\DataGrid;
-use Platform\Admin\Controllers\Admin\AdminController;
+use Platform\Access\Controllers\AdminController;
 use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
-use Platform\Users\Repositories\RoleRepositoryInterface;
+use Platform\Roles\Repositories\RoleRepositoryInterface;
 
 class PagesController extends AdminController {
 

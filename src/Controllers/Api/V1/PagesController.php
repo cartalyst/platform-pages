@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Lang;
 use League\Fractal\Manager;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Platform\Pages\Transformers\PageTransformer;
-use Platform\Foundation\Controllers\ApiController;
+use Platform\Access\Controllers\ApiController;
 
 class PagesController extends ApiController {
 
