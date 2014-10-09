@@ -32,7 +32,7 @@ class PagesServiceProvider extends ServiceProvider {
 		$this->package('platform/pages', 'platform/pages'. __DIR__.'/../..');
 
 		// Register the attributes namespace
-		$this->app['platform.attributes']->registerNamespace(
+		$this->app['platform.attributes.manager']->registerNamespace(
 			$this->app['Platform\Pages\Models\Page']
 		);
 
