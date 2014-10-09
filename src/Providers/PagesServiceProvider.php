@@ -32,7 +32,9 @@ class PagesServiceProvider extends ServiceProvider {
 		$this->package('platform/pages', 'platform/pages'. __DIR__.'/../..');
 
 		// Register the attributes namespace
-		$this->registerAttributesNamespaces();
+		$this->app['platform.attributes']->registerNamespace(
+			$this->app['Platform\Pages\Models\Page']
+		);
 
 		// Check the environment and app.debug settings
 		if ($this->app->environment() === 'production' or $this->app['config']['app.debug'] === false)
@@ -118,18 +120,6 @@ class PagesServiceProvider extends ServiceProvider {
 				->setTheme($app['config']['cartalyst/themes::active'])
 				->setValidator($app['Platform\Pages\Validator\PagesValidatorInterface']);
 		});
-	}
-
-	/**
-	 * Register the attributes namespaces.
-	 *
-	 * @return void
-	 */
-	protected function registerAttributesNamespaces()
-	{
-		$model = $this->app['Platform\Attributes\Models\Attribute'];
-
-		$model->registerNamespace($this->app['Platform\Pages\Models\Page']);
 	}
 
 	/**
