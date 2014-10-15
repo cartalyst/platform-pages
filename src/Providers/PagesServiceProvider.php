@@ -17,9 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\ServiceProvider;
+use Cartalyst\Support\ServiceProvider;
 use Illuminate\Support\Facades\Response;
-use Platform\Pages\Repositories\IlluminatePageRepository;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class PagesServiceProvider extends ServiceProvider {
@@ -29,15 +28,47 @@ class PagesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
+		// Register the extension component namespaces
 		$this->package('platform/pages', 'platform/pages'. __DIR__.'/../..');
+
+		$this->registerNotFoundErrorHandler();
+
+		// Register the menu page type
+		$this->app['platform.menus.manager']->registerType(
+			$this->app['platform.menus.types.page']
+		);
 
 		// Register the attributes namespace
 		$this->app['platform.attributes.manager']->registerNamespace(
 			$this->app['Platform\Pages\Models\Page']
 		);
 
+		// Subscribe the registered event handler
+		$this->app['events']->subscribe('platform.pages.handler');
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function register()
+	{
+		// Register the repository
+		$this->bindIf('platform.pages', 'Platform\Pages\Repositories\PageRepository');
+
+		// Register the event handler
+		$this->bindIf('platform.pages.handler', 'Platform\Pages\Handlers\PageEventHandler');
+
+		// Register the validator
+		$this->bindIf('platform.pages.validator', 'Platform\Pages\Validator\PagesValidator');
+
+		// Register the menus 'page' type
+		$this->bindIf('platform.menus.types.page', 'Platform\Pages\Menus\PageType', true, false);
+	}
+
+	protected function registerNotFoundErrorHandler()
+	{
 		// Check the environment and app.debug settings
-		if ($this->app->environment() === 'production' or $this->app['config']['app.debug'] === false)
+		if ($this->app->environment() === 'production' || $this->app['config']['app.debug'] === false)
 		{
 			$notFound = $this->app['config']['platform/pages::not_found'];
 
@@ -49,7 +80,7 @@ class PagesServiceProvider extends ServiceProvider {
 
 					try
 					{
-						$repository = $this->app['Platform\Pages\Repositories\PageRepositoryInterface'];
+						$repository = $this->app['platform.pages'];
 
 						$content = $repository->find($notFound);
 
@@ -62,77 +93,6 @@ class PagesServiceProvider extends ServiceProvider {
 				});
 			}
 		}
-
-		// Register the menu page type
-		$this->app['Platform\Menus\Models\Menu']->registerType($this->app['Platform\Menus\Types\PageType']);
-
-		// Subscribe the registered event handlers
-		$this->app['events']->subscribe('Platform\Pages\Handlers\PageEventHandlerInterface');
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function register()
-	{
-		$this->registerPagesValidator();
-
-		$this->registerPageRepository();
-
-		$this->registerEventHandlers();
-
-		$this->app['Platform\Menus\Types\PageType'] = $this->app->share(function($app)
-		{
-			return new \Platform\Pages\Menus\PageType($app['url'], $app['view'], $app['translator']);
-		});
-	}
-
-	/**
-	 * Register the pages validator.
-	 *
-	 * @return void
-	 */
-	protected function registerPagesValidator()
-	{
-		$binding = 'Platform\Pages\Validator\PagesValidatorInterface';
-
-		if ( ! $this->app->bound($binding))
-		{
-			$this->app->bind($binding, 'Platform\Pages\Validator\PagesValidator');
-		}
-	}
-
-	/**
-	 * Register the page repository.
-	 *
-	 * @return void
-	 */
-	protected function registerPageRepository()
-	{
-		$pageRepository = 'Platform\Pages\Repositories\PageRepositoryInterface';
-
-		$this->app->bindIf($pageRepository, function($app)
-		{
-			$model = get_class($app['Platform\Pages\Models\Page']);
-
-			return (new IlluminatePageRepository($model, $app['events'], $app['cache']))
-				->setThemeBag($app['themes'])
-				->setTheme($app['config']['cartalyst/themes::active'])
-				->setValidator($app['Platform\Pages\Validator\PagesValidatorInterface']);
-		});
-	}
-
-	/**
-	 * Register the event handlers.
-	 *
-	 * @return void
-	 */
-	protected function registerEventHandlers()
-	{
-		$this->app->bindIf(
-			'Platform\Pages\Handlers\PageEventHandlerInterface',
-			'Platform\Pages\Handlers\PageEventHandler'
-		);
 	}
 
 }

@@ -110,9 +110,7 @@ class PageType extends BaseType implements TypeInterface {
 			return $this->pages;
 		}
 
-		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-		$pages = $repository->findAll();
+		$pages = $this->app['platform.pages']->findall();
 
 		foreach ($pages as &$page)
 		{

@@ -165,7 +165,7 @@ return [
 
 	'routes' => function(ExtensionInterface $extension, Application $app)
 	{
-		Route::group(['namespace' => 'Platform\Pages\Controllers'], function()
+		Route::group(['namespace' => 'Platform\Pages\Controllers'], function() use ($app)
 		{
 			Route::group(['prefix' => admin_uri().'/pages', 'namespace' => 'Admin'], function()
 			{
@@ -189,19 +189,20 @@ return [
 				Route::put('{id}', ['as' => 'api.v1.pages.update', 'uses' => 'PagesController@update']);
 				Route::delete('{id}', ['as' => 'api.v1.pages.delete', 'uses' => 'PagesController@destroy']);
 			});
+
+			Route::group(['namespace' => 'Frontend'], function() use ($app)
+			{
+				Route::get('/', 'PagesController@page');
+
+				foreach ($app['platform.pages']->findAllEnabled() as $page)
+				{
+					Route::get($page->uri, [
+						'before' => $page->https ? 'https' : null,
+						'uses'   => 'PagesController@page',
+					]);
+				}
+			});
 		});
-
-		Route::get('/', 'Platform\Pages\Controllers\Frontend\PagesController@page');
-
-		$pages = $app['Platform\Pages\Repositories\PageRepositoryInterface'];
-
-		foreach ($pages->findAllEnabled() as $page)
-		{
-			Route::get($page->uri, [
-				'before' => $page->https ? 'https' : null,
-				'uses'   => 'Platform\Pages\Controllers\Frontend\PagesController@page',
-			]);
-		}
 	},
 
 	/*

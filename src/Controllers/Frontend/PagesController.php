@@ -17,10 +17,9 @@
  * @link       http://cartalyst.com
  */
 
+use Cartalyst\Sentinel\Sentinel;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Config;
 use Platform\Foundation\Controllers\Controller;
-use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -34,15 +33,24 @@ class PagesController extends Controller {
 	protected $pages;
 
 	/**
+	 * The Cartalyst Sentinel instance.
+	 *
+	 * @var \Cartalyst\Sentinel\Sentinel
+	 */
+	protected $sentinel;
+
+	/**
 	 * Constructor.
 	 *
 	 * @return void
 	 */
-	public function __construct(PageRepositoryInterface $pages)
+	public function __construct(Sentinel $sentinel, PageRepositoryInterface $pages)
 	{
 		parent::__construct();
 
 		$this->pages = $pages;
+
+		$this->sentinel = $sentinel;
 	}
 
 	/**
@@ -59,30 +67,30 @@ class PagesController extends Controller {
 		// Make sure we have a page slug
 		if ($slug === '/')
 		{
-			$slug = Config::get('platform/pages::default_page');
+			$slug = config('platform/pages::default_page');
 		}
 
 		// Find the requested page
-		if ( ! $page = $this->pages->findEnabled($slug))
-		{
-			throw new HttpException(404, 'Page does not exist.');
-		}
+		$page = $this->pages->findEnabled($slug);
 
+		// Check if the page has any visibility requirements
 		if (in_array($page->visibility, ['logged_in', 'admin']))
 		{
+			// At this stage the user isn't allowed to view the page
 			$canView = false;
 
-			if ($currentUser = Sentinel::getUser())
+			// Get the logged in user
+			if ($currentUser = $this->sentinel->getUser())
 			{
+				// Now we'll assume that the user can view the
+				// page, because he's definitely logged in.
 				$canView = true;
 
-				if ( ! Sentinel::hasAccess('admin'))
+				// If the user is not a 'superuser' we'll double check
+				// his permissions to allow or deny page visibility.
+				if ( ! $this->sentinel->hasAccess('superuser'))
 				{
-					if ($page->visibility === 'admin')
-					{
-						$canView = false;
-					}
-					else if ( ! empty($page->roles))
+					if ($page->visibility === 'admin' || ! empty($page->roles))
 					{
 						$canView = false;
 
@@ -101,7 +109,7 @@ class PagesController extends Controller {
 
 			if ( ! $canView)
 			{
-				throw new HttpException(403, "You don't have permission to view this page.");
+				throw new HttpException(403, "You don't have permission to access this page.");
 			}
 		}
 

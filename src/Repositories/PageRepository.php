@@ -17,21 +17,23 @@
  * @link       http://cartalyst.com
  */
 
-use Cartalyst\Support\Traits\EventTrait;
-use Cartalyst\Support\Traits\RepositoryTrait;
-use Cartalyst\Support\Traits\ValidatorTrait;
-use Cartalyst\Themes\ThemeBag;
-use Config;
-use Illuminate\Cache\CacheManager;
-use Illuminate\Events\Dispatcher;
-use Platform\Pages\Models\Page;
 use RuntimeException;
+use Cartalyst\Support\Traits;
+use Cartalyst\Themes\ThemeBag;
+use Platform\Pages\Models\Page;
+use Illuminate\Container\Container;
 use Symfony\Component\Finder\Finder;
-use View;
 
-class IlluminatePageRepository implements PageRepositoryInterface {
+class PageRepository implements PageRepositoryInterface {
 
-	use EventTrait, RepositoryTrait, ValidatorTrait;
+	use Traits\EventTrait, Traits\RepositoryTrait, Traits\ValidatorTrait;
+
+	/**
+	 * The container instance.
+	 *
+	 * @var \Illuminate\Container\Container
+	 */
+	protected $app;
 
 	/**
 	 * The Eloquent page model.
@@ -78,17 +80,24 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	/**
 	 * Constructor.
 	 *
-	 * @param  string  $model
-	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
+	 * @param  \Illuminate\Container\Container  $app
 	 * @return void
 	 */
-	public function __construct($model, Dispatcher $dispatcher, CacheManager $cache)
+	public function __construct(Container $app)
 	{
-		$this->model = $model;
+		$this->app = $app;
 
-		$this->dispatcher = $dispatcher;
+		$this->cache = $this->app['cache'];
 
-		$this->cache = $cache;
+		$this->setDispatcher($this->app['events']);
+
+		$this->setValidator($app['platform.content.validator']);
+
+		$this->model = get_class($this->app['Platform\Pages\Models\Page']);
+
+
+		$this->setThemeBag($app['themes']);
+		$this->setTheme($app['config']['cartalyst/themes::active']);
 	}
 
 	/**
@@ -96,8 +105,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function grid()
 	{
-		return $this
-			->createModel();
+		return $this->createModel();
 	}
 
 	/**
@@ -105,13 +113,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function findAll()
 	{
-		return $this->cache->rememberForever('platform.page.all', function()
-		{
-			return $this
-				->createModel()
-				->newQuery()
-				->get();
-		});
+		return $this->createModel()->rememberForever('platform.pages.all')->get();
 	}
 
 	/**
@@ -119,14 +121,12 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function findAllEnabled()
 	{
-		return $this->cache->rememberForever('platform.page.all.enabled', function()
-		{
-			return $this
-				->createModel()
-				->newQuery()
-				->where('enabled', 1)
-				->get();
-		});
+		return $this
+			->createModel()
+			->newQuery()
+			->rememberForever('platform.pages.all.enabled')
+			->Where('enabled', 1)
+			->get();
 	}
 
 	/**
@@ -134,15 +134,14 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		return $this->cache->rememberForever("platform.page.{$id}", function() use ($id)
+		$model = $this->createModel()->rememberForever('platform.page.'.$id);
+
+		if (is_numeric($id))
 		{
-			return $this
-				->createModel()
-				->orWhere('slug', $id)
-				->orWhere('uri', $id)
-				->orWhere('id', (int) $id)
-				->first();
-		});
+			return $model->find($id);
+		}
+
+		return $model->orWhere('slug', $id)->orWhere('uri', $id)->first();
 	}
 
 	/**
@@ -171,8 +170,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function validForCreation(array $data)
 	{
-		return $this->validator
-			->validate($data);
+		return $this->validator->validate($data);
 	}
 
 	/**
@@ -182,10 +180,9 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	{
 		$page = $this->find($id);
 
-		return $this->validator
-			->on('update')
-			->bind(['slug' => $page->slug, 'uri' => $page->uri])
-			->validate($data);
+		$bindings = [ 'slug' => $page->slug, 'uri' => $page->uri ];
+
+		return $this->validator->on('update')->bind($bindings)->validate($data);
 	}
 
 	/**
@@ -288,7 +285,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function files()
 	{
-		$extensions = array_keys(View::getExtensions());
+		$extensions = array_keys(view()->getExtensions());
 
 		$paths = array_filter(array_map(function($path) {
 
@@ -296,7 +293,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
 
 			// Check if the path exists
-			$pathConfig = head(Config::get('cartalyst/themes::paths'));
+			$pathConfig = head(config('cartalyst/themes::paths'));
 
 			$searchPath = str_replace($pathConfig, '', $path);
 
@@ -335,11 +332,11 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 	 */
 	public function templates()
 	{
-		$extensions = array_keys(View::getExtensions());
+		$extensions = array_keys(view()->getExtensions());
 
 		$paths = array_filter(array_map(function($path)
 		{
-			$pathConfig = head(Config::get('cartalyst/themes::paths'));
+			$pathConfig = head(config('cartalyst/themes::paths'));
 
 			$searchPath = str_replace($pathConfig, '', $path);
 
@@ -354,7 +351,7 @@ class IlluminatePageRepository implements PageRepositoryInterface {
 		$finder = new Finder;
 		$finder->in($paths);
 		$finder->depth('< 3');
-		$finder->exclude(Config::get('platform/pages::exclude'));
+		$finder->exclude(config('platform/pages::exclude'));
 		$finder->name(sprintf(
 			'/.*?\.(%s)/',
 			implode('|', array_map(function($extension)
