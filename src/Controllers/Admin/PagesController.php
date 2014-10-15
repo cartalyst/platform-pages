@@ -17,26 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Facades\Lang;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Response;
-use Cartalyst\DataGrid\Laravel\Facades\DataGrid;
 use Platform\Access\Controllers\AdminController;
-use Platform\Menus\Repositories\MenuRepositoryInterface;
 use Platform\Pages\Repositories\PageRepositoryInterface;
-use Platform\Roles\Repositories\RoleRepositoryInterface;
 
 class PagesController extends AdminController {
-
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $csrfWhitelist = [
-		'executeAction',
-	];
 
 	/**
 	 * The Pages repository.
@@ -46,18 +30,11 @@ class PagesController extends AdminController {
 	protected $pages;
 
 	/**
-	 * The Menus repository.
-	 *
-	 * @var \Platform\Menus\Repositories\MenuRepositoryInterface
+	 * {@inheritDoc}
 	 */
-	protected $menus;
-
-	/**
-	 * The Roles repository.
-	 *
-	 * @var \Platform\Users\Repositories\RoleRepositoryInterface
-	 */
-	protected $roles;
+	protected $csrfWhitelist = [
+		'executeAction',
+	];
 
 	/**
 	 * Holds all the mass actions we can execute.
@@ -74,23 +51,13 @@ class PagesController extends AdminController {
 	 * Constructor.
 	 *
 	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $pages
-	 * @param  \Platform\Menus\Repositories\MenuRepositoryInterface  $menus
-	 * @param  \Platform\Users\Repositories\RoleRepositoryInterface  $roles
 	 * @return void
 	 */
-	public function __construct(
-		PageRepositoryInterface $pages,
-		MenuRepositoryInterface $menus,
-		RoleRepositoryInterface $roles
-	)
+	public function __construct(PageRepositoryInterface $pages)
 	{
 		parent::__construct();
 
 		$this->pages = $pages;
-
-		$this->menus = $menus;
-
-		$this->roles = $roles;
 	}
 
 	/**
@@ -100,7 +67,7 @@ class PagesController extends AdminController {
 	 */
 	public function index()
 	{
-		return View::make('platform/pages::index');
+		return view('platform/pages::index');
 	}
 
 	/**
@@ -110,8 +77,6 @@ class PagesController extends AdminController {
 	 */
 	public function grid()
 	{
-		$data = $this->pages->grid();
-
 		$columns = [
 			'id',
 			'name',
@@ -126,7 +91,7 @@ class PagesController extends AdminController {
 			'direction' => 'desc',
 		];
 
-		return DataGrid::make($data, $columns, $settings);
+		return datagrid($this->pages->grid(), $columns, $settings);
 	}
 
 	/**
@@ -192,14 +157,14 @@ class PagesController extends AdminController {
 	{
 		if ($this->pages->delete($id))
 		{
-			$message = Lang::get('platform/pages::message.success.delete');
-
-			return Redirect::toAdmin('pages')->withSuccess($message);
+			return redirect()->toAdmin('pages')->withSuccess(
+				trans('platform/pages::message.success.delete')
+			);
 		}
 
-		$message = Lang::get('platform/pages::message.error.delete');
-
-		return Redirect::toAdmin('pages')->withErrors($message);
+		return redirect()->toAdmin('pages')->withErrors(
+			trans('platform/pages::message.error.delete')
+		);
 	}
 
 	/**
@@ -209,19 +174,19 @@ class PagesController extends AdminController {
 	 */
 	public function executeAction()
 	{
-		$action = Input::get('action');
+		$action = request()->get('action');
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (Input::get('entries', []) as $entry)
+			foreach (request()->get('entries', []) as $entry)
 			{
 				$this->pages->{$action}($entry);
 			}
 
-			return Response::json('Success');
+			return response('Success');
 		}
 
-		return Response::json('Failed', 500);
+		return response('Failed', 500);
 	}
 
 	/**
@@ -233,42 +198,17 @@ class PagesController extends AdminController {
 	 */
 	protected function showForm($mode, $id = null)
 	{
-		// Do we have a page identifier?
-		if (isset($id))
+		if ( ! $data = $this->pages->getPreparedPage($id))
 		{
-			if ( ! $page = $this->pages->find($id))
-			{
-				$message = Lang::get('platform/pages::message.not_found', compact('id'));
-
-				return Redirect::toAdmin('pages')->withErrors($message);
-			}
-		}
-		else
-		{
-			$page = $this->pages->createModel();
+			return redirect()->toAdmin('pages')->withErrors(
+				trans('platform/pages::message.not_found', compact('id'))
+			);
 		}
 
-		// Find this page menu
-		if ( ! $menu = $this->menus->findWhere('page_id', (int) $page->id))
-		{
-			$menu = $this->menus->createModel();
-		}
+		extract($data);
 
-		// Get all the available user roles
-		$roles = $this->roles->findAll();
-
-		// Get all the available templates
-		$templates = $this->pages->templates();
-
-		// Get all the available page files
-		$files = $this->pages->files();
-
-		// Get the root items
-		$menus = $this->menus->findAllRoot();
-
-		// Show the page
-		return View::make('platform/pages::form', compact(
-			'mode', 'page', 'roles', 'templates', 'files', 'menus', 'menu'
+		return view('platform/pages::form', compact(
+			'page', 'roles', 'templates', 'files', 'menus', 'menu', 'mode'
 		));
 	}
 
@@ -281,49 +221,19 @@ class PagesController extends AdminController {
 	 */
 	protected function processForm($mode, $id = null)
 	{
-		// Check in case the roles input is disabled but we had roles
-		// that were previously selected, we want to remove those.
-		Input::merge(['roles' => Input::get('roles', [])]);
-
-		// Get the input data
-		$data = Input::all();
-
-		// Do we have a page identifier?
-		if ($id)
-		{
-			// Check if the data is valid
-			$messages = $this->pages->validForUpdate($id, $data);
-
-			// Do we have any errors?
-			if ($messages->isEmpty())
-			{
-				// Update the page
-				$page = $this->pages->update($id, $data);
-			}
-		}
-		else
-		{
-			// Check if the data is valid
-			$messages = $this->pages->validForCreation($data);
-
-			// Do we have any errors?
-			if ($messages->isEmpty())
-			{
-				// Create the pages
-				$page = $this->pages->create($data);
-			}
-		}
+		// Store the page
+		list($messages, $page) = $this->pages->store($id, request()->all());
 
 		// Do we have any errors?
 		if ($messages->isEmpty())
 		{
-			// Prepare the success message
-			$message = Lang::get("platform/pages::message.success.{$mode}");
-
-			return Redirect::toAdmin("pages/{$page->id}/edit")->withSuccess($message);
+			return redirect()->toAdmin("pages/{$page->id}")->withSuccess(
+				trans("platform/pages::message.success.{$mode}")
+			);
 		}
 
-		return Redirect::back()->withInput()->withErrors($messages);
+		// Redirect to the previous page
+		return redirect()->back()->withInput()->withErrors($messages);
 	}
 
 }

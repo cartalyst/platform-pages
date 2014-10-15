@@ -174,8 +174,8 @@ return [
 				Route::get('grid', 'PagesController@grid');
 				Route::get('create', 'PagesController@create');
 				Route::post('create', 'PagesController@store');
-				Route::get('{id}/edit', 'PagesController@edit');
-				Route::post('{id}/edit', 'PagesController@update');
+				Route::get('{id}', 'PagesController@edit');
+				Route::post('{id}', 'PagesController@update');
 				Route::get('{id}/copy', 'PagesController@copy');
 				Route::post('{id}/copy', 'PagesController@store');
 				Route::get('{id}/delete', 'PagesController@delete');

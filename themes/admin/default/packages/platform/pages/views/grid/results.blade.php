@@ -4,7 +4,7 @@
 
 		<tr>
 			<td><input type="checkbox" name="entries[]" value="<%= r.id %>"></td>
-			<td><a href="{{ URL::toAdmin('pages/<%= r.id %>/edit') }}"><%= r.name %></a></td>
+			<td><a href="{{ url()->toAdmin('pages/<%= r.id %>') }}"><%= r.name %></a></td>
 			<td><%= r.slug %></td>
 			<td>
 				<% if (r.enabled == 1) { %>

@@ -60,6 +60,15 @@ interface PageRepositoryInterface {
 	public function findEnabled($id);
 
 	/**
+	 * Returns the given page with the necessary and
+	 * belonging data already prepared to be used.
+	 *
+	 * @param  int  $id
+	 * @return array
+	 */
+	public function getPreparedPage($id);
+
+	/**
 	 * Determines if the given page is valid for creation.
 	 *
 	 * @param  array  $data
@@ -92,6 +101,15 @@ interface PageRepositoryInterface {
 	 * @return \Platform\Pages\Models\Page
 	 */
 	public function update($id, array $data);
+
+	/**
+	 * Creates or updates the given page.
+	 *
+	 * @param  int  $id
+	 * @param  array  $input
+	 * @return array
+	 */
+	public function store($id, array $input);
 
 	/**
 	 * Deletes the given page.

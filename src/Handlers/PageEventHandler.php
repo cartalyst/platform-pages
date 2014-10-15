@@ -29,17 +29,27 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	 */
 	public function subscribe(Dispatcher $dispatcher)
 	{
-		$dispatcher->listen('platform.page.created', 'Platform\Pages\Handlers\PageEventHandler@onCreate');
+		$dispatcher->listen('platform.page.creating', __CLASS__.'@creating');
+		$dispatcher->listen('platform.page.created', __CLASS__.'@created');
 
-		$dispatcher->listen('platform.page.updated', 'Platform\Pages\Handlers\PageEventHandler@onUpdate');
+		$dispatcher->listen('platform.page.updating', __CLASS__.'@updating');
+		$dispatcher->listen('platform.page.updated', __CLASS__.'@updated');
 
-		$dispatcher->listen('platform.page.deleted', 'Platform\Pages\Handlers\PageEventHandler@onDelete');
+		$dispatcher->listen('platform.page.deleted', __CLASS__.'@deleted');
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function onCreate(Page $page)
+	public function creating(array $data)
+	{
+		return $data;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function created(Page $page)
 	{
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
@@ -50,7 +60,15 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function onUpdate(Page $page)
+	public function updating(Page $page, array $data)
+	{
+		return $data;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function updated(Page $page)
 	{
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
@@ -61,14 +79,12 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 		$this->cache->forget("platform.page.enabled.{$page->id}");
 		$this->cache->forget("platform.page.enabled.{$page->slug}");
 		$this->cache->forget("platform.page.enabled.{$page->uri}");
-
-		$this->app['Platform\Pages\Repositories\PageRepositoryInterface']->find($page->id);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function onDelete(Page $page)
+	public function deleted(Page $page)
 	{
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');

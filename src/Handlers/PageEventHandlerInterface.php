@@ -31,12 +31,29 @@ interface PageEventHandlerInterface {
 	public function subscribe(Dispatcher $dispatcher);
 
 	/**
+	 * When a page is being created.
+	 *
+	 * @param  array  $data
+	 * @return mixed
+	 */
+	public function creating(array $data);
+
+	/**
 	 * When page is created.
 	 *
 	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return void
 	 */
-	public function onCreate(Page $page);
+	public function created(Page $page);
+
+	/**
+	 * When a page is being updated.
+	 *
+	 * @param  \Platform\Pages\Models\Page  $page
+	 * @param  array  $data
+	 * @return mixed
+	 */
+	public function updating(Page $page, array $data);
 
 	/**
 	 * When page is updated.
@@ -44,7 +61,7 @@ interface PageEventHandlerInterface {
 	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return void
 	 */
-	public function onUpdate(Page $page);
+	public function updated(Page $page);
 
 	/**
 	 * When page is deleted.
@@ -52,6 +69,6 @@ interface PageEventHandlerInterface {
 	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return void
 	 */
-	public function onDelete(Page $page);
+	public function deleted(Page $page);
 
 }

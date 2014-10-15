@@ -120,7 +120,7 @@
 						<label for="uri" class="control-label">{{{ trans('platform/pages::form.uri') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.uri_help') }}}"></i></label>
 
 						<div class="input-group">
-							<span class="input-group-addon">{{ URL::to('/') }}/</span>
+							<span class="input-group-addon">{{ url('/') }}/</span>
 							<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::form.uri') }}}" value="{{{ Input::old('uri', $page->uri) }}}" required>
 						</div>
 
@@ -324,12 +324,12 @@
 
 				<button class="btn btn-success" type="submit">{{{ trans('button.save') }}}</button>
 
-				<a class="btn btn-default" href="{{{ URL::toAdmin('pages') }}}">{{{ trans('button.cancel') }}}</a>
+				<a class="btn btn-default" href="{{{ url()->toAdmin('pages') }}}">{{{ trans('button.cancel') }}}</a>
 
 				@if ($page->exists and $mode != 'copy')
-				<a class="btn btn-info" href="{{ URL::toAdmin("pages/{$page->slug}/copy") }}">{{{ trans('button.copy') }}}</a>
+				<a class="btn btn-info" href="{{ url()->toAdmin("pages/{$page->slug}/copy") }}">{{{ trans('button.copy') }}}</a>
 
-				<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ URL::toAdmin("pages/{$page->slug}/delete") }}">{{{ trans('button.delete') }}}</a>
+				<a class="btn btn-danger" data-toggle="modal" data-target="modal-confirm" href="{{ url()->toAdmin("pages/{$page->slug}/delete") }}">{{{ trans('button.delete') }}}</a>
 				@endif
 
 			</div>

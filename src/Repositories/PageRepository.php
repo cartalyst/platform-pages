@@ -164,6 +164,40 @@ class PageRepository implements PageRepositoryInterface {
 				->first();
 		});
 	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getPreparedPage($id)
+	{
+		if ( ! is_null($id))
+		{
+			if ( ! $page = $this->find($id)) return false;
+		}
+		else
+		{
+			$page = $this->createModel();
+		}
+
+		// Find this page menu
+		if ( ! $menu = $this->app['Platform\Menus\Repositories\MenuRepositoryInterface']->findWhere('page_id', (int) $page->id))
+		{
+			$menu = $this->app['Platform\Menus\Repositories\MenuRepositoryInterface']->createModel();
+		}
+
+		// Get all the available user roles
+		$roles = $this->app['platform.roles']->findAll();
+
+		// Get all the available templates
+		$templates = $this->templates();
+
+		// Get all the available page files
+		$files = $this->files();
+
+		// Get the root items
+		$menus = $this->app['Platform\Menus\Repositories\MenuRepositoryInterface']->findAllRoot();
+
+		return compact('page', 'roles', 'templates', 'menus');
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -188,31 +222,69 @@ class PageRepository implements PageRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function create(array $data)
+	public function create(array $input)
 	{
-		with($page = $this->createModel())->fill($data)->save($data);
+		// Create a new page
+		$page = $this->createModel();
 
-		$this->setPageMenu($page, $data);
+		// Fire the 'platform.page.creating' event
+		$data = $this->fireEvent('platform.page.creating', [ $input ])[0];
 
-		$this->fireEvent('platform.page.created', $page);
+		// Validate the submitted data
+		$messages = $this->validForCreation($data);
 
-		return $page;
+		// Check if the validation returned any errors
+		if ($messages->isEmpty())
+		{
+			// Save the page
+			$page->fill($data)->save();
+
+			//
+			$this->setPageMenu($page, $data);
+
+			// Fire the 'platform.page.created' event
+			$this->fireEvent('platform.page.created', $page);
+		}
+
+		return [ $messages, $page ];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function update($id, array $data)
+	public function update($id, array $input)
 	{
+		// Get the page object
 		$page = $this->find($id);
 
-		$page->fill($data)->save($data);
+		// Fire the 'platform.page.updating' event
+		$data = $this->fireEvent('platform.page.updating', [ $page, $input ])[0];
 
-		$this->setPageMenu($page, $data);
+		// Validate the submitted data
+		$messages = $this->validForUpdate($id, $data);
 
-		$this->fireEvent('platform.page.updated', $page);
+		// Check if the validation returned any errors
+		if ($messages->isEmpty())
+		{
+			// Update the page
+			$page->fill($data)->save();
 
-		return $page;
+			//
+			$this->setPageMenu($page, $data);
+
+			// Fire the 'platform.page.updated' event
+			$this->fireEvent('platform.page.updated', $page);
+		}
+
+		return [ $messages, $page ];
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function store($id, array $input)
+	{
+		return ! $id ? $this->create($input) : $this->update($id, $input);
 	}
 
 	/**
