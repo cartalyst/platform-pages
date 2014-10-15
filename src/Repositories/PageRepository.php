@@ -292,10 +292,13 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function delete($id)
 	{
+		// Check if the page exists
 		if ($page = $this->find($id))
 		{
+			// Fire the 'platform.page.deleted' event
 			$this->fireEvent('platform.page.deleted', $page);
 
+			// Delete the content
 			$page->delete();
 
 			return true;
