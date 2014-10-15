@@ -166,42 +166,11 @@ interface PageRepositoryInterface {
 	public function getThemeBag();
 
 	/**
-	 * Set the theme bag instance.
-	 *
-	 * @param  \Cartalyst\Themes\ThemeBag  $themeBag
-	 * @return void
-	 */
-	public function setThemeBag(ThemeBag $themeBag);
-
-	/**
 	 * Returns the theme name.
 	 *
 	 * @return string
 	 */
 	public function getTheme();
-
-	/**
-	 * Set the theme name.
-	 *
-	 * @param  string  $theme
-	 * @return void
-	 */
-	public function setTheme($theme);
-
-	/**
-	 * Returns the role model.
-	 *
-	 * @return string
-	 */
-	public function getRoleModel();
-
-	/**
-	 * Set the role model.
-	 *
-	 * @param  string  $model
-	 * @return void
-	 */
-	public function setRoleModel($model);
 
 	/**
 	 * Returns the menu model.

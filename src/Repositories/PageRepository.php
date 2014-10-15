@@ -43,13 +43,6 @@ class PageRepository implements PageRepositoryInterface {
 	protected $model;
 
 	/**
-	 * The Illuminate Cache manager instance.
-	 *
-	 * @var \Illuminate\Cache\CacheManager
-	 */
-	protected $cache;
-
-	/**
 	 * The theme bag which is used for rendering file-based pages.
 	 *
 	 * @var \Illuminate\View\Factory
@@ -62,13 +55,6 @@ class PageRepository implements PageRepositoryInterface {
 	 * @var string
 	 */
 	protected $theme = null;
-
-	/**
-	 * The role model.
-	 *
-	 * @var string
-	 */
-	protected $roleModel = 'Platform\Users\Models\Role';
 
 	/**
 	 * The menu model.
@@ -87,17 +73,11 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		$this->app = $app;
 
-		$this->cache = $this->app['cache'];
-
 		$this->setDispatcher($this->app['events']);
 
 		$this->setValidator($app['platform.content.validator']);
 
 		$this->model = get_class($this->app['Platform\Pages\Models\Page']);
-
-
-		$this->setThemeBag($app['themes']);
-		$this->setTheme($app['config']['cartalyst/themes::active']);
 	}
 
 	/**
@@ -121,12 +101,7 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function findAllEnabled()
 	{
-		return $this
-			->createModel()
-			->newQuery()
-			->rememberForever('platform.pages.all.enabled')
-			->Where('enabled', 1)
-			->get();
+		return $this->createModel()->rememberForever('platform.pages.all.enabled')->whereEnabled(1)->get();
 	}
 
 	/**
@@ -149,20 +124,18 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function findEnabled($id)
 	{
-		return $this->cache->rememberForever("platform.page.enabled.{$id}", function() use ($id)
-		{
-			return $this
-				->createModel()
-				->where('enabled', 1)
-				->whereNested(function($query) use ($id)
-				{
-					$query
-						->orWhere('slug', $id)
-						->orWhere('uri', $id)
-						->orWhere('id', (int) $id);
-				})
-				->first();
-		});
+		return $this
+			->createModel()
+			->rememberForever('platform.page.enabled'.$id)
+			->where('enabled', 1)
+			->whereNested(function($query) use ($id)
+			{
+				$query
+					->orWhere('slug', $id)
+					->orWhere('uri', $id)
+					->orWhere('id', (int) $id);
+			})
+			->first();
 	}
 	/**
 	 * {@inheritDoc}
@@ -179,22 +152,22 @@ class PageRepository implements PageRepositoryInterface {
 		}
 
 		// Find this page menu
-		if ( ! $menu = $this->app['Platform\Menus\Repositories\MenuRepositoryInterface']->findWhere('page_id', (int) $page->id))
+		if ( ! $menu = $this->app['platform.menus']->findWhere('page_id', (int) $page->id))
 		{
-			$menu = $this->app['Platform\Menus\Repositories\MenuRepositoryInterface']->createModel();
+			$menu = $this->app['platform.menus']->createModel();
 		}
-
-		// Get all the available user roles
-		$roles = $this->app['platform.roles']->findAll();
-
-		// Get all the available templates
-		$templates = $this->templates();
 
 		// Get all the available page files
 		$files = $this->files();
 
-		// Get the root items
-		$menus = $this->app['Platform\Menus\Repositories\MenuRepositoryInterface']->findAllRoot();
+		// Get all the available templates
+		$templates = $this->templates();
+
+		// Get all the available user roles
+		$roles = $this->app['platform.roles']->findAll();
+
+		// Get the all the menu root items
+		$menus = $this->app['platform.menus']->findAllRoot();
 
 		return compact('page', 'roles', 'templates', 'menus');
 	}
@@ -459,17 +432,12 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function getThemeBag()
 	{
+		if ( ! $this->themeBag)
+		{
+			$this->themeBag = $this->app['themes'];
+		}
+
 		return $this->themeBag;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setThemeBag(ThemeBag $themeBag)
-	{
-		$this->themeBag = $themeBag;
-
-		return $this;
 	}
 
 	/**
@@ -477,35 +445,12 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function getTheme()
 	{
+		if ( ! $this->theme)
+		{
+			$this->theme = $this->app['config']->get('cartalyst/themes::active');
+		}
+
 		return $this->theme;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setTheme($theme)
-	{
-		$this->theme = $theme;
-
-		return $this;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function getRoleModel()
-	{
-		return $this->roleModel;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function setRoleModel($model)
-	{
-		$this->roleModel = $model;
-
-		return $this;
 	}
 
 	/**
@@ -526,17 +471,6 @@ class PageRepository implements PageRepositoryInterface {
 		return $this;
 	}
 
-	/**
-	 * Create a new instance of the model.
-	 *
-	 * @return \Illuminate\Database\Eloquent\Model
-	 */
-	public function createModel()
-	{
-		$class = '\\'.ltrim($this->model, '\\');
-
-		return new $class;
-	}
 
 	/**
 	 * {@inheritDoc}
