@@ -110,7 +110,7 @@ class PageType extends BaseType implements TypeInterface {
 			return $this->pages;
 		}
 
-		$pages = $this->app['platform.pages']->findall();
+		$pages = $this->app['platform.pages']->findAll();
 
 		foreach ($pages as &$page)
 		{
