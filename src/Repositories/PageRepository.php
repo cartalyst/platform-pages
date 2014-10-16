@@ -229,7 +229,7 @@ class PageRepository implements PageRepositoryInterface {
 		$data = $this->fireEvent('platform.page.updating', [ $page, $input ])[0];
 
 		// Validate the submitted data
-		$messages = $this->validForUpdate($id, $data);
+		$messages = $this->validForUpdate($page, $data);
 
 		// Check if the validation returned any errors
 		if ($messages->isEmpty())
@@ -266,7 +266,7 @@ class PageRepository implements PageRepositoryInterface {
 			// Fire the 'platform.page.deleted' event
 			$this->fireEvent('platform.page.deleted', $page);
 
-			// Delete the content
+			// Delete the page
 			$page->delete();
 
 			return true;
