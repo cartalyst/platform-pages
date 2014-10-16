@@ -123,7 +123,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		return $this
 			->createModel()
-			->rememberForever('platform.page.enabled.'.$id)
+			->rememberForever('platform.page.'.$id.'.enabled')
 			->where('enabled', 1)
 			->whereNested(function($query) use ($id)
 			{
@@ -180,10 +180,8 @@ class PageRepository implements PageRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function validForUpdate($id, array $data)
+	public function validForUpdate(Page $page, array $data)
 	{
-		$page = $this->find($id);
-
 		$bindings = [ 'slug' => $page->slug, 'uri' => $page->uri ];
 
 		return $this->validator->on('update')->bind($bindings)->validate($data);

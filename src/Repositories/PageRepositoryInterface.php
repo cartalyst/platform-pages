@@ -79,11 +79,11 @@ interface PageRepositoryInterface {
 	/**
 	 * Determines if the given page is valid for updating.
 	 *
-	 * @param  int  $id
+	 * @param  \Platform\Pages\Models\Page  $page
 	 * @param  array  $data
 	 * @return \Illuminate\Support\MessageBag
 	 */
-	public function validForUpdate($id, array $data);
+	public function validForUpdate(Page $page, array $data);
 
 	/**
 	 * Creates a page with the given data.

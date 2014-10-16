@@ -20,7 +20,6 @@
 use Platform\Pages\Models\Page;
 use Illuminate\Events\Dispatcher;
 use Cartalyst\Support\Handlers\EventHandler;
-use Platform\Pages\Repositories\PageRepositoryInterface;
 
 class PageEventHandler extends EventHandler implements PageEventHandlerInterface {
 
@@ -53,8 +52,6 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	{
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
-
-		$this->app['Platform\Pages\Repositories\PageRepositoryInterface']->find($page->id);
 	}
 
 	/**
@@ -73,12 +70,15 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 		$this->cache->forget('platform.page.all');
 		$this->cache->forget('platform.page.all.enabled');
 
-		$this->cache->forget("platform.page.{$page->id}");
-		$this->cache->forget("platform.page.{$page->slug}");
-		$this->cache->forget("platform.page.{$page->uri}");
-		$this->cache->forget("platform.page.enabled.{$page->id}");
-		$this->cache->forget("platform.page.enabled.{$page->slug}");
-		$this->cache->forget("platform.page.enabled.{$page->uri}");
+		$toDelete = [
+			$page->id, $page->slug, $page->uri,
+		];
+
+		foreach ($toDelete as $value)
+		{
+			$this->cache->forget('platform.page.'.$value);
+			$this->cache->forget('platform.page.'.$value.'.enabled');
+		}
 	}
 
 	/**
@@ -87,14 +87,17 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	public function deleted(Page $page)
 	{
 		$this->cache->forget('platform.page.all');
-		$this->cache->forget('platform.page.all.enabled');
+		$this->cache->forget('platform.page.all_enabled');
 
-		$this->cache->forget("platform.page.{$page->id}");
-		$this->cache->forget("platform.page.{$page->slug}");
-		$this->cache->forget("platform.page.{$page->uri}");
-		$this->cache->forget("platform.page.enabled.{$page->id}");
-		$this->cache->forget("platform.page.enabled.{$page->slug}");
-		$this->cache->forget("platform.page.enabled.{$page->uri}");
+		$toDelete = [
+			$page->id, $page->slug, $page->uri,
+		];
+
+		foreach ($toDelete as $value)
+		{
+			$this->cache->forget('platform.page.'.$value);
+			$this->cache->forget('platform.page.'.$value.'.enabled');
+		}
 	}
 
 }
