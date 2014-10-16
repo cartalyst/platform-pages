@@ -50,8 +50,7 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	 */
 	public function created(Page $page)
 	{
-		$this->cache->forget('platform.page.all');
-		$this->cache->forget('platform.page.all.enabled');
+		$this->flushCache($page);
 	}
 
 	/**
@@ -67,18 +66,7 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	 */
 	public function updated(Page $page)
 	{
-		$this->cache->forget('platform.page.all');
-		$this->cache->forget('platform.page.all.enabled');
-
-		$toDelete = [
-			$page->id, $page->slug, $page->uri,
-		];
-
-		foreach ($toDelete as $value)
-		{
-			$this->cache->forget('platform.page.'.$value);
-			$this->cache->forget('platform.page.'.$value.'.enabled');
-		}
+		$this->flushCache($page);
 	}
 
 	/**
@@ -86,17 +74,26 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	 */
 	public function deleted(Page $page)
 	{
-		$this->cache->forget('platform.page.all');
-		$this->cache->forget('platform.page.all_enabled');
+		$this->flushCache($page);
+	}
 
-		$toDelete = [
-			$page->id, $page->slug, $page->uri,
-		];
+	/**
+	 * Flush the cache.
+	 *
+	 * @param  \Platform\Pages\Models\Page  $page
+	 * @return void
+	 */
+	protected function flushCache(Page $page)
+	{
+		$this->app['cache']->forget('platform.pages.all');
+		$this->app['cache']->forget('platform.pages.all.enabled');
+
+		$toDelete = [ $page->id, $page->slug, $page->uri ];
 
 		foreach ($toDelete as $value)
 		{
-			$this->cache->forget('platform.page.'.$value);
-			$this->cache->forget('platform.page.'.$value.'.enabled');
+			$this->app['cache']->forget('platform.page.'.$value);
+			$this->app['cache']->forget('platform.page.'.$value.'.enabled');
 		}
 	}
 
