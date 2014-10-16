@@ -111,10 +111,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		$model = $this->createModel()->rememberForever('platform.page.'.$id);
 
-		if (is_numeric($id))
-		{
-			return $model->find($id);
-		}
+		if (is_numeric($id)) return $model->find($id);
 
 		return $model->orWhere('slug', $id)->orWhere('uri', $id)->first();
 	}
@@ -126,7 +123,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		return $this
 			->createModel()
-			->rememberForever('platform.page.enabled'.$id)
+			->rememberForever('platform.page.enabled.'.$id)
 			->where('enabled', 1)
 			->whereNested(function($query) use ($id)
 			{
@@ -166,10 +163,10 @@ class PageRepository implements PageRepositoryInterface {
 		// Get all the available user roles
 		$roles = $this->app['platform.roles']->findAll();
 
-		// Get the all the menu root items
+		// Get all the root menu items
 		$menus = $this->app['platform.menus']->findAllRoot();
 
-		return compact('page', 'roles', 'templates', 'menus');
+		return compact('page', 'files', 'roles', 'templates', 'menus');
 	}
 
 	/**
@@ -305,19 +302,14 @@ class PageRepository implements PageRepositoryInterface {
 
 		if (in_array($type, ['filesystem', 'database']))
 		{
-			$view = "pages/{$page->file}";
+			$view = $type === 'database' ? $page->template : "pages/{$page->file}";
 
 			if ($type === 'database')
 			{
-				// Get the content repository
-				$repository = app('Platform\Content\Repositories\ContentRepositoryInterface');
+				$value = app('platform.content')->prepareForRendering(0, $page->value);
 
-				$value = $repository->prepareForRendering(0, $page->value);
-
-				// We'll inject the section with the value, i.e. @content()
-				$result = $this->getThemeBag()->getViewFactory()->inject($page->section, $value);
-
-				$view = $page->template;
+				// We'll inject the section with the value
+				$this->getThemeBag()->getViewFactory()->inject($page->section, $value);
 			}
 
 			$data = array_merge($this->additionalRenderData($page), compact('page'));

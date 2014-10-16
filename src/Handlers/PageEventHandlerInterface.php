@@ -17,8 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Events\Dispatcher;
 use Platform\Pages\Models\Page;
+use Illuminate\Events\Dispatcher;
 
 interface PageEventHandlerInterface {
 
@@ -39,7 +39,7 @@ interface PageEventHandlerInterface {
 	public function creating(array $data);
 
 	/**
-	 * When page is created.
+	 * When a page is created.
 	 *
 	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return void
@@ -56,7 +56,7 @@ interface PageEventHandlerInterface {
 	public function updating(Page $page, array $data);
 
 	/**
-	 * When page is updated.
+	 * When a page is updated.
 	 *
 	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return void
@@ -64,7 +64,7 @@ interface PageEventHandlerInterface {
 	public function updated(Page $page);
 
 	/**
-	 * When page is deleted.
+	 * When a page is deleted.
 	 *
 	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return void
