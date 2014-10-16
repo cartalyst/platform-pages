@@ -131,10 +131,8 @@ class PagesController extends ApiController {
 	 */
 	public function destroy($id)
 	{
-		if ($page = $this->pages->find($id))
+		if ($page = $this->pages->delete($id))
 		{
-			$page->delete();
-
 			return $this->responseWithNoContent();
 		}
 
