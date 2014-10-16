@@ -75,7 +75,7 @@ class PageRepository implements PageRepositoryInterface {
 
 		$this->setDispatcher($this->app['events']);
 
-		$this->setValidator($app['platform.content.validator']);
+		$this->setValidator($app['platform.pages.validator']);
 
 		$this->model = get_class($this->app['Platform\Pages\Models\Page']);
 	}
