@@ -17,8 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use League\Fractal\TransformerAbstract;
 use Platform\Pages\Models\Page;
+use League\Fractal\TransformerAbstract;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 
 class PageTransformer extends TransformerAbstract {
@@ -49,7 +49,10 @@ class PageTransformer extends TransformerAbstract {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the transformed data.
+	 *
+	 * @param  \Platform\Pages\Models\Page  $page
+	 * @return array
 	 */
 	public function transform(Page $page)
 	{
@@ -64,13 +67,12 @@ class PageTransformer extends TransformerAbstract {
 	/**
 	 * Include the Page body.
 	 *
+	 * @param  \Platform\Pages\Models\Page  $page
 	 * @return \League\Fractal\ItemResource
 	 */
 	public function includeBody(Page $page)
 	{
-		$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-		return $this->item($page, new BodyTransformer($repository));
+		return $this->item($page, new BodyTransformer($this->pages));
 	}
 
 }

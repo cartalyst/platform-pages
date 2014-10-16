@@ -42,13 +42,14 @@ class BodyTransformer extends TransformerAbstract {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Returns the transformed data.
+	 *
+	 * @param  \Platform\Pages\Models\Page  $page
+	 * @return array
 	 */
 	public function transform(Page $page)
 	{
-		return [
-			'body' => $this->pages->render($page),
-		];
+		return [ $this->pages->render($page) ];
 	}
 
 }
