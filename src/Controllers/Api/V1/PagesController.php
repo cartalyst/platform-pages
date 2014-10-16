@@ -17,12 +17,10 @@
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Lang;
 use League\Fractal\Manager;
-use Platform\Pages\Repositories\PageRepositoryInterface;
-use Platform\Pages\Transformers\PageTransformer;
 use Platform\Access\Controllers\ApiController;
+use Platform\Pages\Transformers\PageTransformer;
+use Platform\Pages\Repositories\PageRepositoryInterface;
 
 class PagesController extends ApiController {
 
@@ -75,14 +73,12 @@ class PagesController extends ApiController {
 	 */
 	public function store()
 	{
-		$data = Input::json()->all();
+		// Create the page
+		list($messages, $page) = $this->pages->create(request()->json()->all());
 
-		$messages = $this->pages->validForCreation($data);
-
+		// Do we have any errors?
 		if ($messages->isEmpty())
 		{
-			$page = $this->pages->create($data);
-
 			return $this->respondWithItem($page, $this->transformer);
 		}
 
@@ -102,7 +98,7 @@ class PagesController extends ApiController {
 			return $this->respondWithItem($page, $this->transformer);
 		}
 
-		$message = Lang::get('platform/pages::message.not_found', compact('id'));
+		$message = trans('platform/pages::message.not_found', compact('id'));
 
 		return $this->responseWithErrors($message, 404);
 	}
@@ -115,14 +111,12 @@ class PagesController extends ApiController {
 	 */
 	public function update($id)
 	{
-		$data = Input::json()->all();
+		// Update the page
+		list($messages, $page) = $this->pages->update($id, request()->json()->all());
 
-		$messages = $this->pages->validForUpdate($id, $data);
-
+		// Do we have any errors?
 		if ($messages->isEmpty())
 		{
-			$page = $this->pages->update($id, $data);
-
 			return $this->respondWithItem($page, $this->transformer);
 		}
 
@@ -144,7 +138,7 @@ class PagesController extends ApiController {
 			return $this->responseWithNoContent();
 		}
 
-		$message = Lang::get('platform/pages::message.not_found', compact('id'));
+		$message = trans('platform/pages::message.not_found', compact('id'));
 
 		return $this->responseWithErrors($message, 404);
 	}
