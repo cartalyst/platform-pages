@@ -89,7 +89,7 @@ interface PageRepositoryInterface {
 	 * Creates a page with the given data.
 	 *
 	 * @param  array  $data
-	 * @return \Platform\Pages\Models\Page
+	 * @return bool|array
 	 */
 	public function create(array $data);
 
@@ -98,7 +98,7 @@ interface PageRepositoryInterface {
 	 *
 	 * @param  int  $id
 	 * @param  array  $data
-	 * @return \Platform\Pages\Models\Page
+	 * @return bool|array
 	 */
 	public function update($id, array $data);
 
@@ -123,7 +123,7 @@ interface PageRepositoryInterface {
 	 * Enables the given page.
 	 *
 	 * @param  int  $id
-	 * @return \Platform\Pages\Models\Page
+	 * @return bool|array
 	 */
 	public function enable($id);
 
@@ -131,7 +131,7 @@ interface PageRepositoryInterface {
 	 * Disables the given page.
 	 *
 	 * @param  int  $id
-	 * @return \Platform\Pages\Models\Page
+	 * @return bool|array
 	 */
 	public function disable($id);
 
