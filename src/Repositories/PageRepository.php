@@ -36,6 +36,13 @@ class PageRepository implements PageRepositoryInterface {
 	protected $app;
 
 	/**
+	 * The Data handler.
+	 *
+	 * @var \Platform\Pages\Handlers\DataHandlerInterface
+	 */
+	protected $data;
+
+	/**
 	 * The Eloquent page model.
 	 *
 	 * @var string
@@ -76,6 +83,8 @@ class PageRepository implements PageRepositoryInterface {
 		$this->setDispatcher($this->app['events']);
 
 		$this->setValidator($app['platform.pages.validator']);
+
+		$this->data = $this->app['platform.pages.handler.data'];
 
 		$this->model = get_class($this->app['Platform\Pages\Models\Page']);
 	}
@@ -196,7 +205,13 @@ class PageRepository implements PageRepositoryInterface {
 		$page = $this->createModel();
 
 		// Fire the 'platform.page.creating' event
-		$data = $this->fireEvent('platform.page.creating', [ $input ])[0];
+		if ($this->fireEvent('platform.page.creating') === false)
+		{
+			return false;
+		}
+
+		// Prepare the submitted data
+		$data = $this->data->prepare($input);
 
 		// Validate the submitted data
 		$messages = $this->validForCreation($data);
@@ -226,7 +241,13 @@ class PageRepository implements PageRepositoryInterface {
 		$page = $this->find($id);
 
 		// Fire the 'platform.page.updating' event
-		$data = $this->fireEvent('platform.page.updating', [ $page, $input ])[0];
+		if ($this->fireEvent('platform.page.updating', [ $page ]) === false)
+		{
+			return false;
+		}
+
+		// Prepare the submitted data
+		$data = $this->data->prepare($input);
 
 		// Validate the submitted data
 		$messages = $this->validForUpdate($page, $data);

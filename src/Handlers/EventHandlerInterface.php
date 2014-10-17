@@ -18,25 +18,16 @@
  */
 
 use Platform\Pages\Models\Page;
-use Illuminate\Events\Dispatcher;
+use Cartalyst\Support\Handlers\EventHandlerInterface as BaseEventHandlerInterface;
 
-interface PageEventHandlerInterface {
-
-	/**
-	 * Registers the event listeners using the given dispatcher instance.
-	 *
-	 * @param  \Illuminate\Events\Dispatcher  $dispatcher
-	 * @return void
-	 */
-	public function subscribe(Dispatcher $dispatcher);
+interface EventHandlerInterface extends BaseEventHandlerInterface {
 
 	/**
 	 * When a page is being created.
 	 *
-	 * @param  array  $data
 	 * @return mixed
 	 */
-	public function creating(array $data);
+	public function creating();
 
 	/**
 	 * When a page is created.
@@ -50,10 +41,9 @@ interface PageEventHandlerInterface {
 	 * When a page is being updated.
 	 *
 	 * @param  \Platform\Pages\Models\Page  $page
-	 * @param  array  $data
 	 * @return mixed
 	 */
-	public function updating(Page $page, array $data);
+	public function updating(Page $page);
 
 	/**
 	 * When a page is updated.

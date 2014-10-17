@@ -19,9 +19,9 @@
 
 use Platform\Pages\Models\Page;
 use Illuminate\Events\Dispatcher;
-use Cartalyst\Support\Handlers\EventHandler;
+use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
 
-class PageEventHandler extends EventHandler implements PageEventHandlerInterface {
+class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 
 	/**
 	 * {@inheritDoc}
@@ -40,9 +40,9 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function creating(array $data)
+	public function creating()
 	{
-		return $data;
+
 	}
 
 	/**
@@ -56,9 +56,9 @@ class PageEventHandler extends EventHandler implements PageEventHandlerInterface
 	/**
 	 * {@inheritDoc}
 	 */
-	public function updating(Page $page, array $data)
+	public function updating(Page $page)
 	{
-		return $data;
+
 	}
 
 	/**
