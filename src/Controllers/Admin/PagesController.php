@@ -174,11 +174,11 @@ class PagesController extends AdminController {
 	 */
 	public function executeAction()
 	{
-		$action = request()->get('action');
+		$action = input('action');
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (request()->get('entries', []) as $entry)
+			foreach (input('entries', []) as $entry)
 			{
 				$this->pages->{$action}($entry);
 			}
