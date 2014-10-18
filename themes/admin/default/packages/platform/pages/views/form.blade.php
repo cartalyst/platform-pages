@@ -290,7 +290,7 @@
 							</div>
 
 							@foreach ($menus as $item)
-							<div{{ ( ! empty($menu) and $menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->menu }}}">
+							<div{{ ($menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->menu }}}">
 								@widget('platform/menus::dropdown.show', [$item->slug, 0, $menu->exists ? $menu->getParent()->id : null, ['id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'], ['0' => trans('platform/pages::form.navigation.top_level')]])
 							</div>
 							@endforeach

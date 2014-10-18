@@ -175,7 +175,7 @@ class PageRepository implements PageRepositoryInterface {
 		// Get all the root menu items
 		$menus = $this->app['platform.menus']->findAllRoot();
 
-		return compact('page', 'files', 'roles', 'templates', 'menus');
+		return compact('page', 'files', 'roles', 'templates', 'menus', 'menu');
 	}
 
 	/**
