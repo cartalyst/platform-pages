@@ -18,10 +18,10 @@
  */
 
 use Platform\Menus\Models\Menu;
-use Platform\Menus\Types\BaseType;
+use Platform\Menus\Types\AbstractType;
 use Platform\Menus\Types\TypeInterface;
 
-class PageType extends BaseType implements TypeInterface {
+class PageType extends AbstractType implements TypeInterface {
 
 	/**
 	 * Holds all the available pages.
