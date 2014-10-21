@@ -26,14 +26,7 @@ use Symfony\Component\Finder\Finder;
 
 class PageRepository implements PageRepositoryInterface {
 
-	use Traits\EventTrait, Traits\RepositoryTrait, Traits\ValidatorTrait;
-
-	/**
-	 * The container instance.
-	 *
-	 * @var \Illuminate\Container\Container
-	 */
-	protected $app;
+	use Traits\ContainerTrait, Traits\EventTrait, Traits\RepositoryTrait, Traits\ValidatorTrait;
 
 	/**
 	 * The Data handler.
@@ -78,15 +71,15 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function __construct(Container $app)
 	{
-		$this->app = $app;
+		$this->setContainer($app);
 
-		$this->setDispatcher($this->app['events']);
+		$this->setDispatcher($app['events']);
+
+		$this->data = $app['platform.pages.handler.data'];
 
 		$this->setValidator($app['platform.pages.validator']);
 
-		$this->data = $this->app['platform.pages.handler.data'];
-
-		$this->model = get_class($this->app['Platform\Pages\Models\Page']);
+		$this->setModel(get_class($app['Platform\Pages\Models\Page']));
 	}
 
 	/**
@@ -158,9 +151,9 @@ class PageRepository implements PageRepositoryInterface {
 		}
 
 		// Find this page menu
-		if ( ! $menu = $this->app['platform.menus']->findWhere('page_id', (int) $page->id))
+		if ( ! $menu = $this->container['platform.menus']->findWhere('page_id', (int) $page->id))
 		{
-			$menu = $this->app['platform.menus']->createModel();
+			$menu = $this->container['platform.menus']->createModel();
 		}
 
 		// Get all the available page files
@@ -170,10 +163,10 @@ class PageRepository implements PageRepositoryInterface {
 		$templates = $this->templates();
 
 		// Get all the available user roles
-		$roles = $this->app['platform.roles']->findAll();
+		$roles = $this->container['platform.roles']->findAll();
 
 		// Get all the root menu items
-		$menus = $this->app['platform.menus']->findAllRoot();
+		$menus = $this->container['platform.menus']->findAllRoot();
 
 		return compact('page', 'files', 'roles', 'templates', 'menus', 'menu');
 	}
@@ -445,7 +438,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		if ( ! $this->themeBag)
 		{
-			$this->themeBag = $this->app['themes'];
+			$this->themeBag = $this->container['themes'];
 		}
 
 		return $this->themeBag;
@@ -458,7 +451,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		if ( ! $this->theme)
 		{
-			$this->theme = $this->app['config']->get('cartalyst/themes::active');
+			$this->theme = $this->container['config']->get('cartalyst/themes::active');
 		}
 
 		return $this->theme;
