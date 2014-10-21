@@ -36,7 +36,7 @@
 </div>
 
 {{-- Pages form --}}
-<form id="pages-form" action="{{ Request::fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off">
+<form id="pages-form" action="{{ request()->fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off">
 
 	{{-- CSRF Token --}}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
