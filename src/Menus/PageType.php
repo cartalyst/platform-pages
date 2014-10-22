@@ -84,19 +84,19 @@ class PageType extends AbstractType implements TypeInterface {
 	 */
 	public function afterSave(Menu $child)
 	{
-		$data = $child->getTypeData();
+		$data = $child->getAttributes();
 
 		if ($pageId = array_get($data, 'page_id'))
 		{
-			$repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
-
-			$page = $repository->find($pageId);
+			$page = $this->app['platform.pages']->find($pageId);
 
 			$child->uri = $page->uri;
 
 			$child->page_id = $pageId;
 		}
 	}
+
+	public function beforeDelete(Menu $child){}
 
 	/**
 	 * Return all the available pages.
