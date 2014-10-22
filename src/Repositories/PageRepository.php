@@ -583,7 +583,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		$dispatcher = $page->getEventDispatcher();
 
-		$responses = $dispatcher->fire("platform/pages::rendering.{$page->slug}", compact('page'));
+		$responses = $dispatcher->fire('platform.pages.rendering.'.$page->slug, compact('page'));
 
 		$data = [];
 

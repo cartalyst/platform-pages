@@ -24,6 +24,8 @@ class DataHandler implements DataHandlerInterface {
 	 */
 	public function prepare(array $data)
 	{
+		$data['roles'] = array_get($data, 'roles', []);
+
 		return $data;
 	}
 

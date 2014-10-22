@@ -17,11 +17,8 @@
  * @link       http://cartalyst.com
  */
 
-use Config;
 use Closure;
 use Illuminate\Support\Str;
-use InvalidArgumentException;
-use Symfony\Component\Finder\Finder;
 use Illuminate\Database\Eloquent\Model;
 use Cartalyst\Attributes\EntityInterface;
 use Platform\Attributes\Traits\EntityTrait;
@@ -64,14 +61,14 @@ class Page extends Model implements EntityInterface {
 	 */
 	public static function find($id, $columns = ['*'])
 	{
-		$instance = new static;
-
-		if ($page = $instance->newQuery()->whereSlug($id)->first($columns))
+		if (is_numeric($id))
 		{
-			return $page;
+			return parent::find($id, $columns);
 		}
 
-		return parent::find($id, $columns);
+		$instance = new static;
+
+		return $instance->newQuery()->whereSlug($id)->first($columns);
 	}
 
 	/**
@@ -88,28 +85,12 @@ class Page extends Model implements EntityInterface {
 	/**
 	 * Get mutator for the "roles" attribute.
 	 *
-	 * @param  array  $roles
+	 * @param  string  $roles
 	 * @return array
-	 * @throws \InvalidArgumentException
 	 */
 	public function getRolesAttribute($roles)
 	{
-		if ( ! $roles)
-		{
-			return [];
-		}
-
-		if (is_array($roles))
-		{
-			return $roles;
-		}
-
-		if ( ! $_roles = json_decode($roles, true))
-		{
-			throw new InvalidArgumentException("Cannot JSON decode roles [{$roles}].");
-		}
-
-		return $_roles;
+		return json_decode($roles, true) ?: [];
 	}
 
 	/**
@@ -118,7 +99,7 @@ class Page extends Model implements EntityInterface {
 	 * @param  array  $roles
 	 * @return void
 	 */
-	public function setRolesAttribute($roles)
+	public function setRolesAttribute(array $roles)
 	{
 		$this->attributes['roles'] = ! empty($roles) ? json_encode($roles) : '';
 	}
@@ -164,7 +145,7 @@ class Page extends Model implements EntityInterface {
 	 */
 	public function getTemplateAttribute($template)
 	{
-		return ($this->exists || $template) ? $template : Config::get('platform/pages::default_template');
+		return ($this->exists || $template) ? $template : config('platform/pages::default_template');
 	}
 
 	/**
@@ -186,7 +167,7 @@ class Page extends Model implements EntityInterface {
 	 */
 	public function getSectionAttribute($section)
 	{
-		return ($this->exists || $section) ? $section : Config::get('platform/pages::default_section');
+		return ($this->exists || $section) ? $section : config('platform/pages::default_section');
 	}
 
 	/**
@@ -241,7 +222,7 @@ class Page extends Model implements EntityInterface {
 	 */
 	public static function rendering(Closure $callback)
 	{
-		static::$dispatcher->listen('platform/pages::rendering.*', $callback);
+		static::$dispatcher->listen('platform.pages.rendering.*', $callback);
 	}
 
 }
