@@ -61,14 +61,9 @@ class Page extends Model implements EntityInterface {
 	 */
 	public static function find($id, $columns = ['*'])
 	{
-		if (is_numeric($id))
-		{
-			return parent::find($id, $columns);
-		}
+		if (is_numeric($id)) return parent::find($id, $columns);
 
-		$instance = new static;
-
-		return $instance->newQuery()->whereSlug($id)->first($columns);
+		return (new static)->newQuery()->whereSlug($id)->first($columns);
 	}
 
 	/**
