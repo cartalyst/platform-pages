@@ -114,7 +114,7 @@ class PageType extends BaseType implements TypeInterface {
 
 		$pages = $repository->findAll();
 
-		foreach ($pages as &$page)
+		foreach ($pages as $page)
 		{
 			$page->uri = $page->uri === '/' ? null : $page->uri;
 		}
