@@ -112,7 +112,7 @@ class PageType extends AbstractType implements TypeInterface {
 
 		$pages = $this->app['platform.pages']->findAll();
 
-		foreach ($pages as &$page)
+		foreach ($pages as $page)
 		{
 			$page->uri = $page->uri === '/' ? null : $page->uri;
 		}
