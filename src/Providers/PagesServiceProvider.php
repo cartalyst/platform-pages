@@ -44,7 +44,7 @@ class PagesServiceProvider extends ServiceProvider {
 		);
 
 		// Subscribe the registered event handler
-		$this->app['events']->subscribe('platform.pages.handler.events');
+		$this->app['events']->subscribe('platform.pages.handler.event');
 	}
 
 	/**
@@ -59,7 +59,7 @@ class PagesServiceProvider extends ServiceProvider {
 		$this->bindIf('platform.pages.handler.data', 'Platform\Pages\Handlers\DataHandler');
 
 		// Register the event handler
-		$this->bindIf('platform.pages.handler.events', 'Platform\Pages\Handlers\EventHandler');
+		$this->bindIf('platform.pages.handler.event', 'Platform\Pages\Handlers\EventHandler');
 
 		// Register the validator
 		$this->bindIf('platform.pages.validator', 'Platform\Pages\Validator\PagesValidator');
