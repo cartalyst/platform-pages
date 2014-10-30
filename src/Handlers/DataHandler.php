@@ -20,7 +20,7 @@
 class DataHandler implements DataHandlerInterface {
 
 	/**
-	 * @{inheritDoc}
+	 * {@inheritDoc}
 	 */
 	public function prepare(array $data)
 	{
