@@ -73,6 +73,12 @@ class PagesController extends Controller {
 		// Find the requested page
 		$page = $this->pages->findEnabled($slug);
 
+		// Check if the page should only be accessed through https
+		if ($page->https && ! request()->secure())
+		{
+			return redirect()->secure(request()->getRequestUri());
+		}
+
 		// Check if the page has any visibility requirements
 		if (in_array($page->visibility, ['logged_in', 'admin']))
 		{

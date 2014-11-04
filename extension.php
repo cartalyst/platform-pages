@@ -192,14 +192,9 @@ return [
 
 			Route::group(['namespace' => 'Frontend'], function() use ($app)
 			{
-				Route::get('/', 'PagesController@page');
-
 				foreach ($app['platform.pages']->findAllEnabled() as $page)
 				{
-					Route::get($page->uri, [
-						'before' => $page->https ? 'https' : null,
-						'uses'   => 'PagesController@page',
-					]);
+					Route::get($page->uri, 'PagesController@page');
 				}
 			});
 		});
