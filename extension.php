@@ -190,13 +190,10 @@ return [
 				Route::delete('{id}', ['as' => 'api.v1.pages.delete', 'uses' => 'PagesController@destroy']);
 			});
 
-			Route::group(['namespace' => 'Frontend'], function() use ($app)
+			foreach ($app['platform.pages']->findAllEnabled() as $page)
 			{
-				foreach ($app['platform.pages']->findAllEnabled() as $page)
-				{
-					Route::get($page->uri, 'PagesController@page');
-				}
-			});
+				Route::get($page->uri, 'Frontend\PagesController@page');
+			}
 		});
 	},
 
