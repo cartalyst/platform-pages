@@ -30,13 +30,6 @@ class PagesController extends AdminController {
 	protected $pages;
 
 	/**
-	 * {@inheritDoc}
-	 */
-	protected $csrfWhitelist = [
-		'executeAction',
-	];
-
-	/**
 	 * Holds all the mass actions we can execute.
 	 *
 	 * @var array
