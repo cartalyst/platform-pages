@@ -41,8 +41,8 @@
 	"require": {
 		"php": ">=5.4.0",
 		"cartalyst/composer-installers": "1.1.*",
-		"platform/admin": "dev-master",
-		"platform/content": "dev-master"
+		"platform/admin": "0.1.*",
+		"platform/content": "0.1.*"
 	},
 	"autoload": {
 		"classmap": [
@@ -56,7 +56,7 @@
 	"extra": {
 		"component": "extension",
 		"branch-alias": {
-			"dev-master": "2.0.x-dev"
+			"dev-master": "0.1.x-dev"
 		}
 	},
 	"minimum-stability": "dev"
