@@ -374,7 +374,7 @@ return [
 				'name'  => 'Pages',
 				'class' => 'fa fa-file',
 				'uri'   => 'pages',
-				'regex' => '/admin\/pages/i',
+				'regex' => '/:admin\/pages/i',
 			],
 
 		],
