@@ -26,7 +26,7 @@
 @stop
 
 {{-- Page content --}}
-@section('content')
+@section('page')
 
 {{-- Page header --}}
 <div class="page-header">
