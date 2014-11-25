@@ -58,12 +58,12 @@
 				<div class="col-md-8">
 
 					{{-- Name --}}
-					<div class="form-group{{ $errors->first('name', ' has-error') }}">
+					<div class="form-group{{ Alert::form('name', ' has-error') }}">
 						<label for="name" class="control-label">{{{ trans('platform/pages::form.name') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.name_help') }}}"></i></label>
 
 						<input type="text" class="form-control" name="name" id="name" placeholder="{{{ trans('platform/pages::form.name') }}}" value="{{{ Input::old('name', $page->name) }}}" required>
 
-						<span class="help-block">{{{ $errors->first('name', ':message') }}}</span>
+						<span class="help-block">{{{ Alert::form('name') }}}</span>
 					</div>
 
 					<div class="row">
@@ -71,12 +71,12 @@
 						{{-- Slug --}}
 						<div class="col-md-4">
 
-							<div class="form-group{{ $errors->first('slug', ' has-error') }}">
+							<div class="form-group{{ Alert::form('slug', ' has-error') }}">
 								<label for="slug" class="control-label">{{{ trans('platform/pages::form.slug') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.slug_help') }}}"></i></label>
 
 								<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::form.slug') }}}" value="{{{ Input::old('slug', $page->slug) }}}" required>
 
-								<span class="help-block">{{{ $errors->first('slug', ':message') }}}</span>
+								<span class="help-block">{{{ Alert::form('slug') }}}</span>
 							</div>
 
 						</div>
@@ -84,7 +84,7 @@
 						{{-- SSL --}}
 						<div class="col-md-4">
 
-							<div class="form-group{{ $errors->first('https', ' has-error') }}">
+							<div class="form-group{{ Alert::form('https', ' has-error') }}">
 								<label for="https" class="control-label">{{{ trans('platform/pages::form.https') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.https_help') }}}"></i></label>
 
 								<select class="form-control" name="https" id="https" required>
@@ -92,7 +92,7 @@
 									<option value="0"{{ Input::old('https', $page->https) == 0 ? ' selected="selected"' : null }}>{{{ trans('general.no') }}}</option>
 								</select>
 
-								<span class="help-block">{{{ $errors->first('https', ':message') }}}</span>
+								<span class="help-block">{{{ Alert::form('https') }}}</span>
 							</div>
 
 						</div>
@@ -100,7 +100,7 @@
 						{{-- Enabled --}}
 						<div class="col-md-4">
 
-							<div class="form-group{{ $errors->first('enabled', ' has-error') }}">
+							<div class="form-group{{ Alert::form('enabled', ' has-error') }}">
 								<label for="enabled" class="control-label">{{{ trans('platform/pages::form.enabled') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.enabled_help') }}}"></i></label>
 
 								<select class="form-control" name="enabled" id="enabled" required>
@@ -108,7 +108,7 @@
 									<option value="0"{{ Input::old('enabled', $page->enabled) == 0 ? ' selected="selected"' : null }}>{{{ trans('general.disabled') }}}</option>
 								</select>
 
-								<span class="help-block">{{{ $errors->first('enabled', ':message') }}}</span>
+								<span class="help-block">{{{ Alert::form('enabled') }}}</span>
 							</div>
 
 						</div>
@@ -116,7 +116,7 @@
 					</div>
 
 					{{-- Uri --}}
-					<div class="form-group{{ $errors->first('uri', ' has-error') }}">
+					<div class="form-group{{ Alert::form('uri', ' has-error') }}">
 						<label for="uri" class="control-label">{{{ trans('platform/pages::form.uri') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.uri_help') }}}"></i></label>
 
 						<div class="input-group">
@@ -124,7 +124,7 @@
 							<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::form.uri') }}}" value="{{{ Input::old('uri', $page->uri) }}}" required>
 						</div>
 
-						<span class="help-block">{{{ $errors->first('uri', ':message') }}}</span>
+						<span class="help-block">{{{ Alert::form('uri') }}}</span>
 					</div>
 
 					<div class="row">
@@ -132,7 +132,7 @@
 						<div class="col-md-6">
 
 							{{-- Type --}}
-							<div class="form-group{{ $errors->first('type', ' has-error') }}">
+							<div class="form-group{{ Alert::form('type', ' has-error') }}">
 								<label for="type" class="control-label">{{{ trans('platform/pages::form.type') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.type_help') }}}"></i></label>
 
 								<select class="form-control" name="type" id="type" required>
@@ -140,7 +140,7 @@
 									<option value="filesystem"{{ Input::old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/content::form.filesystem') }}}</option>
 								</select>
 
-								<span class="help-block">{{{ $errors->first('type', ':message') }}}</span>
+								<span class="help-block">{{{ Alert::form('type') }}}</span>
 							</div>
 
 						</div>
@@ -151,7 +151,7 @@
 							<div data-type="database" class="{{ Input::old('type', $page->type) != 'database' ? ' hide' : null }}">
 
 								{{-- Template --}}
-								<div class="form-group{{ $errors->first('template', ' has-error') }}">
+								<div class="form-group{{ Alert::form('template', ' has-error') }}">
 									<label for="template" class="control-label">{{{ trans('platform/pages::form.template') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.template_help') }}}"></i></label>
 
 									@if (empty($templates))
@@ -166,7 +166,7 @@
 									</select>
 									@endif
 
-									<span class="help-block">{{{ $errors->first('template', ':message') }}}</span>
+									<span class="help-block">{{{ Alert::form('template') }}}</span>
 								</div>
 
 							</div>
@@ -175,7 +175,7 @@
 							<div data-type="filesystem" class="{{ Input::old('type', $page->type) != 'filesystem' ? ' hide' : null }}">
 
 								{{-- File --}}
-								<div class="form-group{{ $errors->first('file', ' has-error') }}">
+								<div class="form-group{{ Alert::form('file', ' has-error') }}">
 								<label for="file" class="control-label">{{{ trans('platform/pages::form.file') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.file_help') }}}"></i></label>
 
 									@if (empty($files))
@@ -190,7 +190,7 @@
 									</select>
 									@endif
 
-									<span class="help-block">{{{ $errors->first('file', ':message') }}}</span>
+									<span class="help-block">{{{ Alert::form('file') }}}</span>
 								</div>
 
 							</div>
@@ -203,7 +203,7 @@
 					<div data-type="database" class="{{ Input::old('type', $page->type) != 'database' ? ' hide' : null }}">
 
 						{{-- Section --}}
-						<div class="form-group{{ $errors->first('section', ' has-error') }}">
+						<div class="form-group{{ Alert::form('section', ' has-error') }}">
 							<label for="section" class="control-label">{{{ trans('platform/pages::form.section') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.section_help') }}}"></i></label>
 
 							<div class="input-group">
@@ -211,16 +211,16 @@
 								<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::form.section') }}}" value="{{{ Input::old('section', $page->section) }}}">
 							</div>
 
-							<span class="help-block">{{{ $errors->first('section', ':message') }}}</span>
+							<span class="help-block">{{{ Alert::form('section') }}}</span>
 						</div>
 
 						{{-- Value --}}
-						<div class="form-group{{ $errors->first('value', ' has-error') }}">
+						<div class="form-group{{ Alert::form('value', ' has-error') }}">
 							<label for="value" class="control-label">{{{ trans('platform/pages::form.value') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.value_help') }}}"></i></label>
 
 							<textarea class="form-control redactor" name="value" id="value">{{{ Input::old('value', $page->value) }}}</textarea>
 
-							<span class="help-block">{{{ $errors->first('value', ':message') }}}</span>
+							<span class="help-block">{{{ Alert::form('value') }}}</span>
 						</div>
 
 					</div>
@@ -236,7 +236,7 @@
 
 							<legend>{{{ trans('platform/pages::form.visibility.legend') }}}</legend>
 
-							<div class="form-group{{ $errors->first('visibility', ' has-error') }}">
+							<div class="form-group{{ Alert::form('visibility', ' has-error') }}">
 								<label for="visibility" class="control-label">{{{ trans('platform/pages::form.visibility.legend') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.visibility_help') }}}"></i></label>
 
 								<select class="form-control" name="visibility" id="visibility" required>
@@ -246,11 +246,11 @@
 								</select>
 
 								<span class="help-block">
-									{{{ $errors->first('visibility', ':message') }}}
+									{{{ Alert::form('visibility') }}}
 								</span>
 							</div>
 
-							<div class="form-group{{ $errors->first('roles', ' has-error') }}">
+							<div class="form-group{{ Alert::form('roles', ' has-error') }}">
 								<label for="roles" class="control-label">{{{ trans('platform/pages::form.roles') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.roles_help') }}}"></i></label>
 
 								<select class="form-control" name="roles[]" id="roles" multiple="multiple"{{ Input::old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
@@ -260,7 +260,7 @@
 								</select>
 
 								<span class="help-block">
-									{{{ $errors->first('roles', ':message') }}}
+									{{{ Alert::form('roles') }}}
 								</span>
 							</div>
 
@@ -276,7 +276,7 @@
 
 							<p>{{{ trans('platform/pages::form.navigation_help') }}}</p>
 
-							<div class="form-group{{ $errors->first('menu', ' has-error') }}">
+							<div class="form-group{{ Alert::form('menu', ' has-error') }}">
 
 								<label for="menu" class="control-label">{{{ trans('platform/pages::form.navigation.menu') }}}</label>
 

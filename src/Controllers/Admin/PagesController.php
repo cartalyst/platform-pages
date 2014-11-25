@@ -150,14 +150,14 @@ class PagesController extends AdminController {
 	{
 		if ($this->pages->delete($id))
 		{
-			return redirect()->toAdmin('pages')->withSuccess(
-				trans('platform/pages::message.success.delete')
-			);
+			$this->alerts->success(trans('platform/pages::message.success.delete'));
+
+			return redirect()->toAdmin('pages');
 		}
 
-		return redirect()->toAdmin('pages')->withErrors(
-			trans('platform/pages::message.error.delete')
-		);
+		$this->alerts->error(trans('platform/pages::message.error.delete'));
+
+		return redirect()->toAdmin('pages');
 	}
 
 	/**
@@ -193,9 +193,9 @@ class PagesController extends AdminController {
 	{
 		if ( ! $data = $this->pages->getPreparedPage($id))
 		{
-			return redirect()->toAdmin('pages')->withErrors(
-				trans('platform/pages::message.not_found', compact('id'))
-			);
+			$this->alerts->error(trans('platform/pages::message.not_found', compact('id')));
+
+			return redirect()->toAdmin('pages');
 		}
 
 		extract($data);
@@ -220,13 +220,14 @@ class PagesController extends AdminController {
 		// Do we have any errors?
 		if ($messages->isEmpty())
 		{
-			return redirect()->toAdmin("pages/{$page->id}")->withSuccess(
-				trans("platform/pages::message.success.{$mode}")
-			);
+			$this->alerts->success(trans("platform/pages::message.success.{$mode}"));
+
+			return redirect()->toAdmin("pages/{$page->id}");
 		}
 
-		// Redirect to the previous page
-		return redirect()->back()->withInput()->withErrors($messages);
+		$this->alerts->error($messages, 'form');
+
+		return redirect()->back()->withInput();
 	}
 
 }
