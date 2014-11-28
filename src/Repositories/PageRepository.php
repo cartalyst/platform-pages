@@ -45,16 +45,16 @@ class PageRepository implements PageRepositoryInterface {
 	/**
 	 * The theme bag which is used for rendering file-based pages.
 	 *
-	 * @var \Illuminate\View\Factory
+	 * @var \Cartalyst\Themes\ThemeBag
 	 */
 	protected $themeBag;
 
 	/**
-	 * The theme in which we render pages.
+	 * The themes to render pages from.
 	 *
-	 * @var string
+	 * @var array
 	 */
-	protected $theme = null;
+	protected $theme = [];
 
 	/**
 	 * The menu model.
@@ -228,7 +228,7 @@ class PageRepository implements PageRepositoryInterface {
 			// Save the page
 			$page->fill($data)->save();
 
-			//
+			// Create the page menu
 			$this->setPageMenu($page, $data);
 
 			// Fire the 'platform.page.created' event
@@ -264,7 +264,7 @@ class PageRepository implements PageRepositoryInterface {
 			// Update the page
 			$page->fill($data)->save();
 
-			//
+			// Update the page menu
 			$this->setPageMenu($page, $data);
 
 			// Fire the 'platform.page.updated' event
@@ -371,7 +371,7 @@ class PageRepository implements PageRepositoryInterface {
 				return $fullPath;
 			}
 
-		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
+		}, $this->getThemePaths()));
 
 		if (empty($paths)) return [];
 
@@ -413,7 +413,7 @@ class PageRepository implements PageRepositoryInterface {
 			{
 				return $path;
 			}
-		}, $this->getThemeBag()->getCascadedViewPaths($this->getTheme())));
+		}, $this->getThemePaths()));
 
 		if (empty($paths)) return [];
 
@@ -464,14 +464,14 @@ class PageRepository implements PageRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getTheme()
+	public function getTheme($type = 'active')
 	{
-		if ( ! $this->theme)
+		if ( ! isset($this->theme[$type]))
 		{
-			$this->theme = $this->container['config']->get('cartalyst/themes::active');
+			$this->theme[$type] = $this->container['config']->get("platform/themes::{$type}.frontend");
 		}
 
-		return $this->theme;
+		return $this->theme[$type];
 	}
 
 	/**
@@ -492,6 +492,22 @@ class PageRepository implements PageRepositoryInterface {
 		return $this;
 	}
 
+	/**
+	 * Returns the themes paths.
+	 *
+	 * @return array
+	 */
+	protected function getThemePaths()
+	{
+		$themePaths = [];
+
+		foreach ([$this->getTheme(), $this->getTheme('fallback')] as $theme)
+		{
+			$themePaths[] = $this->getThemeBag()->getCascadedViewPaths($theme);
+		}
+
+		return array_flatten($themePaths);
+	}
 
 	/**
 	 * {@inheritDoc}
@@ -500,7 +516,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		if ( ! empty($options))
 		{
-			$menuModel = with(new $this->menuModel);
+			$menuModel = new $this->menuModel;
 
 			// Get the menu that this page will be stored
 			$pageMenuTree = (int) array_get($options, 'menu', null);
@@ -564,14 +580,14 @@ class PageRepository implements PageRepositoryInterface {
 					// Are we creating the page menu?
 					if ($createMenu)
 					{
-						$pageMenu = new $this->menuModel(array(
+						$pageMenu = new $this->menuModel([
 							'slug'    => $page->slug,
 							'name'    => $page->name,
 							'uri'     => $page->uri,
 							'type'    => 'page',
 							'page_id' => $page->id,
 							'enabled' => 1,
-						));
+						]);
 
 						$pageMenu->makeLastChildOf($destination);
 
@@ -612,7 +628,7 @@ class PageRepository implements PageRepositoryInterface {
 
 			if ( ! is_array($response))
 			{
-				throw new InvalidArgumentException('Page rendering event listeners must return an array or must not return anything at all.');
+				throw new InvalidArgumentException('Page rendering event listeners must return an array or null.');
 			}
 
 			foreach ($response as $key => $value)
