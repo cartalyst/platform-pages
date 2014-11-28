@@ -95,7 +95,10 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function findAll()
 	{
-		return $this->createModel()->rememberForever('platform.pages.all')->get();
+		return $this->container['cache']->rememberForever('platform.pages.all', function()
+		{
+			return $this->createModel()->get();
+		});
 	}
 
 	/**
@@ -103,7 +106,10 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function findAllEnabled()
 	{
-		return $this->createModel()->rememberForever('platform.pages.all.enabled')->whereEnabled(1)->get();
+		return $this->container['cache']->rememberForever('platform.pages.all.enabled', function()
+		{
+			return $this->createModel()->whereEnabled(1)->get();
+		});
 	}
 
 	/**
@@ -111,11 +117,16 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		$model = $this->createModel()->rememberForever('platform.page.'.$id);
+		if ($id instanceof Content) return $id;
 
-		if (is_numeric($id)) return $model->find($id);
+		return $this->container['cache']->rememberForever('platform.page.'.$id, function() use ($id)
+		{
+			$model = $this->createModel();
 
-		return $model->orWhere('slug', $id)->orWhere('uri', $id)->first();
+			if (is_numeric($id)) return $model->find($id);
+
+			return $model->where('slug', $id)->orWhere('uri', $id)->first();
+		});
 	}
 
 	/**
@@ -123,18 +134,20 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function findEnabled($id)
 	{
-		return $this
-			->createModel()
-			->rememberForever('platform.page.'.$id.'.enabled')
-			->where('enabled', 1)
-			->whereNested(function($query) use ($id)
-			{
-				$query
-					->orWhere('slug', $id)
-					->orWhere('uri', $id)
-					->orWhere('id', (int) $id);
-			})
-			->first();
+		return $this->container['cache']->rememberForever('platform.page.enabled.'.$id, function() use ($id)
+		{
+			return $this
+				->createModel()
+				->where('enabled', 1)
+				->whereNested(function($query) use ($id)
+				{
+					$query
+						->orWhere('slug', $id)
+						->orWhere('uri', $id)
+						->orWhere('id', (int) $id);
+				})
+				->first();
+		});
 	}
 	/**
 	 * {@inheritDoc}

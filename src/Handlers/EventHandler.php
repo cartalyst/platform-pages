@@ -93,7 +93,7 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 		foreach ($toDelete as $value)
 		{
 			$this->app['cache']->forget('platform.page.'.$value);
-			$this->app['cache']->forget('platform.page.'.$value.'.enabled');
+			$this->app['cache']->forget('platform.page.enabled.'.$value);
 		}
 	}
 

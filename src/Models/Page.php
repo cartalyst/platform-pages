@@ -57,16 +57,6 @@ class Page extends Model implements EntityInterface {
 	protected static $entityNamespace = 'platform/pages';
 
 	/**
-	 * {@inheritDoc}
-	 */
-	public static function find($id, $columns = ['*'])
-	{
-		if (is_numeric($id)) return parent::find($id, $columns);
-
-		return (new static)->newQuery()->whereSlug($id)->first($columns);
-	}
-
-	/**
 	 * Get mutator for the "type" attribute.
 	 *
 	 * @param  string  $type

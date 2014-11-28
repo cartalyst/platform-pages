@@ -68,6 +68,11 @@ class PagesServiceProvider extends ServiceProvider {
 		$this->bindIf('platform.menus.types.page', 'Platform\Pages\Menus\PageType', true, false);
 	}
 
+	/**
+	 * Registers the not found error handler.
+	 *
+	 * @return void
+	 */
 	protected function registerNotFoundErrorHandler()
 	{
 		// Check the environment and app.debug settings
