@@ -40,12 +40,6 @@ jQuery(document).ready(function($)
 		$('[data-menu-parent="' + menuId + '"]').removeClass('hide');
 	});
 
-	// Instantiate the editor
-	$('.redactor').redactor({
-		toolbarFixed: true,
-		minHeight: 200,
-	});
-
 	// Validate the form
 	H5F.setup(document.getElementById('pages-form'));
 });
