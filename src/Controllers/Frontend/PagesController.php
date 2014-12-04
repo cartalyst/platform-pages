@@ -17,8 +17,8 @@
  * @link       http://cartalyst.com
  */
 
+use Illuminate\Routing\Router;
 use Cartalyst\Sentinel\Sentinel;
-use Illuminate\Support\Facades\Route;
 use Platform\Foundation\Controllers\Controller;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -40,17 +40,29 @@ class PagesController extends Controller {
 	protected $sentinel;
 
 	/**
+	 * The router instance.
+	 *
+	 * @var \Illuminate\Routing\Router
+	 */
+	protected $router;
+
+	/**
 	 * Constructor.
 	 *
+	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface
+	 * @param  \Cartalyst\Sentinel\Sentinel
+	 * @param  \Illuminate\Routing\Router
 	 * @return void
 	 */
-	public function __construct(Sentinel $sentinel, PageRepositoryInterface $pages)
+	public function __construct(PageRepositoryInterface $pages, Sentinel $sentinel, Router $router)
 	{
 		parent::__construct();
 
+		$this->sentinel = $sentinel;
+
 		$this->pages = $pages;
 
-		$this->sentinel = $sentinel;
+		$this->router = $router;
 	}
 
 	/**
@@ -62,7 +74,7 @@ class PagesController extends Controller {
 	public function page()
 	{
 		// Get the current uri
-		$slug = Route::current()->getUri();
+		$slug = $this->router->current()->getUri();
 
 		// Make sure we have a page slug
 		if ($slug === '/')
