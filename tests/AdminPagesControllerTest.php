@@ -20,43 +20,17 @@
 use Mockery as m;
 use Platform\Menus\Models\Menu;
 use Platform\Pages\Models\Page;
-use PHPUnit_Framework_TestCase;
-use Illuminate\Support\Facades;
-use Cartalyst\DataGrid\Laravel\Facades\DataGrid;
+use Cartalyst\Testing\IlluminateTestCase;
 use Platform\Pages\Controllers\Admin\PagesController;
 
-class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
+class AdminPagesControllerTest extends IlluminateTestCase {
 
 	/**
 	 * Controller instance.
 	 *
-	 * @var  \Platform\Pages\Controllers\Admin\PagesController
+	 * @var \Platform\Pages\Controllers\Admin\PagesController
 	 */
 	protected $controller;
-
-	/**
-	 * Menu repository instance.
-	 *
-	 * @var  \Platform\Menus\Repositories\MenuRepositoryInterface
-	 */
-	protected $menus;
-
-	/**
-	 * Role repository instance.
-	 *
-	 * @var  \Platform\Users\Repositories\RoleRepositoryInterface
-	 */
-	protected $roles;
-
-	/**
-	 * Close mockery.
-	 *
-	 * @return void
-	 */
-	public function tearDown()
-	{
-		m::close();
-	}
 
 	/**
 	 * Setup.
@@ -65,21 +39,27 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	 */
 	public function setUp()
 	{
-		Facades\Config::shouldReceive('get')
-			->atLeast()
-			->once();
+		parent::setUp();
 
+		// Admin Controller expectations
+		$this->app['sentinel']->shouldReceive('getUser');
+		$this->app['view']->shouldReceive('share');
+
+		// Pages Repository
 		$this->pages = m::mock('Platform\Pages\Repositories\PageRepositoryInterface');
+
+		// Additional repositories
 		$this->menus = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
 		$this->roles = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
 
-		$this->controller = new PagesController($this->pages, $this->menus, $this->roles);
+		// Pages Controller
+		$this->controller = new PagesController($this->pages);
 	}
 
 	/** @test */
 	public function index_route()
 	{
-		Facades\View::shouldReceive('make')
+		$this->app['view']->shouldReceive('make')
 			->once();
 
 		$this->controller->index();
@@ -88,31 +68,12 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function create_route()
 	{
-		Facades\View::shouldReceive('make')
+		$this->app['view']->shouldReceive('make')
 			->once();
 
-		$this->menus->shouldReceive('findWhere')
-			->with('page_id', 0)
+		$this->pages->shouldReceive('getPreparedPage')
 			->once()
-			->andReturn(new Menu);
-
-		$this->menus->shouldReceive('findAllRoot')
-			->once();
-
-		$this->roles->shouldReceive('findAll')
-			->once();
-
-		$this->pages->shouldReceive('createModel')
-			->once()
-			->andReturn($model = new Page);
-
-		$this->pages->shouldReceive('templates')
-			->once()
-			->andReturn([]);
-
-		$this->pages->shouldReceive('files')
-			->once()
-			->andReturn([]);
+			->andReturn(['pages' => 'foo']);
 
 		$this->controller->create();
 	}
@@ -120,32 +81,12 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function edit_route()
 	{
-		Facades\View::shouldReceive('make')
+		$this->app['view']->shouldReceive('make')
 			->once();
 
-		$this->menus->shouldReceive('findWhere')
-			->with('page_id', 0)
+		$this->pages->shouldReceive('getPreparedPage')
 			->once()
-			->andReturn(new Menu);
-
-		$this->menus->shouldReceive('findAllRoot')
-			->once();
-
-		$this->roles->shouldReceive('findAll')
-			->once();
-
-		$this->pages->shouldReceive('find')
-			->once()
-			->with(1)
-			->andReturn(new Page);
-
-		$this->pages->shouldReceive('templates')
-			->once()
-			->andReturn([]);
-
-		$this->pages->shouldReceive('files')
-			->once()
-			->andReturn([]);
+			->andReturn(['pages' => 'foo']);
 
 		$this->controller->edit(1);
 	}
@@ -153,22 +94,20 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function edit_non_existing()
 	{
-		Facades\View::shouldReceive('make')
+		$this->pages->shouldReceive('getPreparedPage')
 			->once();
 
-		Facades\Lang::shouldReceive('get')
+		$this->app['alerts']->shouldReceive('error')
 			->once();
 
-		Facades\Redirect::shouldReceive('toAdmin')
+		$this->app['translator']->shouldReceive('trans')
+			->once();
+
+		$this->app['redirect']->shouldReceive('toAdmin')
 			->once()
 			->andReturn($response = m::mock('Illuminate\Response\Response'));
 
-		$response->shouldReceive('withErrors')
-			->once();
-
-		$this->pages->shouldReceive('find')
-			->once()
-			->with(1);
+		$this->pages->shouldReceive('find');
 
 		$this->controller->edit(1);
 	}
@@ -176,7 +115,7 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function datagrid()
 	{
-		DataGrid::shouldReceive('make')
+		$this->app['datagrid']->shouldReceive('make')
 			->once();
 
 		$this->pages->shouldReceive('grid')
@@ -188,45 +127,26 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function store()
 	{
-		$app = m::mock('Illuminate\Container\Container');
-		$app->shouldReceive('offsetGet')
-			->with('request')
-			->twice()
-			->andReturn($request = m::mock('Illuminate\Http\Request'));
+		$this->app['alerts']->shouldReceive('success');
 
-		$request->shouldReceive('input')
+		$this->app['translator']->shouldReceive('trans');
+
+		$this->app['request']->shouldReceive('all')
 			->once()
-			->with('roles', [])
-			->andReturn([]);
+			->andReturn(['slug' => 'foo']);
 
-		$request->shouldReceive('merge')
-			->with(['roles' => []])
+		$this->app['redirect']->shouldReceive('toAdmin')
 			->once();
 
-		$request->shouldReceive('all')
-			->once()
-			->andReturn([]);
-
-		Facades\Input::setFacadeApplication($app);
-
-		Facades\Redirect::shouldReceive('toAdmin')
-			->once()
-			->andReturn($response = m::mock('Illuminate\Response\Response'));
-
-		$response->shouldReceive('withSuccess')
-			->once();
-
-		$this->pages->shouldReceive('validForCreation')
-			->once()
-			->andReturn($message = m::mock('Illuminate\Support\MessageBag'));
+		$message = m::mock('Illuminate\Support\MessageBag');
 
 		$message->shouldReceive('isEmpty')
-			->twice()
+			->once()
 			->andReturn(true);
 
-		$this->pages->shouldReceive('create')
+		$this->pages->shouldReceive('store')
 			->once()
-			->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+			->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
 
 		$model->shouldReceive('getAttribute')
 			->once();
@@ -237,28 +157,26 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function update_route()
 	{
-		Facades\Request::shouldReceive('all')
+		$this->app['alerts']->shouldReceive('success');
+
+		$this->app['translator']->shouldReceive('trans');
+
+		$this->app['request']->shouldReceive('all')
 			->once()
 			->andReturn(['slug' => 'foo']);
 
-		Facades\Redirect::shouldReceive('toAdmin')
-			->once()
-			->andReturn($response = m::mock('Illuminate\Response\Response'));
-
-		$response->shouldReceive('withSuccess')
+		$this->app['redirect']->shouldReceive('toAdmin')
 			->once();
 
-		$this->pages->shouldReceive('validForUpdate')
-			->once()
-			->andReturn($message = m::mock('Illuminate\Support\MessageBag'));
+		$message = m::mock('Illuminate\Support\MessageBag');
 
 		$message->shouldReceive('isEmpty')
-			->twice()
+			->once()
 			->andReturn(true);
 
-		$this->pages->shouldReceive('update')
+		$this->pages->shouldReceive('store')
 			->once()
-			->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+			->andReturn([$message ,$model = m::mock('Platform\Pages\Models\Page')]);
 
 		$model->shouldReceive('getAttribute')
 			->once();
@@ -269,29 +187,31 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function update_invalid_route()
 	{
-		Facades\Input::shouldReceive('all')
+		$this->app['alerts']->shouldReceive('error');
+
+		$this->app['translator']->shouldReceive('trans');
+
+		$this->app['redirect']->shouldReceive('back')
+			->once()
+			->andReturn($this->app['redirect']);
+
+		$this->app['redirect']->shouldReceive('withInput')
+			->once()
+			->andReturn($this->app['redirect']);
+
+		$this->app['request']->shouldReceive('all')
 			->once()
 			->andReturn(['slug' => 'foo']);
 
-		Facades\Redirect::shouldReceive('back')
-			->once()
-			->andReturn($response = m::mock('Illuminate\Response\Response'));
-
-		$response->shouldReceive('withInput')
-			->once()
-			->andReturn($response);
-
-		$response->shouldReceive('withErrors')
-			->once()
-			->andReturn($response);
-
-		$this->pages->shouldReceive('validForUpdate')
-			->once()
-			->andReturn($message = m::mock('Illuminate\Support\MessageBag'));
+		$message = m::mock('Illuminate\Support\MessageBag');
 
 		$message->shouldReceive('isEmpty')
-			->twice()
+			->once()
 			->andReturn(false);
+
+		$this->pages->shouldReceive('store')
+			->once()
+			->andReturn([$message ,$model = m::mock('Platform\Pages\Models\Page')]);
 
 		$this->controller->update(1);
 	}
@@ -299,23 +219,16 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function delete_route()
 	{
-		Facades\Input::shouldReceive('all')
-			->once()
-			->andReturn(['slug' => 'foo']);
+		$this->app['alerts']->shouldReceive('success');
 
-		Facades\Redirect::shouldReceive('toAdmin')
-			->once()
-			->andReturn($response = m::mock('Illuminate\Response\Response'));
+		$this->app['translator']->shouldReceive('trans');
 
-		Facades\Lang::shouldReceive('get')
-			->once();
-
-		$response->shouldReceive('withSuccess')
+		$this->app['redirect']->shouldReceive('toAdmin')
 			->once();
 
 		$this->pages->shouldReceive('delete')
 			->once()
-			->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+			->andReturn(true);
 
 		$this->controller->delete(1);
 	}
@@ -323,18 +236,11 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function delete_not_existing_route()
 	{
-		Facades\Input::shouldReceive('all')
-			->once()
-			->andReturn(['slug' => 'foo']);
+		$this->app['alerts']->shouldReceive('error');
 
-		Facades\Redirect::shouldReceive('toAdmin')
-			->once()
-			->andReturn($response = m::mock('Illuminate\Response\Response'));
+		$this->app['translator']->shouldReceive('trans');
 
-		Facades\Lang::shouldReceive('get')
-			->once();
-
-		$response->shouldReceive('withErrors')
+		$this->app['redirect']->shouldReceive('toAdmin')
 			->once();
 
 		$this->pages->shouldReceive('delete')
@@ -346,38 +252,12 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function copy_route()
 	{
-		Facades\View::shouldReceive('make')
+		$this->app['view']->shouldReceive('make')
 			->once();
 
-		$this->pages->shouldReceive('find')
+		$this->pages->shouldReceive('getPreparedPage')
 			->once()
-			->with(1)
-			->andReturn($model = m::mock('Platform\Pages\Models\Page'));
-
-		$this->pages->shouldReceive('files')
-			->once()
-			->andReturn([]);
-
-		$this->menus->shouldReceive('findWhere')
-			->with('page_id', 0)
-			->once();
-
-		$this->menus->shouldReceive('createModel')
-			->once()
-			->andReturn(new Menu);
-
-		$this->menus->shouldReceive('findAllRoot')
-			->once();
-
-		$this->roles->shouldReceive('findAll')
-			->once();
-
-		$model->shouldReceive('getAttribute')
-			->once();
-
-		$this->pages->shouldReceive('templates')
-			->once()
-			->andReturn([]);
+			->andReturn(['pages' => 'foo']);
 
 		$this->controller->copy(1);
 	}
@@ -385,48 +265,32 @@ class AdminPagesControllerTest extends PHPUnit_Framework_TestCase {
 	/** @test */
 	public function execute_action()
 	{
-		$app = m::mock('Illuminate\Container\Container');
-		$app->shouldReceive('offsetGet')
-			->with('request')
-			->twice()
-			->andReturn($request = m::mock('Illuminate\Http\Request'));
-
-		$request->shouldReceive('input')
+		$this->app['request']->shouldReceive('input')
+			->with('action')
 			->once()
-			->with('action', '')
-			->andReturn('enable');
+			->andReturn('delete');
 
-		$request->shouldReceive('input')
-			->once()
+		$this->app['request']->shouldReceive('input')
 			->with('entries', [])
+			->once()
 			->andReturn([1]);
 
-		Facades\Input::setFacadeApplication($app);
+		$this->pages->shouldReceive('delete')
+			->with(1)
+			->once();
 
-		$this->pages->shouldReceive('enable')
-			->once()
-			->with(1);
-
-		$this->controller->executeAction();
+		$this->assertContains('Success', (string) $this->controller->executeAction());
 	}
 
 	/** @test */
 	public function execute_non_existing_action()
 	{
-		$app = m::mock('Illuminate\Container\Container');
-		$app->shouldReceive('offsetGet')
-			->with('request')
+		$this->app['request']->shouldReceive('input')
+			->with('action')
 			->once()
-			->andReturn($request = m::mock('Illuminate\Http\Request'));
+			->andReturn('foobar');
 
-		$request->shouldReceive('input')
-			->once()
-			->with('action', '')
-			->andReturn('foo');
-
-		Facades\Input::setFacadeApplication($app);
-
-		$this->controller->executeAction();
+		$this->assertContains('Failed', (string) $this->controller->executeAction());
 	}
 
 }
