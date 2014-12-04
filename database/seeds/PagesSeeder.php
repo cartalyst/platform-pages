@@ -26,8 +26,21 @@ class PagesSeeder extends Seeder {
 	 */
 	public function run()
 	{
-		// Create the welcome page, which will be the default
-		// for a Platform installation.
+
+		// Prologue.
+		$page = app('Platform\Pages\Models\Page')->create([
+			'name'             => 'prologue',
+			'slug'             => 'Prologue',
+			'uri'              => '/prologue',
+			'visibility'       => 'always',
+			'meta_title'       => 'Prologue',
+			'meta_description' => 'Welcome to Platform',
+			'type'             => 'filesystem',
+			'file'             => 'prologue',
+			'enabled'          => true,
+		]);
+
+		// Default.
 		$page = app('Platform\Pages\Models\Page')->create([
 			'name'             => 'Welcome',
 			'slug'             => 'welcome',
