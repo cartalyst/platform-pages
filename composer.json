@@ -50,10 +50,9 @@
 		"platform/content": "dev-feature/traits"
 	},
 	"require-dev": {
+		"cartalyst/testing": "0.1.*",
 		"platform/users": "dev-feature/traits",
 		"platform/menus": "dev-feature/traits",
-		"mockery/mockery": "~0.9",
-		"phpunit/phpunit": "~4.0",
 		"patchwork/utf8": "~1.1"
 	},
 	"autoload": {
