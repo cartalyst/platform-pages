@@ -181,15 +181,6 @@ return [
 				Route::get('{id}/delete', 'PagesController@delete');
 			});
 
-			Route::group(['prefix' => 'api/v1/pages', 'namespace' => 'Api\V1'], function()
-			{
-				Route::get('/', ['as' => 'api.v1.pages.all', 'uses' => 'PagesController@index']);
-				Route::post('/', ['as' => 'api.v1.pages.create', 'uses' => 'PagesController@store']);
-				Route::get('{id}', ['as' => 'api.v1.pages.show', 'uses' => 'PagesController@show']);
-				Route::put('{id}', ['as' => 'api.v1.pages.update', 'uses' => 'PagesController@update']);
-				Route::delete('{id}', ['as' => 'api.v1.pages.delete', 'uses' => 'PagesController@destroy']);
-			});
-
 			foreach ($app['platform.pages']->findAllEnabled() as $page)
 			{
 				Route::get($page->uri, 'Frontend\PagesController@page');
