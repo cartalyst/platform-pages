@@ -29,14 +29,14 @@ class PagesSeeder extends Seeder {
 
 		// Prologue.
 		$page = app('Platform\Pages\Models\Page')->create([
-			'name'             => 'prologue',
-			'slug'             => 'Prologue',
-			'uri'              => '/prologue',
+			'name'             => 'About',
+			'slug'             => 'about',
+			'uri'              => '/about',
 			'visibility'       => 'always',
-			'meta_title'       => 'Prologue',
-			'meta_description' => 'Welcome to Platform',
+			'meta_title'       => 'About',
+			'meta_description' => 'About Platform',
 			'type'             => 'filesystem',
-			'file'             => 'prologue',
+			'file'             => 'about',
 			'enabled'          => true,
 		]);
 
