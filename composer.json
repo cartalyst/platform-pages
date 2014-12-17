@@ -51,6 +51,7 @@
 	},
 	"require-dev": {
 		"cartalyst/testing": "0.1.*",
+		"illuminate/database": "4.2.*@stable",
 		"platform/users": "dev-feature/traits",
 		"platform/menus": "dev-feature/traits",
 		"patchwork/utf8": "~1.1"
