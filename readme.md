@@ -4,7 +4,7 @@
 
 A Platform 2 Extension to manage your website pages.
 
-Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](license.txt). Code well, rock on.
+Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
 ## Extension Story
 
