@@ -40,7 +40,7 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function creating()
+	public function creating(array $input)
 	{
 
 	}
@@ -56,7 +56,7 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function updating(Page $page)
+	public function updating(Page $page, array $input)
 	{
 
 	}
@@ -85,15 +85,18 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface {
 	 */
 	protected function flushCache(Page $page)
 	{
+		$cacheKeys = [ $page->id, $page->slug, $page->uri ];
+
 		$this->app['cache']->forget('platform.pages.all');
 		$this->app['cache']->forget('platform.pages.all.enabled');
 
-		$toDelete = [ $page->id, $page->slug, $page->uri ];
+		$this->app['cache']->forget('platform.page.'.$cacheKeys[0]);
+		$this->app['cache']->forget('platform.page.slug.'.$cacheKeys[1]);
+		$this->app['cache']->forget('platform.page.uri.'.$cacheKeys[2]);
 
-		foreach ($toDelete as $value)
+		foreach ($cacheKeys as $key)
 		{
-			$this->app['cache']->forget('platform.page.'.$value);
-			$this->app['cache']->forget('platform.page.enabled.'.$value);
+			$this->app['cache']->forget('platform.page.enabled.'.$key);
 		}
 	}
 

@@ -25,9 +25,10 @@ interface EventHandlerInterface extends BaseEventHandlerInterface {
 	/**
 	 * When a page is being created.
 	 *
+	 * @param  array  $data
 	 * @return mixed
 	 */
-	public function creating();
+	public function creating(array $data);
 
 	/**
 	 * When a page is created.
@@ -41,9 +42,10 @@ interface EventHandlerInterface extends BaseEventHandlerInterface {
 	 * When a page is being updated.
 	 *
 	 * @param  \Platform\Pages\Models\Page  $page
+	 * @param  array  $data
 	 * @return mixed
 	 */
-	public function updating(Page $page);
+	public function updating(Page $page, array $data);
 
 	/**
 	 * When a page is updated.

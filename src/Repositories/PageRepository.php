@@ -18,6 +18,7 @@
  */
 
 use RuntimeException;
+use InvalidArgumentException;
 use Cartalyst\Support\Traits;
 use Cartalyst\Themes\ThemeBag;
 use Platform\Pages\Models\Page;
@@ -55,13 +56,6 @@ class PageRepository implements PageRepositoryInterface {
 	 * @var array
 	 */
 	protected $theme = [];
-
-	/**
-	 * The menu model.
-	 *
-	 * @var string
-	 */
-	protected $menuModel = 'Platform\Menus\Models\Menu';
 
 	/**
 	 * Constructor.
@@ -117,15 +111,38 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function find($id)
 	{
-		if ($id instanceof Content) return $id;
+		if ($id instanceof Page) return $id;
 
-		return $this->container['cache']->rememberForever('platform.page.'.$id, function() use ($id)
+		if (is_numeric($id))
 		{
-			$model = $this->createModel();
+			return $this->container['cache']->rememberForever('platform.page.'.$id, function() use ($id)
+			{
+				return $this->createModel()->find($id);
+			});
+		}
 
-			if (is_numeric($id)) return $model->find($id);
+		return $this->findBySlug($id) ?: $this->findByUri($id);
+	}
 
-			return $model->where('slug', $id)->orWhere('uri', $id)->first();
+	/**
+	 * {@inheritDoc}
+	 */
+	public function findBySlug($slug)
+	{
+		return $this->container['cache']->rememberForever('platform.page.slug.'.$slug, function() use ($slug)
+		{
+			return $this->createModel()->whereSlug($slug)->first();
+		});
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function findByUri($uri)
+	{
+		return $this->container['cache']->rememberForever('platform.page.uri.'.$uri, function() use ($uri)
+		{
+			return $this->createModel()->whereUri($uri)->first();
 		});
 	}
 
@@ -189,7 +206,7 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function validForCreation(array $data)
 	{
-		return $this->validator->validate($data);
+		return $this->validator->on('create')->validate($data);
 	}
 
 	/**
@@ -211,7 +228,7 @@ class PageRepository implements PageRepositoryInterface {
 		$page = $this->createModel();
 
 		// Fire the 'platform.page.creating' event
-		if ($this->fireEvent('platform.page.creating') === false)
+		if ($this->fireEvent('platform.page.creating', [ $input ]) === false)
 		{
 			return false;
 		}
@@ -232,7 +249,7 @@ class PageRepository implements PageRepositoryInterface {
 			$this->setPageMenu($page, $data);
 
 			// Fire the 'platform.page.created' event
-			$this->fireEvent('platform.page.created', $page);
+			$this->fireEvent('platform.page.created', [ $page ]);
 		}
 
 		return [ $messages, $page ];
@@ -247,7 +264,7 @@ class PageRepository implements PageRepositoryInterface {
 		$page = $this->find($id);
 
 		// Fire the 'platform.page.updating' event
-		if ($this->fireEvent('platform.page.updating', [ $page ]) === false)
+		if ($this->fireEvent('platform.page.updating', [ $page, $input ]) === false)
 		{
 			return false;
 		}
@@ -268,7 +285,7 @@ class PageRepository implements PageRepositoryInterface {
 			$this->setPageMenu($page, $data);
 
 			// Fire the 'platform.page.updated' event
-			$this->fireEvent('platform.page.updated', $page);
+			$this->fireEvent('platform.page.updated', [ $page ]);
 		}
 
 		return [ $messages, $page ];
@@ -291,7 +308,7 @@ class PageRepository implements PageRepositoryInterface {
 		if ($page = $this->find($id))
 		{
 			// Fire the 'platform.page.deleted' event
-			$this->fireEvent('platform.page.deleted', $page);
+			$this->fireEvent('platform.page.deleted', [ $page ]);
 
 			// Delete the page
 			$page->delete();
@@ -354,43 +371,31 @@ class PageRepository implements PageRepositoryInterface {
 	 */
 	public function files()
 	{
-		$extensions = array_keys(view()->getExtensions());
-
-		$paths = array_filter(array_map(function($path) {
-
-			// Full path to the pages folder
-			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
-
-			// Check if the path exists
-			$pathConfig = head(config('cartalyst/themes::paths'));
-
-			$searchPath = str_replace($pathConfig, '', $path);
-
-			if (is_dir($fullPath) && strpos($searchPath, 'admin') == false)
-			{
-				return $fullPath;
-			}
-
-		}, $this->getThemePaths()));
+		$paths = $this->getFilePaths();
 
 		if (empty($paths)) return [];
 
-		$finder = with(new Finder)->files()->in($paths);
-
 		$files = [];
+
+		// Get all the file extensions registered with Blade
+		$extensions = array_keys($this->container['view']->getExtensions());
+		$extensions = array_map(function($extension)
+		{
+			return '.'.$extension;
+		}, $extensions);
 
 		// Replace all file extensions with nothing. pathinfo()
 		// won't tackle ".blade.php" so this is our best shot.
 		$replacements = array_pad([], count($extensions), '');
 
-		foreach ($finder as $file)
+		// Loop through the paths
+		foreach ($this->getFinder()->files()->in($paths) as $file)
 		{
 			$file = str_replace(DIRECTORY_SEPARATOR, '/', $file->getRelativePathname());
 
-			// Because we want to save a valid source for the view loader, we
-			// simply want to store the view name as if the view loader was
-			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
+			// Because we want to save a valid source for the view loader, we simply
+			// want to store the view name as if the view loader was loading it.
+			$files[str_replace($extensions, $replacements, $file)] = $file;
 		}
 
 		return $files;
@@ -403,21 +408,11 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		$extensions = array_keys(view()->getExtensions());
 
-		$paths = array_filter(array_map(function($path)
-		{
-			$pathConfig = head(config('cartalyst/themes::paths'));
-
-			$searchPath = str_replace($pathConfig, '', $path);
-
-			if (strpos($searchPath, 'admin') == false)
-			{
-				return $path;
-			}
-		}, $this->getThemePaths()));
+		$paths = $this->getTemplatePaths();
 
 		if (empty($paths)) return [];
 
-		$finder = new Finder;
+		$finder = $this->getFinder();
 		$finder->in($paths);
 		$finder->depth('< 3');
 		$finder->exclude(config('platform/pages::exclude'));
@@ -477,23 +472,57 @@ class PageRepository implements PageRepositoryInterface {
 	/**
 	 * {@inheritDoc}
 	 */
-	public function getMenuModel()
+	public function getFinder()
 	{
-		return $this->menuModel;
+		return new Finder();
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public function setMenuModel($model)
+	public function getTemplatePaths()
 	{
-		$this->menuModel = $model;
+		$themePaths = $this->getThemePaths();
 
-		return $this;
+		return array_filter(array_map(function($path)
+		{
+			$pathConfig = head(config('cartalyst/themes::paths'));
+
+			$searchPath = str_replace($pathConfig, '', $path);
+
+			if (strpos($searchPath, 'admin') == false)
+			{
+				return $path;
+			}
+		}, $themePaths));
 	}
 
 	/**
-	 * Returns the themes paths.
+	 * {@inheritDoc}
+	 */
+	public function getFilePaths()
+	{
+		$themePaths = $this->getThemePaths();
+
+		return array_filter(array_map(function($path)
+		{
+			$pathConfig = head(config('cartalyst/themes::paths'));
+
+			// Full path to the content folder
+			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
+
+			// Check if the path exists
+			$searchPath = str_replace($pathConfig, '', $path);
+
+			if ($this->container['files']->isDirectory($fullPath) && strpos($searchPath, 'admin') == false)
+			{
+				return $fullPath;
+			}
+		}, $themePaths));
+	}
+
+	/**
+	 * Returns the theme paths.
 	 *
 	 * @return array
 	 */
@@ -516,7 +545,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		if ( ! empty($options))
 		{
-			$menuModel = new $this->menuModel;
+			$menuModel = $this->container['platform.menus']->createModel();
 
 			// Get the menu that this page will be stored
 			$pageMenuTree = (int) array_get($options, 'menu', null);
@@ -580,7 +609,7 @@ class PageRepository implements PageRepositoryInterface {
 					// Are we creating the page menu?
 					if ($createMenu)
 					{
-						$pageMenu = new $this->menuModel([
+						$pageMenu = $this->container['platform.menus']->createModel([
 							'slug'    => $page->slug,
 							'name'    => $page->name,
 							'uri'     => $page->uri,

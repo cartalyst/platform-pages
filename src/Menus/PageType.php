@@ -31,9 +31,7 @@ class PageType extends AbstractType implements TypeInterface {
 	protected $pages = null;
 
 	/**
-	 * Get the type identifier.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getIdentifier()
 	{
@@ -41,9 +39,7 @@ class PageType extends AbstractType implements TypeInterface {
 	}
 
 	/**
-	 * Get a human friendly name for the type.
-	 *
-	 * @return string
+	 * {@inheritDoc}
 	 */
 	public function getName()
 	{
@@ -51,11 +47,7 @@ class PageType extends AbstractType implements TypeInterface {
 	}
 
 	/**
-	 * Return the form HTML template for a edit child of this type as well
-	 * as creating new children.
-	 *
-	 * @param  \Platform\Menus\Models\Menu  $child
-	 * @return \View
+	 * {@inheritDoc}
 	 */
 	public function getFormHtml(Menu $child = null)
 	{
@@ -65,9 +57,7 @@ class PageType extends AbstractType implements TypeInterface {
 	}
 
 	/**
-	 * Return the HTML template used when creating a menu child of this type.
-	 *
-	 * @return \View
+	 * {@inheritDoc}
 	 */
 	public function getTemplateHtml()
 	{
@@ -77,10 +67,7 @@ class PageType extends AbstractType implements TypeInterface {
 	}
 
 	/**
-	 * Event that is called after a menu children is saved.
-	 *
-	 * @param  \Platform\Menus\Models\Menu  $child
-	 * @return void
+	 * {@inheritDoc}
 	 */
 	public function afterSave(Menu $child)
 	{
@@ -90,18 +77,21 @@ class PageType extends AbstractType implements TypeInterface {
 		{
 			$page = $this->app['platform.pages']->find($pageId);
 
-			$child->uri = $page->uri;
-
 			$child->page_id = $pageId;
+
+			$child->uri = $page->uri;
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public function beforeDelete(Menu $child){}
 
 	/**
 	 * Return all the available pages.
 	 *
-	 * @return \Platform\Pages\Models\Page
+	 * @return \Illuminate\Support\Collection
 	 */
 	protected function getPages()
 	{

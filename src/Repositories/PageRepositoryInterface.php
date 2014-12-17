@@ -32,24 +32,40 @@ interface PageRepositoryInterface {
 	/**
 	 * Returns all the page entries.
 	 *
-	 * @return \Platform\Pages\Models\Page
+	 * @return \Illuminate\Support\Collection
 	 */
 	public function findAll();
 
 	/**
 	 * Returns all the enabled page entries.
 	 *
-	 * @return \Platform\Pages\Models\Page
+	 * @return \Illuminate\Support\Collection
 	 */
 	public function findAllEnabled();
 
 	/**
-	 * Returns a page by its primary key.
+	 * Returns a page by its primary key, slug or uri.
 	 *
-	 * @param  int  $id
+	 * @param  mixed  $id
 	 * @return \Platform\Pages\Models\Page
 	 */
 	public function find($id);
+
+	/**
+	 * Returns a page by its slug.
+	 *
+	 * @param  string  $slug
+	 * @return \Platform\Pages\Models\Page
+	 */
+	public function findBySlug($slug);
+
+	/**
+	 * Returns a page by its uri.
+	 *
+	 * @param  string  $uri
+	 * @return \Platform\Pages\Models\Page
+	 */
+	public function findByUri($uri);
 
 	/**
 	 * Returns a page by its primary key that is enabled.
@@ -173,18 +189,24 @@ interface PageRepositoryInterface {
 	public function getTheme();
 
 	/**
-	 * Returns the menu model.
+	 * Returns the finder instance.
 	 *
-	 * @return string
+	 * @return \Symfony\Component\Finder\Finder
 	 */
-	public function getMenuModel();
+	public function getFinder();
 
 	/**
-	 * Set the menu model.
+	 * Returns the files paths.
 	 *
-	 * @param  string  $model
-	 * @return void
+	 * @return array
 	 */
-	public function setMenuModel($model);
+	public function getFilePaths();
+
+	/**
+	 * Returns the template paths.
+	 *
+	 * @return array
+	 */
+	public function getTemplatePaths();
 
 }
