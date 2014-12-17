@@ -378,7 +378,7 @@ class PageRepository implements PageRepositoryInterface {
 		$files = [];
 
 		// Get all the file extensions registered with Blade
-		$extensions = array_keys($this->container['view']->getExtensions());
+		$extensions = array_keys(view()->getExtensions());
 		$extensions = array_map(function($extension)
 		{
 			return '.'.$extension;
@@ -424,6 +424,11 @@ class PageRepository implements PageRepositoryInterface {
 			}, $extensions))
 		));
 
+		$extensions = array_map(function($extension)
+		{
+			return '.'.$extension;
+		}, $extensions);
+
 		$files = [];
 
 		// Replace all file extensions with nothing. pathinfo()
@@ -437,7 +442,7 @@ class PageRepository implements PageRepositoryInterface {
 			// Because we want to save a valid source for the view loader, we
 			// simply want to store the view name as if the view loader was
 			// loading it.
-			$files[rtrim(str_replace($extensions, $replacements, $file), '.')] = $file;
+			$files[str_replace($extensions, $replacements, $file)] = $file;
 		}
 
 		return $files;
