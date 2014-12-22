@@ -173,10 +173,10 @@ class FrontendPagesControllerTest extends IlluminateTestCase {
 			->once()
 			->andReturn([$role]);
 
-		$model->shouldReceive('hasGetMutator')
+		$model->shouldReceive('getMutatorMethod')
 			->with('roles')
-			->twice()
-			->andReturn(true);
+			->once()
+			->andReturn('getRolesAttribute');
 
 		$model->shouldReceive('getRolesAttribute')
 			->once()
@@ -310,10 +310,10 @@ class FrontendPagesControllerTest extends IlluminateTestCase {
 			->once()
 			->andReturn([]);
 
-		$model->shouldReceive('hasGetMutator')
+		$model->shouldReceive('getMutatorMethod')
 			->with('roles')
-			->twice()
-			->andReturn(true);
+			->once()
+			->andReturn('getRolesAttribute');
 
 		$model->shouldReceive('getRolesAttribute')
 			->once()
