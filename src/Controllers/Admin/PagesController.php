@@ -84,7 +84,14 @@ class PagesController extends AdminController {
 			'direction' => 'desc',
 		];
 
-		return datagrid($this->pages->grid(), $columns, $settings);
+		$transformer = function($element)
+		{
+			$element->edit = route('admin.pages.edit', $element->id);
+
+			return $element;
+		};
+
+		return datagrid($this->pages->grid(), $columns, $settings, $transformer);
 	}
 
 	/**
