@@ -178,9 +178,9 @@ class PagesController extends AdminController {
 
 		if (in_array($action, $this->actions))
 		{
-			foreach (request()->input('entries', []) as $entry)
+			foreach (request()->input('rows', []) as $row)
 			{
-				$this->pages->{$action}($entry);
+				$this->pages->{$action}($row);
 			}
 
 			return response('Success');
