@@ -41,7 +41,7 @@
 							<span class="icon-bar"></span>
 							<span class="icon-bar"></span>
 						</button>
-						<a class="navbar-brand" href="#">{{{ trans('platform/pages::general.title') }}}</a>
+						<a class="navbar-brand" href="#">{{{ trans('platform/pages::common.title') }}}</a>
 					</div>
 
 					{{-- Grid: Actions --}}
