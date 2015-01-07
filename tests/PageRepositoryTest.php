@@ -720,7 +720,7 @@ class PageRepositoryTest extends IlluminateTestCase {
 
 		$model = $this->shouldReceiveFind();
 
-		$this->app['platform.pages.validator']->shouldReceive('byPass')
+		$this->app['platform.pages.validator']->shouldReceive('bypass')
 			->once();
 
 		$this->app['events']->shouldReceive('fire')
@@ -788,7 +788,7 @@ class PageRepositoryTest extends IlluminateTestCase {
 
 		$model = $this->shouldReceiveFind();
 
-		$this->app['platform.pages.validator']->shouldReceive('byPass')
+		$this->app['platform.pages.validator']->shouldReceive('bypass')
 			->once();
 
 		$this->app['events']->shouldReceive('fire')
