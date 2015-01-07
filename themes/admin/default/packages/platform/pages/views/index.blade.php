@@ -2,8 +2,8 @@
 
 {{-- Page title --}}
 @section('title')
-	@parent
-	: {{{ trans('platform/pages::common.title') }}}
+@parent
+: {{{ trans('platform/pages::common.title') }}}
 @stop
 
 {{-- Queue assets --}}
@@ -23,74 +23,74 @@
 {{-- Page content --}}
 @section('page')
 
-	{{-- Grid --}}
-	<section class="panel panel-default panel-grid">
+{{-- Grid --}}
+<section class="panel panel-default panel-grid">
 
-		{{-- Grid: Header --}}
-		<header class="panel-heading">
+	{{-- Grid: Header --}}
+	<header class="panel-heading">
 
-			<nav class="navbar navbar-default navbar-actions">
+		<nav class="navbar navbar-default navbar-actions">
 
-				<div class="container-fluid">
+			<div class="container-fluid">
 
-					<!-- Brand and toggle get grouped for better mobile display -->
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-							<span class="sr-only">Toggle navigation</span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-							<span class="icon-bar"></span>
-						</button>
-						<a class="navbar-brand" href="#">{{{ trans('platform/pages::common.title') }}}</a>
-					</div>
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="#">{{{ trans('platform/pages::common.title') }}}</a>
+				</div>
 
-					{{-- Grid: Actions --}}
-					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				{{-- Grid: Actions --}}
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
-						<ul class="nav navbar-nav navbar-left">
+					<ul class="nav navbar-nav navbar-left">
 
-							<li class="disabled">
-								<a class="disabled" data-grid-bulk-action="disable" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.disable') }}}">
-									<i class="fa fa-eye-slash"></i> <span class="visible-xs-inline">{{{ trans('action.bulk.disable') }}}</span>
-								</a>
-							</li>
+						<li class="disabled">
+							<a class="disabled" data-grid-bulk-action="disable" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.disable') }}}">
+								<i class="fa fa-eye-slash"></i> <span class="visible-xs-inline">{{{ trans('action.bulk.disable') }}}</span>
+							</a>
+						</li>
 
-							<li class="disabled">
-								<a data-grid-bulk-action="enable" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.enable') }}}">
-									<i class="fa fa-eye"></i>  <span class="visible-xs-inline">{{{ trans('action.bulk.enable') }}}</span>
-								</a>
+						<li class="disabled">
+							<a data-grid-bulk-action="enable" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.enable') }}}">
+								<i class="fa fa-eye"></i>  <span class="visible-xs-inline">{{{ trans('action.bulk.enable') }}}</span>
+							</a>
 
-							</li>
+						</li>
 
-							<li class="danger disabled">
-								<a data-grid-bulk-action="delete" data-toggle="tooltip" data-target="modal-confirm" data-original-title="{{{ trans('action.bulk.delete') }}}">
-									<i class="fa fa-trash-o"></i>  <span class="visible-xs-inline">{{{ trans('action.bulk.delete') }}}</span>
-								</a>
-							</li>
+						<li class="danger disabled">
+							<a data-grid-bulk-action="delete" data-toggle="tooltip" data-target="modal-confirm" data-original-title="{{{ trans('action.bulk.delete') }}}">
+								<i class="fa fa-trash-o"></i>  <span class="visible-xs-inline">{{{ trans('action.bulk.delete') }}}</span>
+							</a>
+						</li>
 
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle tip" data-toggle="dropdown" role="button" aria-expanded="false" data-original-title="{{{ trans('action.export') }}}">
-									<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('action.export') }}}</span>
-								</a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a data-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
-									<li><a data-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-									<li><a data-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-								</ul>
-							</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle tip" data-toggle="dropdown" role="button" aria-expanded="false" data-original-title="{{{ trans('action.export') }}}">
+								<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('action.export') }}}</span>
+							</a>
+							<ul class="dropdown-menu" role="menu">
+								<li><a data-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
+								<li><a data-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+								<li><a data-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+							</ul>
+						</li>
 
-							<li class="primary">
-								<a href="{{ route('admin.pages.create') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.create') }}}">
-									<i class="fa fa-plus"></i>  <span class="visible-xs-inline">{{{ trans('action.create') }}}</span>
-								</a>
-							</li>
+						<li class="primary">
+							<a href="{{ route('admin.pages.create') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.create') }}}">
+								<i class="fa fa-plus"></i>  <span class="visible-xs-inline">{{{ trans('action.create') }}}</span>
+							</a>
+						</li>
 
-						</ul>
+					</ul>
 
-						{{-- Grid : Filters --}}
-						<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
+					{{-- Grid: Filters --}}
+					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
 
-							<div class="input-group">
+						<div class="input-group">
 
 							<span class="input-group-btn">
 
@@ -145,7 +145,7 @@
 
 							</span>
 
-								<input class="form-control " name="filter" type="text" placeholder="{{{ trans('common.search') }}}">
+							<input class="form-control " name="filter" type="text" placeholder="{{{ trans('common.search') }}}">
 
 							<span class="input-group-btn">
 
@@ -159,34 +159,34 @@
 
 							</span>
 
-							</div>
+						</div>
 
-						</form>
-
-					</div>
+					</form>
 
 				</div>
 
-			</nav>
-
-		</header>
-
-		<main class="panel-body">
-
-			{{-- Grid : Applied Filters --}}
-			<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
-
-				<div id="data-grid_applied" class="btn-group" data-grid="main"></div>
-
 			</div>
 
-		</main>
+		</nav>
 
-		{{-- Grid : Table --}}
-		<div class="table-responsive">
+	</header>
 
-			<table id="data-grid" class="table table-hover" data-source="{{ route('admin.pages.grid') }}" data-grid="main">
-				<thead>
+	<main class="panel-body">
+
+	{{-- Grid: Applied Filters --}}
+		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
+
+			<div id="data-grid_applied" class="btn-group" data-grid="main"></div>
+
+		</div>
+
+	</main>
+
+	{{-- Grid: Table --}}
+	<div class="table-responsive">
+
+		<table id="data-grid" class="table table-hover" data-source="{{ route('admin.pages.grid') }}" data-grid="main">
+			<thead>
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
 					<th class="sortable" data-sort="name">{{{ trans('model.name') }}}</th>
@@ -194,25 +194,29 @@
 					<th class="sortable" data-sort="enabled">{{{ trans('model.status') }}}</th>
 					<th class="sortable hidden-xs" data-sort="created_at">{{{ trans('model.created_at') }}}</th>
 				</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
+			</thead>
+			<tbody></tbody>
+		</table>
 
-		</div>
+	</div>
 
-		<footer class="panel-footer clearfix">
+	<footer class="panel-footer clearfix">
 
-			{{-- Grid : Pagination --}}
-			<div id="data-grid_pagination" data-grid="main"></div>
+	{{-- Grid: Pagination --}}
+		<div id="data-grid_pagination" data-grid="main"></div>
 
-		</footer>
+	</footer>
 
-		{{-- Grid : templates --}}
-		@include('platform/pages::grid/index/results')
-		@include('platform/pages::grid/index/pagination')
-		@include('platform/pages::grid/index/filters')
-		@include('platform/pages::grid/index/no_results')
+	{{-- Grid: templates --}}
+	@include('platform/pages::grid/index/results')
+	@include('platform/pages::grid/index/pagination')
+	@include('platform/pages::grid/index/filters')
+	@include('platform/pages::grid/index/no_results')
 
-	</section>
+</section>
+
+@if (config('platform.app.help'))
+@include('platform/pages::help')
+@endif
 
 @stop
