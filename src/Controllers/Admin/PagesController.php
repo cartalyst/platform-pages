@@ -229,7 +229,7 @@ class PagesController extends AdminController {
 		{
 			$this->alerts->success(trans("platform/pages::message.success.{$mode}"));
 
-			return redirect()->toAdmin("pages/{$page->id}");
+			return redirect()->route('admin.pages.all');
 		}
 
 		$this->alerts->error($messages, 'form');
