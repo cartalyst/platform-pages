@@ -16,7 +16,7 @@
  * @link       http://cartalyst.com
  */
 
- var Extension;
+var Extension;
 
  ;(function(window, document, $, undefined)
  {
@@ -97,8 +97,8 @@
 		}
 
 		$('[data-grid-checkbox="all"]')
-		.prop('disabled', rows < 1)
-		.prop('checked', rows < 1 ? false : rows === checked)
+			.prop('disabled', rows < 1)
+			.prop('checked', rows < 1 ? false : rows === checked)
 		;
 	};
 
@@ -143,17 +143,17 @@
 		switch ($(this).data('grid-calendar-preset'))
 		{
 			case 'day':
-			start = end = moment().subtract(1, 'day').startOf('day').format('MM/DD/YYYY');
+				start = end = moment().subtract(1, 'day').startOf('day').format('MM/DD/YYYY');
 			break;
 
 			case 'week':
-			start = moment().startOf('week').format('MM/DD/YYYY');
-			end   = moment().endOf('week').format('MM/DD/YYYY');
+				start = moment().startOf('week').format('MM/DD/YYYY');
+				end   = moment().endOf('week').format('MM/DD/YYYY');
 			break;
 
 			case 'month':
-			start = moment().startOf('month').format('MM/DD/YYYY');
-			end   = moment().endOf('month').format('MM/DD/YYYY');
+				start = moment().startOf('month').format('MM/DD/YYYY');
+				end   = moment().endOf('month').format('MM/DD/YYYY');
 			break;
 
 			default:
@@ -179,7 +179,7 @@
 
 		var filters = _.compact(
 			String(window.location.hash.slice(3)).split('/').splice(2)
-			);
+		);
 
 		config = {
 			opens: 'left'
@@ -216,7 +216,7 @@
 
 			$('[data-grid-calendar]').val(
 				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
-				);
+			);
 		});
 
 		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
@@ -229,15 +229,15 @@
 		$('.daterangepicker_end_input').attr('data-grid', 'main');
 
 		$('input[name="daterangepicker_start"]')
-		.attr('data-format', 'MM/DD/YYYY')
-		.attr('data-range-start', '')
-		.attr('data-range-filter', 'created_at')
+			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-range-start', '')
+			.attr('data-range-filter', 'created_at')
 		;
 
 		$('input[name="daterangepicker_end"]')
-		.attr('data-format', 'MM/DD/YYYY')
-		.attr('data-range-end', '')
-		.attr('data-range-filter', 'created_at')
+			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-range-end', '')
+			.attr('data-range-filter', 'created_at')
 		;
 	};
 
