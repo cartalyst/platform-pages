@@ -177,13 +177,12 @@ return [
 				Route::get('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@create']);
 				Route::post('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@store']);
 
-				Route::get('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@edit']);
-				Route::post('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@update']);
+				Route::get('{id}'   , ['as' => 'admin.pages.edit'  , 'uses' => 'PagesController@edit']);
+				Route::post('{id}'  , ['as' => 'admin.pages.edit'  , 'uses' => 'PagesController@update']);
+				Route::delete('{id}', ['as' => 'admin.pages.delete', 'uses' => 'PagesController@delete']);
 
 				Route::get('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@copy']);
 				Route::post('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@store']);
-
-				Route::delete('{id}', ['as' => 'admin.pages.delete', 'uses' => 'PagesController@delete']);
 			});
 
 			foreach ($app['platform.pages']->findAllEnabled() as $page)
