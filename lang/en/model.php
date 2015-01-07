@@ -59,4 +59,8 @@ return [
     'file'      => 'File',
     'file_help' => 'Choose the file to use when rendering this page.',
 
+    // Content storage types
+    'database'   => 'Database',
+    'filesystem' => 'Filesystem',
+
 ];
