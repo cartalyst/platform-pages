@@ -88,23 +88,6 @@ var Extension;
 		$((value == 'filesystem' ? '#value' : '#file')).removeAttr('required');
 	};
 
-	Extension.Form.Previewer = function()
-	{
-		var element = $('[data-content-previewer]');
-
-		var url = element.data('content-previewer');
-
-		var file = $('#file').val();
-
-		$.ajax({
-			url  : url,
-			data : { file : file }
-		}).done(function(data)
-		{
-			element.html(data);
-		});
-	};
-
 	// Initialize Bootstrap Popovers
 	Extension.Form.selectize = function ()
 	{
