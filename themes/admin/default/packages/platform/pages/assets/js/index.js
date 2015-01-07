@@ -1,15 +1,15 @@
 /**
- * Part of the Platform application.
+ * Part of the Platform Pages application.
  *
  * NOTICE OF LICENSE
  *
  * Licensed under the Cartalyst PSL License.
  *
  * This source file is subject to the Cartalyst PSL License that is
- * bundled with this package in the license.txt file.
+ * bundled with this package in the LICENSE file.
  *
- * @package    Platform
- * @version    2.0.0
+ * @package    Platform Pages Extension
+ * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2014, Cartalyst LLC
