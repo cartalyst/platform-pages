@@ -2,18 +2,19 @@
 
 {{-- Page title --}}
 @section('title')
-	@parent
-	: {{{ trans("platform/pages::general.{$mode}") }}} {{{ $page->exists ? '- ' . $page->name : null }}}
+@parent
+: {{{ trans("action.{$mode}") }}} {{{ $page->exists ? '- ' . $page->name : null }}}
 @stop
 
 {{-- Queue assets --}}
-{{ Asset::queue('redactor', 'imperavi/css/redactor.css', 'styles') }}
+{{ Asset::queue('selectize', 'selectize/css/selectize.bootstrap3.css', 'styles') }}
+{{ Asset::queue('redactor', 'redactor/css/redactor.css', 'styles') }}
 
 {{ Asset::queue('slugify', 'platform/js/slugify.js', 'jquery') }}
 {{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
-{{ Asset::queue('bootstrap.tabs', 'bootstrap/js/tab.js', 'jquery') }}
-{{ Asset::queue('redactor', 'imperavi/js/redactor.min.js', 'jquery') }}
-{{ Asset::queue('pages', 'platform/pages::js/scripts.js', 'jquery') }}
+{{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
+{{ Asset::queue('redactor', 'redactor/js/redactor.min.js', 'jquery') }}
+{{ Asset::queue('form', 'platform/content::js/form.js', 'platform') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
@@ -26,7 +27,7 @@
 @stop
 
 {{-- Page content --}}
-@section('content')
+@section('page')
 
 {{-- Page header --}}
 <div class="page-header">
