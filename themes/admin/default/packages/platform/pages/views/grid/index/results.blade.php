@@ -4,7 +4,7 @@
 
 		<tr data-grid-row>
 			<td><input data-grid-checkbox type="checkbox" name="row[]" value="<%= r.id %>"></td>
-			<td><a href="<%= r.edit %>"><%= r.name %></a></td>
+			<td><a href="<%= r.edit_uri %>"><%= r.name %></a></td>
 			<td class="hidden-xs"><%= r.slug %></td>
 			<td>
 				<% if (r.enabled == 1) { %>

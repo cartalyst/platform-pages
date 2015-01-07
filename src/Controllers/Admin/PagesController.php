@@ -86,7 +86,7 @@ class PagesController extends AdminController {
 
 		$transformer = function($element)
 		{
-			$element->edit = route('admin.pages.edit', $element->id);
+			$element->edit_uri = route('admin.pages.edit', $element->id);
 
 			return $element;
 		};
