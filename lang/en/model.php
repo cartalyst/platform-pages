@@ -1,6 +1,62 @@
 <?php
-/**
- * Created by aubrey.
- * Date: 1/5/15
- * Time: 8:08 PM
- */
+return [
+    'id'         => 'Id',
+    'name'      => 'Name',
+    'name_help' => 'Type a descriptive name for your page.',
+
+    'slug'      => 'Short name',
+    'slug_help' => 'Single word, no spaces, no special words. Dashes are allowed.',
+
+    'uri'      => 'Uri',
+    'uri_help' => 'Your page uri.',
+
+    'https'      => 'Https',
+    'https_help' => 'Should this page be presented over HTTPS?',
+
+    'enabled'      => 'Status',
+    'enabled_help' => 'What is the status of this page?',
+
+    'type'      => 'Storage Type',
+    'type_help' => 'How do you want to store and edit this page?',
+
+    'visibility' => [
+        'legend' => 'Visibility',
+
+        'always'     => 'Show Always',
+        'logged_in'  => 'Logged In',
+        'logged_out' => 'Logged Out',
+        'admin'      => 'Admin Only',
+    ],
+    'visibility_help' => 'When should this page be seen?',
+
+    'roles'      => 'Roles',
+    'roles_help' => 'What user roles should be able to see this page?',
+
+    'navigation' => [
+        'legend' => 'Navigation',
+
+        'menu'        => 'Menu',
+        'select_menu' => '-- Select a Menu --',
+        'top_level'   => '-- Top Level --',
+    ],
+    'navigation_help' => 'Add this page to your navigation.',
+
+    'template'      => 'Template',
+    'template_help' => 'Page template to use.',
+
+    'meta_title'      => 'Meta Title',
+    'meta_title_help' => 'Meta Title tag.',
+
+    'meta_description'      => 'Meta Description',
+    'meta_description_help' => 'Meta Description tag.',
+
+    'section'      => 'Section',
+    'section_help' => 'Which @section() to inject value to?',
+
+    'value'      => 'Value',
+    'value_help' => "The page's value. @content call is allowed.",
+
+    'file'      => 'File',
+    'file_help' => 'Choose the file to use when rendering this page.',
+
+];

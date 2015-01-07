@@ -14,7 +14,7 @@
 {{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('redactor', 'redactor/js/redactor.min.js', 'jquery') }}
-{{ Asset::queue('form', 'platform/content::js/form.js', 'platform') }}
+{{ Asset::queue('form', 'platform/pages::js/form.js', 'platform') }}
 
 {{-- Inline scripts --}}
 @section('scripts')
@@ -28,46 +28,112 @@
 
 {{-- Page content --}}
 @section('page')
+<section class="panel panel-default panel-tabs">
 
-{{-- Page header --}}
-<div class="page-header">
+	{{-- Form --}}
+	<form id="content-form" action="{{ request()->fullUrl() }}" role="form" method="post" accept-char="UTF-8" autocomplete="off" data-parsley-validate>
 
-	<h1>{{{ trans("platform/pages::general.{$mode}") }}} <small>{{{ $page->name }}}</small></h1>
+		{{-- Form: CSRF Token --}}
+		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
-</div>
+		<header class="panel-heading">
 
-{{-- Pages form --}}
-<form id="pages-form" action="{{ request()->fullUrl() }}" method="post" accept-char="UTF-8" autocomplete="off">
+			<nav class="navbar navbar-default navbar-actions">
 
-	{{-- CSRF Token --}}
-	<input type="hidden" name="_token" value="{{ csrf_token() }}">
+				<div class="container-fluid">
 
-	{{-- Tabs --}}
-	<ul class="nav nav-tabs">
-		<li class="active"><a href="#general" data-toggle="tab">{{{ trans('platform/pages::general.tabs.general') }}}</a></li>
-		<li><a href="#attributes" data-toggle="tab">{{{ trans('platform/pages::general.tabs.attributes') }}}</a></li>
-	</ul>
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#actions">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
 
-	{{-- Tabs content --}}
-	<div class="tab-content tab-bordered">
+						<ul class="nav navbar-nav navbar-cancel">
+							<li>
+								<a class="tip" href="{{ route('admin.pages.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
+									<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
+								</a>
+							</li>
+						</ul>
 
-		{{-- General tab --}}
-		<div class="tab-pane active" id="general">
-
-			<div class="row">
-
-				<div class="col-md-8">
-
-					{{-- Name --}}
-					<div class="form-group{{ Alert::form('name', ' has-error') }}">
-						<label for="name" class="control-label">{{{ trans('platform/pages::form.name') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.name_help') }}}"></i></label>
-
-						<input type="text" class="form-control" name="name" id="name" placeholder="{{{ trans('platform/pages::form.name') }}}" value="{{{ Input::old('name', $page->name) }}}" required>
-
-						<span class="help-block">{{{ Alert::form('name') }}}</span>
+						<span class="navbar-brand">{{{ trans("action.{$mode}") }}} <small>{{{ $page->exists ? $page->name : null }}}</small></span>
 					</div>
 
-					<div class="row">
+					{{-- Form: Actions --}}
+					<div class="collapse navbar-collapse" id="actions">
+
+						<ul class="nav navbar-nav navbar-right">
+
+							@if ($page->exists and $mode != 'copy')
+								<li>
+									<a href="{{ route('admin.pages.delete', $page->id) }}" class="tip" data-action-delete data-toggle="tooltip" data-original-title="{{{ trans('action.delete') }}}" type="delete">
+										<i class="fa fa-trash-o"></i>  <span class="visible-xs-inline">{{{ trans('action.delete') }}}</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="{{ route('admin.pages.copy', $page->id) }}" data-toggle="tooltip" data-original-title="{{{ trans('action.copy') }}}">
+										<i class="fa fa-copy"></i>  <span class="visible-xs-inline">{{{ trans('action.copy') }}}</span>
+									</a>
+								</li>
+							@endif
+
+							<li>
+								<button class="btn btn-primary navbar-btn" data-toggle="tooltip" data-original-title="{{{ trans('action.save') }}}">
+									<i class="fa fa-save"></i>  <span class="visible-xs-inline">{{{ trans('action.save') }}}</span>
+								</button>
+							</li>
+
+						</ul>
+
+					</div>
+
+				</div>
+
+			</nav>
+
+		</header>
+
+		<main class="panel-body">
+
+			<div role="tabpanel">
+
+				{{-- Form: Tabs --}}
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
+					<li role="presentation"><a href="#attributes" aria-controls="attributes" role="tab" data-toggle="tab">{{{ trans('common.tabs.attributes') }}}</a></li>
+				</ul>
+
+				<div class="tab-content">
+
+					{{-- Form: General --}}
+					<div role="tabpanel" class="tab-pane fade in active" id="general">
+
+						<fieldset>
+
+							<div class="row">
+
+								<div class="col-md-3">
+
+									{{-- Name --}}
+									<div class="form-group{{ Alert::form('name', ' has-error') }}">
+
+										<label for="name" class="control-label">
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.name_help') }}}"></i>
+											{{{ trans('platform/pages::model.name') }}}
+										</label>
+
+										<input type="text" class="form-control" name="name" id="name" placeholder="{{{ trans('platform/pages::model.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
+
+										<span class="help-block"></span>
+
+									</div>
+
+								</div>
+
+								<div class="col-md-3">
 
 						{{-- Slug --}}
 						<div class="col-md-4">
@@ -137,8 +203,8 @@
 								<label for="type" class="control-label">{{{ trans('platform/pages::form.type') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::form.type_help') }}}"></i></label>
 
 								<select class="form-control" name="type" id="type" required>
-									<option value="database"{{ Input::old('type', $page->type) == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/content::form.database') }}}</option>
-									<option value="filesystem"{{ Input::old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/content::form.filesystem') }}}</option>
+									<option value="database"{{ Input::old('type', $page->type) == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::form.database') }}}</option>
+									<option value="filesystem"{{ Input::old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::form.filesystem') }}}</option>
 								</select>
 
 								<span class="help-block">{{{ Alert::form('type') }}}</span>
@@ -340,5 +406,6 @@
 	</div>
 
 </form>
-
+	
+</section>
 @stop
