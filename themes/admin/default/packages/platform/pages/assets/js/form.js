@@ -41,6 +41,8 @@ var Extension;
 			.on('keyup', '#name', Extension.Form.Slug)
 			.on('change', '#type', Extension.Form.Storage)
 			.on('change', '#file', Extension.Form.Previewer)
+			.on('change', '#visibility', Extension.Form.Visibility)
+			.on('change', '#menu', Extension.Form.Navigation)
 		;
 
 		Extension.Form.Previewer();
@@ -52,6 +54,24 @@ var Extension;
 		$('#slug').val(
 			$(this).val().slugify()
 		);
+	};
+
+	// Visibility
+	Extension.Form.Visibility = function()
+	{
+		var status = $(this).val() !== 'logged_in';
+
+		$('#roles').prop('disabled', status);
+	};
+
+	// Navigation
+	Extension.Form.Navigation = function()
+	{
+		var menuId = $(this).val();
+
+		$('[data-menu-parent]').addClass('hide');
+
+		$('[data-menu-parent="' + menuId + '"]').removeClass('hide');
 	};
 
 	// Storage Type

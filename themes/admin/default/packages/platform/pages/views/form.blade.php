@@ -103,11 +103,8 @@
 				{{-- Form: Tabs --}}
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
-
-					<li role="presentation"><a href="#visibility" aria-controls="visibility" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.visibility.legend') }}}</a></li>
+					<li role="presentation"><a href="#visiblity" aria-controls="visiblity" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.visibility.legend') }}}</a></li>
 					<li role="presentation"><a href="#navigation" aria-controls="navigation" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.navigation.legend') }}}</a></li>
-
-
 					<li role="presentation"><a href="#attributes" aria-controls="attributes" role="tab" data-toggle="tab">{{{ trans('common.tabs.attributes') }}}</a></li>
 				</ul>
 
@@ -332,7 +329,7 @@
 					</div>
 
 					{{-- Form: Visibility --}}
-					<div role="tabpanel" class="tab-pane fade" id="visibility">
+					<div role="tabpanel" class="tab-pane fade" id="visiblity">
 
 						<fieldset>
 

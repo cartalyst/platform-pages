@@ -1,70 +1,37 @@
-# Pages
+# Platform Pages
 
-[![Build Status](http://ci.cartalyst.com/build-status/svg/25)](http://ci.cartalyst.com/build-status/view/25)
+The page extension can maintain and publish pages to be used through out your application.
 
-A Platform 2 Extension to manage your website pages.
+An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
 
-Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
+##Documentation
 
-## Extension Story
+Reader-friendly Documentation can be found here. [Platform Pages Manual](https://cartalyst.com/manual/platform-pages).
 
-Extension history and capabilities.
+Raw files can be found via this projects docs/version branch.
 
-#### xx-Jan-14 - v1.0.0
+- [v1.0](https://github.com/cartalyst/platform-pages/tree/docs/1.0)
 
-- User can create a new page.
-	- User can set the page name.
-	- User can set the page url.
-	- User can set the page visibility.
-	- User can set the page storage type (filesystem or database).
-	- User can set the page file, only if the storage type is filesystem.
-	- User can set the page template file, only if the storage type is database.
-	- User can set the page value, only if the storage type is database.
-	- User can set the page status.
-	- User can set page attributes.
-- User can update a page.
-- User can copy/clone a page.
-- User can delete a page.
+##Changelog
 
-## Installation
+Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
-Platform Pages is installable with Composer. Read further information on how to install.
+##Support
 
-[Installation Guide](https://cartalyst.com/manual/platform-pages/1.0#installation)
+The following support channels can be used for contact.
 
-## Documentation
+- [Twitter](https://cartalyst.com/@twitter)
+- [Email](mailto:help@cartalyst.com)
 
-Refer to the following guide on how to use the Platform Pages extension.
+Bug reports, proposals, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md)
 
-[Documentation](https://cartalyst.com/manual/platform-pages/1.0)
+##Contribution & Protocols
 
-## Versioning
+- [Contribution Guide](CONTRIBUTING.md)
 
-We version under the [Semantic Versioning](http://semver.org/) guidelines as much as possible.
 
-Releases will be numbered with the following format:
+##License
 
-`<major>.<minor>.<patch>`
+This software is released under the [BSD-3-Clause](LICENSE) License.
 
-And constructed with the following guidelines:
-
-* Breaking backward compatibility bumps the major (and resets the minor and patch)
-* New additions without breaking backward compatibility bumps the minor (and resets the patch)
-* Bug fixes and misc changes bumps the patch
-
-## Contributing
-
-Please read the [Contributing](contributing.md) guidelines.
-
-## Support
-
-Have a bug? Please create an [issue](https://github.com/cartalyst/platform-pages/issues) here on GitHub that conforms with [necolas's guidelines](https://github.com/necolas/issue-guidelines).
-
-Follow us on Twitter, [@cartalyst](http://twitter.com/cartalyst).
-
-Join us for a chat on IRC.
-
-Server: irc.freenode.net
-Channel: #cartalyst
-
-Email: help@cartalyst.com
+© 2012-2015 Cartalyst LLC, All rights reserved.
