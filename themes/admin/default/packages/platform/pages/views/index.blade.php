@@ -62,13 +62,13 @@
 
 						<li class="disabled">
 							<a data-grid-bulk-action="enable" data-toggle="tooltip" data-original-title="{{{ trans('action.bulk.enable') }}}">
-								<i class="fa fa-eye"></i>  <span class="visible-xs-inline">{{{ trans('action.bulk.enable') }}}</span>
+								<i class="fa fa-eye"></i> <span class="visible-xs-inline">{{{ trans('action.bulk.enable') }}}</span>
 							</a>
 						</li>
 
 						<li class="danger disabled">
 							<a data-grid-bulk-action="delete" data-toggle="tooltip" data-target="modal-confirm" data-original-title="{{{ trans('action.bulk.delete') }}}">
-								<i class="fa fa-trash-o"></i>  <span class="visible-xs-inline">{{{ trans('action.bulk.delete') }}}</span>
+								<i class="fa fa-trash-o"></i> <span class="visible-xs-inline">{{{ trans('action.bulk.delete') }}}</span>
 							</a>
 						</li>
 
