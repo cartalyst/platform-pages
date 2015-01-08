@@ -40,12 +40,9 @@ var Extension;
 		Platform.Cache.$body
 			.on('keyup', '#name', Extension.Form.Slug)
 			.on('change', '#type', Extension.Form.Storage)
-			.on('change', '#file', Extension.Form.Previewer)
 			.on('change', '#visibility', Extension.Form.Visibility)
 			.on('change', '#menu', Extension.Form.Navigation)
 		;
-
-		Extension.Form.Previewer();
 	};
 
 	// Slugify
