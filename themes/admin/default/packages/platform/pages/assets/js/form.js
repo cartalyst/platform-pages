@@ -40,8 +40,8 @@ var Extension;
 		Platform.Cache.$body
 			.on('keyup', '#name', Extension.Form.Slug)
 			.on('change', '#type', Extension.Form.Storage)
-			.on('change', '#visibility', Extension.Form.Visibility)
 			.on('change', '#menu', Extension.Form.Navigation)
+			.on('change', '#visibility', Extension.Form.Visibility)
 		;
 	};
 
@@ -64,21 +64,17 @@ var Extension;
 	// Navigation
 	Extension.Form.Navigation = function()
 	{
-		var menuId = $(this).val();
-
 		$('[data-menu-parent]').addClass('hide');
 
-		$('[data-menu-parent="' + menuId + '"]').removeClass('hide');
+		$('[data-menu-parent="' + $(this).val() + '"]').removeClass('hide');
 	};
 
 	// Storage Type
 	Extension.Form.Storage = function()
 	{
-		var value = $(this).val();
-
 		$('[data-type]').addClass('hide');
 
-		$('[data-type="' + value + '"]').removeClass('hide');
+		$('[data-type="' + $(this).val() + '"]').removeClass('hide');
 
 		$((value == 'filesystem' ? '#file' : '#value')).attr('required', true);
 

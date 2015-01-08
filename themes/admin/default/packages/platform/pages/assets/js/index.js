@@ -18,14 +18,14 @@
 
 var Extension;
 
- ;(function(window, document, $, undefined)
- {
+;(function(window, document, $, undefined)
+{
 
- 	'use strict';
+	'use strict';
 
- 	Extension = Extension || {
- 		Index: {},
- 	};
+	Extension = Extension || {
+		Index: {},
+	};
 
 	// Initialize functions
 	Extension.Index.init = function()
@@ -39,12 +39,12 @@ var Extension;
 	Extension.Index.listeners = function()
 	{
 		Platform.Cache.$body
-		.on('click', '[data-grid-row]', Extension.Index.checkRow)
-		.on('click', '[data-grid-row] a', Extension.Index.titleClick)
-		.on('click', '[data-grid-checkbox]', Extension.Index.checkboxes)
-		.on('click', '#modal-confirm a.confirm', Extension.Index.bulkActions)
-		.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
-		.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
+			.on('click', '[data-grid-row]', Extension.Index.checkRow)
+			.on('click', '[data-grid-row] a', Extension.Index.titleClick)
+			.on('click', '[data-grid-checkbox]', Extension.Index.checkboxes)
+			.on('click', '#modal-confirm a.confirm', Extension.Index.bulkActions)
+			.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
+			.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
 		;
 	};
 
