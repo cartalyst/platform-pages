@@ -155,16 +155,13 @@ class PagesController extends AdminController {
 	 */
 	public function delete($id)
 	{
-		if ($this->pages->delete($id))
-		{
-			$this->alerts->success(trans('platform/pages::message.success.delete'));
+		$type = $this->pages->delete($id) ? 'success' : 'error';
 
-			return redirect()->toAdmin('pages');
-		}
+		$this->alerts->{$type}(
+			trans("platform/pages::message.{$type}.delete")
+		);
 
-		$this->alerts->error(trans('platform/pages::message.error.delete'));
-
-		return redirect()->toAdmin('pages');
+		return redirect()->route('admin.pages.all');
 	}
 
 	/**
@@ -205,7 +202,17 @@ class PagesController extends AdminController {
 			return redirect()->toAdmin('pages');
 		}
 
-		extract($data);
+		$page = $data['page'];
+
+		$menu = $data['menu'];
+
+		$files = $data['files'];
+
+		$menus = $data['menus'];
+
+		$roles = $data['roles'];
+
+		$templates = $data['templates'];
 
 		return view('platform/pages::form', compact(
 			'page', 'roles', 'templates', 'files', 'menus', 'menu', 'mode'
