@@ -326,7 +326,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		$this->validator->bypass();
 
-		return $this->update($id, ['enabled' => 1]);
+		return $this->update($id, [ 'enabled' => true ]);
 	}
 
 	/**
@@ -336,7 +336,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		$this->validator->bypass();
 
-		return $this->update($id, ['enabled' => 0]);
+		return $this->update($id, [ 'enabled' => false ]);
 	}
 
 	/**

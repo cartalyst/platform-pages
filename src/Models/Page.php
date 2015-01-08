@@ -94,7 +94,7 @@ class Page extends Model implements EntityInterface, TaggableInterface {
 	/**
 	 * Get mutator for the "enabled" attribute.
 	 *
-	 * @param  string  $enabled
+	 * @param  int  $enabled
 	 * @return bool
 	 */
 	public function getEnabledAttribute($enabled)
