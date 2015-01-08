@@ -96,7 +96,7 @@
 
 		</header>
 
-		<main class="panel-body">
+		<div class="panel-body">
 
 			<div role="tabpanel">
 
@@ -408,7 +408,7 @@
 
 			</div>
 
-		</main>
+		</div>
 
 	</form>
 

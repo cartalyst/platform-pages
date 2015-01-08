@@ -176,7 +176,7 @@
 
 	</header>
 
-	<main class="panel-body">
+	<div class="panel-body">
 
 	{{-- Grid: Applied Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
@@ -185,7 +185,7 @@
 
 		</div>
 
-	</main>
+	</div>
 
 	{{-- Grid: Table --}}
 	<div class="table-responsive">
