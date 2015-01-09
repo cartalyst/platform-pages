@@ -1,5 +1,5 @@
 /**
- * Part of the Platform Pages application.
+ * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
  *
@@ -8,7 +8,7 @@
  * This source file is subject to the Cartalyst PSL License that is
  * bundled with this package in the LICENSE file.
  *
- * @package    Platform Pages Extension
+ * @package    Platform Pages extension
  * @version    1.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
@@ -30,9 +30,11 @@ var Extension;
 	// Initialize functions
 	Extension.Index.init = function()
 	{
-		Extension.Index.datePicker();
-		Extension.Index.dataGrid();
-		Extension.Index.listeners();
+		Extension.Index
+			.listeners()
+			.dataGrid()
+			.datePicker()
+		;
 	};
 
 	// Add Listeners
@@ -46,6 +48,111 @@ var Extension;
 			.on('click', '[data-grid-calendar-preset]', Extension.Index.calendarPresets)
 			.on('click', '[data-grid-bulk-action]:not([data-grid-bulk-action="delete"])', Extension.Index.bulkActions)
 		;
+
+		return this;
+	};
+
+	// Date range picker initialization
+	Extension.Index.datePicker = function()
+	{
+		var startDate, endDate, config, filter;
+
+		var filters = _.compact(
+			String(window.location.hash.slice(3)).split('/').splice(2)
+		);
+
+		config = {
+			opens: 'left'
+		};
+
+		_.each(filters, function(route)
+		{
+			filter = route.split(':');
+
+			if (filter[0] === 'created_at' && filter[1] !== undefined && filter[2] !== undefined)
+			{
+				startDate = moment(filter[1]);
+
+				endDate = moment(filter[2]);
+			}
+		});
+
+		if (startDate && endDate)
+		{
+			$('[data-grid-calendar]').val(
+				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
+			);
+
+			config = {
+				startDate: startDate,
+				endDate: endDate,
+				opens: 'left',
+			};
+		}
+
+		Platform.Cache.$body.on('click', '.range_inputs .applyBtn', function()
+		{
+			$('input[name="daterangepicker_start"]').trigger('change');
+
+			$('[data-grid-calendar]').val(
+				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
+			);
+		});
+
+		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
+		{
+			$('input[name="daterangepicker_start"]').trigger('change');
+		});
+
+		$('.daterangepicker_start_input').attr('data-grid', 'main');
+
+		$('.daterangepicker_end_input').attr('data-grid', 'main');
+
+		$('input[name="daterangepicker_start"]')
+			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-range-start', '')
+			.attr('data-range-filter', 'created_at')
+		;
+
+		$('input[name="daterangepicker_end"]')
+			.attr('data-format', 'MM/DD/YYYY')
+			.attr('data-range-end', '')
+			.attr('data-range-filter', 'created_at')
+		;
+
+		return this;
+	};
+
+	// Data Grid initialization
+	Extension.Index.dataGrid = function()
+	{
+		var config = {
+			scroll: '#data-grid',
+			events: {
+				removing: function(dg)
+				{
+					_.each(dg.applied_filters, function(filter)
+					{
+						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
+						{
+							$('[data-grid-calendar]').val('');
+						}
+					});
+				}
+			},
+			callback: function()
+			{
+				$('[data-grid-checkbox-all]').prop('checked', false);
+
+				$('[data-action]').prop('disabled', true);
+
+				Extension.Index.bulkStatus();
+			}
+		};
+
+		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
+
+		return this;
 	};
 
 	// Handle Data Grid checkboxes
@@ -170,105 +277,6 @@ var Extension;
 	Extension.Index.titleClick = function(event)
 	{
 		event.stopPropagation();
-	};
-
-	// Date range picker initialization
-	Extension.Index.datePicker = function()
-	{
-		var startDate, endDate, config, filter;
-
-		var filters = _.compact(
-			String(window.location.hash.slice(3)).split('/').splice(2)
-		);
-
-		config = {
-			opens: 'left'
-		};
-
-		_.each(filters, function(route)
-		{
-			filter = route.split(':');
-
-			if (filter[0] === 'created_at' && filter[1] !== undefined && filter[2] !== undefined)
-			{
-				startDate = moment(filter[1]);
-
-				endDate = moment(filter[2]);
-			}
-		});
-
-		if (startDate && endDate)
-		{
-			$('[data-grid-calendar]').val(
-				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
-				);
-
-			config = {
-				startDate: startDate,
-				endDate: endDate,
-				opens: 'left'
-			};
-		}
-
-		Platform.Cache.$body.on('click', '.range_inputs .applyBtn', function()
-		{
-			$('input[name="daterangepicker_start"]').trigger('change');
-
-			$('[data-grid-calendar]').val(
-				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
-			);
-		});
-
-		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
-		{
-			$('input[name="daterangepicker_start"]').trigger('change');
-		});
-
-		$('.daterangepicker_start_input').attr('data-grid', 'main');
-
-		$('.daterangepicker_end_input').attr('data-grid', 'main');
-
-		$('input[name="daterangepicker_start"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-start', '')
-			.attr('data-range-filter', 'created_at')
-		;
-
-		$('input[name="daterangepicker_end"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-end', '')
-			.attr('data-range-filter', 'created_at')
-		;
-	};
-
-	// Data Grid initialization
-	Extension.Index.dataGrid = function()
-	{
-		var config = {
-			scroll: '#data-grid',
-			events: {
-				removing: function(dg)
-				{
-					_.each(dg.applied_filters, function(filter)
-					{
-						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
-						{
-							$('[data-grid-calendar]').val('');
-						}
-					});
-				}
-			},
-			callback: function()
-			{
-				$('[data-grid-checkbox-all]').prop('checked', false);
-
-				$('[data-action]').prop('disabled', true);
-
-				Extension.Index.bulkStatus();
-			}
-		};
-
-		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
 	};
 
 	// Job done, lets run.
