@@ -32,8 +32,8 @@ var Extension;
 	{
 		Extension.Index
 			.listeners()
-			.dataGrid()
 			.datePicker()
+			.dataGrid()
 		;
 	};
 
