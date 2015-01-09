@@ -229,7 +229,7 @@ class PagesController extends AdminController {
 	protected function processForm($mode, $id = null)
 	{
 		// Store the page
-		list($messages, $page) = $this->pages->store($id, request()->all());
+		list($messages) = $this->pages->store($id, request()->all());
 
 		// Do we have any errors?
 		if ($messages->isEmpty())
