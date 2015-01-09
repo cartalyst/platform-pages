@@ -164,12 +164,12 @@ var Extension;
 
 		if (type === 'all')
 		{
-			$('[data-grid-checkbox]').not(this).prop('checked', this.checked);
+			$('[data-grid-checkbox]').not(this).not('[data-grid-checkbox][disabled]').prop('checked', this.checked);
 
-			$('[data-grid-row]').not(this).toggleClass('active', this.checked);
+			$('[data-grid-row]').not('[data-grid-row][disabled]').not(this).toggleClass('active', this.checked);
 		}
 
-		$(this).parents('[data-grid-row]').toggleClass('active');
+		$(this).parents('[data-grid-row]').not('[data-grid-row][disabled]').toggleClass('active');
 
 		Extension.Index.bulkStatus();
 	};
@@ -177,6 +177,8 @@ var Extension;
 	// Handle Data Grid row checking
 	Extension.Index.checkRow = function()
 	{
+		if ($(this).find('[data-grid-checkbox]').prop('disabled')) return false;
+
 		$(this).toggleClass('active');
 
 		var checkbox = $(this).find('[data-grid-checkbox]');
@@ -188,9 +190,9 @@ var Extension;
 
 	Extension.Index.bulkStatus = function()
 	{
-		var rows = $('[data-grid-checkbox]').not('[data-grid-checkbox="all"]').length;
+		var rows = $('[data-grid-checkbox]').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]').length;
 
-		var checked = $('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').length;
+		var checked = $('[data-grid-checkbox]:checked').not('[data-grid-checkbox="all"]').not('[data-grid-checkbox][disabled]').length;
 
 		$('[data-grid-bulk-action]').closest('li').toggleClass('disabled', ! checked);
 

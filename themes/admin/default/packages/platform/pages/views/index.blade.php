@@ -85,7 +85,7 @@
 
 						<li class="primary">
 							<a href="{{ route('admin.pages.create') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.create') }}}">
-								<i class="fa fa-plus"></i>  <span class="visible-xs-inline">{{{ trans('action.create') }}}</span>
+								<i class="fa fa-plus"></i> <span class="visible-xs-inline">{{{ trans('action.create') }}}</span>
 							</a>
 						</li>
 
