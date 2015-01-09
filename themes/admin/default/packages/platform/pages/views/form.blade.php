@@ -127,7 +127,7 @@
 											{{{ trans('platform/pages::model.name') }}}
 										</label>
 
-										<input type="text" class="form-control" name="name" id="name" placeholder="{{{ trans('platform/pages::model.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
+										<input type="text" class="form-control" name="name" id="name" data-slugify="#slug" placeholder="{{{ trans('platform/pages::model.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
 
 										<span class="help-block"></span>
 

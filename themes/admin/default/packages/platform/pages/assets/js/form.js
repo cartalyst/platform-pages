@@ -30,39 +30,36 @@ var Extension;
 	// Initialize functions
 	Extension.Form.init = function()
 	{
-		Extension.Form.selectize();
-		Extension.Form.listeners();
+		Extension.Form
+			.listeners()
+			.selectize()
+		;
 	};
 
 	// Add Listeners
 	Extension.Form.listeners = function()
 	{
 		Platform.Cache.$body
-			.on('keyup', '#name', Extension.Form.Slug)
-			.on('change', '#type', Extension.Form.Storage)
-			.on('change', '#menu', Extension.Form.Navigation)
-			.on('change', '#visibility', Extension.Form.Visibility)
+			.on('change', '#type', Extension.Form.storage)
+			.on('change', '#menu', Extension.Form.navigation)
+			.on('change', '#visibility', Extension.Form.visibility)
 		;
+
+		return this;
 	};
 
-	// Slugify
-	Extension.Form.Slug = function()
+	// Initialize Selectize
+	Extension.Form.selectize = function ()
 	{
-		$('#slug').val(
-			$(this).val().slugify()
-		);
-	};
+		$('select').selectize({
+			create: false, sortField: 'text',
+		});
 
-	// Visibility
-	Extension.Form.Visibility = function()
-	{
-		var status = $(this).val() !== 'logged_in';
-
-		$('#roles').prop('disabled', status);
+		return this;
 	};
 
 	// Navigation
-	Extension.Form.Navigation = function()
+	Extension.Form.navigation = function()
 	{
 		$('[data-menu-parent]').addClass('hide');
 
@@ -70,24 +67,25 @@ var Extension;
 	};
 
 	// Storage Type
-	Extension.Form.Storage = function()
+	Extension.Form.storage = function()
 	{
+		var value = $(this).val();
+
 		$('[data-type]').addClass('hide');
 
-		$('[data-type="' + $(this).val() + '"]').removeClass('hide');
+		$('[data-type="' + value + '"]').removeClass('hide');
 
 		$((value == 'filesystem' ? '#file' : '#value')).attr('required', true);
 
 		$((value == 'filesystem' ? '#value' : '#file')).removeAttr('required');
 	};
 
-	// Initialize Bootstrap Popovers
-	Extension.Form.selectize = function ()
+	// Visibility
+	Extension.Form.visibility = function()
 	{
-		$('select').selectize({
-			create: false,
-			sortField: 'text'
-		});
+		var status = $(this).val() !== 'logged_in';
+
+		$('#roles').prop('disabled', status);
 	};
 
 	// Job done, lets run.

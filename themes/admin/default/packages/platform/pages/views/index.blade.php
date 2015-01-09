@@ -116,7 +116,7 @@
 									</li>
 
 									<li>
-										<a data-toggle="tooltip" data-placement="top" data-original-title="" data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('common.all_disabled') }}}" data-reset>
+										<a data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('common.all_disabled') }}}" data-reset>
 											<i class="fa fa-eye-slash"></i> {{{ trans('common.show_disabled') }}}
 										</a>
 									</li>
