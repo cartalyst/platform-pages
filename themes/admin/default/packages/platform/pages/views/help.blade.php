@@ -3,6 +3,7 @@
 	<header class="panel-heading collapsed"  data-toggle="collapse" data-target="#help-body" aria-expanded="false" aria-controls="help-body">
 
 		<h4>
+
 			<i class="fa fa-life-ring" data-toggle="popover" data-content="{{{ trans('common.help.setting') }}}"></i> {{{ trans('common.help.title') }}}
 
 			<span class="panel-close small pull-right" data-toggle="tip" data-original-title="{{{ trans('action.collapse') }}}"></a>
