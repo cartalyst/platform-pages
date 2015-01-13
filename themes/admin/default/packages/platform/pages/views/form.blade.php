@@ -50,13 +50,9 @@
 							<span class="icon-bar"></span>
 						</button>
 
-						<ul class="nav navbar-nav navbar-cancel">
-							<li>
-								<a class="tip" href="{{ route('admin.pages.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
-									<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
-								</a>
-							</li>
-						</ul>
+						<a class="btn btn-navbar-cancel navbar-btn pull-left tip" href="{{ route('admin.pages.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
+							<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
+						</a>
 
 						<span class="navbar-brand">{{{ trans("action.{$mode}") }}} <small>{{{ $page->exists ? $page->name : null }}}</small></span>
 					</div>
@@ -354,7 +350,7 @@
 
 								<select class="form-control" name="roles[]" id="roles" multiple="multiple"{{ Input::old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
 									@foreach ($roles as $role)
-										<option value="{{ $role->id }}"{{ in_array($role->id, Input::get('roles', $page->roles)) ? ' selected="selected"' : null }}>{{ $role->name }}</option>
+									<option value="{{ $role->id }}"{{ in_array($role->id, Input::get('roles', $page->roles)) ? ' selected="selected"' : null }}>{{ $role->name }}</option>
 									@endforeach
 								</select>
 
@@ -390,27 +386,27 @@
 							</div>
 
 							@foreach ($menus as $item)
-								<div{{ ($menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->menu }}}">
-									@widget('platform/menus::dropdown.show', [$item->slug, 0, $menu->exists ? $menu->getParent()->id : null, ['id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'], ['0' => trans('platform/pages::model.navigation.top_level')]])
-								</div>
-							@endforeach
+							<div{{ ($menu->menu == $item->menu) ? null : ' class="hide"' }} data-menu-parent="{{{ $item->menu }}}">
+							@widget('platform/menus::dropdown.show', [$item->slug, 0, $menu->exists ? $menu->getParent()->id : null, ['id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'], ['0' => trans('platform/pages::model.navigation.top_level')]])
+						</div>
+						@endforeach
 
-						</fieldset>
+					</fieldset>
 
-					</div>
+				</div>
 
-					{{-- Form: Attributes --}}
-					<div role="tabpanel" class="tab-pane fade" id="attributes">
-						@widget('platform/attributes::entity.form', [ $page ])
-					</div>
-
+				{{-- Form: Attributes --}}
+				<div role="tabpanel" class="tab-pane fade" id="attributes">
+					@widget('platform/attributes::entity.form', [ $page ])
 				</div>
 
 			</div>
 
 		</div>
 
-	</form>
+	</div>
+
+</form>
 
 </section>
 @stop
