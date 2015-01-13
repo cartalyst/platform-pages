@@ -103,6 +103,7 @@ return [
 
 		'platform/access',
 		'platform/content',
+		'platform/tags',
 
 	],
 
