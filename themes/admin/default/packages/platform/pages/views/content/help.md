@@ -1,4 +1,4 @@
-The pages extension allows you to maintain and create pages used throughout your applications. Generally information based common examples would be an about, team, welcome, services page. All the best features including authorization control, navigation, visibility and SEFU. Need a little more control and/or logic over your page? Create pages using files from your active themes page folder.
+The pages extension allows you to maintain and create route based pages used throughout your applications. Features include authorization control, navigation, visibility and more. Need a little more control and/or logic over your page? Create pages using files from your active themes page folder for full control.
 
 ---
 
