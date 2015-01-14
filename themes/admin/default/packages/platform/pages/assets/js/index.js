@@ -140,13 +140,16 @@ var Extension;
 					});
 				}
 			},
-			callback: function()
+			callback: function(data)
 			{
 				$('[data-grid-checkbox-all]').prop('checked', false);
 
 				$('[data-action]').prop('disabled', true);
 
-				Extension.Index.bulkStatus();
+				Extension.Index
+					.bulkStatus()
+					.exporterStatus(data)
+				;
 			}
 		};
 
@@ -209,6 +212,15 @@ var Extension;
 			.prop('disabled', rows < 1)
 			.prop('checked', rows < 1 ? false : rows === checked)
 		;
+
+		return this;
+	};
+
+	Extension.Index.exporterStatus = function(grid)
+	{
+		$('[data-grid-exporter]').closest('li').toggleClass('disabled', grid.pagination.filtered == 0);
+
+		return this;
 	};
 
 	// Handle Data Grid bulk actions
