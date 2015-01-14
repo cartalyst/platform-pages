@@ -1,29 +1,26 @@
-The pages extension allows you to maintain and create route based pages used throughout your applications. Features include authorization control, navigation, visibility and more. Need a little more control and/or logic over your page? Create pages using files from your active themes page folder for full control.
-
----
-
-### Widgets
-
-There are currently no widgets associated with the pages extension.
-
----
-
-### Blade Calls
-
-There are currently no blade calls associated with the pages extension.
+The pages extension allows you to maintain and create route based pages. Features include authorization control, navigation, visibility and more. Need a little more control and/or logic over your page? Create pages using files from your active themes pages folder for absolute control.
 
 ---
 
 ### When should I use it?
 
-Use database driven content for pages which require the ability to be maintained through the user interface.
+Pages is your content management system. Quickly create database driven pages that are maintainable through the user interface.
 
-Use file based content when your theme designs are a little more complicated or require custom logic within the pages view.
+Alternatively you can create file based pages giving you absolute control over layout, partials, etc.
 
 ---
 
 ### How can I use it?
 
-We provide a common location with a few examples located in `public\themes\frontend\default\views\pages\*`. You can create a directory/file structure here of all your applications CMS pages.
+1. Create Page
+2. Fill out name, short name, and your custom URI.
+3. Choose storage type.
+  - Database: Allows you select which template layout to extend. Stores markup to database. (create your own layouts within your themes views folder)
+  - Filesystem: Create your own files in your views pages folder.
+4. Customize using any available options. Visibility, navigation, or Attributes.
 
-That's it, once you have created your page, simply navigate to the url path you assigned it.
+Location for filesystem pages.
+
+`public\themes\frontend\:active_theme\views\pages`
+
+That's it, once you have created your page, simply navigate to the URL path you assigned it to see your page.
