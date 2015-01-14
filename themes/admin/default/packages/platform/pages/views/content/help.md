@@ -4,7 +4,7 @@ The pages extension allows you to maintain and create route based pages. Feature
 
 ### When should I use it?
 
-Pages is your content management system. Quickly create database driven pages that are maintainable through the user interface.
+Pages is part of your content management system. Quickly create database driven pages that are maintainable through the user interface.
 
 Alternatively you can create file based pages giving you absolute control over layout, partials, etc.
 
