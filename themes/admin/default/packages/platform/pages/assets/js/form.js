@@ -51,8 +51,12 @@ var Extension;
 	// Initialize Selectize
 	Extension.Form.selectize = function ()
 	{
-		$('select').selectize({
-			create: false, sortField: 'text',
+		$('select:not(#tags)').selectize({
+ 			create: false, sortField: 'text',
+ 		});
+
+		$('#tags').selectize({
+			create: true, sortField: 'text',
 		});
 
 		return this;

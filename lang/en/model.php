@@ -59,6 +59,9 @@ return [
     'file'      => 'File',
     'file_help' => 'Choose the file to use when rendering this page.',
 
+    'tags'      => 'Tags',
+    'tags_help' => 'Select the tags to apply to this page.',
+
     // Content storage types
     'database'   => 'Database',
     'filesystem' => 'Filesystem',

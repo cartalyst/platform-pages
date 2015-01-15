@@ -58,6 +58,13 @@ class PageRepository implements PageRepositoryInterface {
 	protected $theme = [];
 
 	/**
+	 * The Tags repository instance.
+	 *
+	 * @var \Platform\Tags\Repositories\TagsRepositoryInterface
+	 */
+	protected $tags;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param  \Illuminate\Container\Container  $app
@@ -66,6 +73,8 @@ class PageRepository implements PageRepositoryInterface {
 	public function __construct(Container $app)
 	{
 		$this->setContainer($app);
+
+		$this->tags = $app['platform.tags'];
 
 		$this->setDispatcher($app['events']);
 
@@ -233,6 +242,9 @@ class PageRepository implements PageRepositoryInterface {
 			return false;
 		}
 
+		// Get the submitted tags
+		$tags = array_pull($input, 'tags', []);
+
 		// Prepare the submitted data
 		$data = $this->data->prepare($input);
 
@@ -244,6 +256,9 @@ class PageRepository implements PageRepositoryInterface {
 		{
 			// Save the page
 			$page->fill($data)->save();
+
+			// Set the tags on the page entry
+			$this->tags->set($page, $tags);
 
 			// Create the page menu
 			$this->setPageMenu($page, $data);
@@ -269,6 +284,9 @@ class PageRepository implements PageRepositoryInterface {
 			return false;
 		}
 
+		// Get the submitted tags
+		$tags = array_pull($input, 'tags', []);
+
 		// Prepare the submitted data
 		$data = $this->data->prepare($input);
 
@@ -278,6 +296,9 @@ class PageRepository implements PageRepositoryInterface {
 		// Check if the validation returned any errors
 		if ($messages->isEmpty())
 		{
+			// Set the tags on the page entry
+			$this->tags->set($page, $tags);
+
 			// Update the page
 			$page->fill($data)->save();
 
@@ -513,7 +534,7 @@ class PageRepository implements PageRepositoryInterface {
 		{
 			$pathConfig = head(config('cartalyst/themes::paths'));
 
-			// Full path to the content folder
+			// Full path to the pages folder
 			$fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);
 
 			// Check if the path exists

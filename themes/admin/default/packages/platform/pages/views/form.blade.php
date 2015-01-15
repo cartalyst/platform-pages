@@ -191,6 +191,17 @@
 
 							</div>
 
+ 							<div class="row">
+
+								{{-- Tags --}}
+								<div class="col-md-12">
+
+									@tags($page, 'tags', 'platform/pages::partials/tags-input')
+
+								</div>
+
+							</div>
+
 							<div class="row">
 
 								<div class="col-md-12">

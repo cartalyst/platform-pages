@@ -33,15 +33,19 @@ class PagesServiceProvider extends ServiceProvider {
 
 		$this->registerNotFoundErrorHandler();
 
+		// Get the Page model
+		$model = $this->app['Platform\Pages\Models\Page'];
+
 		// Register the menu page type
 		$this->app['platform.menus.manager']->registerType(
 			$this->app['platform.menus.types.page']
 		);
 
+		// Register the tags namespace
+		$this->app['platform.tags.manager']->registerNamespace($model);
+
 		// Register the attributes namespace
-		$this->app['platform.attributes.manager']->registerNamespace(
-			$this->app['Platform\Pages\Models\Page']
-		);
+		$this->app['platform.attributes.manager']->registerNamespace($model);
 
 		// Subscribe the registered event handler
 		$this->app['events']->subscribe('platform.pages.handler.event');
