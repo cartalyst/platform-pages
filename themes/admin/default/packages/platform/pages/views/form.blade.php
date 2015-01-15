@@ -101,6 +101,7 @@
 					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
 					<li role="presentation"><a href="#visiblity" aria-controls="visiblity" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.visibility.legend') }}}</a></li>
 					<li role="presentation"><a href="#navigation" aria-controls="navigation" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.navigation.legend') }}}</a></li>
+					<li role="presentation"><a href="#tags" aria-controls="tags" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.tags') }}}</a></li>
 					<li role="presentation"><a href="#attributes" aria-controls="attributes" role="tab" data-toggle="tab">{{{ trans('common.tabs.attributes') }}}</a></li>
 				</ul>
 
@@ -401,6 +402,27 @@
 							@widget('platform/menus::dropdown.show', [$item->slug, 0, $menu->exists ? $menu->getParent()->id : null, ['id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'], ['0' => trans('platform/pages::model.navigation.top_level')]])
 						</div>
 						@endforeach
+
+					</fieldset>
+
+				</div>
+
+				{{-- Form: Tags --}}
+				<div role="tabpanel" class="tab-pane fade" id="tags">
+
+					<fieldset>
+
+						<legend>{{{ trans('platform/pages::model.tags') }}}</legend>
+
+						<p>{{{ trans('platform/pages::model.tags_help') }}}</p>
+
+						<div class="row">
+
+							<div class="col-md-12">
+								@tags($page, 'tags', 'platform/pages::partials/tags-input')
+							</div>
+
+						</div>
 
 					</fieldset>
 

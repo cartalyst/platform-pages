@@ -1,7 +1,7 @@
 <div class="form-group{{ Alert::form('tags', ' has-error') }}">
 
 	<label for="tags" class="control-label">
-		<i class="fa fa-info-circle" data-toggle="popover" data-placement="left" data-content="{{{ trans('platform/pages::model.tags_help') }}}"></i>
+		<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.tags_help') }}}"></i>
 		{{{ trans('platform/pages::model.tags') }}}
 	</label>
 
@@ -11,8 +11,6 @@
 		@endforeach
 	</select>
 
-	<span class="help-block">
-		{{{ Alert::form('tags') ?: trans('platform/pages::model.tags_help') }}}
-	</span>
+	<span class="help-block"></span>
 
 </div>
