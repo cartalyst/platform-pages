@@ -160,8 +160,8 @@
 										</label>
 
 										<select class="form-control" name="https" id="https" required>
-											<option value="1"{{ Input::old('https', $page->https) == 1 ? ' selected="selected"' : null }}>{{{ trans('common.yes') }}}</option>
-											<option value="0"{{ Input::old('https', $page->https) == 0 ? ' selected="selected"' : null }}>{{{ trans('common.no') }}}</option>
+											<option value="1"{{ request()->old('https', $page->https) == 1 ? ' selected="selected"' : null }}>{{{ trans('common.yes') }}}</option>
+											<option value="0"{{ request()->old('https', $page->https) == 0 ? ' selected="selected"' : null }}>{{{ trans('common.no') }}}</option>
 										</select>
 
 										<span class="help-block"></span>
@@ -180,8 +180,8 @@
 										</label>
 
 										<select class="form-control" name="enabled" id="enabled" required>
-											<option value="1"{{ Input::old('enabled', $page->enabled) == 1 ? ' selected="selected"' : null }}>{{{ trans('common.enabled') }}}</option>
-											<option value="0"{{ Input::old('enabled', $page->enabled) == 0 ? ' selected="selected"' : null }}>{{{ trans('common.disabled') }}}</option>
+											<option value="1"{{ request()->old('enabled', $page->enabled) == 1 ? ' selected="selected"' : null }}>{{{ trans('common.enabled') }}}</option>
+											<option value="0"{{ request()->old('enabled', $page->enabled) == 0 ? ' selected="selected"' : null }}>{{{ trans('common.disabled') }}}</option>
 										</select>
 
 										<span class="help-block"></span>
@@ -215,7 +215,7 @@
 
 										<div class="input-group">
 											<span class="input-group-addon">{{ url('') }}</span>
-											<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::model.uri') }}}" value="{{{ Input::old('uri', $page->uri) }}}" required>
+											<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::model.uri') }}}" value="{{{ request()->old('uri', $page->uri) }}}" required>
 										</div>
 
 										<span class="help-block">{{{ Alert::form('uri') }}}</span>
@@ -233,8 +233,8 @@
 										<label for="type" class="control-label">{{{ trans('platform/pages::model.type') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.type_help') }}}"></i></label>
 
 										<select class="form-control" name="type" id="type" required>
-											<option value="database"{{ Input::old('type', $page->type) == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.database') }}}</option>
-											<option value="filesystem"{{ Input::old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.filesystem') }}}</option>
+											<option value="database"{{ request()->old('type', $page->type) == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.database') }}}</option>
+											<option value="filesystem"{{ request()->old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.filesystem') }}}</option>
 										</select>
 
 										<span class="help-block">{{{ Alert::form('type') }}}</span>
@@ -245,7 +245,7 @@
 								<div class="col-md-6">
 
 									{{-- Type : Database --}}
-									<div data-type="database" class="{{ Input::old('type', $page->type) != 'database' ? ' hide' : null }}">
+									<div data-type="database" class="{{ request()->old('type', $page->type) != 'database' ? ' hide' : null }}">
 
 										{{-- Template --}}
 										<div class="form-group{{ Alert::form('template', ' has-error') }}">
@@ -256,9 +256,9 @@
 												<i>No templates available for the current frontend theme.</i>
 											</p>
 											@else
-											<select class="form-control" name="template" id="template"{{ Input::old('type', $page->type) == 'database' ? ' required' : null }}>
+											<select class="form-control" name="template" id="template"{{ request()->old('type', $page->type) == 'database' ? ' required' : null }}>
 												@foreach ($templates as $value => $name)
-												<option value="{{ $value }}"{{ Input::old('template', $page->template) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
+												<option value="{{ $value }}"{{ request()->old('template', $page->template) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 												@endforeach
 											</select>
 											@endif
@@ -269,7 +269,7 @@
 									</div>
 
 									{{-- Type : Filesystem --}}
-									<div data-type="filesystem" class="{{ Input::old('type', $page->type) != 'filesystem' ? ' hide' : null }}">
+									<div data-type="filesystem" class="{{ request()->old('type', $page->type) != 'filesystem' ? ' hide' : null }}">
 
 										{{-- File --}}
 										<div class="form-group{{ Alert::form('file', ' has-error') }}">
@@ -280,9 +280,9 @@
 												<i>No pages available for the current frontend theme.</i>
 											</p>
 											@else
-											<select class="form-control" name="file" id="file"{{ Input::old('type', $page->type) == 'filesystem' ? ' required' : null }}>
+											<select class="form-control" name="file" id="file"{{ request()->old('type', $page->type) == 'filesystem' ? ' required' : null }}>
 												@foreach ($files as $value => $name)
-												<option value="{{ $value }}"{{ Input::old('file', $page->file) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
+												<option value="{{ $value }}"{{ request()->old('file', $page->file) == $value ? ' selected="selected"' : null}}>{{ $name }}</option>
 												@endforeach
 											</select>
 											@endif
@@ -302,7 +302,7 @@
 								<div class="col-md-12">
 
 									{{-- Type : Database --}}
-									<div data-type="database" class="{{ Input::old('type', $page->type) != 'database' ? ' hide' : null }}">
+									<div data-type="database" class="{{ request()->old('type', $page->type) != 'database' ? ' hide' : null }}">
 
 										{{-- Section --}}
 										<div class="form-group{{ Alert::form('section', ' has-error') }}">
@@ -310,7 +310,7 @@
 
 											<div class="input-group">
 												<span class="input-group-addon">@</span>
-												<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::model.section') }}}" value="{{{ Input::old('section', $page->section) }}}">
+												<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::model.section') }}}" value="{{{ request()->old('section', $page->section) }}}">
 											</div>
 
 											<span class="help-block">{{{ Alert::form('section') }}}</span>
@@ -320,7 +320,7 @@
 										<div class="form-group{{ Alert::form('value', ' has-error') }}">
 											<label for="value" class="control-label">{{{ trans('platform/pages::model.value') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.value_help') }}}"></i></label>
 
-											<textarea class="form-control redactor" name="value" id="value">{{{ Input::old('value', $page->value) }}}</textarea>
+											<textarea class="form-control redactor" name="value" id="value">{{{ request()->old('value', $page->value) }}}</textarea>
 
 											<span class="help-block">{{{ Alert::form('value') }}}</span>
 										</div>
@@ -346,9 +346,9 @@
 								<label for="visibility" class="control-label">{{{ trans('platform/pages::model.visibility.legend') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.visibility_help') }}}"></i></label>
 
 								<select class="form-control" name="visibility" id="visibility" required>
-									<option value="always"{{ Input::old('visibility', $page->visibility) == 'always' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.always') }}}</option>
-									<option value="logged_in"{{ Input::old('visibility', $page->visibility) == 'logged_in' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.logged_in') }}}</option>
-									<option value="admin"{{ Input::old('visibility', $page->visibility) == 'admin' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.admin') }}}</option>
+									<option value="always"{{ request()->old('visibility', $page->visibility) == 'always' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.always') }}}</option>
+									<option value="logged_in"{{ request()->old('visibility', $page->visibility) == 'logged_in' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.logged_in') }}}</option>
+									<option value="admin"{{ request()->old('visibility', $page->visibility) == 'admin' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.admin') }}}</option>
 								</select>
 
 								<span class="help-block">
@@ -359,9 +359,9 @@
 							<div class="form-group{{ Alert::form('roles', ' has-error') }}">
 								<label for="roles" class="control-label">{{{ trans('platform/pages::model.roles') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.roles_help') }}}"></i></label>
 
-								<select class="form-control" name="roles[]" id="roles" multiple="multiple"{{ Input::old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
+								<select class="form-control" name="roles[]" id="roles" multiple="multiple"{{ request()->old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
 									@foreach ($roles as $role)
-									<option value="{{ $role->id }}"{{ in_array($role->id, Input::get('roles', $page->roles)) ? ' selected="selected"' : null }}>{{ $role->name }}</option>
+									<option value="{{ $role->id }}"{{ in_array($role->id, request()->get('roles', $page->roles)) ? ' selected="selected"' : null }}>{{ $role->name }}</option>
 									@endforeach
 								</select>
 
