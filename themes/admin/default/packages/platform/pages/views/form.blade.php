@@ -101,7 +101,7 @@
 					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
 					<li role="presentation"><a href="#visiblity" aria-controls="visiblity" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.visibility.legend') }}}</a></li>
 					<li role="presentation"><a href="#navigation" aria-controls="navigation" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.navigation.legend') }}}</a></li>
-					<li role="presentation"><a href="#tags" aria-controls="tags" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.tags') }}}</a></li>
+					<li role="presentation"><a href="#tag" aria-controls="tag" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.tags') }}}</a></li>
 					<li role="presentation"><a href="#attributes" aria-controls="attributes" role="tab" data-toggle="tab">{{{ trans('common.tabs.attributes') }}}</a></li>
 				</ul>
 
@@ -187,17 +187,6 @@
 
 										<span class="help-block"></span>
 									</div>
-
-								</div>
-
-							</div>
-
- 							<div class="row">
-
-								{{-- Tags --}}
-								<div class="col-md-12">
-
-									@tags($page, 'tags', 'platform/pages::partials/tags-input')
 
 								</div>
 
@@ -408,7 +397,7 @@
 				</div>
 
 				{{-- Form: Tags --}}
-				<div role="tabpanel" class="tab-pane fade" id="tags">
+				<div role="tabpanel" class="tab-pane fade" id="tag">
 
 					<fieldset>
 
