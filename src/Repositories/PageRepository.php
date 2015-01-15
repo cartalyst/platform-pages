@@ -175,6 +175,15 @@ class PageRepository implements PageRepositoryInterface {
 				->first();
 		});
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function getAllTags()
+	{
+		return $this->createModel()->allTags()->lists('name');
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */

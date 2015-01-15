@@ -94,6 +94,31 @@
 					{{-- Grid: Filters --}}
 					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
 
+						@if ( ! empty($tags))
+						<div class="input-group">
+
+							<span class="input-group-btn">
+
+								<button class="btn btn-default" type="button" disabled>
+									{{{ trans('platform/media::model.tags') }}}
+								</button>
+
+								<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+									<span class="caret"></span>
+									<span class="sr-only">Toggle Dropdown</span>
+								</button>
+
+								<ul class="dropdown-menu" role="tags">
+									@foreach ($tags as $tag)
+									<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
+									@endforeach
+								</ul>
+
+							</span>
+
+						</div>
+						@endif
+
 						<div class="input-group">
 
 							<span class="input-group-btn">

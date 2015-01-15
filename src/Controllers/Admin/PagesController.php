@@ -60,7 +60,10 @@ class PagesController extends AdminController {
 	 */
 	public function index()
 	{
-		return view('platform/pages::index');
+		// Get a list of all the available tags
+		$tags = $this->pages->getAllTags();
+
+		return view('platform/pages::index', compact('tags'));
 	}
 
 	/**

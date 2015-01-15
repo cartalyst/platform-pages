@@ -76,6 +76,13 @@ interface PageRepositoryInterface {
 	public function findEnabled($id);
 
 	/**
+	 * Returns all the available tags.
+	 *
+	 * @return array
+	 */
+	public function getAllTags();
+
+	/**
 	 * Returns the given page with the necessary and
 	 * belonging data already prepared to be used.
 	 *
