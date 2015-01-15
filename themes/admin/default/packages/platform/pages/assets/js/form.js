@@ -51,7 +51,7 @@ var Extension;
 	// Initialize Selectize
 	Extension.Form.selectize = function ()
 	{
-		$('select:not(#tags)').selectize({
+		$('select:not(#tags,#roles)').selectize({
  			create: false, sortField: 'text',
  		});
 
