@@ -13,7 +13,7 @@ Alternatively you can create file based pages giving you absolute control over l
 ### How can I use it?
 
 1. Create Page
-2. Fill out name, short name, and your custom URI.
+2. Fill out name, slug, and your custom URI.
 3. Choose storage type.
   - Database: Allows you select which template layout to extend. Stores markup to database. (create your own layouts within your themes views folder)
   - Filesystem: Create your own files in your views pages folder.

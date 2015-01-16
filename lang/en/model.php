@@ -22,7 +22,7 @@ return [
     'name'      => 'Name',
     'name_help' => 'Type a descriptive name for your page.',
 
-    'slug'      => 'Short name',
+    'slug'      => 'Slug',
     'slug_help' => 'Single word, no spaces, no special words. Dashes are allowed.',
 
     'uri'      => 'Uri',
