@@ -1,4 +1,4 @@
-# Platform Pages Change Log
+# Pages Change Log
 
 This project follows [Semantic Versioning](CONTRIBUTING.md).
 
@@ -11,18 +11,6 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
-#### xx-Jan-15 - v1.0.0
+### v1.0.0 - TBA
 
-- User can create a new page.
-	- User can set the page name.
-	- User can set the page url.
-	- User can set the page visibility.
-	- User can set the page storage type (filesystem or database).
-	- User can set the page file, only if the storage type is filesystem.
-	- User can set the page template file, only if the storage type is database.
-	- User can set the page value, only if the storage type is database.
-	- User can set the page status.
-	- User can set page attributes.
-- User can update a page.
-- User can copy/clone a page.
-- User can delete a page.
+- Initial release.

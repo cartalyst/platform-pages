@@ -98,17 +98,17 @@
 
 				{{-- Form: Tabs --}}
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="active" role="presentation"><a href="#general" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
-					<li role="presentation"><a href="#visiblity" aria-controls="visiblity" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.visibility.legend') }}}</a></li>
-					<li role="presentation"><a href="#navigation" aria-controls="navigation" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.navigation.legend') }}}</a></li>
-					<li role="presentation"><a href="#tag" aria-controls="tag" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.tags') }}}</a></li>
-					<li role="presentation"><a href="#attributes" aria-controls="attributes" role="tab" data-toggle="tab">{{{ trans('common.tabs.attributes') }}}</a></li>
+					<li class="active" role="presentation"><a href="#general-tab" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('common.tabs.general') }}}</a></li>
+					<li role="presentation"><a href="#visiblity-tab" aria-controls="visiblity-tab" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.visibility.legend') }}}</a></li>
+					<li role="presentation"><a href="#navigation-tab" aria-controls="navigation-tab" role="tab" data-toggle="tab">{{{ trans('platform/pages::model.navigation.legend') }}}</a></li>
+					<li role="presentation"><a href="#tags-tab" aria-controls="tag" role="tabs-tab" data-toggle="tab">{{{ trans('platform/pages::common.tabs.tags') }}}</a></li>
+					<li role="presentation"><a href="#attributes-tab" aria-controls="attributes-tab" role="tab" data-toggle="tab">{{{ trans('common.tabs.attributes') }}}</a></li>
 				</ul>
 
 				<div class="tab-content">
 
 					{{-- Form: General --}}
-					<div role="tabpanel" class="tab-pane fade in active" id="general">
+					<div role="tabpanel" class="tab-pane fade in active" id="general-tab">
 
 						<fieldset>
 
@@ -126,7 +126,7 @@
 
 										<input type="text" class="form-control" name="name" id="name" data-slugify="#slug" placeholder="{{{ trans('platform/pages::model.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
 
-										<span class="help-block"></span>
+										<span class="help-block">{{{ Alert::form('name') }}}</span>
 
 									</div>
 
@@ -144,7 +144,7 @@
 
 										<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/page::model.slug') }}}" value="{{{ input()->old('slug', $page->slug) }}}" required data-parsley-trigger="change">
 
-										<span class="help-block"></span>
+										<span class="help-block">{{{ Alert::form('slug') }}}</span>
 
 									</div>
 
@@ -152,7 +152,7 @@
 
 								<div class="col-md-3">
 
-									{{-- SSL --}}
+									{{-- HTTPS --}}
 									<div class="form-group{{ Alert::form('https', ' has-error') }}">
 
 										<label for="https" class="control-label">
@@ -165,7 +165,8 @@
 											<option value="0"{{ request()->old('https', $page->https) == 0 ? ' selected="selected"' : null }}>{{{ trans('common.no') }}}</option>
 										</select>
 
-										<span class="help-block"></span>
+										<span class="help-block">{{{ Alert::form('https') }}}</span>
+
 									</div>
 
 								</div>
@@ -185,7 +186,8 @@
 											<option value="0"{{ request()->old('enabled', $page->enabled) == 0 ? ' selected="selected"' : null }}>{{{ trans('common.disabled') }}}</option>
 										</select>
 
-										<span class="help-block"></span>
+										<span class="help-block">{{{ Alert::form('enabled') }}}</span>
+
 									</div>
 
 								</div>
@@ -198,6 +200,7 @@
 
 									{{-- Uri --}}
 									<div class="form-group{{ Alert::form('uri', ' has-error') }}">
+
 										<label for="uri" class="control-label">
 											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.uri_help') }}}"></i>
 											{{{ trans('platform/pages::model.uri') }}}
@@ -209,6 +212,7 @@
 										</div>
 
 										<span class="help-block">{{{ Alert::form('uri') }}}</span>
+
 									</div>
 
 								</div>
@@ -218,8 +222,10 @@
 							<div class="row">
 
 								<div class="col-md-6">
+
 									{{-- Type --}}
 									<div class="form-group{{ Alert::form('type', ' has-error') }}">
+
 										<label for="type" class="control-label">{{{ trans('platform/pages::model.type') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.type_help') }}}"></i></label>
 
 										<select class="form-control" name="type" id="type" required>
@@ -228,6 +234,7 @@
 										</select>
 
 										<span class="help-block">{{{ Alert::form('type') }}}</span>
+
 									</div>
 
 								</div>
@@ -239,6 +246,7 @@
 
 										{{-- Template --}}
 										<div class="form-group{{ Alert::form('template', ' has-error') }}">
+
 											<label for="template" class="control-label">{{{ trans('platform/pages::model.template') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.template_help') }}}"></i></label>
 
 											@if (empty($templates))
@@ -254,6 +262,7 @@
 											@endif
 
 											<span class="help-block">{{{ Alert::form('template') }}}</span>
+
 										</div>
 
 									</div>
@@ -263,6 +272,7 @@
 
 										{{-- File --}}
 										<div class="form-group{{ Alert::form('file', ' has-error') }}">
+
 											<label for="file" class="control-label">{{{ trans('platform/pages::model.file') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.file_help') }}}"></i></label>
 
 											@if (empty($files))
@@ -278,6 +288,7 @@
 											@endif
 
 											<span class="help-block">{{{ Alert::form('file') }}}</span>
+
 										</div>
 
 									</div>
@@ -285,7 +296,6 @@
 								</div>
 
 							</div>
-
 
 							<div class="row">
 
@@ -296,6 +306,7 @@
 
 										{{-- Section --}}
 										<div class="form-group{{ Alert::form('section', ' has-error') }}">
+
 											<label for="section" class="control-label">{{{ trans('platform/pages::model.section') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.section_help') }}}"></i></label>
 
 											<div class="input-group">
@@ -304,15 +315,18 @@
 											</div>
 
 											<span class="help-block">{{{ Alert::form('section') }}}</span>
+
 										</div>
 
 										{{-- Value --}}
 										<div class="form-group{{ Alert::form('value', ' has-error') }}">
+
 											<label for="value" class="control-label">{{{ trans('platform/pages::model.value') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.value_help') }}}"></i></label>
 
 											<textarea class="form-control redactor" name="value" id="value">{{{ request()->old('value', $page->value) }}}</textarea>
 
 											<span class="help-block">{{{ Alert::form('value') }}}</span>
+
 										</div>
 
 									</div>
@@ -326,13 +340,14 @@
 					</div>
 
 					{{-- Form: Visibility --}}
-					<div role="tabpanel" class="tab-pane fade" id="visiblity">
+					<div role="tabpanel" class="tab-pane fade" id="visiblity-tab">
 
 						<fieldset>
 
 							<legend>{{{ trans('platform/pages::model.visibility.legend') }}}</legend>
 
 							<div class="form-group{{ Alert::form('visibility', ' has-error') }}">
+
 								<label for="visibility" class="control-label">{{{ trans('platform/pages::model.visibility.legend') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.visibility_help') }}}"></i></label>
 
 								<select class="form-control" name="visibility" id="visibility" required>
@@ -341,12 +356,12 @@
 									<option value="admin"{{ request()->old('visibility', $page->visibility) == 'admin' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.visibility.admin') }}}</option>
 								</select>
 
-								<span class="help-block">
-									{{{ Alert::form('visibility') }}}
-								</span>
+								<span class="help-block">{{{ Alert::form('visibility') }}}</span>
+
 							</div>
 
 							<div class="form-group{{ Alert::form('roles', ' has-error') }}">
+
 								<label for="roles" class="control-label">{{{ trans('platform/pages::model.roles') }}} <i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.roles_help') }}}"></i></label>
 
 								<select class="form-control" name="roles[]" id="roles" multiple="multiple"{{ request()->old('visibility', $page->visibility) !== 'logged_in' ? ' disabled="disabled"' : null }}>
@@ -355,9 +370,8 @@
 									@endforeach
 								</select>
 
-								<span class="help-block">
-									{{{ Alert::form('roles') }}}
-								</span>
+								<span class="help-block">{{{ Alert::form('roles') }}}</span>
+
 							</div>
 
 						</fieldset>
@@ -365,7 +379,7 @@
 					</div>
 
 					{{-- Form: Visibility --}}
-					<div role="tabpanel" class="tab-pane fade" id="navigation">
+					<div role="tabpanel" class="tab-pane fade" id="navigation-tab">
 
 						<fieldset>
 
@@ -397,7 +411,7 @@
 				</div>
 
 				{{-- Form: Tags --}}
-				<div role="tabpanel" class="tab-pane fade" id="tag">
+				<div role="tabpanel" class="tab-pane fade" id="tags-tab">
 
 					<fieldset>
 
@@ -418,7 +432,7 @@
 				</div>
 
 				{{-- Form: Attributes --}}
-				<div role="tabpanel" class="tab-pane fade" id="attributes">
+				<div role="tabpanel" class="tab-pane fade" id="attributes-tab">
 					@widget('platform/attributes::entity.form', [ $page ])
 				</div>
 

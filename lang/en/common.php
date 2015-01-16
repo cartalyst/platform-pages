@@ -20,13 +20,9 @@
 return [
 
 	'title'  => 'Pages',
-	'create' => 'Create Page',
-	'update' => 'Update Page',
-	'copy'   => 'Copy Page',
 
 	'tabs' => [
-		'general'    => 'General',
-		'attributes' => 'Attributes',
+		'tags' => 'Tags',
 	],
 
 ];

@@ -1,22 +1,26 @@
-# Platform Pages
+# Pages
+
+[![Build Status](http://ci.cartalyst.com/build-status/svg/25)](http://ci.cartalyst.com/build-status/view/25)
 
 The page extension can maintain and publish pages to be used through out your application.
 
-An open source package by [Cartalyst](https://cartalyst.com), code well, rock on!
+Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
-##Documentation
+## Documentation
 
-Reader-friendly Documentation can be found here. [Platform Pages Manual](https://cartalyst.com/manual/platform-pages).
+Reader-friendly Documentation can be found here. [Pages Manual](https://cartalyst.com/manual/platform-pages).
 
 Raw files can be found via this projects docs/version branch.
 
 - [v1.0](https://github.com/cartalyst/platform-pages/tree/docs/1.0)
 
-##Changelog
+## Changelog
 
 Important versions listed below. Refer to the [Changelog](CHANGELOG.md) for a full history of the project.
 
-##Support
+- [1.0](CHANGELOG.md) - TBA
+
+## Support
 
 The following support channels can be used for contact.
 
@@ -25,13 +29,12 @@ The following support channels can be used for contact.
 
 Bug reports, proposals, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md)
 
-##Contribution & Protocols
+## Contribution & Protocols
 
 - [Contribution Guide](CONTRIBUTING.md)
 
+## License
 
-##License
+This software is released under the [Cartalyst PSL](LICENSE) License.
 
-This software is released under the [BSD-3-Clause](LICENSE) License.
-
-© 2012-2015 Cartalyst LLC, All rights reserved.
+© 2011-2015 Cartalyst LLC, All rights reserved.
