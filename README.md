@@ -2,7 +2,7 @@
 
 [![Build Status](http://ci.cartalyst.com/build-status/svg/25)](http://ci.cartalyst.com/build-status/view/25)
 
-The page extension can maintain and publish pages to be used through out your application.
+The pages extension can maintain and publish pages to be used through out your application.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
