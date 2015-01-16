@@ -210,7 +210,7 @@ return [
 	|
 	*/
 
-	'permissions' => function(Permissions $permissions)
+	'permissions' => function(Permissions $permissions, Application $app)
 	{
 		$permissions->group('pages', function($g)
 		{
@@ -265,7 +265,7 @@ return [
 	|
 	*/
 
-	'settings' => function(Settings $settings)
+	'settings' => function(Settings $settings, Application $app)
 	{
 		$settings->find('platform')->section('pages', function($section)
 		{
