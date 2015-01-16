@@ -39,6 +39,7 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$this->app['platform.permissions']        = m::mock('Platform\Permissions\Repositories\PermissionsRepositoryInterface');
 		$this->app['platform.roles']              = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
 		$this->app['themes']                      = m::mock('Cartalyst\Themes\ThemeBag');
+		$this->app['platform.tags']               = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
 
 		$this->app['platform.menus.manager']->shouldIgnoreMissing();
 
@@ -368,11 +369,17 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$tags = ['foo', 'bar'];
+
+		$this->app['platform.tags']->shouldReceive('set')
+			->with(m::any(), $tags)
+			->once();
+
 		$this->app['platform.menus']->shouldReceive('createModel')
 			->once()
 			->andReturn($menu);
 
-		$data = ['slug' => 'foo'];
+		$data = ['slug' => 'foo', 'tags' => $tags];
 
 		$this->shouldReceiveCreate($data);
 
@@ -384,11 +391,17 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$tags = ['foo', 'bar'];
+
+		$this->app['platform.tags']->shouldReceive('set')
+			->with(m::any(), $tags)
+			->once();
+
 		$this->app['platform.menus']->shouldReceive('createModel')
 			->once()
 			->andReturn($menu);
 
-		$data = ['slug' => 'foo'];
+		$data = ['slug' => 'foo', 'tags' => $tags];
 
 		$this->shouldReceiveCreate($data);
 
@@ -401,6 +414,12 @@ class PageRepositoryTest extends IlluminateTestCase {
 	public function it_can_create_with_menu()
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
+
+		$tags = ['foo', 'bar'];
+
+		$this->app['platform.tags']->shouldReceive('set')
+			->with(m::any(), $tags)
+			->once();
 
 		$this->app['platform.menus']->shouldReceive('createModel')
 			->twice()
@@ -446,7 +465,7 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$menu->shouldReceive('save')
 				->once();
 
-		$data = ['slug' => 'foo', 'menu' => 1];
+		$data = ['slug' => 'foo', 'menu' => 1, 'tags' => $tags];
 
 		$model = $this->shouldReceiveCreate($data);
 
@@ -503,11 +522,17 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$tags = ['foo', 'bar'];
+
+		$this->app['platform.tags']->shouldReceive('set')
+			->with(m::any(), $tags)
+			->once();
+
 		$this->app['platform.menus']->shouldReceive('createModel')
 			->once()
 			->andReturn($menu);
 
-		$data = ['slug' => 'foo', 'uri' => 'foo'];
+		$data = ['slug' => 'foo', 'uri' => 'foo', 'tags' => $tags];
 
 		$this->shouldReceiveUpdate($data);
 
@@ -712,6 +737,9 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$this->app['platform.tags']->shouldReceive('set')
+			->once();
+
 		$this->app['platform.menus']->shouldReceive('createModel')
 			->once()
 			->andReturn($menu);
@@ -779,6 +807,9 @@ class PageRepositoryTest extends IlluminateTestCase {
 	public function it_can_disable_pages()
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
+
+		$this->app['platform.tags']->shouldReceive('set')
+			->once();
 
 		$this->app['platform.menus']->shouldReceive('createModel')
 			->once()
@@ -1110,6 +1141,9 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$this->app['events']->shouldReceive('fire')
 			->with('platform.page.updating', [ $model, $data ])
 			->once();
+
+		// Strip tags from data to prepare
+		$data = array_except($data, 'tags');
 
 		$this->app['platform.pages.handler.data']->shouldReceive('prepare')
 			->once()

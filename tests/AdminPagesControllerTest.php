@@ -59,6 +59,9 @@ class AdminPagesControllerTest extends IlluminateTestCase {
 	/** @test */
 	public function index_route()
 	{
+		$this->pages->shouldReceive('getAllTags')
+			->once();
+
 		$this->app['view']->shouldReceive('make')
 			->once();
 
