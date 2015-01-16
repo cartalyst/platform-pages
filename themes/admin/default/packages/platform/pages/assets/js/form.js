@@ -51,7 +51,7 @@ var Extension;
 	// Initialize Selectize
 	Extension.Form.selectize = function ()
 	{
-		$('select:not(#tags,#roles)').selectize({
+		$('select:not(#tags)').selectize({
  			create: false, sortField: 'text',
  		});
 
@@ -87,9 +87,14 @@ var Extension;
 	// Visibility
 	Extension.Form.visibility = function()
 	{
-		var status = $(this).val() !== 'logged_in';
-
-		$('#roles').prop('disabled', status);
+		if ($(this).val() === 'logged_in')
+		{
+			$('#roles')[0].selectize.enable();
+		}
+		else
+		{
+			$('#roles')[0].selectize.disable();
+		}
 	};
 
 	// Job done, lets run.
