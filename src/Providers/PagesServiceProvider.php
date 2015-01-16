@@ -62,11 +62,11 @@ class PagesServiceProvider extends ServiceProvider {
 		// Register the data handler
 		$this->bindIf('platform.pages.handler.data', 'Platform\Pages\Handlers\DataHandler');
 
-		// Register the event handler
-		$this->bindIf('platform.pages.handler.event', 'Platform\Pages\Handlers\EventHandler');
-
 		// Register the validator
 		$this->bindIf('platform.pages.validator', 'Platform\Pages\Validator\PagesValidator');
+
+		// Register the event handler
+		$this->bindIf('platform.pages.handler.event', 'Platform\Pages\Handlers\EventHandler');
 
 		// Register the menus 'page' type
 		$this->bindIf('platform.menus.types.page', 'Platform\Pages\Menus\PageType', true, false);

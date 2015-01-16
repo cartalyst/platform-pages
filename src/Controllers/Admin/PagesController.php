@@ -101,7 +101,7 @@ class PagesController extends AdminController {
 	/**
 	 * Show the form for creating a new page.
 	 *
-	 * @return \Illuminate\View\View
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
 	public function create()
 	{
@@ -122,7 +122,7 @@ class PagesController extends AdminController {
 	 * Show the form for updating a page.
 	 *
 	 * @param  int  $id
-	 * @return mixed
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
 	public function edit($id)
 	{
@@ -144,7 +144,7 @@ class PagesController extends AdminController {
 	 * Show the form for copying a page.
 	 *
 	 * @param  int  $id
-	 * @return mixed
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
 	public function copy($id)
 	{
@@ -195,7 +195,7 @@ class PagesController extends AdminController {
 	 *
 	 * @param  string  $mode
 	 * @param  int  $id
-	 * @return mixed
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
 	 */
 	protected function showForm($mode, $id = null)
 	{

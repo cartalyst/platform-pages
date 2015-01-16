@@ -168,14 +168,17 @@ return [
 	{
 		Route::group(['namespace' => 'Platform\Pages\Controllers'], function() use ($app)
 		{
-			Route::group(['prefix' => admin_uri().'/pages', 'namespace' => 'Admin'], function()
+			Route::group([
+				'prefix'    => admin_uri().'/pages',
+				'namespace' => 'Admin'
+			], function()
 			{
-				Route::get('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@index']);
+				Route::get('/' , ['as' => 'admin.pages.all', 'uses' => 'PagesController@index']);
 				Route::post('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@executeAction']);
 
 				Route::get('grid', ['as' => 'admin.pages.grid', 'uses' => 'PagesController@grid']);
 
-				Route::get('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@create']);
+				Route::get('create' , ['as' => 'admin.pages.create', 'uses' => 'PagesController@create']);
 				Route::post('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@store']);
 
 				Route::get('{id}'   , ['as' => 'admin.pages.edit'  , 'uses' => 'PagesController@edit']);
@@ -389,9 +392,6 @@ return [
 	|
 	*/
 
-	'widgets' => function()
-	{
-
-	},
+	'widgets' => null,
 
 ];
