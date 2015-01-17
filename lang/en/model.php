@@ -19,7 +19,7 @@
 
 return [
 
-	'page' => [
+	'general' => [
 
 		'legend'        => 'Details',
 

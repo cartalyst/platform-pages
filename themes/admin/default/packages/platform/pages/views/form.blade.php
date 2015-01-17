@@ -112,7 +112,7 @@
 
 						<fieldset>
 
-							<legend>{{{ trans('platform/pages::model.page.legend') }}}</legend>
+							<legend>{{{ trans('platform/pages::model.general.legend') }}}</legend>
 
 							<div class="row">
 
@@ -122,11 +122,11 @@
 									<div class="form-group{{ Alert::form('name', ' has-error') }}">
 
 										<label for="name" class="control-label">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.name_help') }}}"></i>
-											{{{ trans('platform/pages::model.page.name') }}}
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.name_help') }}}"></i>
+											{{{ trans('platform/pages::model.general.name') }}}
 										</label>
 
-										<input type="text" class="form-control" name="name" id="name" data-slugify="#slug" placeholder="{{{ trans('platform/pages::model.page.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
+										<input type="text" class="form-control" name="name" id="name" data-slugify="#slug" placeholder="{{{ trans('platform/pages::model.general.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
 
 										<span class="help-block">{{{ Alert::form('name') }}}</span>
 
@@ -140,11 +140,11 @@
 									<div class="form-group{{ Alert::form('slug', ' has-error') }}">
 
 										<label for="slug" class="control-label">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.slug_help') }}}"></i>
-											{{{ trans('platform/pages::model.page.slug') }}}
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.slug_help') }}}"></i>
+											{{{ trans('platform/pages::model.general.slug') }}}
 										</label>
 
-										<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::model.page.slug') }}}" value="{{{ input()->old('slug', $page->slug) }}}" required data-parsley-trigger="change">
+										<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::model.general.slug') }}}" value="{{{ input()->old('slug', $page->slug) }}}" required data-parsley-trigger="change">
 
 										<span class="help-block">{{{ Alert::form('slug') }}}</span>
 
@@ -158,8 +158,8 @@
 									<div class="form-group{{ Alert::form('https', ' has-error') }}">
 
 										<label for="https" class="control-label">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.https_help') }}}"></i>
-											{{{ trans('platform/pages::model.page.https') }}}
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.https_help') }}}"></i>
+											{{{ trans('platform/pages::model.general.https') }}}
 										</label>
 
 										<select class="form-control" name="https" id="https" required>
@@ -179,8 +179,8 @@
 									<div class="form-group{{ Alert::form('enabled', ' has-error') }}">
 
 										<label for="enabled" class="control-label">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.enabled_help') }}}"></i>
-											{{{ trans('platform/pages::model.page.enabled') }}}
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.enabled_help') }}}"></i>
+											{{{ trans('platform/pages::model.general.enabled') }}}
 										</label>
 
 										<select class="form-control" name="enabled" id="enabled" required>
@@ -204,13 +204,13 @@
 									<div class="form-group{{ Alert::form('uri', ' has-error') }}">
 
 										<label for="uri" class="control-label">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.uri_help') }}}"></i>
-											{{{ trans('platform/pages::model.page.uri') }}}
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.uri_help') }}}"></i>
+											{{{ trans('platform/pages::model.general.uri') }}}
 										</label>
 
 										<div class="input-group">
 											<span class="input-group-addon">{{ url('') }}</span>
-											<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::model.page.uri') }}}" value="{{{ request()->old('uri', $page->uri) }}}" required>
+											<input type="text" class="form-control" name="uri" id="uri" placeholder="{{{ trans('platform/pages::model.general.uri') }}}" value="{{{ request()->old('uri', $page->uri) }}}" required>
 										</div>
 
 										<span class="help-block">{{{ Alert::form('uri') }}}</span>
@@ -229,13 +229,13 @@
 									<div class="form-group{{ Alert::form('type', ' has-error') }}">
 
 										<label for="type" class="control-label">
-											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.type_help') }}}"></i>
-											{{{ trans('platform/pages::model.page.type') }}}
+											<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.type_help') }}}"></i>
+											{{{ trans('platform/pages::model.general.type') }}}
 										</label>
 
 										<select class="form-control" name="type" id="type" required>
-											<option value="database"{{ request()->old('type', $page->type) == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.page.database') }}}</option>
-											<option value="filesystem"{{ request()->old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.page.filesystem') }}}</option>
+											<option value="database"{{ request()->old('type', $page->type) == 'database' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.general.database') }}}</option>
+											<option value="filesystem"{{ request()->old('type', $page->type) == 'filesystem' ? ' selected="selected"' : null }}>{{{ trans('platform/pages::model.general.filesystem') }}}</option>
 										</select>
 
 										<span class="help-block">{{{ Alert::form('type') }}}</span>
@@ -253,8 +253,8 @@
 										<div class="form-group{{ Alert::form('template', ' has-error') }}">
 
 											<label for="template" class="control-label">
-												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.template_help') }}}"></i>
-												{{{ trans('platform/pages::model.page.template') }}}
+												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.template_help') }}}"></i>
+												{{{ trans('platform/pages::model.general.template') }}}
 											</label>
 
 											@if (empty($templates))
@@ -282,8 +282,8 @@
 										<div class="form-group{{ Alert::form('file', ' has-error') }}">
 
 											<label for="file" class="control-label">
-												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.file_help') }}}"></i>
-												{{{ trans('platform/pages::model.page.file') }}}
+												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.file_help') }}}"></i>
+												{{{ trans('platform/pages::model.general.file') }}}
 											</label>
 
 											@if (empty($files))
@@ -319,13 +319,13 @@
 										<div class="form-group{{ Alert::form('section', ' has-error') }}">
 
 											<label for="section" class="control-label">
-												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.section_help') }}}"></i>
-												{{{ trans('platform/pages::model.page.section') }}}
+												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.section_help') }}}"></i>
+												{{{ trans('platform/pages::model.general.section') }}}
 											</label>
 
 											<div class="input-group">
 												<span class="input-group-addon">@</span>
-												<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::model.page.section') }}}" value="{{{ request()->old('section', $page->section) }}}">
+												<input type="text" class="form-control" name="section" id="section" placeholder="{{{ trans('platform/pages::model.general.section') }}}" value="{{{ request()->old('section', $page->section) }}}">
 											</div>
 
 											<span class="help-block">{{{ Alert::form('section') }}}</span>
@@ -336,8 +336,8 @@
 										<div class="form-group{{ Alert::form('value', ' has-error') }}">
 
 											<label for="value" class="control-label">
-												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.page.value_help') }}}"></i>
-												{{{ trans('platform/pages::model.page.value') }}}
+												<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.general.value_help') }}}"></i>
+												{{{ trans('platform/pages::model.general.value') }}}
 											</label>
 
 											<textarea class="form-control redactor" name="value" id="value">{{{ request()->old('value', $page->value) }}}</textarea>
