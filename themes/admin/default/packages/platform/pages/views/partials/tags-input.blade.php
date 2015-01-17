@@ -1,5 +1,10 @@
 <div class="form-group{{ Alert::form('tags', ' has-error') }}">
 
+	<label for="menu" class="control-label">
+		<i class="fa fa-info-circle" data-toggle="popover" data-content="{{{ trans('platform/pages::model.tag.tags_help') }}}"></i>
+		{{{ trans('platform/pages::model.tag.tags') }}}
+	</label>
+
 	<select class="form-control" name="tags[]" id="tags" data-parsley-trigger="change" multiple>
 		@foreach ($availableTags as $tag)
 		<option value="{{ $tag->slug }}"{{ in_array($tag->slug, $tags) ? ' selected' : null }}>{{ $tag->name }}</option>

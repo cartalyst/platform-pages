@@ -19,69 +19,81 @@
 
 return [
 
-    'name'      => 'Name',
-    'name_help' => 'Type a descriptive name for your page.',
+	'page' => [
 
-    'slug'      => 'Slug',
-    'slug_help' => 'Single word, no spaces, no special words. Dashes are allowed.',
+		'legend'        => 'Details',
 
-    'uri'      => 'Uri',
-    'uri_help' => 'Your page uri.',
+		'name'          => 'Name',
+		'name_help'     => 'Type a descriptive name for your page.',
 
-    'https'      => 'Https',
-    'https_help' => 'Should this page be presented over HTTPS?',
+		'slug'          => 'Slug',
+		'slug_help'     => 'Single word, no spaces, no special words. Dashes are allowed.',
 
-    'enabled'      => 'Status',
-    'enabled_help' => 'What is the status of this page?',
+		'uri'           => 'Uri',
+		'uri_help'      => 'Your page uri.',
 
-    'type'      => 'Storage Type',
-    'type_help' => 'How do you want to store and edit this page?',
+		'https'         => 'Https',
+		'https_help'    => 'Should this page be presented over HTTPS?',
 
-    'visibility' => [
-        'legend' => 'Visibility',
+		'enabled'       => 'Status',
+		'enabled_help'  => 'What is the status of this page?',
 
-        'always'     => 'Show Always',
-        'logged_in'  => 'Logged In',
-        'logged_out' => 'Logged Out',
-        'admin'      => 'Admin Only',
-    ],
-    'visibility_help' => 'When should this page be seen?',
+		'type'          => 'Storage Type',
+		'type_help'     => 'How do you want to store and edit this page?',
 
-    'roles'      => 'Roles',
-    'roles_help' => 'What user roles should be able to see this page?',
+		'database'      => 'Database',
+		'filesystem'    => 'Filesystem',
 
-    'navigation' => [
-        'legend' => 'Navigation',
+		'template'      => 'Template',
+		'template_help' => 'Page template to use.',
 
-        'menu'        => 'Menu',
-        'select_menu' => '-- Select a Menu --',
-        'top_level'   => '-- Top Level --',
-    ],
-    'navigation_help' => 'Add this page to your navigation.',
+		'section'       => 'Section',
+		'section_help'  => 'Which @section() to inject value to?',
 
-    'template'      => 'Template',
-    'template_help' => 'Page template to use.',
+		'value'         => 'Markup',
+		'value_help'    => "The page's markup. @content call is allowed.",
 
-    'meta_title'      => 'Meta Title',
-    'meta_title_help' => 'Meta Title tag.',
+		'file'          => 'File',
+		'file_help'     => 'Choose the file to use when rendering this page.',
 
-    'meta_description'      => 'Meta Description',
-    'meta_description_help' => 'Meta Description tag.',
+	],
 
-    'section'      => 'Section',
-    'section_help' => 'Which @section() to inject value to?',
+	'access' => [
 
-    'value'      => 'Value',
-    'value_help' => "The page's value. @content call is allowed.",
+		'legend'          => 'Access Control',
 
-    'file'      => 'File',
-    'file_help' => 'Choose the file to use when rendering this page.',
+		'visibility'      => 'Visibility',
+		'visibility_help' => 'Select when this page can be accessed.',
 
-    'tags'      => 'Tags',
-    'tags_help' => 'Select the tags to apply to this page.',
+		'always'          => 'Show Always',
+		'logged_in'       => 'Logged In',
+		'logged_out'      => 'Logged Out',
+		'admin'           => 'Admin Only',
 
-    // Content storage types
-    'database'   => 'Database',
-    'filesystem' => 'Filesystem',
+		'roles'           => 'Roles',
+		'roles_help'      => 'Restrict access to user roles.',
+
+	],
+
+	'navigation' => [
+
+		'legend'      => 'Navigation',
+
+		'menu'        => 'Menu',
+		'menu_help'   => 'Add this page to your navigation.',
+
+		'select_menu' => '-- Select a Menu --',
+		'top_level'   => '-- Top Level --',
+
+	],
+
+	'tag' => [
+
+		'legend'    => 'Tags',
+
+		'tags'      => 'Tags',
+		'tags_help' => 'Select or create tags.',
+
+	],
 
 ];

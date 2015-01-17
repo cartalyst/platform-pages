@@ -22,7 +22,11 @@ return [
 	'title'  => 'Pages',
 
 	'tabs' => [
-		'tags' => 'Tags',
+		'general'     => 'Page',
+		'access'      => 'Access',
+		'navigation'  => 'Navigation',
+		'tags'        => 'Tags',
+		'attributes'  => 'Attributes',
 	],
 
 ];
