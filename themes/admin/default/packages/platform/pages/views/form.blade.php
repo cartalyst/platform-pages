@@ -449,7 +449,9 @@
 
 				{{-- Form: Attributes --}}
 				<div role="tabpanel" class="tab-pane fade" id="attributes-tab">
-					@widget('platform/attributes::entity.form', [ $page ])
+
+					@attributes($page)
+
 				</div>
 
 			</div>
