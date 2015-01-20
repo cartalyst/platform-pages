@@ -51,7 +51,7 @@
 						</button>
 
 						<a class="btn btn-navbar-cancel navbar-btn pull-left tip" href="{{ route('admin.pages.all') }}" data-toggle="tooltip" data-original-title="{{{ trans('action.cancel') }}}">
-							<i class="fa fa-reply"></i>  <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
+							<i class="fa fa-reply"></i> <span class="visible-xs-inline">{{{ trans('action.cancel') }}}</span>
 						</a>
 
 						<span class="navbar-brand">{{{ trans("action.{$mode}") }}} <small>{{{ $page->exists ? $page->name : null }}}</small></span>
@@ -65,20 +65,20 @@
 							@if ($page->exists and $mode != 'copy')
 							<li>
 								<a href="{{ route('admin.pages.delete', $page->id) }}" class="tip" data-action-delete data-toggle="tooltip" data-original-title="{{{ trans('action.delete') }}}" type="delete">
-									<i class="fa fa-trash-o"></i>  <span class="visible-xs-inline">{{{ trans('action.delete') }}}</span>
+									<i class="fa fa-trash-o"></i> <span class="visible-xs-inline">{{{ trans('action.delete') }}}</span>
 								</a>
 							</li>
 
 							<li>
 								<a href="{{ route('admin.pages.copy', $page->id) }}" data-toggle="tooltip" data-original-title="{{{ trans('action.copy') }}}">
-									<i class="fa fa-copy"></i>  <span class="visible-xs-inline">{{{ trans('action.copy') }}}</span>
+									<i class="fa fa-copy"></i> <span class="visible-xs-inline">{{{ trans('action.copy') }}}</span>
 								</a>
 							</li>
 							@endif
 
 							<li>
 								<button class="btn btn-primary navbar-btn" data-toggle="tooltip" data-original-title="{{{ trans('action.save') }}}">
-									<i class="fa fa-save"></i>  <span class="visible-xs-inline">{{{ trans('action.save') }}}</span>
+									<i class="fa fa-save"></i> <span class="visible-xs-inline">{{{ trans('action.save') }}}</span>
 								</button>
 							</li>
 
