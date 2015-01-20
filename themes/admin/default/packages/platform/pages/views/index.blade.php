@@ -3,7 +3,7 @@
 {{-- Page title --}}
 @section('title')
 @parent
-: {{{ trans('platform/pages::common.title') }}}
+ {{{ trans('platform/pages::common.title') }}}
 @stop
 
 {{-- Queue assets --}}

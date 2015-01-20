@@ -3,7 +3,7 @@
 {{-- Page title --}}
 @section('title')
 @parent
-: {{{ trans("action.{$mode}") }}} {{{ $page->exists ? '- ' . $page->name : null }}}
+ {{{ trans("action.{$mode}") }}} {{{ trans('platform/pages::common.title') }}}
 @stop
 
 {{-- Queue assets --}}
