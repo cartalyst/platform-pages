@@ -65,19 +65,21 @@ class MigrationPlatformPagesCreateTable extends Migration {
 		$attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
 
 		$attribute->create([
-			'namespace' => 'platform/pages',
-			'name'      => 'Meta Title',
-			'type'      => 'input',
-			'slug'      => 'meta_title',
-			'enabled'   => 1,
+			'namespace'   => 'platform/pages',
+			'name'        => 'Meta Title',
+			'type'        => 'input',
+			'slug'        => 'meta_title',
+			'description' => 'Page meta title.',
+			'enabled'     => 1,
 		]);
 
 		$attribute->create([
-			'namespace' => 'platform/pages',
-			'name'      => 'Meta Description',
-			'type'      => 'input',
-			'slug'      => 'meta_description',
-			'enabled'   => 1,
+			'namespace'   => 'platform/pages',
+			'name'        => 'Meta Description',
+			'type'        => 'input',
+			'slug'        => 'meta_description',
+			'description' => 'Page meta description.',
+			'enabled'     => 1,
 		]);
 	}
 
