@@ -21,7 +21,6 @@ We do not give estimated times for completion on `Accepted` Proposals.
 - Can set storage type, database vs filesystem.
 - Can select template inheritance.
 - Can set blade section.
-- Can use @content() call.
 - Can set visibility show always, logged in, admin.
 - Can restrict access by roles.
 - Can set menu navigation.
