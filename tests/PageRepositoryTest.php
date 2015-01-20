@@ -38,8 +38,8 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$this->app['platform.pages.validator']    = m::mock('Cartalyst\Support\Validator');
 		$this->app['platform.permissions']        = m::mock('Platform\Permissions\Repositories\PermissionsRepositoryInterface');
 		$this->app['platform.roles']              = m::mock('Platform\Roles\Repositories\RoleRepositoryInterface');
-		$this->app['themes']                      = m::mock('Cartalyst\Themes\ThemeBag');
 		$this->app['platform.tags']               = m::mock('Platform\Tags\Repositories\TagsRepositoryInterface');
+		$this->app['themes']                      = m::mock('Cartalyst\Themes\ThemeBag');
 
 		$this->app['platform.menus.manager']->shouldIgnoreMissing();
 
