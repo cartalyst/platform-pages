@@ -15,13 +15,13 @@
 {{ Asset::queue('index', 'platform/pages::js/index.js', 'platform') }}
 {{ Asset::queue('bootstrap-daterange', 'bootstrap/js/daterangepicker.js', 'jquery') }}
 
-{{-- Inline scripts --}}
-@section('scripts')
+{{-- Inline styles --}}
+@section('styles')
 @parent
 @stop
 
-{{-- Inline styles --}}
-@section('styles')
+{{-- Inline scripts --}}
+@section('scripts')
 @parent
 @stop
 

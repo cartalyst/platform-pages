@@ -16,13 +16,13 @@
 {{ Asset::queue('redactor', 'redactor/js/redactor.min.js', 'jquery') }}
 {{ Asset::queue('form', 'platform/pages::js/form.js', 'platform') }}
 
-{{-- Inline scripts --}}
-@section('scripts')
+{{-- Inline styles --}}
+@section('styles')
 @parent
 @stop
 
-{{-- Inline styles --}}
-@section('styles')
+{{-- Inline scripts --}}
+@section('scripts')
 @parent
 @stop
 
