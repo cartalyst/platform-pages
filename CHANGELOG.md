@@ -11,7 +11,7 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
-### v1.0.0 - 2015-01-20
+### v1.0.0 - 2015-01-23
 
 - Can create, update, delete pages.
 - Can assign name & slug.
