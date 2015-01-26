@@ -441,7 +441,7 @@
 
 						<legend>{{{ trans('platform/pages::model.tag.legend') }}}</legend>
 
-						@tags($page, 'tags', 'platform/pages::partials/tags-input')
+						@tags($page, 'tags')
 
 					</fieldset>
 

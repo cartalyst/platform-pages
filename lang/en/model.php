@@ -87,13 +87,4 @@ return [
 
 	],
 
-	'tag' => [
-
-		'legend'    => 'Tags',
-
-		'tags'      => 'Tags',
-		'tags_help' => 'Select or create tags.',
-
-	],
-
 ];
