@@ -439,7 +439,7 @@
 
 					<fieldset>
 
-						<legend>{{{ trans('platform/pages::model.tag.legend') }}}</legend>
+							<legend>{{{ trans('platform/tags::model.tag.legend') }}}</legend>
 
 						@tags($page, 'tags')
 
