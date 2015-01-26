@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.1 - 2015-01-26
+
+`UPDATED`
+
+- Moved the Tags widget view and language lines to the Tags extension.
+
 ### v1.0.0 - 2015-01-23
 
 - Can create, update, delete pages.
