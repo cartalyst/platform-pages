@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.2 - 2015-01-29
+
+`FIXED`
+
+- Fixed issue when dissociating a menu from a page, the given menu was not being deleted.
+
 ### v1.0.1 - 2015-01-26
 
 `UPDATED`
