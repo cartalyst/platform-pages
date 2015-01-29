@@ -26,7 +26,6 @@ class PagesSeeder extends Seeder {
 	 */
 	public function run()
 	{
-
 		// Prologue.
 		$page = app('Platform\Pages\Models\Page')->create([
 			'name'             => 'About',
