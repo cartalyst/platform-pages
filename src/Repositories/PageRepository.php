@@ -662,6 +662,13 @@ class PageRepository implements PageRepositoryInterface {
 					}
 				}
 			}
+			else
+			{
+				if ($menu = $menuModel->where('page_id', $page->id)->first())
+				{
+					$this->container['platform.menus']->delete($menu->id);
+				}
+			}
 		}
 
 		return true;
