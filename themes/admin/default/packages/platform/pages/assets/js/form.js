@@ -52,7 +52,7 @@ var Extension;
 	Extension.Form.selectize = function ()
 	{
 		$('select:not(#tags)').selectize({
- 			create: false, sortField: 'text',
+ 			create: false
  		});
 
 		$('#tags').selectize({
