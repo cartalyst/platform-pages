@@ -10,7 +10,7 @@ $pages = app('platform.pages');
 
 #### Methods
 
-The repository contains several methods that are used throughtout the extension, most common methods are listed below.
+The repository contains several methods that are used throughout the extension, most common methods are listed below.
 
 For an exhaustive list of available methods, checkout the `PageRepositoryInterface`
 
