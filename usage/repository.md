@@ -36,7 +36,7 @@ Returns a page object based on the given uri.
 
 - findEnabled($id);
 
-Returns all tags that are associated to page objects.
+Returns a page object based on the given id and being enabled.
 
 - create(array $data);
 
