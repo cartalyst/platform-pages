@@ -369,6 +369,13 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$menu->shouldReceive('where')
+			->once()
+			->andReturn($menu);
+
+		$menu->shouldReceive('first')
+			->once();
+
 		$tags = ['foo', 'bar'];
 
 		$this->app['platform.tags']->shouldReceive('set')
@@ -390,6 +397,13 @@ class PageRepositoryTest extends IlluminateTestCase {
 	public function it_can_create()
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
+
+		$menu->shouldReceive('where')
+			->once()
+			->andReturn($menu);
+
+		$menu->shouldReceive('first')
+			->once();
 
 		$tags = ['foo', 'bar'];
 
@@ -521,6 +535,13 @@ class PageRepositoryTest extends IlluminateTestCase {
 	public function it_can_update_existing_records()
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
+
+		$menu->shouldReceive('where')
+			->once()
+			->andReturn($menu);
+
+		$menu->shouldReceive('first')
+			->once();
 
 		$tags = ['foo', 'bar'];
 
@@ -737,6 +758,13 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$menu->shouldReceive('where')
+			->once()
+			->andReturn($menu);
+
+		$menu->shouldReceive('first')
+			->once();
+
 		$this->app['platform.tags']->shouldReceive('set')
 			->once();
 
@@ -747,6 +775,10 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$data = ['enabled' => 1];
 
 		$model = $this->shouldReceiveFind();
+
+		$model->shouldReceive('getAttribute')
+			->with('id')
+			->once();
 
 		$this->app['platform.pages.validator']->shouldReceive('bypass')
 			->once();
@@ -808,6 +840,13 @@ class PageRepositoryTest extends IlluminateTestCase {
 	{
 		$menu = m::mock('Platform\Menus\Models\Menu');
 
+		$menu->shouldReceive('where')
+			->once()
+			->andReturn($menu);
+
+		$menu->shouldReceive('first')
+			->once();
+
 		$this->app['platform.tags']->shouldReceive('set')
 			->once();
 
@@ -818,6 +857,10 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$data = ['enabled' => 0];
 
 		$model = $this->shouldReceiveFind();
+
+		$model->shouldReceive('getAttribute')
+			->with('id')
+			->once();
 
 		$this->app['platform.pages.validator']->shouldReceive('bypass')
 			->once();
@@ -1125,6 +1168,11 @@ class PageRepositoryTest extends IlluminateTestCase {
 		$model->shouldReceive('save')
 			->once();
 
+		$model->shouldReceive('getAttribute')
+			->with('id')
+			->once()
+			->andReturn(1);
+
 		return $model;
 	}
 
@@ -1187,6 +1235,10 @@ class PageRepositoryTest extends IlluminateTestCase {
 			->andReturn($model);
 
 		$model->shouldReceive('save')
+			->once();
+
+		$model->shouldReceive('getAttribute')
+			->with('id')
 			->once();
 	}
 
