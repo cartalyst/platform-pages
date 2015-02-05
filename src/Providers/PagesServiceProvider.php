@@ -28,9 +28,6 @@ class PagesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		// Register the extension component namespaces
-		$this->package('platform/pages', 'platform/pages'. __DIR__.'/../..');
-
 		$this->registerNotFoundErrorHandler();
 
 		// Get the Page model
@@ -56,6 +53,8 @@ class PagesServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->prepareResources();
+
 		// Register the repository
 		$this->bindIf('platform.pages', 'Platform\Pages\Repositories\PageRepository');
 
@@ -73,6 +72,22 @@ class PagesServiceProvider extends ServiceProvider {
 	}
 
 	/**
+	 * Prepare the package resources.
+	 *
+	 * @return void
+	 */
+	protected function prepareResources()
+	{
+		$config = realpath(__DIR__.'/../../config/config.php');
+
+		$this->mergeConfigFrom($config, 'platform.pages');
+
+		$this->publishes([
+			$config => config_path('platform.pages.php'),
+		], 'config');
+	}
+
+	/**
 	 * Registers the not found error handler.
 	 *
 	 * @return void
@@ -82,7 +97,7 @@ class PagesServiceProvider extends ServiceProvider {
 		// Check the environment and app.debug settings
 		if ($this->app->environment() === 'production' || $this->app['config']['app.debug'] === false)
 		{
-			$notFound = $this->app['config']['platform/pages::not_found'];
+			$notFound = $this->app['config']->get('platform.pages.not_found');
 
 			if ( ! is_null($notFound))
 			{
