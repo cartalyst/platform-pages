@@ -40,13 +40,6 @@ class PagesController extends Controller {
 	protected $sentinel;
 
 	/**
-	 * The router instance.
-	 *
-	 * @var \Illuminate\Routing\Router
-	 */
-	protected $router;
-
-	/**
 	 * Constructor.
 	 *
 	 * @param  \Platform\Pages\Repositories\PageRepositoryInterface
@@ -54,15 +47,13 @@ class PagesController extends Controller {
 	 * @param  \Illuminate\Routing\Router
 	 * @return void
 	 */
-	public function __construct(PageRepositoryInterface $pages, Sentinel $sentinel, Router $router)
+	public function __construct(PageRepositoryInterface $pages, Sentinel $sentinel)
 	{
 		parent::__construct();
 
 		$this->sentinel = $sentinel;
 
 		$this->pages = $pages;
-
-		$this->router = $router;
 	}
 
 	/**
@@ -74,7 +65,7 @@ class PagesController extends Controller {
 	public function page()
 	{
 		// Get the current uri
-		$slug = $this->router->current()->getUri();
+		$slug = static::$router->current()->getUri();
 
 		// Make sure we have a page slug
 		if ($slug === '/')
