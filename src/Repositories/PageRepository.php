@@ -445,7 +445,7 @@ class PageRepository implements PageRepositoryInterface {
 		$finder = $this->getFinder();
 		$finder->in($paths);
 		$finder->depth('< 3');
-		$finder->exclude(config('platform.pages.exclude'));
+		$finder->exclude(config('platform-pages.exclude'));
 		$finder->name(sprintf(
 			'/.*?\.(%s)/',
 			implode('|', array_map(function($extension)
@@ -498,7 +498,7 @@ class PageRepository implements PageRepositoryInterface {
 	{
 		if ( ! isset($this->theme[$type]))
 		{
-			$this->theme[$type] = $this->container['config']->get("platform.themes.{$type}.frontend");
+			$this->theme[$type] = $this->container['config']->get("platform-themes.{$type}.frontend");
 		}
 
 		return $this->theme[$type];

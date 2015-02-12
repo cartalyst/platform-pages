@@ -80,10 +80,10 @@ class PagesServiceProvider extends ServiceProvider {
 	{
 		$config = realpath(__DIR__.'/../../config/config.php');
 
-		$this->mergeConfigFrom($config, 'platform.pages');
+		$this->mergeConfigFrom($config, 'platform-pages');
 
 		$this->publishes([
-			$config => config_path('platform.pages.php'),
+			$config => config_path('platform-pages.php'),
 		], 'config');
 	}
 

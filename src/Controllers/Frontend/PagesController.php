@@ -70,7 +70,7 @@ class PagesController extends Controller {
 		// Make sure we have a page slug
 		if ($slug === '/')
 		{
-			$slug = config('platform.pages.default_page');
+			$slug = config('platform-pages.default_page');
 		}
 
 		// Find the requested page
