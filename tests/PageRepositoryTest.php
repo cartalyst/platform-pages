@@ -458,6 +458,11 @@ class PageRepositoryTest extends IlluminateTestCase {
 			->once()
 			->andReturn(2);
 
+		$menu->shouldReceive('getAttribute')
+			->with('slug')
+			->once()
+			->andReturn('foo');
+
 		$menu->shouldReceive('getGuarded')
 			->once()
 			->andReturn([]);
