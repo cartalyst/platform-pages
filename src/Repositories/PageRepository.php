@@ -645,7 +645,7 @@ class PageRepository implements PageRepositoryInterface {
 					if ($createMenu)
 					{
 						$pageMenu = $this->container['platform.menus']->createModel([
-							'slug'    => $page->slug,
+							'slug'    => $destination->slug.'-'.$page->slug,
 							'name'    => $page->name,
 							'uri'     => $page->uri,
 							'type'    => 'page',
