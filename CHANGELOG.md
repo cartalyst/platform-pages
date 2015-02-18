@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.4 - 2015-02-18
+
+`FIXED`
+
+- Prefixed page menus with the menu slug.
+
 ### v1.0.3 - 2015-01-29
 
 `FIXED`
