@@ -56,6 +56,9 @@ class FrontendPagesControllerTest extends IlluminateTestCase {
 		$this->menus = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
 		$this->roles = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
 
+		// Set the router
+		PagesController::setRouter($this->app['router']);
+
 		// Pages Controller
 		$this->controller = new PagesController($this->pages, $this->app['sentinel'], $this->app['router']);
 	}
@@ -207,7 +210,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase {
 			->andReturn('/');
 
 		$this->app['config']->shouldReceive('get')
-			->with('platform/pages::default_page', '')
+			->with('platform-pages.default_page', '')
 			->once()
 			->andReturn('foo');
 

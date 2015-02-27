@@ -276,7 +276,12 @@ class AdminPagesControllerTest extends IlluminateTestCase {
 			->with(1)
 			->once();
 
-		$this->assertContains('Success', (string) $this->controller->executeAction());
+		$this->app['response']
+			->shouldReceive('make')
+			->with('Success', 200, [])
+			->once();
+
+		$this->controller->executeAction();
 	}
 
 	/** @test */
@@ -287,7 +292,12 @@ class AdminPagesControllerTest extends IlluminateTestCase {
 			->once()
 			->andReturn('foobar');
 
-		$this->assertContains('Failed', (string) $this->controller->executeAction());
+		$this->app['response']
+			->shouldReceive('make')
+			->with('Failed', 500, [])
+			->once();
+
+		$this->controller->executeAction();
 	}
 
 }

@@ -111,7 +111,7 @@ class PageModelTest extends IlluminateTestCase {
 
 		$this->app['config'] = m::mock('Illuminate\Config\Repository');
 		$this->app['config']->shouldReceive('get')
-			->with('platform/pages::default_template', '')
+			->with('platform-pages.default_template', '')
 			->once()
 			->andReturn($defaultTemplate);
 
@@ -132,7 +132,7 @@ class PageModelTest extends IlluminateTestCase {
 
 		$this->app['config'] = m::mock('Illuminate\Config\Repository');
 		$this->app['config']->shouldReceive('get')
-			->with('platform/pages::default_section', '')
+			->with('platform-pages.default_section', '')
 			->once()
 			->andReturn($defaultSection);
 
