@@ -50,10 +50,10 @@
 		"platform/foundation": "2.0.*"
 	},
 	"require-dev": {
-		"cartalyst/testing": "~1.0",
+		"cartalyst/testing": "~1.1",
 		"patchwork/utf8": "~1.1",
-		"platform/menus": "1.0.*",
-		"platform/users": "1.0.*"
+		"platform/menus": "2.0.*",
+		"platform/users": "2.0.*"
 	},
 	"autoload": {
 		"classmap": [
