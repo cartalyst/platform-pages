@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.5 - 2015-04-20
+
+`FIXED`
+
+- Missing use statement caused incorrect behavior on 404 handling.
+
 ### v1.0.4 - 2015-02-18
 
 `FIXED`
