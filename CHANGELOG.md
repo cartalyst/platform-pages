@@ -11,9 +11,30 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v2.0.1 - 2015-04-23
+
+`FIXED`
+
+- Missing use statement caused incorrect behavior on 404 handling.
+- Fixed issue where a page was not being found after it's uri was changed.
+
 ### v2.0.0 - 2015-03-05
 
 - Updated for Platform 3.
+
+=======
+
+### v1.0.6 - 2015-04-23
+
+`FIXED`
+
+- Fixed issue where a page was not being found after it's uri was changed.
+
+### v1.0.5 - 2015-04-20
+
+`FIXED`
+
+- Missing use statement caused incorrect behavior on 404 handling.
 
 ### v1.0.4 - 2015-02-18
 
