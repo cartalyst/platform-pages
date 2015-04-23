@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.6 - 2015-04-23
+
+`FIXED`
+
+- Fixed issue where a page was not being found after it's uri was changed.
+
 ### v1.0.5 - 2015-04-20
 
 `FIXED`
