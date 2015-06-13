@@ -26,7 +26,7 @@ class DataHandler implements DataHandlerInterface {
 	{
 		$data['roles'] = array_get($data, 'roles', []);
 
-		if ($data['uri'] !== '/')
+		if (isset($data['uri']) && $data['uri'] !== '/')
 		{
 			$data['uri'] = trim($data['uri'], '/');
 		}
