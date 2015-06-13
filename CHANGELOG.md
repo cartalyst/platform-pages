@@ -11,6 +11,13 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v1.0.7 - 2015-06-13
+
+`FIXED`
+
+- Issue where the `uri` was not set on the data passed to the data handler.
+- Bulk delete selector listener.
+
 ### v1.0.6 - 2015-04-23
 
 `FIXED`
