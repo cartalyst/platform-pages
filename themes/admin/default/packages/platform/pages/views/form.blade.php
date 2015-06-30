@@ -26,7 +26,7 @@
 @parent
 @stop
 
-{{-- Page --}}
+{{-- Page content --}}
 @section('page')
 <section class="panel panel-default panel-tabs">
 
@@ -98,7 +98,7 @@
 
 				{{-- Form: Tabs --}}
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="active" role="presentation"><a href="#general-tab" aria-controls="general" role="tab" data-toggle="tab">{{{ trans('platform/pages::common.tabs.general') }}}</a></li>
+					<li class="active" role="presentation"><a href="#general-tab" aria-controls="general-tab" role="tab" data-toggle="tab">{{{ trans('platform/pages::common.tabs.general') }}}</a></li>
 					<li role="presentation"><a href="#visiblity-tab" aria-controls="visiblity-tab" role="tab" data-toggle="tab">{{{ trans('platform/pages::common.tabs.access') }}}</a></li>
 					<li role="presentation"><a href="#navigation-tab" aria-controls="navigation-tab" role="tab" data-toggle="tab">{{{ trans('platform/pages::common.tabs.navigation') }}}</a></li>
 					<li role="presentation"><a href="#tags-tab" aria-controls="tag" role="tabs-tab" data-toggle="tab">{{{ trans('platform/pages::common.tabs.tags') }}}</a></li>
@@ -107,7 +107,7 @@
 
 				<div class="tab-content">
 
-					{{-- Form: General --}}
+					{{-- Tab: General --}}
 					<div role="tabpanel" class="tab-pane fade in active" id="general-tab">
 
 						<fieldset>
@@ -356,7 +356,7 @@
 
 					</div>
 
-					{{-- Form: Access --}}
+					{{-- Tab: Access --}}
 					<div role="tabpanel" class="tab-pane fade" id="visiblity-tab">
 
 						<fieldset>
@@ -401,7 +401,7 @@
 
 					</div>
 
-					{{-- Form: Navigation --}}
+					{{-- Tab: Navigation --}}
 					<div role="tabpanel" class="tab-pane fade" id="navigation-tab">
 
 						<fieldset>
@@ -434,7 +434,7 @@
 
 				</div>
 
-				{{-- Form: Tags --}}
+				{{-- Tab: Tags --}}
 				<div role="tabpanel" class="tab-pane fade" id="tags-tab">
 
 					<fieldset>
@@ -447,7 +447,7 @@
 
 				</div>
 
-				{{-- Form: Attributes --}}
+				{{-- Tab: Attributes --}}
 				<div role="tabpanel" class="tab-pane fade" id="attributes-tab">
 
 					@attributes($page)
