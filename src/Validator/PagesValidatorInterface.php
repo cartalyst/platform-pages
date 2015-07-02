@@ -1,4 +1,5 @@
-<?php namespace Platform\Pages\Validator;
+<?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,20 +11,21 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-interface PagesValidatorInterface {
+namespace Platform\Pages\Validator;
 
-	/**
-	 * Updating a page scenario.
-	 *
-	 * @return void
-	 */
-	public function onUpdate();
-
+interface PagesValidatorInterface
+{
+    /**
+     * Updating a page scenario.
+     *
+     * @return void
+     */
+    public function onUpdate();
 }

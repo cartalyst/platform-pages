@@ -1,4 +1,5 @@
-<?php namespace Platform\Pages\Handlers;
+<?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,28 +11,28 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-class DataHandler implements DataHandlerInterface {
+namespace Platform\Pages\Handlers;
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function prepare(array $data)
-	{
-		$data['roles'] = array_get($data, 'roles', []);
+class DataHandler implements DataHandlerInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function prepare(array $data)
+    {
+        $data['roles'] = array_get($data, 'roles', []);
 
-		if (isset($data['uri']) && $data['uri'] !== '/')
-		{
-			$data['uri'] = trim($data['uri'], '/');
-		}
+        if (isset($data['uri']) && $data['uri'] !== '/') {
+            $data['uri'] = trim($data['uri'], '/');
+        }
 
-		return $data;
-	}
-
+        return $data;
+    }
 }

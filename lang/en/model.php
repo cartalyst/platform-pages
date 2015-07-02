@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -19,72 +20,72 @@
 
 return [
 
-	'general' => [
+    'general' => [
 
-		'legend'        => 'Details',
+        'legend'        => 'Details',
 
-		'name'          => 'Name',
-		'name_help'     => 'Type a descriptive name for your page.',
+        'name'          => 'Name',
+        'name_help'     => 'Type a descriptive name for your page.',
 
-		'slug'          => 'Slug',
-		'slug_help'     => 'Single word, no spaces, no special words. Dashes are allowed.',
+        'slug'          => 'Slug',
+        'slug_help'     => 'Single word, no spaces, no special words. Dashes are allowed.',
 
-		'uri'           => 'Uri',
-		'uri_help'      => 'Your page uri.',
+        'uri'           => 'Uri',
+        'uri_help'      => 'Your page uri.',
 
-		'https'         => 'Https',
-		'https_help'    => 'Should this page be presented over HTTPS?',
+        'https'         => 'Https',
+        'https_help'    => 'Should this page be presented over HTTPS?',
 
-		'enabled'       => 'Status',
-		'enabled_help'  => 'What is the status of this page?',
+        'enabled'       => 'Status',
+        'enabled_help'  => 'What is the status of this page?',
 
-		'type'          => 'Storage Type',
-		'type_help'     => 'How do you want to store and edit this page?',
+        'type'          => 'Storage Type',
+        'type_help'     => 'How do you want to store and edit this page?',
 
-		'database'      => 'Database',
-		'filesystem'    => 'Filesystem',
+        'database'      => 'Database',
+        'filesystem'    => 'Filesystem',
 
-		'template'      => 'Template',
-		'template_help' => 'Page template to use.',
+        'template'      => 'Template',
+        'template_help' => 'Page template to use.',
 
-		'section'       => 'Section',
-		'section_help'  => 'Which @section() to inject value to?',
+        'section'       => 'Section',
+        'section_help'  => 'Which @section() to inject value to?',
 
-		'value'         => 'Markup',
-		'value_help'    => "The page's markup. @content call is allowed.",
+        'value'         => 'Markup',
+        'value_help'    => "The page's markup. @content call is allowed.",
 
-		'file'          => 'File',
-		'file_help'     => 'Choose the file to use when rendering this page.',
+        'file'          => 'File',
+        'file_help'     => 'Choose the file to use when rendering this page.',
 
-	],
+    ],
 
-	'access' => [
+    'access' => [
 
-		'legend'          => 'Access Control',
+        'legend'          => 'Access Control',
 
-		'visibility'      => 'Visibility',
-		'visibility_help' => 'Select when this page can be accessed.',
+        'visibility'      => 'Visibility',
+        'visibility_help' => 'Select when this page can be accessed.',
 
-		'always'          => 'Show Always',
-		'logged_in'       => 'Logged In',
-		'logged_out'      => 'Logged Out',
-		'admin'           => 'Admin Only',
+        'always'          => 'Show Always',
+        'logged_in'       => 'Logged In',
+        'logged_out'      => 'Logged Out',
+        'admin'           => 'Admin Only',
 
-		'roles'           => 'Roles',
-		'roles_help'      => 'Restrict access to user roles.',
+        'roles'           => 'Roles',
+        'roles_help'      => 'Restrict access to user roles.',
 
-	],
+    ],
 
-	'navigation' => [
+    'navigation' => [
 
-		'legend'      => 'Navigation',
+        'legend'      => 'Navigation',
 
-		'menu'        => 'Menu',
-		'menu_help'   => 'Add this page to your navigation.',
+        'menu'        => 'Menu',
+        'menu_help'   => 'Add this page to your navigation.',
 
-		'select_menu' => '-- Select a Menu --',
-		'top_level'   => '-- Top Level --',
+        'select_menu' => '-- Select a Menu --',
+        'top_level'   => '-- Top Level --',
 
-	],
+    ],
 
 ];

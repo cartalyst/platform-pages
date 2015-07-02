@@ -1,4 +1,5 @@
-<?php namespace Platform\Pages\Validator;
+<?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,38 +11,39 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+namespace Platform\Pages\Validator;
+
 use Cartalyst\Support\Validator;
 
-class PagesValidator extends Validator implements PagesValidatorInterface {
+class PagesValidator extends Validator implements PagesValidatorInterface
+{
+    /**
+     * {@inheritDoc}
+     */
+    protected $rules = [
+        'name'       => 'required|max:255',
+        'slug'       => 'required|max:255|unique:pages',
+        'uri'        => 'required|max:255|unique:pages',
+        'enabled'    => 'required',
+        'type'       => 'required|in:database,filesystem',
+        'visibility' => 'required|in:always,logged_in,admin',
+        'template'   => 'required_if:type,database',
+        'file'       => 'required_if:type,filesystem',
+    ];
 
-	/**
-	 * {@inheritDoc}
-	 */
-	protected $rules = [
-		'name'       => 'required|max:255',
-		'slug'       => 'required|max:255|unique:pages',
-		'uri'        => 'required|max:255|unique:pages',
-		'enabled'    => 'required',
-		'type'       => 'required|in:database,filesystem',
-		'visibility' => 'required|in:always,logged_in,admin',
-		'template'   => 'required_if:type,database',
-		'file'       => 'required_if:type,filesystem',
-	];
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function onUpdate()
-	{
-		$this->rules['slug'] .= ',slug,{slug},slug';
-		$this->rules['uri'] .= ',uri,{uri},uri';
-	}
-
+    /**
+     * {@inheritDoc}
+     */
+    public function onUpdate()
+    {
+        $this->rules['slug'] .= ',slug,{slug},slug';
+        $this->rules['uri'] .= ',uri,{uri},uri';
+    }
 }

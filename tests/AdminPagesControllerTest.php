@@ -1,4 +1,5 @@
-<?php namespace Platform\Pages\Tests;
+<?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,12 +11,14 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
+
+namespace Platform\Pages\Tests;
 
 use Mockery as m;
 use Platform\Menus\Models\Menu;
@@ -23,281 +26,280 @@ use Platform\Pages\Models\Page;
 use Cartalyst\Testing\IlluminateTestCase;
 use Platform\Pages\Controllers\Admin\PagesController;
 
-class AdminPagesControllerTest extends IlluminateTestCase {
-
-	/**
-	 * Controller instance.
-	 *
-	 * @var \Platform\Pages\Controllers\Admin\PagesController
-	 */
-	protected $controller;
-
-	/**
-	 * Setup.
-	 *
-	 * @return void
-	 */
-	public function setUp()
-	{
-		parent::setUp();
-
-		// Admin Controller expectations
-		$this->app['sentinel']->shouldReceive('getUser');
-		$this->app['view']->shouldReceive('share');
-
-		// Pages Repository
-		$this->pages = m::mock('Platform\Pages\Repositories\PageRepositoryInterface');
+class AdminPagesControllerTest extends IlluminateTestCase
+{
+    /**
+     * Controller instance.
+     *
+     * @var \Platform\Pages\Controllers\Admin\PagesController
+     */
+    protected $controller;
+
+    /**
+     * Setup.
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+
+        // Admin Controller expectations
+        $this->app['sentinel']->shouldReceive('getUser');
+        $this->app['view']->shouldReceive('share');
+
+        // Pages Repository
+        $this->pages = m::mock('Platform\Pages\Repositories\PageRepositoryInterface');
+
+        // Additional repositories
+        $this->menus = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
+        $this->roles = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
+
+        // Pages Controller
+        $this->controller = new PagesController($this->pages);
+    }
+
+    /** @test */
+    public function index_route()
+    {
+        $this->pages->shouldReceive('getAllTags')
+            ->once();
+
+        $this->app['view']->shouldReceive('make')
+            ->once();
+
+        $this->controller->index();
+    }
+
+    /** @test */
+    public function create_route()
+    {
+        $this->app['view']->shouldReceive('make')
+            ->once();
+
+        $this->pages->shouldReceive('getPreparedPage')
+            ->once()
+            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+
+        $this->controller->create();
+    }
+
+    /** @test */
+    public function edit_route()
+    {
+        $this->app['view']->shouldReceive('make')
+            ->once();
 
-		// Additional repositories
-		$this->menus = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
-		$this->roles = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
+        $this->pages->shouldReceive('getPreparedPage')
+            ->once()
+            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
 
-		// Pages Controller
-		$this->controller = new PagesController($this->pages);
-	}
+        $this->controller->edit(1);
+    }
 
-	/** @test */
-	public function index_route()
-	{
-		$this->pages->shouldReceive('getAllTags')
-			->once();
+    /** @test */
+    public function edit_non_existing()
+    {
+        $this->pages->shouldReceive('getPreparedPage')
+            ->once();
 
-		$this->app['view']->shouldReceive('make')
-			->once();
-
-		$this->controller->index();
-	}
+        $this->app['alerts']->shouldReceive('error')
+            ->once();
 
-	/** @test */
-	public function create_route()
-	{
-		$this->app['view']->shouldReceive('make')
-			->once();
+        $this->app['translator']->shouldReceive('trans')
+            ->once();
 
-		$this->pages->shouldReceive('getPreparedPage')
-			->once()
-			->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+        $this->app['redirect']->shouldReceive('toAdmin')
+            ->once()
+            ->andReturn($response = m::mock('Illuminate\Response\Response'));
 
-		$this->controller->create();
-	}
+        $this->pages->shouldReceive('find');
 
-	/** @test */
-	public function edit_route()
-	{
-		$this->app['view']->shouldReceive('make')
-			->once();
+        $this->controller->edit(1);
+    }
 
-		$this->pages->shouldReceive('getPreparedPage')
-			->once()
-			->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+    /** @test */
+    public function datagrid()
+    {
+        $this->app['datagrid']->shouldReceive('make')
+            ->once();
 
-		$this->controller->edit(1);
-	}
+        $this->pages->shouldReceive('grid')
+            ->once();
 
-	/** @test */
-	public function edit_non_existing()
-	{
-		$this->pages->shouldReceive('getPreparedPage')
-			->once();
+        $this->controller->grid();
+    }
 
-		$this->app['alerts']->shouldReceive('error')
-			->once();
+    /** @test */
+    public function store()
+    {
+        $this->app['alerts']->shouldReceive('success');
 
-		$this->app['translator']->shouldReceive('trans')
-			->once();
+        $this->app['translator']->shouldReceive('trans');
 
-		$this->app['redirect']->shouldReceive('toAdmin')
-			->once()
-			->andReturn($response = m::mock('Illuminate\Response\Response'));
+        $this->app['request']->shouldReceive('all')
+            ->once()
+            ->andReturn(['slug' => 'foo']);
 
-		$this->pages->shouldReceive('find');
+        $this->app['redirect']->shouldReceive('route')
+            ->once();
 
-		$this->controller->edit(1);
-	}
+        $message = m::mock('Illuminate\Support\MessageBag');
 
-	/** @test */
-	public function datagrid()
-	{
-		$this->app['datagrid']->shouldReceive('make')
-			->once();
+        $message->shouldReceive('isEmpty')
+            ->once()
+            ->andReturn(true);
 
-		$this->pages->shouldReceive('grid')
-			->once();
+        $this->pages->shouldReceive('store')
+            ->once()
+            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
 
-		$this->controller->grid();
-	}
+        $this->controller->store();
+    }
 
-	/** @test */
-	public function store()
-	{
-		$this->app['alerts']->shouldReceive('success');
+    /** @test */
+    public function update_route()
+    {
+        $this->app['alerts']->shouldReceive('success');
 
-		$this->app['translator']->shouldReceive('trans');
+        $this->app['translator']->shouldReceive('trans');
 
-		$this->app['request']->shouldReceive('all')
-			->once()
-			->andReturn(['slug' => 'foo']);
+        $this->app['request']->shouldReceive('all')
+            ->once()
+            ->andReturn(['slug' => 'foo']);
 
-		$this->app['redirect']->shouldReceive('route')
-			->once();
+        $this->app['redirect']->shouldReceive('route')
+            ->once();
 
-		$message = m::mock('Illuminate\Support\MessageBag');
+        $message = m::mock('Illuminate\Support\MessageBag');
 
-		$message->shouldReceive('isEmpty')
-			->once()
-			->andReturn(true);
+        $message->shouldReceive('isEmpty')
+            ->once()
+            ->andReturn(true);
 
-		$this->pages->shouldReceive('store')
-			->once()
-			->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
+        $this->pages->shouldReceive('store')
+            ->once()
+            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
 
-		$this->controller->store();
-	}
+        $this->controller->update(1);
+    }
 
-	/** @test */
-	public function update_route()
-	{
-		$this->app['alerts']->shouldReceive('success');
+    /** @test */
+    public function update_invalid_route()
+    {
+        $this->app['alerts']->shouldReceive('error');
 
-		$this->app['translator']->shouldReceive('trans');
+        $this->app['translator']->shouldReceive('trans');
 
-		$this->app['request']->shouldReceive('all')
-			->once()
-			->andReturn(['slug' => 'foo']);
+        $this->app['redirect']->shouldReceive('back')
+            ->once()
+            ->andReturn($this->app['redirect']);
 
-		$this->app['redirect']->shouldReceive('route')
-			->once();
+        $this->app['redirect']->shouldReceive('withInput')
+            ->once()
+            ->andReturn($this->app['redirect']);
 
-		$message = m::mock('Illuminate\Support\MessageBag');
+        $this->app['request']->shouldReceive('all')
+            ->once()
+            ->andReturn(['slug' => 'foo']);
 
-		$message->shouldReceive('isEmpty')
-			->once()
-			->andReturn(true);
+        $message = m::mock('Illuminate\Support\MessageBag');
 
-		$this->pages->shouldReceive('store')
-			->once()
-			->andReturn([$message ,$model = m::mock('Platform\Pages\Models\Page')]);
+        $message->shouldReceive('isEmpty')
+            ->once()
+            ->andReturn(false);
 
-		$this->controller->update(1);
-	}
+        $this->pages->shouldReceive('store')
+            ->once()
+            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
 
-	/** @test */
-	public function update_invalid_route()
-	{
-		$this->app['alerts']->shouldReceive('error');
+        $this->controller->update(1);
+    }
 
-		$this->app['translator']->shouldReceive('trans');
+    /** @test */
+    public function delete_route()
+    {
+        $this->app['alerts']->shouldReceive('success');
 
-		$this->app['redirect']->shouldReceive('back')
-			->once()
-			->andReturn($this->app['redirect']);
+        $this->app['translator']->shouldReceive('trans');
 
-		$this->app['redirect']->shouldReceive('withInput')
-			->once()
-			->andReturn($this->app['redirect']);
+        $this->app['redirect']->shouldReceive('route')
+            ->once();
 
-		$this->app['request']->shouldReceive('all')
-			->once()
-			->andReturn(['slug' => 'foo']);
+        $this->pages->shouldReceive('delete')
+            ->once()
+            ->andReturn(true);
 
-		$message = m::mock('Illuminate\Support\MessageBag');
+        $this->controller->delete(1);
+    }
 
-		$message->shouldReceive('isEmpty')
-			->once()
-			->andReturn(false);
+    /** @test */
+    public function delete_not_existing_route()
+    {
+        $this->app['alerts']->shouldReceive('error');
 
-		$this->pages->shouldReceive('store')
-			->once()
-			->andReturn([$message ,$model = m::mock('Platform\Pages\Models\Page')]);
+        $this->app['translator']->shouldReceive('trans');
 
-		$this->controller->update(1);
-	}
+        $this->app['redirect']->shouldReceive('route')
+            ->once();
 
-	/** @test */
-	public function delete_route()
-	{
-		$this->app['alerts']->shouldReceive('success');
+        $this->pages->shouldReceive('delete')
+            ->once();
 
-		$this->app['translator']->shouldReceive('trans');
+        $this->controller->delete(1);
+    }
 
-		$this->app['redirect']->shouldReceive('route')
-			->once();
+    /** @test */
+    public function copy_route()
+    {
+        $this->app['view']->shouldReceive('make')
+            ->once();
 
-		$this->pages->shouldReceive('delete')
-			->once()
-			->andReturn(true);
+        $this->pages->shouldReceive('getPreparedPage')
+            ->once()
+            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
 
-		$this->controller->delete(1);
-	}
+        $this->controller->copy(1);
+    }
 
-	/** @test */
-	public function delete_not_existing_route()
-	{
-		$this->app['alerts']->shouldReceive('error');
+    /** @test */
+    public function execute_action()
+    {
+        $this->app['request']->shouldReceive('input')
+            ->with('action')
+            ->once()
+            ->andReturn('delete');
 
-		$this->app['translator']->shouldReceive('trans');
+        $this->app['request']->shouldReceive('input')
+            ->with('rows', [])
+            ->once()
+            ->andReturn([1]);
 
-		$this->app['redirect']->shouldReceive('route')
-			->once();
+        $this->pages->shouldReceive('delete')
+            ->with(1)
+            ->once();
 
-		$this->pages->shouldReceive('delete')
-			->once();
+        $this->app['response']
+            ->shouldReceive('make')
+            ->with('Success', 200, [])
+            ->once();
 
-		$this->controller->delete(1);
-	}
+        $this->controller->executeAction();
+    }
 
-	/** @test */
-	public function copy_route()
-	{
-		$this->app['view']->shouldReceive('make')
-			->once();
+    /** @test */
+    public function execute_non_existing_action()
+    {
+        $this->app['request']->shouldReceive('input')
+            ->with('action')
+            ->once()
+            ->andReturn('foobar');
 
-		$this->pages->shouldReceive('getPreparedPage')
-			->once()
-			->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+        $this->app['response']
+            ->shouldReceive('make')
+            ->with('Failed', 500, [])
+            ->once();
 
-		$this->controller->copy(1);
-	}
-
-	/** @test */
-	public function execute_action()
-	{
-		$this->app['request']->shouldReceive('input')
-			->with('action')
-			->once()
-			->andReturn('delete');
-
-		$this->app['request']->shouldReceive('input')
-			->with('rows', [])
-			->once()
-			->andReturn([1]);
-
-		$this->pages->shouldReceive('delete')
-			->with(1)
-			->once();
-
-		$this->app['response']
-			->shouldReceive('make')
-			->with('Success', 200, [])
-			->once();
-
-		$this->controller->executeAction();
-	}
-
-	/** @test */
-	public function execute_non_existing_action()
-	{
-		$this->app['request']->shouldReceive('input')
-			->with('action')
-			->once()
-			->andReturn('foobar');
-
-		$this->app['response']
-			->shouldReceive('make')
-			->with('Failed', 500, [])
-			->once();
-
-		$this->controller->executeAction();
-	}
-
+        $this->controller->executeAction();
+    }
 }

@@ -426,7 +426,7 @@
 
 							@foreach ($menus as $item)
 							<div{!! ($menu->menu == $item->menu) ? null : ' class="hide"' !!} data-menu-parent="{!! $item->menu !!}">
-							@widget('platform/menus::dropdown.show', [$item->slug, 0, $menu->exists ? $menu->getParent()->id : null, ['id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'], ['0' => trans('platform/pages::model.navigation.top_level')]])
+							@dropdown('platform/menus::dropdown.show', [$item->slug, 0, $menu->exists ? $menu->getParent()->id : null, ['id' => 'parent_id', 'name' => "parent[{$item->menu}]", 'class' => 'form-control'], ['0' => trans('platform/pages::model.navigation.top_level')]])
 						</div>
 						@endforeach
 
@@ -439,7 +439,7 @@
 
 					<fieldset>
 
-							<legend>{{{ trans('platform/tags::model.tag.legend') }}}</legend>
+						<legend>{{{ trans('platform/tags::model.tag.legend') }}}</legend>
 
 						@tags($page, 'tags')
 

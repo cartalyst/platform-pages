@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -19,21 +20,21 @@
 
 return [
 
-	// General messages
-	'not_found' => 'Page [:id] does not exist.',
+    // General messages
+    'not_found' => 'Page [:id] does not exist.',
 
-	// Success messages
-	'success' => [
-		'create' => 'Page was successfully created.',
-		'update' => 'Page was successfully updated.',
-		'delete' => 'Page was successfully deleted.',
-	],
+    // Success messages
+    'success' => [
+        'create' => 'Page was successfully created.',
+        'update' => 'Page was successfully updated.',
+        'delete' => 'Page was successfully deleted.',
+    ],
 
-	// Error messages
-	'error' => [
-		'create' => 'There was an issue creating the page. Please try again.',
-		'update' => 'There was an issue updating the page. Please try again.',
-		'delete' => 'There was an issue deleting the page. Please try again.',
-	],
+    // Error messages
+    'error' => [
+        'create' => 'There was an issue creating the page. Please try again.',
+        'update' => 'There was an issue updating the page. Please try again.',
+        'delete' => 'There was an issue deleting the page. Please try again.',
+    ],
 
 ];

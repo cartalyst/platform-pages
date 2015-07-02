@@ -1,6 +1,6 @@
 <?php
-	$childId   = ! empty($child) ? "{$child->id}_%s" : 'new-child_%s';
-	$childName = ! empty($child) ? "children[{$child->id}]%s" : 'new-child_%s';
+    $childId   = ! empty($child) ? "{$child->id}_%s" : 'new-child_%s';
+    $childName = ! empty($child) ? "children[{$child->id}]%s" : 'new-child_%s';
 ?>
 
 <div class="form-group{{ (empty($child) || ( ! empty($child) and $child->type != 'page')) ? ' hide' : null }}" data-item-type="page">

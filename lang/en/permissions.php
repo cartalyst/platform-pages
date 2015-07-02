@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -19,10 +20,10 @@
 
 return [
 
-	'index'  => 'List Pages',
-	'create' => 'Create new Pages',
-	'copy'   => 'Copy Page',
-	'edit'   => 'Edit Pages',
-	'delete' => 'Delete Pages',
+    'index'  => 'List Pages',
+    'create' => 'Create new Pages',
+    'copy'   => 'Copy Page',
+    'edit'   => 'Edit Pages',
+    'delete' => 'Delete Pages',
 
 ];

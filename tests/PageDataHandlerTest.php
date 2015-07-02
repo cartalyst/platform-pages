@@ -1,4 +1,5 @@
-<?php namespace Platform\Pages\Tests;
+<?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,45 +11,46 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+namespace Platform\Pages\Tests;
+
 use PHPUnit_Framework_TestCase;
 use Platform\Pages\Handlers\DataHandler;
 
-class PageDataHandlerTest extends PHPUnit_Framework_TestCase {
+class PageDataHandlerTest extends PHPUnit_Framework_TestCase
+{
+    /**
+     * Model instance.
+     *
+     * @var \Platform\Pages\Handlers\DataHandler
+     */
+    protected $handler;
 
-	/**
-	 * Model instance.
-	 *
-	 * @var \Platform\Pages\Handlers\DataHandler
-	 */
-	protected $handler;
+    /**
+     * Setup.
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        $this->handler = new DataHandler;
+    }
 
-	/**
-	 * Setup.
-	 *
-	 * @return void
-	 */
-	public function setUp()
-	{
-		$this->handler = new DataHandler;
-	}
+    /** @test */
+    public function it_can_prepare_data()
+    {
+        $data = [];
 
-	/** @test */
-	public function it_can_prepare_data()
-	{
-		$data = [];
+        $expected = [
+            'roles' => [],
+        ];
 
-		$expected = [
-			'roles' => [],
-		];
-
-		$this->assertEquals($expected, $this->handler->prepare($data));
-	}
-
+        $this->assertEquals($expected, $this->handler->prepare($data));
+    }
 }

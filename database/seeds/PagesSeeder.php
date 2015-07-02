@@ -1,4 +1,5 @@
-<?php namespace Platform\Pages\Database\Seeds;
+<?php
+
 /**
  * Part of the Platform Pages extension.
  *
@@ -10,47 +11,48 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    2.0.3
+ * @version    3.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
+namespace Platform\Pages\Database\Seeds;
+
 use Illuminate\Database\Seeder;
 
-class PagesSeeder extends Seeder {
+class PagesSeeder extends Seeder
+{
+    /**
+     * {@inheritDoc}
+     */
+    public function run()
+    {
+        // Prologue.
+        $page = app('Platform\Pages\Models\Page')->create([
+            'name'             => 'About',
+            'slug'             => 'about',
+            'uri'              => '/about',
+            'visibility'       => 'always',
+            'meta_title'       => 'About',
+            'meta_description' => 'About Platform',
+            'type'             => 'filesystem',
+            'file'             => 'about',
+            'enabled'          => true,
+        ]);
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public function run()
-	{
-		// Prologue.
-		$page = app('Platform\Pages\Models\Page')->create([
-			'name'             => 'About',
-			'slug'             => 'about',
-			'uri'              => '/about',
-			'visibility'       => 'always',
-			'meta_title'       => 'About',
-			'meta_description' => 'About Platform',
-			'type'             => 'filesystem',
-			'file'             => 'about',
-			'enabled'          => true,
-		]);
-
-		// Default.
-		$page = app('Platform\Pages\Models\Page')->create([
-			'name'             => 'Welcome',
-			'slug'             => 'welcome',
-			'uri'              => '/',
-			'visibility'       => 'always',
-			'meta_title'       => 'Welcome',
-			'meta_description' => 'The default home page.',
-			'type'             => 'filesystem',
-			'file'             => 'welcome',
-			'enabled'          => true,
-		]);
-	}
-
+        // Default.
+        $page = app('Platform\Pages\Models\Page')->create([
+            'name'             => 'Welcome',
+            'slug'             => 'welcome',
+            'uri'              => '/',
+            'visibility'       => 'always',
+            'meta_title'       => 'Welcome',
+            'meta_description' => 'The default home page.',
+            'type'             => 'filesystem',
+            'file'             => 'welcome',
+            'enabled'          => true,
+        ]);
+    }
 }
