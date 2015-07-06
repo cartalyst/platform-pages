@@ -52,8 +52,8 @@
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
 		"patchwork/utf8": "~1.1",
-		"platform/menus": "2.0.*",
-		"platform/users": "2.0.*"
+		"platform/menus": "3.0.*",
+		"platform/users": "3.0.*"
 	},
 	"autoload": {
 		"classmap": [
