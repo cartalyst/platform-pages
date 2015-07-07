@@ -174,18 +174,13 @@ class FrontendPagesControllerTest extends IlluminateTestCase
         $role = new \stdClass;
         $role->id = 'foo';
 
-        $this->user->shouldReceive('getAttribute')
-            ->with('roles')
-            ->once()
-            ->andReturn([$role]);
-
         $model->shouldReceive('hasGetMutator')
             ->with('roles')
             ->andReturn('getRolesAttribute');
 
-        $model->shouldReceive('getRolesAttribute')
-            ->once()
-            ->andReturn(['foo']);
+        $model->shouldReceive('getAttributeValue')
+            ->with('roles')
+            ->once();
 
         $model->shouldReceive('getAttribute')
             ->atLeast()
@@ -319,9 +314,10 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->with('roles')
             ->andReturn('getRolesAttribute');
 
-        $model->shouldReceive('getRolesAttribute')
+        $model->shouldReceive('getAttributeValue')
+            ->with('roles')
             ->once()
-            ->andReturn(['foo']);
+            ->andReturn([]);
 
         $model->shouldReceive('getAttribute')
             ->atLeast()
