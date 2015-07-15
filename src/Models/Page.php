@@ -41,12 +41,19 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * {@inheritDoc}
      */
-    protected $guarded = [
-        'id',
-        'menu',
-        'parent',
-        'created_at',
-        'updated_at',
+    protected $fillable = [
+        'name',
+        'slug',
+        'uri',
+        'type',
+        'visibility',
+        'roles',
+        'template',
+        'section',
+        'value',
+        'file',
+        'enabled',
+        'https',
     ];
 
     /**
