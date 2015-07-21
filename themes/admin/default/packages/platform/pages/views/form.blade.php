@@ -14,7 +14,6 @@
 {{ Asset::queue('validate', 'platform/js/validate.js', 'jquery') }}
 {{ Asset::queue('selectize', 'selectize/js/selectize.js', 'jquery') }}
 {{ Asset::queue('redactor', 'redactor/js/redactor.min.js', 'jquery') }}
-{{ Asset::queue('redactor-image-manager', 'redactor/js/redactor.min.js', 'redactor') }}
 {{ Asset::queue('form', 'platform/pages::js/form.js', 'platform') }}
 
 {{-- Inline styles --}}
