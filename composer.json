@@ -51,7 +51,7 @@
 	},
 	"require-dev": {
 		"illuminate/database": "5.0.*",
-		"cartalyst/testing": "~2.0",
+		"cartalyst/testing": "~2.0@dev",
 		"patchwork/utf8": "~1.1",
 		"platform/menus": "2.0.*",
 		"platform/users": "2.0.*"
@@ -71,5 +71,5 @@
 			"dev-master": "2.0.x-dev"
 		}
 	},
-	"minimum-stability": "dev"
+	"minimum-stability": "stable"
 }
