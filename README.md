@@ -1,6 +1,6 @@
 # Pages
 
-[![Build Status](http://ci.cartalyst.com/build-status/svg/25)](http://ci.cartalyst.com/build-status/view/25)
+[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-pages.svg?token=98Zt8zYdwyheTKqziswS&branch=1.0)](https://magnum.travis-ci.com/cartalyst/platform-pages)
 
 The pages extension can maintain and publish pages to be used through out your application.
 
