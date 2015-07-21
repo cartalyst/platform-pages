@@ -53,7 +53,7 @@
 		"illuminate/database": "5.0.*",
 		"cartalyst/testing": "~2.0@dev",
 		"patchwork/utf8": "~1.1",
-		"platform/menus": "2.1.*",
+		"platform/menus": "2.2.*",
 		"platform/users": "2.1.*"
 	},
 	"autoload": {
