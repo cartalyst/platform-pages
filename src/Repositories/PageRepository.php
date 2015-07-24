@@ -286,7 +286,7 @@ class PageRepository implements PageRepositoryInterface
         }
 
         // Get the submitted tags
-        $tags = array_pull($input, 'tags', []);
+        $tags = array_pull($input, 'tags');
 
         // Prepare the submitted data
         $data = $this->data->prepare($input);
@@ -297,7 +297,9 @@ class PageRepository implements PageRepositoryInterface
         // Check if the validation returned any errors
         if ($messages->isEmpty()) {
             // Set the tags on the page entry
-            $this->tags->set($page, $tags);
+            if ($tags) {
+           		$this->tags->set($page, $tags);
+            }
 
             // Update the page
             $page->fill($data)->save();
