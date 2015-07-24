@@ -45,16 +45,16 @@
 	"require": {
 		"php": ">=5.5.9",
 		"cartalyst/composer-installers": "1.2.*",
-		"platform/access": "3.0.*",
-		"platform/content": "3.0.*",
+		"platform/access": "3.1.*",
+		"platform/content": "3.1.*",
 		"platform/foundation": "3.0.*"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
 		"illuminate/database": "5.1.*",
 		"patchwork/utf8": "~1.1",
-		"platform/menus": "3.0.*",
-		"platform/users": "3.0.*"
+		"platform/menus": "3.1.*",
+		"platform/users": "3.1.*"
 	},
 	"autoload": {
 		"classmap": [
