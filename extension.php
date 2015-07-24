@@ -191,7 +191,7 @@ return [
 
 			foreach ($app['platform.pages']->findAllEnabled() as $page)
 			{
-				Route::get($page->uri, 'Frontend\PagesController@page');
+				Route::get($page->uri, ['as' => 'page.' . $page->slug, 'uses' => 'Frontend\PagesController@page']);
 			}
 		});
 	},
