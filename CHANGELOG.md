@@ -11,9 +11,29 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.1.0 - 2015-07-24
+
+`REVISED`
+
+- Use `fillable` instead of `guarded` on the model.
+
+`UPDATED`
+
+- Bumped `access`, `content` extensions' version.
+
 ### v3.0.0 - 2015-07-07
 
 - Updated for Platform 4.
+
+### v2.1.0 - 2015-07-20
+
+`REVISED`
+
+- Use `fillable` instead of `guarded` on the model.
+
+`UPDATED`
+
+- Bumped `access`, `content` extensions' version.
 
 ### v2.0.3 - 2015-06-30
 
@@ -38,6 +58,16 @@ We do not give estimated times for completion on `Accepted` Proposals.
 ### v2.0.0 - 2015-03-05
 
 - Updated for Platform 3.
+
+### v1.1.0 - 2015-07-16
+
+`REVISED`
+
+- Use `fillable` instead of `guarded` on the model.
+
+`UPDATED`
+
+- Bumped `access`, `content` extensions' version.
 
 ### v1.0.8 - 2015-06-30
 

@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    3.0.0
+ * @version    3.1.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2015, Cartalyst LLC
@@ -41,12 +41,19 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * {@inheritDoc}
      */
-    protected $guarded = [
-        'id',
-        'menu',
-        'parent',
-        'created_at',
-        'updated_at',
+    protected $fillable = [
+        'name',
+        'slug',
+        'uri',
+        'type',
+        'visibility',
+        'roles',
+        'template',
+        'section',
+        'value',
+        'file',
+        'enabled',
+        'https',
     ];
 
     /**
