@@ -96,7 +96,7 @@ class PagesController extends Controller
 
                 // If the user is not a 'superuser' we'll double check
                 // his permissions to allow or deny page visibility.
-                if (! $this->sentinel->hasAccess('superuser')) {
+                if (! $currentUser->hasAccess('superuser')) {
                     if ($page->visibility === 'admin' || ! empty($page->roles)) {
                         $canView = false;
 
