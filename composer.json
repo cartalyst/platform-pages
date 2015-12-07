@@ -45,9 +45,9 @@
 	"require": {
 		"php": ">=5.5.9",
 		"cartalyst/composer-installers": "1.2.*",
-		"platform/access": "3.2.*",
-		"platform/content": "~3.2",
-		"platform/foundation": "3.0.*"
+		"platform/access": "dev-feature/sentinel-3",
+		"platform/content": "dev-feature/sentinel-3",
+		"platform/foundation": "dev-feature/sentinel-3"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
