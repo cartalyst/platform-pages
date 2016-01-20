@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.2.0 - 2016-01-20
+
+`UPDATED`
+
+- Bumped `access`, `content` extensions' version.
+
 ### v3.1.0 - 2015-07-24
 
 `REVISED`
@@ -21,7 +27,7 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 - Bumped `access`, `content` extensions' version.
 
-### v3.0.0 - 2015-07-07
+### v3.0.0 - 2015-07-06
 
 - Updated for Platform 4.
 
