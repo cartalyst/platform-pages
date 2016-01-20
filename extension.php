@@ -166,31 +166,33 @@ return [
     */
 
     'routes' => function (ExtensionInterface $extension, Application $app) {
-        Route::group(['namespace' => 'Platform\Pages\Controllers'], function () use ($app) {
-            Route::group([
-                'prefix'    => admin_uri().'/pages',
-                'namespace' => 'Admin'
-            ], function () {
-                Route::get('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@index']);
-                Route::post('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@executeAction']);
+        if (! $app->routesAreCached()) {
+            Route::group(['namespace' => 'Platform\Pages\Controllers'], function () use ($app) {
+                Route::group([
+                    'prefix'    => admin_uri().'/pages',
+                    'namespace' => 'Admin'
+                ], function () {
+                    Route::get('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@index']);
+                    Route::post('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@executeAction']);
 
-                Route::get('grid', ['as' => 'admin.pages.grid', 'uses' => 'PagesController@grid']);
+                    Route::get('grid', ['as' => 'admin.pages.grid', 'uses' => 'PagesController@grid']);
 
-                Route::get('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@create']);
-                Route::post('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@store']);
+                    Route::get('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@create']);
+                    Route::post('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@store']);
 
-                Route::get('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@edit']);
-                Route::post('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@update']);
-                Route::delete('{id}', ['as' => 'admin.pages.delete', 'uses' => 'PagesController@delete']);
+                    Route::get('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@edit']);
+                    Route::post('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@update']);
+                    Route::delete('{id}', ['as' => 'admin.pages.delete', 'uses' => 'PagesController@delete']);
 
-                Route::get('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@copy']);
-                Route::post('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@store']);
+                    Route::get('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@copy']);
+                    Route::post('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@store']);
+                });
+
+                foreach ($app['platform.pages']->findAllEnabled() as $page) {
+                    Route::get($page->uri, 'Frontend\PagesController@page');
+                }
             });
-
-            foreach ($app['platform.pages']->findAllEnabled() as $page) {
-                Route::get($page->uri, 'Frontend\PagesController@page');
-            }
-        });
+        }
     },
 
     /*
