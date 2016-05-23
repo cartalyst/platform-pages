@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v3.2.1 - 2016-05-23
+
+`REVISED`
+
+- Loosened platform/content version constraint.
+
 ### v3.2.0 - 2016-01-20
 
 `REVISED`

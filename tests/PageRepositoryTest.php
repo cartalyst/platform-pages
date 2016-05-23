@@ -11,7 +11,7 @@
  * bundled with this package in the license.txt file.
  *
  * @package    Platform Pages extension
- * @version    3.2.0
+ * @version    3.2.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
