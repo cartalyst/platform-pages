@@ -1,75 +1,51 @@
 {
-	"name": "platform/pages",
-	"type": "platform-extension",
-	"description": "An extension to manage your website pages.",
-	"keywords": [
-		"cartalyst",
-		"platform",
-		"laravel",
-		"extension",
-		"pages"
-	],
-	"license": "proprietary",
-	"authors": [
-		{
-			"name": "Cartalyst LLC",
-			"email": "help@cartalyst.com"
-		},
-		{
-			"name": "Ben Corlett",
-			"email": "ben.corlett@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Bruno Gaspar",
-			"email": "bruno.gaspar@cartalyst.com",
-			"role": "Developer"
-		},
-		{
-			"name": "Dan Syme",
-			"email": "dan.syme@cartalyst.com",
-			"role": "Project Lead"
-		},
-		{
-			"name": "Suhayb Wardany",
-			"email": "su.wardany@cartalyst.com",
-			"role": "Developer"
-		}
-	],
-	"repositories": [
-		{
-			"type": "composer",
-			"url": "https://packages.cartalyst.com"
-		}
-	],
-	"require": {
-		"php": ">=5.5.9",
-		"cartalyst/composer-installers": "1.2.*",
-		"platform/access": "dev-feature/five",
-		"platform/content": "dev-feature/five",
-		"platform/foundation": "dev-feature/five"
-	},
-	"require-dev": {
-		"cartalyst/testing": "~2.0@dev",
-		"illuminate/database": "5.1.*",
-		"patchwork/utf8": "~1.1",
-		"platform/menus": "3.2.*",
-		"platform/users": "3.2.*"
-	},
-	"autoload": {
-		"classmap": [
-			"database/migrations",
-			"database/seeds"
-		],
-		"psr-4": {
-			"Platform\\Pages\\" : "src/"
-		}
-	},
-	"extra": {
-		"component": "extension",
-		"branch-alias": {
-			"dev-master": "3.2.x-dev"
-		}
-	},
-	"minimum-stability": "stable"
+    "name": "platform/pages",
+    "type": "platform-extension",
+    "description": "An extension to manage your website pages.",
+    "keywords": [
+        "cartalyst",
+        "platform",
+        "laravel",
+        "extension",
+        "pages"
+    ],
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Cartalyst LLC",
+            "email": "help@cartalyst.com",
+            "homepage": "https://cartalyst.com"
+        }
+    ],
+    "repositories": [
+        { "type": "composer", "url": "https://packages.cartalyst.com" }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "cartalyst/composer-installers": "1.2.*",
+        "platform/access": "dev-feature/five",
+        "platform/content": "dev-feature/five",
+        "platform/foundation": "dev-feature/five"
+    },
+    "require-dev": {
+        "cartalyst/testing": "~2.0@dev",
+        "illuminate/database": "5.1.*",
+        "patchwork/utf8": "~1.1",
+        "platform/menus": "3.2.*",
+        "platform/users": "3.2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "database/migrations",
+            "database/seeds"
+        ],
+        "psr-4": { "Platform\\Pages\\" : "src/" }
+    },
+    "extra": {
+        "component": "extension",
+        "branch-alias": {
+            "dev-master": "4.0.x-dev"
+        }
+    },
+    "minimum-stability": "stable"
 }
