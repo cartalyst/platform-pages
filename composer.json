@@ -47,7 +47,7 @@
 		"cartalyst/composer-installers": "1.2.*",
 		"platform/access": "3.2.*",
 		"platform/content": "~3.2",
-		"platform/foundation": "3.0.*"
+		"platform/foundation": "4.0.*"
 	},
 	"require-dev": {
 		"cartalyst/testing": "~2.0@dev",
