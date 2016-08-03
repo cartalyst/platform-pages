@@ -31,8 +31,8 @@
         "cartalyst/testing": "~2.0@dev",
         "illuminate/database": "5.1.*",
         "patchwork/utf8": "~1.1",
-        "platform/menus": "3.2.*",
-        "platform/users": "3.2.*"
+        "platform/menus": "~4.0",
+        "platform/users": "~4.0"
     },
     "autoload": {
         "classmap": [
