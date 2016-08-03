@@ -8,7 +8,7 @@ The best and easiest way to install the Pages extension is with [Composer](http:
 
 Open your `composer.json` file and add the following to the `require` array:
 
-	"platform/pages": "1.0.*"
+	"platform/pages": "2.0.*"
 
 Add the following lines after the `require` array on your `composer.json` file:
 
