@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    4.0.1
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
@@ -20,10 +20,14 @@
 
 return [
 
-    'index'  => 'List Pages',
-    'create' => 'Create new Pages',
-    'copy'   => 'Copy Page',
-    'edit'   => 'Edit Pages',
-    'delete' => 'Delete Pages',
+    'title'  => 'Pages',
+
+    'tabs' => [
+        'general'     => 'Page',
+        'access'      => 'Access',
+        'navigation'  => 'Navigation',
+        'tags'        => 'Tags',
+        'attributes'  => 'Attributes',
+    ],
 
 ];

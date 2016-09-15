@@ -1,6 +1,6 @@
 # Pages
 
-[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-pages.svg?token=98Zt8zYdwyheTKqziswS&branch=4.0)](https://magnum.travis-ci.com/cartalyst/platform-pages)
+[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-pages.svg?token=98Zt8zYdwyheTKqziswS&branch=5.0)](https://magnum.travis-ci.com/cartalyst/platform-pages)
 
 The pages extension can maintain and publish pages to be used through out your application.
 
@@ -8,19 +8,15 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, ro
 
 ## Documentation
 
-Reader-friendly Documentation can be found here. [Pages Manual](https://cartalyst.com/manual/platform-pages).
+Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/platform-pages/5.0).
 
-Raw files can be found via this projects docs/version branch.
-
-- [4.0](https://github.com/cartalyst/platform-pages/tree/docs/4.0)
-- [3.0](https://github.com/cartalyst/platform-pages/tree/docs/3.0)
-- [2.0](https://github.com/cartalyst/platform-pages/tree/docs/2.0)
-- [1.0](https://github.com/cartalyst/platform-pages/tree/docs/1.0)
+Raw files can be found [here](https://github.com/cartalyst/platform-pages/tree/docs/5.0).
 
 ## Change Log
 
 Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
 
+- [5.0](CHANGELOG.md) - TBA
 - [4.0](CHANGELOG.md) - 2016-08-03
 - [3.0](CHANGELOG.md) - 2015-07-06
 - [2.0](CHANGELOG.md) - 2015-03-05

@@ -126,7 +126,7 @@
 											{{{ trans('platform/pages::model.general.name') }}}
 										</label>
 
-										<input type="text" class="form-control" name="name" id="name" data-slugify="#slug" placeholder="{{{ trans('platform/pages::model.general.name') }}}" value="{{{ input()->old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
+										<input type="text" class="form-control" name="name" id="name" data-slugify="#slug" placeholder="{{{ trans('platform/pages::model.general.name') }}}" value="{{{ old('name', $page->name) }}}" required autofocus data-parsley-trigger="change">
 
 										<span class="help-block">{{{ Alert::onForm('name') }}}</span>
 
@@ -144,7 +144,7 @@
 											{{{ trans('platform/pages::model.general.slug') }}}
 										</label>
 
-										<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::model.general.slug') }}}" value="{{{ input()->old('slug', $page->slug) }}}" required data-parsley-trigger="change">
+										<input type="text" class="form-control" name="slug" id="slug" placeholder="{{{ trans('platform/pages::model.general.slug') }}}" value="{{{ old('slug', $page->slug) }}}" required data-parsley-trigger="change">
 
 										<span class="help-block">{{{ Alert::onForm('slug') }}}</span>
 

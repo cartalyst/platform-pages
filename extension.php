@@ -11,26 +11,44 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    4.0.1
+ * @version    5.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2016, Cartalyst LLC
  * @link       http://cartalyst.com
  */
 
-use Illuminate\Contracts\Foundation\Application;
 use Cartalyst\Extensions\ExtensionInterface;
 use Cartalyst\Settings\Repository as Settings;
+use Illuminate\Contracts\Foundation\Application;
 use Cartalyst\Permissions\Container as Permissions;
+use Illuminate\Contracts\Routing\Registrar as Router;
 
 return [
+
+    /*
+    |--------------------------------------------------------------------------
+    | Slug
+    |--------------------------------------------------------------------------
+    |
+    | This is the extension unique identifier and should not be
+    | changed as it will be recognized as a new extension.
+    |
+    | Note:
+    |
+    |   Ideally this should match the folder structure within the
+    |   extensions folder, however this is completely optional.
+    |
+    */
+
+    'slug' => 'platform/pages',
 
     /*
     |--------------------------------------------------------------------------
     | Name
     |--------------------------------------------------------------------------
     |
-    | Your extension name (it's only required for presentational purposes).
+    | This is the extension name, used mainly for presentational purposes.
     |
     */
 
@@ -38,18 +56,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Slug
+    | Description
     |--------------------------------------------------------------------------
     |
-    | Your extension unique identifier and should not be changed as
-    | it will be recognized as a whole new extension.
-    |
-    | Ideally, this should match the folder structure within the extensions
-    | folder, but this is completely optional.
+    | A brief sentence describing what the extension does.
     |
     */
 
-    'slug' => 'platform/pages',
+    'description' => 'An extension to manage your website pages.',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Version
+    |--------------------------------------------------------------------------
+    |
+    | This is the extension version and it should be set as a string
+    | so it can be used with the version_compare() function.
+    |
+    */
+
+    'version' => '5.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -64,43 +90,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Description
-    |--------------------------------------------------------------------------
-    |
-    | One or two sentences describing what the extension do for
-    | users to view when they are installing the extension.
-    |
-    */
-
-    'description' => 'An extension to manage your website pages.',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Version
-    |--------------------------------------------------------------------------
-    |
-    | Version should be a string that can be used with version_compare().
-    |
-    */
-
-    'version' => '4.0.1',
-
-    /*
-    |--------------------------------------------------------------------------
     | Requirements
     |--------------------------------------------------------------------------
     |
-    | List here all the extensions that this extension requires to work.
+    | Define here all the extensions that this extension depends on to work.
     |
-    | This is used in conjunction with composer, so you should put the
-    | same extension dependencies on your main composer.json require
-    | key, so that they get resolved using composer, however you
-    | can use without composer, at which point you'll have to
-    | ensure that the required extensions are available.
+    | Note:
+    |
+    |   This is used in conjunction with Composer, so you should put the
+    |   exact same dependencies on the extension composer.json require
+    |   array, so that they get resolved automatically by Composer.
+    |
+    |   However you can use without Composer, at which point you will
+    |   have to ensure that the required extensions are available!
     |
     */
 
-    'require' => [
+    'requires' => [
 
         'platform/access',
         'platform/content',
@@ -110,43 +116,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Autoload Logic
-    |--------------------------------------------------------------------------
-    |
-    | You can define here your extension autoloading logic, it may either
-    | be 'composer', 'platform' or a 'Closure'.
-    |
-    | If composer is defined, your composer.json file specifies the autoloading
-    | logic.
-    |
-    | If platform is defined, your extension receives convetion autoloading
-    | based on the Platform standards.
-    |
-    | If a Closure is defined, it should take two parameters as defined
-    | bellow:
-    |
-    |	object \Composer\Autoload\ClassLoader  $loader
-    |	object \Illuminate\Contracts\Foundation\Application  $app
-    |
-    | Supported: "composer", "platform", "Closure"
-    |
-    */
-
-    'autoload' => 'composer',
-
-    /*
-    |--------------------------------------------------------------------------
     | Service Providers
     |--------------------------------------------------------------------------
     |
-    | Define your extension service providers here. They will be dynamically
-    | registered without having to include them in app/config/app.php.
+    | Define here your extension service providers. They will be dynamically
+    | registered without having to include them in config/app.php file.
     |
     */
 
     'providers' => [
 
-        'Platform\Pages\Providers\PagesServiceProvider',
+        Platform\Pages\Providers\PagesServiceProvider::class,
 
     ],
 
@@ -160,36 +140,36 @@ return [
     |
     | The closure parameters are:
     |
+    |   object \Illuminate\Contracts\Routing\Registrar  $router
     |	object \Cartalyst\Extensions\ExtensionInterface  $extension
     |	object \Illuminate\Contracts\Foundation\Application  $app
     |
     */
 
-    'routes' => function (ExtensionInterface $extension, Application $app) {
+    'routes' => function (Router $router, ExtensionInterface $extension, Application $app) {
         if (! $app->routesAreCached()) {
-            Route::group(['namespace' => 'Platform\Pages\Controllers'], function () use ($app) {
-                Route::group([
-                    'prefix'    => admin_uri().'/pages',
-                    'namespace' => 'Admin'
-                ], function () {
-                    Route::get('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@index']);
-                    Route::post('/', ['as' => 'admin.pages.all', 'uses' => 'PagesController@executeAction']);
+            $router->group(['namespace' => 'Platform\Pages\Controllers'], function () use ($app) {
+                $router->group([
+                    'prefix' => admin_uri().'/pages', 'namespace' => 'Admin'
+                ], function (Router $router) {
+                    $router->get('/', 'PagesController@index')->name('admin.pages.all');
+                    $router->post('/', 'PagesController@executeAction')->name('admin.pages.all');
 
-                    Route::get('grid', ['as' => 'admin.pages.grid', 'uses' => 'PagesController@grid']);
+                    $router->get('grid', 'PagesController@grid')->name('admin.pages.grid');
 
-                    Route::get('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@create']);
-                    Route::post('create', ['as' => 'admin.pages.create', 'uses' => 'PagesController@store']);
+                    $router->get('create', 'PagesController@create')->name('admin.pages.create');
+                    $router->post('create', 'PagesController@store')->name('admin.pages.create');
 
-                    Route::get('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@edit']);
-                    Route::post('{id}', ['as' => 'admin.pages.edit', 'uses' => 'PagesController@update']);
-                    Route::delete('{id}', ['as' => 'admin.pages.delete', 'uses' => 'PagesController@delete']);
+                    $router->get('{id}', 'PagesController@edit')->name('admin.pages.edit');
+                    $router->post('{id}', 'PagesController@update')->name('admin.pages.edit');
+                    $router->delete('{id}', 'PagesController@delete')->name('admin.pages.delete');
 
-                    Route::get('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@copy']);
-                    Route::post('{id}/copy', ['as' => 'admin.pages.copy', 'uses' => 'PagesController@store']);
+                    $router->get('{id}/copy', 'PagesController@copy')->name('admin.pages.copy');
+                    $router->post('{id}/copy', 'PagesController@store')->name('admin.pages.copy');
                 });
 
                 foreach ($app['platform.pages']->findAllEnabled() as $page) {
-                    Route::get($page->uri, 'Frontend\PagesController@page');
+                    $router->get($page->uri, 'Frontend\PagesController@page');
                 }
             });
         }
@@ -206,6 +186,11 @@ return [
     |
     | For detailed instructions on how to register the permissions, please
     | refer to the following url https://cartalyst.com/manual/permissions
+    |
+    | The closure parameters are:
+    |
+    |   object \Cartalyst\Permissions\Container  $permissions
+    |	object \Illuminate\Contracts\Foundation\Application  $app
     |
     */
 
@@ -254,6 +239,11 @@ return [
     |
     | For detailed instructions on how to register the settings, please
     | refer to the following url https://cartalyst.com/manual/settings
+    |
+    | The closure parameters are:
+    |
+    |   object \Cartalyst\Settings\Repository  $settings
+    |	object \Illuminate\Contracts\Foundation\Application  $app
     |
     */
 
@@ -338,7 +328,7 @@ return [
     | extensions installed through the Operations extension.
     |
     | The default order (for extensions installed initially) can be
-    | found by editing the file "app/config/platform.php".
+    | found by editing the file "config/platform.php".
     |
     */
 
@@ -357,19 +347,5 @@ return [
         ],
 
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Widgets
-    |--------------------------------------------------------------------------
-    |
-    | Closure that is called when the extension is started. You can register
-    | all your custom widgets here. Of course, Platform will guess the
-    | widget class for you, this is just for custom widgets or if you
-    | do not wish to make a new class for a very small widget.
-    |
-    */
-
-    'widgets' => null,
 
 ];

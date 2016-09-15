@@ -1,7 +1,7 @@
 {
     "name": "platform/pages",
     "type": "platform-extension",
-    "description": "An extension to manage your website pages.",
+    "description": "A Platform 6 Extension to manage your website pages.",
     "keywords": [
         "cartalyst",
         "platform",
@@ -21,31 +21,32 @@
         { "type": "composer", "url": "https://packages.cartalyst.com" }
     ],
     "require": {
-        "php": ">=5.5.9",
+        "php": ">=5.6.4",
         "cartalyst/composer-installers": "1.2.*",
-        "platform/access": "4.0.*",
-        "platform/content": "4.0.*",
-        "platform/foundation": "4.0.*"
+        "platform/access": "dev-feature/six@dev",
+        "platform/content": "dev-feature/six@dev",
+        "platform/foundation": "dev-feature/six@dev"
     },
     "require-dev": {
         "cartalyst/testing": "~2.0@dev",
-        "illuminate/database": "5.1.*",
+        "illuminate/database": "5.3.*",
         "patchwork/utf8": "~1.1",
-        "platform/menus": "~4.0",
-        "platform/users": "~4.0"
+        "platform/menus": "dev-feature/six@dev",
+        "platform/users": "dev-feature/six@dev"
     },
     "autoload": {
         "classmap": [
-            "database/migrations",
-            "database/seeds"
+            "resources/database/migrations",
+            "resources/database/seeds"
         ],
         "psr-4": { "Platform\\Pages\\" : "src/" }
     },
     "extra": {
         "component": "extension",
         "branch-alias": {
-            "dev-master": "4.0.x-dev"
+            "dev-master": "5.0.x-dev"
         }
     },
-    "minimum-stability": "stable"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

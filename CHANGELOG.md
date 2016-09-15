@@ -11,11 +11,9 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
-### v4.0.1 - 2016-10-27
+### v5.0.0 - TBA
 
-`UPDATED`
-
-- Update index view to use the new Blade help widget.
+- Updated for Platform 6.
 
 ### v4.0.0 - 2016-08-03
 
