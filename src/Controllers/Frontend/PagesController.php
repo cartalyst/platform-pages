@@ -26,6 +26,8 @@ use Platform\Foundation\Controllers\Controller;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
+use Illuminate\Http\Request;
+
 class PagesController extends Controller
 {
     /**
@@ -65,10 +67,10 @@ class PagesController extends Controller
      * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
      */
-    public function page()
+    public function page(Request $request)
     {
         // Get the current uri
-        $slug = static::$router->current()->getUri();
+        $slug = $request->path();
 
         // Make sure we have a page slug
         if ($slug === '/') {
