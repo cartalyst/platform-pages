@@ -148,7 +148,7 @@ return [
 
     'routes' => function (Router $router, ExtensionInterface $extension, Application $app) {
         if (! $app->routesAreCached()) {
-            $router->group(['namespace' => 'Platform\Pages\Controllers'], function () use ($app) {
+            $router->group(['namespace' => 'Platform\Pages\Controllers'], function (Router $router) use ($app) {
                 $router->group([
                     'prefix' => admin_uri().'/pages', 'namespace' => 'Admin'
                 ], function (Router $router) {
