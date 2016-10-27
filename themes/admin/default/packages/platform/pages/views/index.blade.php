@@ -235,8 +235,6 @@
 
 </section>
 
-@if (config('platform.app.help'))
-@include('platform/pages::help')
-@endif
+@help('platform/pages::help')
 
 @stop
