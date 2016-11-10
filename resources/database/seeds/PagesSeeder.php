@@ -21,6 +21,7 @@
 namespace Platform\Pages\Database\Seeds;
 
 use Illuminate\Database\Seeder;
+use Platform\Pages\Models\Page;
 
 class PagesSeeder extends Seeder
 {
@@ -30,7 +31,9 @@ class PagesSeeder extends Seeder
     public function run()
     {
         // Prologue.
-        $page = app('Platform\Pages\Models\Page')->create([
+        $page = new Page();
+
+        $page->fill([
             'name'             => 'About',
             'slug'             => 'about',
             'uri'              => '/about',
@@ -40,10 +43,12 @@ class PagesSeeder extends Seeder
             'type'             => 'filesystem',
             'file'             => 'about',
             'enabled'          => true,
-        ]);
+        ])->save();
 
         // Default.
-        $page = app('Platform\Pages\Models\Page')->create([
+        $page = new Page();
+
+        $page->fill([
             'name'             => 'Welcome',
             'slug'             => 'welcome',
             'uri'              => '/',
@@ -53,6 +58,6 @@ class PagesSeeder extends Seeder
             'type'             => 'filesystem',
             'file'             => 'welcome',
             'enabled'          => true,
-        ]);
+        ])->save();
     }
 }

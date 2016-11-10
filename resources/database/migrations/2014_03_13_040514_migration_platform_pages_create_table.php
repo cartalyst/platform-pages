@@ -18,6 +18,7 @@
  * @link       http://cartalyst.com
  */
 
+use Platform\Attributes\Models\Attribute;
 use Illuminate\Database\Migrations\Migration;
 
 class MigrationPlatformPagesCreateTable extends Migration
@@ -61,10 +62,7 @@ class MigrationPlatformPagesCreateTable extends Migration
             $table->index('enabled');
         });
 
-        // Create the meta attributes
-        $attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
-
-        $attribute->create([
+        Attribute::create([
             'namespace'   => 'platform/pages',
             'name'        => 'Meta Title',
             'type'        => 'input',
@@ -73,7 +71,7 @@ class MigrationPlatformPagesCreateTable extends Migration
             'enabled'     => 1,
         ]);
 
-        $attribute->create([
+        Attribute::create([
             'namespace'   => 'platform/pages',
             'name'        => 'Meta Description',
             'type'        => 'input',
