@@ -8,7 +8,7 @@
 
 	<select class="form-control input-sm" data-item-form="{{{ ! empty($child) ? $child->id : 'new-child' }}}" name="{{ sprintf($childName, '[page][page_id]') }}" id="{{ sprintf($childId, 'page_uri') }}">
 		@foreach ($pages as $page)
-		<option value="{{ $page->id }}"{{ Input::old('page.page_id', ! empty($child) ? $child->page_id : null) == $page->id ? ' selected="selected"' : null }}>{{ $page->uri ?: '/' }}</option>
+		<option value="{{ $page->id }}"{{ old('page.page_id', ! empty($child) ? $child->page_id : null) == $page->id ? ' selected="selected"' : null }}>{{ $page->uri ?: '/' }}</option>
 		@endforeach
 	</select>
 </div>
