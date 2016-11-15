@@ -178,7 +178,7 @@ class PageRepository implements PageRepositoryInterface
      */
     public function getAllTags()
     {
-        return $this->createModel()->allTags()->where('count', '>=', 1)->lists('name');
+        return $this->createModel()->allTags()->where('count', '>=', 1)->pluck('name');
     }
 
     /**
