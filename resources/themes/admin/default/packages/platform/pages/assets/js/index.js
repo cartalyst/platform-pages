@@ -140,7 +140,7 @@ var Extension;
 					});
 				}
 			},
-			callback: function(data)
+			callback: function()
 			{
 				$('[data-grid-checkbox-all]').prop('checked', false);
 
@@ -148,12 +148,14 @@ var Extension;
 
 				Extension.Index
 					.bulkStatus()
-					.exporterStatus(data)
+					.exporterStatus(this)
 				;
 			}
 		};
 
-		Extension.Index.Grid = $.datagrid('main', '#data-grid', '#data-grid_pagination', '#data-grid_applied', config);
+		var dg = new DataGridManager();
+
+		Extension.Index.Grid = dg.create('main', config);
 
 		return this;
 	};

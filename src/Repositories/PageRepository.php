@@ -505,7 +505,7 @@ class PageRepository implements PageRepositoryInterface
         $themePaths = $this->getThemePaths();
 
         return array_filter(array_map(function ($path) {
-            $pathConfig = head(config('cartalyst.themes.paths'));
+            $pathConfig = head(config('cartalyst.themes.config.paths'));
 
             $searchPath = str_replace($pathConfig, '', $path);
 
@@ -523,7 +523,7 @@ class PageRepository implements PageRepositoryInterface
         $themePaths = $this->getThemePaths();
 
         return array_filter(array_map(function ($path) {
-            $pathConfig = head(config('cartalyst.themes.paths'));
+            $pathConfig = head(config('cartalyst.themes.config.paths'));
 
             // Full path to the pages folder
             $fullPath = implode(DIRECTORY_SEPARATOR, [$path, 'pages']);

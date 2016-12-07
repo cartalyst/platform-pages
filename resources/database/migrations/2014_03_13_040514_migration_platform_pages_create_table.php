@@ -92,7 +92,7 @@ class MigrationPlatformPagesCreateTable extends Migration
 
         $attribute = app('Platform\Attributes\Repositories\AttributeRepositoryInterface');
 
-        $attributeIds = $attribute->createModel()->where('namespace', 'platform/pages')->lists('id');
+        $attributeIds = $attribute->createModel()->where('namespace', 'platform/pages')->pluck('id');
 
         foreach ($attributeIds as $id) {
             $attribute->delete($id);

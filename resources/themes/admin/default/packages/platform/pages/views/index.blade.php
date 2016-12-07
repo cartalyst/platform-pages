@@ -10,8 +10,9 @@
 {{ Asset::queue('bootstrap-daterange', 'bootstrap/css/daterangepicker-bs3.css', 'style') }}
 
 {{ Asset::queue('moment', 'moment/js/moment.js', 'jquery') }}
+{{ Asset::queue('lodash', 'cartalyst/js/lodash.min.js') }}
+{{ Asset::queue('exojs', 'cartalyst/js/exoskeleton.min.js', 'lodash') }}
 {{ Asset::queue('data-grid', 'cartalyst/js/data-grid.js', 'jquery') }}
-{{ Asset::queue('underscore', 'underscore/js/underscore.js', 'jquery') }}
 {{ Asset::queue('index', 'platform/pages::js/index.js', 'platform') }}
 {{ Asset::queue('bootstrap-daterange', 'bootstrap/js/daterangepicker.js', 'jquery') }}
 
@@ -205,7 +206,7 @@
 	{{-- Grid: Table --}}
 	<div class="table-responsive">
 
-		<table id="data-grid" class="table table-hover" data-source="{{ route('admin.pages.grid') }}" data-grid="main">
+		<table id="data-grid" class="table table-hover" data-grid-source="{{ route('admin.pages.grid') }}" data-grid="main">
 			<thead>
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
@@ -215,7 +216,7 @@
 					<th class="sortable hidden-xs" data-sort="created_at">{{{ trans('model.created_at') }}}</th>
 				</tr>
 			</thead>
-			<tbody></tbody>
+			<tbody data-grid-layout="results"></tbody>
 		</table>
 
 	</div>
