@@ -224,7 +224,7 @@
 	<footer class="panel-footer clearfix">
 
 	{{-- Grid: Pagination --}}
-		<div id="data-grid_pagination" data-grid="main"></div>
+		<div id="data-grid_pagination" data-grid-layout="pagination" data-grid="main"></div>
 
 	</footer>
 
