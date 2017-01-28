@@ -483,7 +483,7 @@ class PageRepository implements PageRepositoryInterface
     public function getTheme($type = 'active')
     {
         if (! isset($this->theme[$type])) {
-            $this->theme[$type] = $this->container['config']->get("platform-themes.{$type}.frontend");
+            $this->theme[$type] = $this->container['config']->get("platform.themes.{$type}.frontend");
         }
 
         return $this->theme[$type];
