@@ -21,7 +21,7 @@
 namespace Platform\Pages\Handlers;
 
 use Platform\Pages\Models\Page;
-use Illuminate\Events\Dispatcher;
+use Illuminate\Contracts\Events\Dispatcher;
 use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
 
 class EventHandler extends BaseEventHandler implements EventHandlerInterface

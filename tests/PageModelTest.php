@@ -21,8 +21,8 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
-use Cartalyst\Testing\IlluminateTestCase;
 use Platform\Pages\Models\Page;
+use Cartalyst\Testing\IlluminateTestCase;
 
 class PageModelTest extends IlluminateTestCase
 {
@@ -187,7 +187,7 @@ class PageModelTest extends IlluminateTestCase
     {
         $callback = function () {};
 
-        $dispatcher = m::mock('Illuminate\Events\Dispatcher');
+        $dispatcher = m::mock('Illuminate\Contracts\Events\Dispatcher');
         $dispatcher->shouldReceive('listen')
             ->with('platform.pages.rendering.*', $callback)
             ->once();
