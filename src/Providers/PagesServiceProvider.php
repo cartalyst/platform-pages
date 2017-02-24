@@ -84,7 +84,7 @@ class PagesServiceProvider extends ServiceProvider
     {
         $config = realpath(__DIR__.'/../../resources/config/config.php');
 
-        $this->mergeConfigFrom($config, 'platform-pages');
+        $this->mergeConfigFrom($config, 'platform.pages.config');
 
         $this->publishes([
             $config => config_path('platform-pages.php'),
@@ -100,7 +100,7 @@ class PagesServiceProvider extends ServiceProvider
     {
         // Check the environment and app.debug settings
         if ($this->app->environment() === 'production' || $this->app['config']['app.debug'] === false) {
-            $notFound = $this->app['config']->get('platform.pages.not_found');
+            $notFound = $this->app['config']->get('platform.pages.config.not_found');
 
             if (! is_null($notFound)) {
                 $this->app->error(function (NotFoundHttpException $exception, $code) use ($notFound) {
