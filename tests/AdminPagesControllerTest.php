@@ -125,7 +125,8 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->once();
 
         $this->pages->shouldReceive('grid')
-            ->once();
+            ->once()
+            ->andReturn([]);
 
         $this->controller->grid();
     }

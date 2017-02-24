@@ -59,9 +59,6 @@ class FrontendPagesControllerTest extends IlluminateTestCase
         $this->menus = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
         $this->roles = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
 
-        // Set the router
-        PagesController::setRouter($this->app['router']);
-
         // Pages Controller
         $this->controller = new PagesController($this->pages, $this->app['sentinel'], $this->app['router']);
     }
@@ -71,11 +68,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function render_page()
     {
-        $this->app['router']->shouldReceive('current')
-            ->once()
-            ->andReturn($route = m::mock('Illuminate\Routing\Route'));
-
-        $route->shouldReceive('getUri')
+        $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('foo');
 
@@ -96,7 +89,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->with($model)
             ->once();
 
-        $this->controller->page();
+        $this->controller->page($this->app['request']);
     }
 
     /**
@@ -105,10 +98,8 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function do_not_render_admin_pages_for_other_users()
     {
-        $this->app['router']->shouldReceive('current')
-            ->andReturn($route = m::mock('Illuminate\Routing\Route'));
-
-        $route->shouldReceive('getUri')
+        $this->app['request']->shouldReceive('path')
+            ->once()
             ->andReturn('foo');
 
         $this->pages->shouldReceive('findEnabled')
@@ -135,7 +126,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->once()
             ->andReturn(false);
 
-        $this->controller->page();
+        $this->controller->page($this->app['request']);
     }
 
     /**
@@ -143,18 +134,9 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function render_pages_if_role_is_found()
     {
-        $this->app['router']->shouldReceive('current')
-            ->once()
-            ->andReturn($route = m::mock('Illuminate\Routing\Route'));
-
-        $route->shouldReceive('getUri')
+        $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('foo');
-
-        $this->app['request']
-            ->shouldReceive('secure')
-            ->once()
-            ->andReturn(true);
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
@@ -166,6 +148,10 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->twice()
             ->andReturn('logged_in');
 
+        $model->shouldReceive('getAttribute')
+            ->with('https')
+            ->once();
+
         $this->app['sentinel']->shouldReceive('hasAccess')
             ->with('superuser')
             ->once()
@@ -174,24 +160,21 @@ class FrontendPagesControllerTest extends IlluminateTestCase
         $role = new \stdClass;
         $role->id = 'foo';
 
-        $model->shouldReceive('hasGetMutator')
+        $this->user->shouldReceive('getAttribute')
             ->with('roles')
-            ->andReturn('getRolesAttribute');
-
-        $model->shouldReceive('getAttributeValue')
-            ->with('roles')
-            ->once();
+            ->once()
+            ->andReturn([$role]);
 
         $model->shouldReceive('getAttribute')
-            ->atLeast()
-            ->once()
+            ->with('roles')
+            ->times(3)
             ->andReturn(['foo']);
 
         $this->pages->shouldReceive('render')
             ->with($model)
             ->once();
 
-        $this->controller->page();
+        $this->controller->page($this->app['request']);
     }
 
     /**
@@ -199,16 +182,12 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function default_page()
     {
-        $this->app['router']->shouldReceive('current')
-            ->once()
-            ->andReturn($route = m::mock('Illuminate\Routing\Route'));
-
-        $route->shouldReceive('getUri')
+        $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('/');
 
         $this->app['config']->shouldReceive('get')
-            ->with('platform-pages.default_page', '')
+            ->with('platform.pages.config.default_page', '')
             ->once()
             ->andReturn('foo');
 
@@ -229,7 +208,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->with($model)
             ->once();
 
-        $this->controller->page();
+        $this->controller->page($this->app['request']);
     }
 
     /**
@@ -237,11 +216,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function redirect_on_secure()
     {
-        $this->app['router']->shouldReceive('current')
-            ->once()
-            ->andReturn($route = m::mock('Illuminate\Routing\Route'));
-
-        $route->shouldReceive('getUri')
+        $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('foo');
 
@@ -268,7 +243,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->once()
             ->andReturn($this->app['redirect']);
 
-        $this->controller->page();
+        $this->controller->page($this->app['request']);
     }
 
     /**
@@ -277,11 +252,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function do_not_render_without_permissions()
     {
-        $this->app['router']->shouldReceive('current')
-            ->once()
-            ->andReturn($route = m::mock('Illuminate\Routing\Route'));
-
-        $route->shouldReceive('getUri')
+        $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('foo');
 
@@ -314,7 +285,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->with('roles')
             ->andReturn('getRolesAttribute');
 
-        $model->shouldReceive('getAttributeValue')
+        $model->shouldReceive('getAttribute')
             ->with('roles')
             ->once()
             ->andReturn([]);
@@ -324,6 +295,6 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->once()
             ->andReturn(['foobar']);
 
-        $this->controller->page();
+        $this->controller->page($this->app['request']);
     }
 }

@@ -937,12 +937,12 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($finder = m::mock('Symfony\Component\Finder\Finder'));
 
         $this->app['config']->shouldReceive('get')
-            ->with('platform-themes.active.frontend')
+            ->with('platform.themes.config.active.frontend')
             ->once()
             ->andReturn('frontend::default');
 
         $this->app['config']->shouldReceive('get')
-            ->with('platform-themes.fallback.frontend')
+            ->with('platform.themes.config.fallback.frontend')
             ->once()
             ->andReturn('frontend::default');
 
@@ -1004,12 +1004,12 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($finder = m::mock('Symfony\Component\Finder\Finder'));
 
         $this->app['config']->shouldReceive('get')
-            ->with('platform-themes.active.frontend')
+            ->with('platform.themes.config.active.frontend')
             ->once()
             ->andReturn('frontend::default');
 
         $this->app['config']->shouldReceive('get')
-            ->with('platform-themes.fallback.frontend')
+            ->with('platform.themes.config.fallback.frontend')
             ->once()
             ->andReturn('frontend::default');
 
