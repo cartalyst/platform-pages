@@ -23,16 +23,16 @@
     "require": {
         "php": ">=5.6.4",
         "cartalyst/composer-installers": "^2.0",
-        "platform/access": "dev-feature/six@dev",
-        "platform/content": "dev-feature/six@dev",
-        "platform/foundation": "dev-feature/six@dev"
+        "platform/access": "~5.0",
+        "platform/content": "~5.0",
+        "platform/foundation": "~5.0"
     },
     "require-dev": {
         "laravel/framework": "~5.3",
         "cartalyst/testing": "~2.0@dev",
         "patchwork/utf8": "~1.1",
-        "platform/menus": "dev-feature/six@dev",
-        "platform/users": "dev-feature/six@dev"
+        "platform/menus": "~5.0",
+        "platform/users": "~5.0"
     },
     "autoload": {
         "classmap": [
