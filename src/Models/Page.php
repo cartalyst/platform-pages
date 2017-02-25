@@ -142,7 +142,7 @@ class Page extends Model implements EntityInterface, TaggableInterface
      */
     public function getTemplateAttribute($template)
     {
-        return ($this->exists || $template) ? $template : config('platform-pages.default_template');
+        return ($this->exists || $template) ? $template : config('platform.pages.config.default_template');
     }
 
     /**
@@ -164,7 +164,7 @@ class Page extends Model implements EntityInterface, TaggableInterface
      */
     public function getSectionAttribute($section)
     {
-        return ($this->exists || $section) ? $section : config('platform-pages.default_section');
+        return ($this->exists || $section) ? $section : config('platform.pages.config.default_section');
     }
 
     /**

@@ -435,7 +435,7 @@ class PageRepository implements PageRepositoryInterface
         $finder = $this->getFinder();
         $finder->in($paths);
         $finder->depth('< 3');
-        $finder->exclude(config('platform-pages.exclude'));
+        $finder->exclude(config('platform.pages.config.exclude'));
         $finder->name(sprintf(
             '/.*?\.(%s)/',
             implode('|', array_map(function ($extension) {
