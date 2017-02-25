@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    6.0.0
+ * @version    6.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -435,7 +435,7 @@ class PageRepository implements PageRepositoryInterface
         $finder = $this->getFinder();
         $finder->in($paths);
         $finder->depth('< 3');
-        $finder->exclude(config('platform-pages.exclude'));
+        $finder->exclude(config('platform.pages.config.exclude'));
         $finder->name(sprintf(
             '/.*?\.(%s)/',
             implode('|', array_map(function ($extension) {

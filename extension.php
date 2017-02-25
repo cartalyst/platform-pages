@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    6.0.0
+ * @version    6.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -75,7 +75,7 @@ return [
     |
     */
 
-    'version' => '6.0.0',
+    'version' => '6.0.1',
 
     /*
     |--------------------------------------------------------------------------
@@ -261,7 +261,7 @@ return [
 
                 $fieldset->field('default_page', function ($field) use ($allPages) {
                     $field->name = 'Default Page';
-                    $field->config = 'platform-pages.default_page';
+                    $field->config = 'platform.pages.config.default_page';
                     $field->info = 'The page that is shown on the root route.';
 
                     foreach ($allPages as $page) {
@@ -274,13 +274,13 @@ return [
 
                 $fieldset->field('default_section', function ($field) {
                     $field->name = 'Default Section';
-                    $field->config = 'platform-pages.default_section';
+                    $field->config = 'platform.pages.config.default_section';
                     $field->info = 'The default section when using the database storage type.';
                 });
 
                 $fieldset->field('default_template', function ($field) use ($repository) {
                     $field->name = 'Default Template';
-                    $field->config = 'platform-pages.default_template';
+                    $field->config = 'platform.pages.config.default_template';
                     $field->info = 'The default template that is used for pages.';
 
                     foreach ($repository->templates() as $value => $label) {
@@ -293,7 +293,7 @@ return [
 
                 $fieldset->field('not_found', function ($field) use ($allPages) {
                     $field->name = '404 Error Page';
-                    $field->config = 'platform-pages.not_found';
+                    $field->config = 'platform.pages.config.not_found';
                     $field->info = 'The page that is shown when a 404 error arises.';
 
                     $field->option(null, function ($option) {

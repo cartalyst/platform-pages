@@ -11,7 +11,7 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    6.0.0
+ * @version    6.0.1
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
  * @copyright  (c) 2011-2017, Cartalyst LLC
@@ -142,7 +142,7 @@ class Page extends Model implements EntityInterface, TaggableInterface
      */
     public function getTemplateAttribute($template)
     {
-        return ($this->exists || $template) ? $template : config('platform-pages.default_template');
+        return ($this->exists || $template) ? $template : config('platform.pages.config.default_template');
     }
 
     /**
@@ -164,7 +164,7 @@ class Page extends Model implements EntityInterface, TaggableInterface
      */
     public function getSectionAttribute($section)
     {
-        return ($this->exists || $section) ? $section : config('platform-pages.default_section');
+        return ($this->exists || $section) ? $section : config('platform.pages.config.default_section');
     }
 
     /**
