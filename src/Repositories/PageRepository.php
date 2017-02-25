@@ -25,6 +25,7 @@ use InvalidArgumentException;
 use Cartalyst\Support\Traits;
 use Cartalyst\Themes\ThemeBag;
 use Platform\Pages\Models\Page;
+use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
 use Symfony\Component\Finder\Finder;
 
@@ -373,7 +374,7 @@ class PageRepository implements PageRepositoryInterface
                 $value = app('platform.content')->prepareForRendering(0, $page->value);
 
                 // We'll inject the section with the value
-                $this->getThemeBag()->getViewFactory()->inject($page->section, $value);
+                $this->getThemeBag()->getViewFactory()->inject($page->section, new HtmlString($value));
             }
 
             $data = array_merge($this->additionalRenderData($page), compact('page'));
