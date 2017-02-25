@@ -16,6 +16,7 @@ We do not give estimated times for completion on `Accepted` Proposals.
 `FIXED`
 
 - A few config references.
+- Database rendering.
 
 ### v6.0.0 - 2017-02-24
 
