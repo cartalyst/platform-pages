@@ -14,9 +14,9 @@
 
 			<% if (pagination.previousPage !== null) { %>
 
-				<li><a href="#" data-grid="main" data-grid-page="1"><i class="fa fa-angle-double-left"></i></a></li>
+				<li><a href="#" data-grid-page="1"><i class="fa fa-angle-double-left"></i></a></li>
 
-				<li><a href="#" data-grid="main" data-grid-page="<%= pagination.previousPage %>"><i class="fa fa-chevron-left"></i></a></li>
+				<li><a href="#" data-grid-page="<%= pagination.previousPage %>"><i class="fa fa-chevron-left"></i></a></li>
 
 			<% } else { %>
 
@@ -55,7 +55,7 @@
 
 				<% } else { %>
 
-				<li><a href="#" data-grid="main" data-grid-page="<%= i %>"><%= i %></a></li>
+				<li><a href="#" data-grid-page="<%= i %>"><%= i %></a></li>
 
 				<% } %>
 
@@ -63,9 +63,9 @@
 
 			<% if (pagination.nextPage !== null) { %>
 
-				<li><a href="#" data-grid="main" data-grid-page="<%= pagination.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
+				<li><a href="#" data-grid-page="<%= pagination.nextPage %>"><i class="fa fa-chevron-right"></i></a></li>
 
-				<li><a href="#" data-grid="main" data-grid-page="<%= pagination.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
+				<li><a href="#" data-grid-page="<%= pagination.pages %>"><i class="fa fa-angle-double-right"></i></a></li>
 
 			<% } else { %>
 
