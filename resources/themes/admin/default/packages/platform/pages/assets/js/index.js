@@ -20,7 +20,6 @@ var Extension;
 
 ;(function(window, document, $, undefined)
 {
-
 	'use strict';
 
 	Extension = Extension || {
@@ -58,7 +57,7 @@ var Extension;
 		var startDate, endDate, config, filter;
 
 		var filters = _.compact(
-			String(window.location.hash.slice(3)).split('/').splice(2)
+			String(window.location.hash.slice(1)).split('/')
 		);
 
 		config = {
@@ -79,10 +78,6 @@ var Extension;
 
 		if (startDate && endDate)
 		{
-			$('[data-grid-calendar]').val(
-				startDate.format('MM/DD/YYYY') + ' - ' + endDate.format('MM/DD/YYYY')
-			);
-
 			config = {
 				startDate: startDate,
 				endDate: endDate,
@@ -93,10 +88,6 @@ var Extension;
 		Platform.Cache.$body.on('click', '.range_inputs .applyBtn', function()
 		{
 			$('input[name="daterangepicker_start"]').trigger('change');
-
-			$('[data-grid-calendar]').val(
-				moment($('input[name="daterangepicker_start"]').val()).format('MM/DD/YYYY') + ' - ' + moment($('input[name="daterangepicker_end"]').val()).format('MM/DD/YYYY')
-			);
 		});
 
 		Extension.Index.datePicker = $('[data-grid-calendar]').daterangepicker(config, function(start, end, label)
@@ -109,16 +100,18 @@ var Extension;
 		$('.daterangepicker_end_input').attr('data-grid', 'main');
 
 		$('input[name="daterangepicker_start"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-start', '')
-			.attr('data-range-filter', 'created_at')
-		;
+			.attr('data-grid-type', 'range')
+			.attr('data-grid-query', 'created_at:>:' + $('input[name="daterangepicker_start"]').val())
+			.attr('data-grid-range', 'start')
+			.attr('data-grid-filter', 'created_at')
+			.attr('data-grid-label', 'Created At');
 
 		$('input[name="daterangepicker_end"]')
-			.attr('data-format', 'MM/DD/YYYY')
-			.attr('data-range-end', '')
-			.attr('data-range-filter', 'created_at')
-		;
+			.attr('data-grid-type', 'range')
+			.attr('data-grid-query', 'created_at:<:' + $('input[name="daterangepicker_end"]').val())
+			.attr('data-grid-range', 'end')
+			.attr('data-grid-filter', 'created_at')
+			.attr('data-grid-label', 'Created At');
 
 		return this;
 	};
@@ -128,18 +121,6 @@ var Extension;
 	{
 		var config = {
 			scroll: '#data-grid',
-			events: {
-				removing: function(dg)
-				{
-					_.each(dg.applied_filters, function(filter)
-					{
-						if (filter.column === 'created_at' && filter.from !== undefined && filter.to !== undefined)
-						{
-							$('[data-grid-calendar]').val('');
-						}
-					});
-				}
-			},
 			callback: function()
 			{
 				$('[data-grid-checkbox-all]').prop('checked', false);
@@ -266,17 +247,17 @@ var Extension;
 		switch ($(this).data('grid-calendar-preset'))
 		{
 			case 'day':
-				start = end = moment().subtract(1, 'day').startOf('day').format('MM/DD/YYYY');
+				start = end = moment().subtract(1, 'day').startOf('day').format('YYYY-MM-DD');
 			break;
 
 			case 'week':
-				start = moment().startOf('week').format('MM/DD/YYYY');
-				end   = moment().endOf('week').format('MM/DD/YYYY');
+				start = moment().startOf('week').format('YYYY-MM-DD');
+				end   = moment().endOf('week').format('YYYY-MM-DD');
 			break;
 
 			case 'month':
-				start = moment().startOf('month').format('MM/DD/YYYY');
-				end   = moment().endOf('month').format('MM/DD/YYYY');
+				start = moment().startOf('month').format('YYYY-MM-DD');
+				end   = moment().endOf('month').format('YYYY-MM-DD');
 			break;
 
 			default:

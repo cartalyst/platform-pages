@@ -30,7 +30,7 @@
 @section('page')
 
 {{-- Grid --}}
-<section class="panel panel-default panel-grid">
+<section class="panel panel-default panel-grid" data-grid="main">
 
 	{{-- Grid: Header --}}
 	<header class="panel-heading">
@@ -78,9 +78,9 @@
 								<i class="fa fa-download"></i> <span class="visible-xs-inline">{{{ trans('action.export') }}}</span>
 							</a>
 							<ul class="dropdown-menu" role="menu">
-								<li><a data-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
-								<li><a data-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
-								<li><a data-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
+								<li><a data-grid-download="pdf"><i class="fa fa-file-pdf-o"></i> PDF</a></li>
+								<li><a data-grid-download="csv"><i class="fa fa-file-excel-o"></i> CSV</a></li>
+								<li><a data-grid-download="json"><i class="fa fa-file-code-o"></i> JSON</a></li>
 							</ul>
 						</li>
 
@@ -93,7 +93,7 @@
 					</ul>
 
 					{{-- Grid: Filters --}}
-					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-search data-grid="main" role="form">
+					<form class="navbar-form navbar-right" method="post" accept-charset="utf-8" data-grid-search role="form">
 
 						@if ( ! empty($tags))
 						<div class="btn-group">
@@ -104,7 +104,7 @@
 
 							<ul class="dropdown-menu" role="tags">
 								@foreach ($tags as $tag)
-								<li><a href="#" data-grid="main" data-filter="tags..name:{{{ $tag }}}" data-label="tags..name::{{{ $tag }}}">{{{ $tag }}}</a></li>
+								<li><a href="#" data-grid-filter="tag:{{{ $tag }}}" data-grid-query="tags..name:{{{ $tag }}}" data-grid-label="{{{ $tag }}}">{{{ $tag }}}</a></li>
 								@endforeach
 							</ul>
 
@@ -124,16 +124,16 @@
 									<span class="sr-only">Toggle Dropdown</span>
 								</button>
 
-								<ul class="dropdown-menu" role="menu">
+								<ul class="dropdown-menu" role="menu" data-grid-group="status" data-grid-reset-group>
 
 									<li>
-										<a data-grid="main" data-filter="enabled:1" data-label="enabled::{{{ trans('common.all_enabled') }}}" data-reset>
+										<a data-grid-filter="enabled" data-grid-query="enabled:1" data-grid-label="{{{ trans('common.all_enabled') }}}" data-grid-reset>
 											<i class="fa fa-eye"></i> {{{ trans('common.show_enabled') }}}
 										</a>
 									</li>
 
 									<li>
-										<a data-grid="main" data-filter="enabled:0" data-label="enabled::{{{ trans('common.all_disabled') }}}" data-reset>
+										<a data-grid-filter="disabled" data-grid-query="enabled:0" data-grid-label="{{{ trans('common.all_disabled') }}}" data-grid-reset>
 											<i class="fa fa-eye-slash"></i> {{{ trans('common.show_disabled') }}}
 										</a>
 									</li>
@@ -174,7 +174,7 @@
 									<span class="fa fa-search"></span>
 								</button>
 
-								<button class="btn btn-default" data-grid="main" data-reset>
+								<button class="btn btn-default" data-grid-reset>
 									<i class="fa fa-refresh fa-sm"></i>
 								</button>
 
@@ -197,7 +197,7 @@
 	{{-- Grid: Applied Filters --}}
 		<div class="btn-toolbar" role="toolbar" aria-label="data-grid-applied-filters">
 
-			<div id="data-grid_applied" class="btn-group" data-grid="main"></div>
+			<div id="data-grid_applied" class="btn-group" data-grid-layout="filters"></div>
 
 		</div>
 
@@ -206,7 +206,7 @@
 	{{-- Grid: Table --}}
 	<div class="table-responsive">
 
-		<table id="data-grid" class="table table-hover" data-grid-source="{{ route('admin.pages.grid') }}" data-grid="main">
+		<table id="data-grid" class="table table-hover" data-grid-source="{{ route('admin.pages.grid') }}">
 			<thead>
 				<tr>
 					<th><input data-grid-checkbox="all" type="checkbox"></th>
@@ -224,7 +224,7 @@
 	<footer class="panel-footer clearfix">
 
 	{{-- Grid: Pagination --}}
-		<div id="data-grid_pagination" data-grid-layout="pagination" data-grid="main"></div>
+		<div id="data-grid_pagination" data-grid-layout="pagination"></div>
 
 	</footer>
 
@@ -232,7 +232,6 @@
 	@include('platform/pages::grid/index/results')
 	@include('platform/pages::grid/index/pagination')
 	@include('platform/pages::grid/index/filters')
-	@include('platform/pages::grid/index/no_results')
 
 </section>
 
