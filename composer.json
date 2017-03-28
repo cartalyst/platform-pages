@@ -1,7 +1,7 @@
 {
     "name": "platform/pages",
     "type": "platform-extension",
-    "description": "A Platform 6 Extension to manage your website pages.",
+    "description": "A Platform extension to manage your website pages.",
     "keywords": [
         "cartalyst",
         "platform",
