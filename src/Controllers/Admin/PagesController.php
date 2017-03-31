@@ -21,6 +21,7 @@
 namespace Platform\Pages\Controllers\Admin;
 
 use Platform\Access\Controllers\AdminController;
+use Cartalyst\DataGrid\Export\Providers\ExportProvider;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 
 class PagesController extends AdminController
@@ -85,9 +86,8 @@ class PagesController extends AdminController
                 'enabled',
                 'created_at',
             ],
-            'sort'      => 'created_at',
-            'direction' => 'desc',
-            'pdf_view'  => 'pdf',
+            'sort'        => 'created_at',
+            'direction'   => 'desc',
             'transformer' => function ($element) {
                 $element->edit_uri = route('admin.pages.edit', $element->id);
 
@@ -95,7 +95,9 @@ class PagesController extends AdminController
             },
         ];
 
-        return datagrid($this->pages->grid(), $settings);
+        $provider = new ExportProvider();
+
+        return datagrid($this->pages->grid(), $settings, $provider);
     }
 
     /**
