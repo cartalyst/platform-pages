@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v5.0.4 - 2017-03-31
+
+`FIXED`
+
+- Data Grid pdf download.
+
 ### v5.0.3 - 2017-03-15
 
 `FIXED`
