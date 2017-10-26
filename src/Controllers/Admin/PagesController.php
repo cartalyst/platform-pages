@@ -86,8 +86,10 @@ class PagesController extends AdminController
                 'enabled',
                 'created_at',
             ],
-            'sort'        => 'created_at',
-            'direction'   => 'desc',
+            'sorts' => [
+                'column'    => 'created_at',
+                'direction' => 'desc',
+            ],
             'transformer' => function ($element) {
                 $element->edit_uri = route('admin.pages.edit', $element->id);
 
