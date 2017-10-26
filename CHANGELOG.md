@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v6.0.5 - 2017-10-26
+
+`FIXED`
+
+- Data Grid sort.
+
 ### v6.0.4 - 2017-03-31
 
 `FIXED`
