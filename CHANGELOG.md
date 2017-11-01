@@ -11,6 +11,12 @@ We do not give estimated times for completion on `Accepted` Proposals.
 
 ---
 
+### v6.0.6 - 2017-10-26
+
+`FIXED`
+
+- A bug affecting custom 404 pages.
+
 ### v6.0.5 - 2017-10-26
 
 `FIXED`
