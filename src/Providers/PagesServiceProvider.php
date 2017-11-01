@@ -32,8 +32,6 @@ class PagesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerNotFoundErrorHandler();
-
         // Get the Page model
         $model = $this->app['Platform\Pages\Models\Page'];
 
@@ -89,33 +87,5 @@ class PagesServiceProvider extends ServiceProvider
         $this->publishes([
             $config => config_path('platform-pages.php'),
         ], 'config');
-    }
-
-    /**
-     * Registers the not found error handler.
-     *
-     * @return void
-     */
-    protected function registerNotFoundErrorHandler()
-    {
-        // Check the environment and app.debug settings
-        if ($this->app->environment() === 'production' || $this->app['config']['app.debug'] === false) {
-            $notFound = $this->app['config']->get('platform.pages.config.not_found');
-
-            if (! is_null($notFound)) {
-                $this->app->error(function (NotFoundHttpException $exception, $code) use ($notFound) {
-                    $this->app['log']->error($exception);
-
-                    try {
-                        $repository = $this->app['platform.pages'];
-
-                        $content = $repository->find($notFound);
-
-                        return Response::make($repository->render($content), 404);
-                    } catch (Exception $e) {
-                    }
-                });
-            }
-        }
     }
 }
