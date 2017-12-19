@@ -227,6 +227,12 @@ return [
 
                 $p->controller('Platform\Pages\Controllers\Admin\PagesController', 'delete');
             });
+
+            $g->permission('pages.bulk_actions', function ($p) {
+                $p->label = trans('platform/pages::permissions.bulk_actions');
+
+                $p->controller('Platform\Pages\Controllers\Admin\PagesController', 'executeAction');
+            });
         });
     },
 
