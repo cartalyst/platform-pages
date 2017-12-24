@@ -152,6 +152,11 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->with('https')
             ->once();
 
+        $model->shouldReceive('offsetExists')
+            ->with('roles')
+            ->once()
+            ->andReturn(true);
+
         $this->app['sentinel']->shouldReceive('hasAccess')
             ->with('superuser')
             ->once()
@@ -167,7 +172,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
 
         $model->shouldReceive('getAttribute')
             ->with('roles')
-            ->times(3)
+            ->times(2)
             ->andReturn(['foo']);
 
         $this->pages->shouldReceive('render')
@@ -266,6 +271,11 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->once()
             ->andReturn('logged_in');
 
+        $model->shouldReceive('offsetExists')
+            ->with('roles')
+            ->twice()
+            ->andReturn(false);
+
         $this->app['request']
             ->shouldReceive('secure')
             ->once()
@@ -276,19 +286,9 @@ class FrontendPagesControllerTest extends IlluminateTestCase
             ->once()
             ->andReturn(false);
 
-        $this->user->shouldReceive('getAttribute')
-            ->with('roles')
-            ->once()
-            ->andReturn([]);
-
         $model->shouldReceive('hasGetMutator')
             ->with('roles')
             ->andReturn('getRolesAttribute');
-
-        $model->shouldReceive('getAttribute')
-            ->with('roles')
-            ->once()
-            ->andReturn([]);
 
         $model->shouldReceive('getAttribute')
             ->atLeast()
