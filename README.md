@@ -8,14 +8,15 @@ Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, ro
 
 ## Documentation
 
-Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/platform-pages/6.0).
+Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/platform-pages/7.0).
 
-Raw files can be found [here](https://github.com/cartalyst/platform-pages/tree/docs/6.0).
+Raw files can be found [here](https://github.com/cartalyst/platform-pages/tree/docs/7.0).
 
 ## Change Log
 
 Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
 
+- [7.0](CHANGELOG.md) - 2017-12-22
 - [6.0](CHANGELOG.md) - 2017-02-24
 - [5.0](CHANGELOG.md) - 2017-02-24
 - [4.0](CHANGELOG.md) - 2016-08-03
