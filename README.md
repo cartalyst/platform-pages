@@ -1,46 +1,45 @@
-# Pages
+# Platform Pages
 
-[![Build Status](https://magnum.travis-ci.com/cartalyst/platform-pages.svg?token=98Zt8zYdwyheTKqziswS&branch=6.0)](https://magnum.travis-ci.com/cartalyst/platform-pages)
+[![Build Status][icon-travis]][link-travis]
 
 The pages extension can maintain and publish pages to be used through out your application.
 
 Part of the Cartalyst Arsenal & licensed [Cartalyst PSL](LICENSE). Code well, rock on.
 
+## Version Matrix
+
+Version | Platform | Laravel | PHP Version
+------- | -------- | ------- | ------------
+7.x     | 8.x       | 5.5    | >= 7.0
+6.x     | 7.x       | 5.4    | >= 5.6.4
+5.x     | 6.x       | 5.3    | >= 5.6.4
+4.x     | 5.x       | 5.2    | >= 5.5.9
+3.x     | 4.x       | 5.1    | >= 5.5.9
+2.x     | 3.x       | 5.0    | >= 5.4.0
+1.x     | 2.x       | 4.2    | >= 5.4.0
+
 ## Documentation
 
-Reader-friendly Documentation can be found [here](https://cartalyst.com/manual/platform-pages/7.0).
+Reader-friendly documentation can be found [here][link-docs].
 
-Raw files can be found [here](https://github.com/cartalyst/platform-pages/tree/docs/7.0).
+Using the package, but you're stuck? Found a bug? Have a question or suggestion for improving this package? Feel free to create an issue on GitHub, we'll try to address it as soon as possible.
 
-## Change Log
+## Contributing
 
-Important versions listed below. Refer to the [Change Log](CHANGELOG.md) for a full history of the project.
+Thank you for your interest, here are some of the many ways to contribute.
 
-- [7.0](CHANGELOG.md) - 2017-12-22
-- [6.0](CHANGELOG.md) - 2017-02-24
-- [5.0](CHANGELOG.md) - 2017-02-24
-- [4.0](CHANGELOG.md) - 2016-08-03
-- [3.0](CHANGELOG.md) - 2015-07-06
-- [2.0](CHANGELOG.md) - 2015-03-05
-- [1.0](CHANGELOG.md) - 2015-01-23
+- Check out our [contributing guide](/.github/CONTRIBUTING.md)
+- Look at our [code of conduct](/.github/CODE_OF_CONDUCT.md)
 
-## Support
+## Security
 
-The following support channels can be used for contact.
-
-- [Twitter](https://twitter.com/cartalyst)
-- [Email](mailto:help@cartalyst.com)
-
-Bug reports, feature requests, and pull requests can be submitted by following our [Contribution Guide](CONTRIBUTING.md).
-
-## Contributing & Protocols
-
-- [Versioning](CONTRIBUTING.md#versioning)
-- [Coding Standards](CONTRIBUTING.md#coding-standards)
-- [Pull Requests](CONTRIBUTING.md#pull-requests)
+If you discover any security related issues, please email help@cartalyst.com instead of using the issue tracker.
 
 ## License
 
 This software is released under the [Cartalyst PSL](LICENSE) License.
 
-© 2011-2017 Cartalyst LLC, All rights reserved.
+[link-docs]:   https://cartalyst.com/manual/platform-pages
+[link-travis]: https://travis-ci.com/cartalyst/platform-pages
+
+[icon-travis]: https://travis-ci.com/cartalyst/platform-pages.svg?token=LAut3LMbmBFi3T9j45FH&branch=7.0
