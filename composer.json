@@ -24,7 +24,7 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": "^7.2",
         "cartalyst/composer-installers": "^2.0",
         "platform/access": "~7.0",
         "platform/content": "~7.0",
