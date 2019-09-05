@@ -1,5 +1,9 @@
 # Changelog
 
+### v8.0.0 - TBA
+
+- Updated for Platform 9
+
 ### v7.0.0 - 2017-12-24
 
 - Updated for Platform 8.
