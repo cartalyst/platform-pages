@@ -33,7 +33,7 @@
     "require-dev": {
         "cartalyst/php-cs-fixer-config": "^1.0",
         "laravel/framework": "~5.5",
-        "cartalyst/testing": "~2.0@dev",
+        "cartalyst/testing": "^3.0",
         "patchwork/utf8": "~1.1",
         "platform/menus": "~7.0",
         "platform/users": "~7.0"
