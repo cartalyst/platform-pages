@@ -26,17 +26,17 @@
     "require": {
         "php": "^7.2",
         "cartalyst/composer-installers": "^2.0",
-        "platform/access": "~7.0",
-        "platform/content": "~7.0",
-        "platform/foundation": "~7.0"
+        "platform/access": "^8.0",
+        "platform/content": "^8.0",
+        "platform/foundation": "^8.0"
     },
     "require-dev": {
         "cartalyst/php-cs-fixer-config": "^1.0",
-        "laravel/framework": "~5.5",
+        "laravel/framework": "^6.0",
         "cartalyst/testing": "^3.0",
-        "patchwork/utf8": "~1.1",
-        "platform/menus": "~7.0",
-        "platform/users": "~7.0"
+        "patchwork/utf8": "^1.1",
+        "platform/menus": "^8.0",
+        "platform/users": "^8.0"
     },
     "autoload": {
         "classmap": [
