@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,15 +21,15 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
-use Cartalyst\Testing\IlluminateTestCase;
 use Platform\Pages\Menus\PageType;
+use Cartalyst\Testing\IlluminateTestCase;
 
 class PageTypeMenuTest extends IlluminateTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -43,13 +43,13 @@ class PageTypeMenuTest extends IlluminateTestCase
     /** @test */
     public function it_hasn_identifier()
     {
-        $this->assertEquals('page', $this->type->getIdentifier());
+        $this->assertSame('page', $this->type->getIdentifier());
     }
 
     /** @test */
     public function it_has_a_name()
     {
-        $this->assertEquals('Page', $this->type->getName());
+        $this->assertSame('Page', $this->type->getName());
     }
 
     /** @test */
@@ -59,11 +59,13 @@ class PageTypeMenuTest extends IlluminateTestCase
 
         $this->app['platform.pages']->shouldReceive('findAll')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $this->app['view']->shouldReceive('make')
-            ->with('platform/pages::types/form', ['child' => $menu, 'pages'=> []])
-            ->once();
+            ->with('platform/pages::types/form', ['child' => $menu, 'pages' => []])
+            ->once()
+        ;
 
         $this->type->getFormHtml($menu);
     }
@@ -75,11 +77,13 @@ class PageTypeMenuTest extends IlluminateTestCase
 
         $this->app['platform.pages']->shouldReceive('findAll')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $this->app['view']->shouldReceive('make')
-            ->with('platform/pages::types/template', ['pages'=> []])
-            ->once();
+            ->with('platform/pages::types/template', ['pages' => []])
+            ->once()
+        ;
 
         $this->type->getTemplateHtml($menu);
     }
@@ -94,24 +98,29 @@ class PageTypeMenuTest extends IlluminateTestCase
             ->once()
             ->andReturn([
                 'page_id' => 1,
-            ]);
+            ])
+        ;
 
         $page->shouldReceive('getAttribute')
             ->with('uri')
             ->once()
-            ->andReturn($pageUri = 'foo');
+            ->andReturn($pageUri = 'foo')
+        ;
 
         $menu->shouldReceive('setAttribute')
             ->with('uri', $pageUri)
-            ->once();
+            ->once()
+        ;
 
         $menu->shouldReceive('setAttribute')
             ->with('page_id', 1)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.pages']->shouldReceive('find')
             ->once()
-            ->andReturn($page);
+            ->andReturn($page)
+        ;
 
         $this->type->afterSave($menu);
     }
@@ -125,25 +134,30 @@ class PageTypeMenuTest extends IlluminateTestCase
         $page->shouldReceive('getAttribute')
             ->with('uri')
             ->once()
-            ->andReturn('/');
+            ->andReturn('/')
+        ;
 
         $page->shouldReceive('setAttribute')
             ->with('uri', '')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.pages']->shouldReceive('findAll')
             ->once()
-            ->andReturn([$page]);
+            ->andReturn([$page])
+        ;
 
         $this->app['view']->shouldReceive('make')
-            ->with('platform/pages::types/form', ['child' => $menu, 'pages'=> [$page]])
-            ->once();
+            ->with('platform/pages::types/form', ['child' => $menu, 'pages' => [$page]])
+            ->once()
+        ;
 
         $this->type->getFormHtml($menu);
 
         $this->app['view']->shouldReceive('make')
-            ->with('platform/pages::types/template', ['pages'=> [$page]])
-            ->once();
+            ->with('platform/pages::types/template', ['pages' => [$page]])
+            ->once()
+        ;
 
         $this->type->getTemplateHtml($menu);
     }

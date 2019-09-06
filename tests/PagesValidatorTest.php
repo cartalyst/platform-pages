@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,10 +21,10 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Platform\Pages\Validator\PagesValidator;
 
-class PagesValidatorTest extends PHPUnit_Framework_TestCase
+class PagesValidatorTest extends TestCase
 {
     /**
      * Validator instance.
@@ -38,7 +38,7 @@ class PagesValidatorTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -48,7 +48,7 @@ class PagesValidatorTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->validator = new PagesValidator(m::mock('Illuminate\Validation\Factory'));
     }
@@ -67,13 +67,13 @@ class PagesValidatorTest extends PHPUnit_Framework_TestCase
             'file'       => 'required_if:type,filesystem',
         ];
 
-        $this->assertEquals($rules, $this->validator->getRules());
+        $this->assertSame($rules, $this->validator->getRules());
 
         $this->validator->onUpdate();
 
         $rules['slug'] .= ',slug,{slug},slug';
-        $rules['uri'] .= ',uri,{uri},uri';
+        $rules['uri']  .= ',uri,{uri},uri';
 
-        $this->assertEquals($rules, $this->validator->getRules());
+        $this->assertSame($rules, $this->validator->getRules());
     }
 }

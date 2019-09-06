@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -47,7 +47,8 @@ class PagesController extends AdminController
     /**
      * Constructor.
      *
-     * @param  \Platform\Pages\Repositories\PageRepositoryInterface  $pages
+     * @param \Platform\Pages\Repositories\PageRepositoryInterface $pages
+     *
      * @return void
      */
     public function __construct(PageRepositoryInterface $pages)
@@ -125,7 +126,8 @@ class PagesController extends AdminController
     /**
      * Show the form for updating a page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function edit($id)
@@ -136,7 +138,8 @@ class PagesController extends AdminController
     /**
      * Handle posting of the form for updating a page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update($id)
@@ -147,7 +150,8 @@ class PagesController extends AdminController
     /**
      * Show the form for copying a page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function copy($id)
@@ -158,7 +162,8 @@ class PagesController extends AdminController
     /**
      * Remove the specified page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete($id)
@@ -195,8 +200,9 @@ class PagesController extends AdminController
     /**
      * Shows the form.
      *
-     * @param  string  $mode
-     * @param  int  $id
+     * @param string $mode
+     * @param int    $id
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     protected function showForm($mode, $id = null)
@@ -227,8 +233,9 @@ class PagesController extends AdminController
     /**
      * Processes the form.
      *
-     * @param  string  $mode
-     * @param  int  $id
+     * @param string $mode
+     * @param int    $id
+     *
      * @return \Illuminate\Http\RedirectResponse
      */
     protected function processForm($mode, $id = null)

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -25,7 +25,6 @@ use Cartalyst\Permissions\Container as Permissions;
 use Illuminate\Contracts\Routing\Registrar as Router;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Slug
@@ -107,11 +106,9 @@ return [
     */
 
     'requires' => [
-
         'platform/access',
         'platform/content',
         'platform/tags',
-
     ],
 
     /*
@@ -125,9 +122,7 @@ return [
     */
 
     'providers' => [
-
         Platform\Pages\Providers\PagesServiceProvider::class,
-
     ],
 
     /*
@@ -150,7 +145,7 @@ return [
         if (! $app->routesAreCached()) {
             $router->group(['namespace' => 'Platform\Pages\Controllers'], function (Router $router) use ($app) {
                 $router->group([
-                    'prefix' => admin_uri().'/pages', 'namespace' => 'Admin'
+                    'prefix' => admin_uri().'/pages', 'namespace' => 'Admin',
                 ], function (Router $router) {
                     $router->get('/', 'PagesController@index')->name('admin.pages.all');
                     $router->post('/', 'PagesController@executeAction')->name('admin.pages.all');
@@ -260,10 +255,9 @@ return [
             $section->fieldset('general', function ($fieldset) {
                 $fieldset->name = 'General';
 
-                #
+                //
                 $repository = app('Platform\Pages\Repositories\PageRepositoryInterface');
                 $allPages = $repository->findAll();
-
 
                 $fieldset->field('default_page', function ($field) use ($allPages) {
                     $field->name = 'Default Page';
@@ -339,9 +333,7 @@ return [
     */
 
     'menus' => [
-
         'admin' => [
-
             [
                 'slug'  => 'admin-pages',
                 'name'  => 'Pages',
@@ -349,9 +341,6 @@ return [
                 'uri'   => 'pages',
                 'regex' => '/:admin\/pages/i',
             ],
-
         ],
-
     ],
-
 ];

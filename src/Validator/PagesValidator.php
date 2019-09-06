@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -25,7 +25,7 @@ use Cartalyst\Support\Validator;
 class PagesValidator extends Validator implements PagesValidatorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $rules = [
         'name'       => 'required|max:255',
@@ -39,11 +39,11 @@ class PagesValidator extends Validator implements PagesValidatorInterface
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function onUpdate()
     {
         $this->rules['slug'] .= ',slug,{slug},slug';
-        $this->rules['uri'] .= ',uri,{uri},uri';
+        $this->rules['uri']  .= ',uri,{uri},uri';
     }
 }

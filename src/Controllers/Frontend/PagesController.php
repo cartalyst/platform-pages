@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -20,13 +20,11 @@
 
 namespace Platform\Pages\Controllers\Frontend;
 
-use Illuminate\Routing\Router;
+use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Sentinel;
 use Platform\Foundation\Controllers\Controller;
 use Platform\Pages\Repositories\PageRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-
-use Illuminate\Http\Request;
 
 class PagesController extends Controller
 {
@@ -50,6 +48,7 @@ class PagesController extends Controller
      * @param  \Platform\Pages\Repositories\PageRepositoryInterface
      * @param  \Cartalyst\Sentinel\Sentinel
      * @param  \Illuminate\Routing\Router
+     *
      * @return void
      */
     public function __construct(PageRepositoryInterface $pages, Sentinel $sentinel)
@@ -64,8 +63,9 @@ class PagesController extends Controller
     /**
      * Render the page.
      *
-     * @return mixed
      * @throws \Symfony\Component\HttpKernel\Exception\HttpException
+     *
+     * @return mixed
      */
     public function page(Request $request)
     {

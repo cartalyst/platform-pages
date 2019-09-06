@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,14 +21,15 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
+use Illuminate\Support\Arr;
 use Cartalyst\Testing\IlluminateTestCase;
 
 class PageRepositoryTest extends IlluminateTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -55,7 +56,8 @@ class PageRepositoryTest extends IlluminateTestCase
     {
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model = m::mock('Illuminate\Database\Eloquent\Model'));
+            ->andReturn($model = m::mock('Illuminate\Database\Eloquent\Model'))
+        ;
 
         $this->repository->grid();
     }
@@ -65,16 +67,19 @@ class PageRepositoryTest extends IlluminateTestCase
     {
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('get')
             ->once()
-            ->andReturn($collection = m::mock('Illuminate\Database\Eloquent\Collection'));
+            ->andReturn($collection = m::mock('Illuminate\Database\Eloquent\Collection'))
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
             ->with('platform.pages.all', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($collection);
 
@@ -88,21 +93,25 @@ class PageRepositoryTest extends IlluminateTestCase
     {
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('whereEnabled')
             ->with(1)
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('get')
             ->once()
-            ->andReturn($collection = m::mock('Illuminate\Database\Eloquent\Collection'));
+            ->andReturn($collection = m::mock('Illuminate\Database\Eloquent\Collection'))
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
             ->with('platform.pages.all.enabled', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))->andReturn($collection);
 
@@ -126,37 +135,46 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->twice()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
             ->with('platform.page.slug.foo', m::on(function ($callback) {
                 $callback();
+
                 return true;
-            }));
+            }))
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
             ->with('platform.page.uri.foo', m::on(function ($callback) {
                 $callback();
+
                 return true;
             }))
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('whereSlug')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('whereUri')
             ->once()
-            ->andReturn($model);
-
-        $model->shouldReceive('first')
-            ->once();
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('first')
             ->once()
-            ->andReturn($model);
+        ;
+
+        $model->shouldReceive('first')
+            ->once()
+            ->andReturn($model)
+        ;
 
         $this->repository->find('foo');
     }
@@ -168,45 +186,55 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->app['cache']->shouldReceive('rememberForever')
             ->once()
             ->with('platform.page.enabled.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
-            }));
+            }))
+        ;
 
         $model->shouldReceive('where')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('whereNested')
             ->with(m::on(function ($callback) use ($model) {
                 $model->shouldReceive('orWhere')
                     ->with('slug', 1)
                     ->once()
-                    ->andReturn($model);
+                    ->andReturn($model)
+                ;
 
                 $model->shouldReceive('orWhere')
                     ->with('uri', 1)
                     ->once()
-                    ->andReturn($model);
+                    ->andReturn($model)
+                ;
 
                 $model->shouldReceive('orWhere')
                     ->with('id', 1)
                     ->once()
-                    ->andReturn($model);
+                    ->andReturn($model)
+                ;
 
                 $callback($model);
+
                 return true;
             }))
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('first')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $this->repository->findEnabled(1);
     }
@@ -223,26 +251,32 @@ class PageRepositoryTest extends IlluminateTestCase
         $model->shouldReceive('getAttribute')
             ->with('id')
             ->once()
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         $this->app['platform.menus']->shouldReceive('findWhere')
             ->with('page_id', 1)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('findAllRoot')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $this->app['platform.roles']->shouldReceive('findAll')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $this->app['view']->shouldReceive('getExtensions')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $preparedPage = $this->repository->getPreparedPage(null);
 
@@ -261,32 +295,38 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $menu = m::mock('Platform\Menus\Models\Menu');
 
-        $model = $this->shouldReceiveFind();
+        $model         = $this->shouldReceiveFind();
         $model->exists = true;
 
         $model->shouldReceive('getAttribute')
             ->with('id')
             ->once()
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         $this->app['platform.menus']->shouldReceive('findWhere')
             ->with('page_id', 1)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('findAllRoot')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $this->app['platform.roles']->shouldReceive('findAll')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $this->app['view']->shouldReceive('getExtensions')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $preparedPage = $this->repository->getPreparedPage(1);
 
@@ -316,11 +356,13 @@ class PageRepositoryTest extends IlluminateTestCase
         $this->app['platform.pages.validator']->shouldReceive('on')
             ->with('create')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->repository->setValidator($this->app['platform.pages.validator']);
 
@@ -337,26 +379,31 @@ class PageRepositoryTest extends IlluminateTestCase
         $this->app['platform.pages.validator']->shouldReceive('on')
             ->with('update')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('bind')
             ->with($data)
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('slug')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('uri')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->assertTrue($this->repository->validForUpdate($model, $data));
     }
@@ -368,20 +415,24 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $menu->shouldReceive('where')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('first')
-            ->once();
+            ->once()
+        ;
 
         $tags = ['foo', 'bar'];
 
         $this->app['platform.tags']->shouldReceive('set')
             ->with(m::any(), $tags)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $data = ['slug' => 'foo', 'tags' => $tags];
 
@@ -397,20 +448,24 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $menu->shouldReceive('where')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('first')
-            ->once();
+            ->once()
+        ;
 
         $tags = ['foo', 'bar'];
 
         $this->app['platform.tags']->shouldReceive('set')
             ->with(m::any(), $tags)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $data = ['slug' => 'foo', 'tags' => $tags];
 
@@ -430,56 +485,69 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->app['platform.tags']->shouldReceive('set')
             ->with(m::any(), $tags)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->twice()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('whereMenu')
             ->with(1)
             ->twice()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('where')
             ->with('page_id', 1)
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('first')
             ->times(3)
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('getAttribute')
             ->with('menu')
             ->once()
-            ->andReturn(2);
+            ->andReturn(2)
+        ;
 
         $menu->shouldReceive('getAttribute')
             ->with('slug')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $menu->shouldReceive('getGuarded')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $menu->shouldReceive('getAttributes')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $menu->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $menu->shouldReceive('makeLastChildOf')
-            ->once();
+            ->once()
+        ;
 
         $menu->shouldReceive('fill')
-                ->once()
-                ->andReturn($menu);
+            ->once()
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('save')
-                ->once();
+            ->once()
+        ;
 
         $data = ['slug' => 'foo', 'menu' => 1, 'tags' => $tags];
 
@@ -488,7 +556,8 @@ class PageRepositoryTest extends IlluminateTestCase
         $model->shouldReceive('getAttribute')
             ->with('id')
             ->once()
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         $model->shouldReceive('getAttribute');
 
@@ -504,12 +573,14 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.creating', [ $data ])
+            ->with('platform.page.creating', [$data])
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         list($messages, $page) = $this->repository->create($data);
 
@@ -524,9 +595,10 @@ class PageRepositoryTest extends IlluminateTestCase
         $model = $this->shouldReceiveFind();
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updating', [ $model, $data ])
+            ->with('platform.page.updating', [$model, $data])
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         list($messages, $page) = $this->repository->update(1, $data);
 
@@ -540,20 +612,24 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $menu->shouldReceive('where')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('first')
-            ->once();
+            ->once()
+        ;
 
         $tags = ['foo', 'bar'];
 
         $this->app['platform.tags']->shouldReceive('set')
             ->with(m::any(), $tags)
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $data = ['slug' => 'foo', 'uri' => 'foo', 'tags' => $tags];
 
@@ -570,11 +646,13 @@ class PageRepositoryTest extends IlluminateTestCase
         $model = $this->shouldReceiveFind();
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.deleted', [ $model ])
-            ->once();
+            ->with('platform.page.deleted', [$model])
+            ->once()
+        ;
 
         $model->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $this->assertTrue($this->repository->delete(1));
     }
@@ -593,153 +671,178 @@ class PageRepositoryTest extends IlluminateTestCase
         $this->app['themes']->shouldIgnoreMissing($bag = m::mock('Cartalyst\Themes\ThemeBag'));
 
         $bag->shouldReceive('inject')
-            ->once();
+            ->once()
+        ;
 
         $bag->shouldReceive('render')
-            ->once();
+            ->once()
+        ;
 
         $model = m::mock('Platform\Pages\Models\Page');
 
         $model->shouldReceive('getAttribute')
             ->with('type')
             ->once()
-            ->andReturn('database');
+            ->andReturn('database')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('template')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('slug')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('value')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('section')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getEventDispatcher')
             ->once()
-            ->andReturn($this->app['events']);
+            ->andReturn($this->app['events'])
+        ;
 
         $this->app['events']->shouldReceive('fire')
             ->with('platform.pages.rendering.foo', ['page' => $model])
             ->once()
-            ->andReturn([['foo' => 'bar']]);
+            ->andReturn([['foo' => 'bar']])
+        ;
 
         $this->app['platform.content']->shouldReceive('prepareForRendering')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->render($model);
     }
 
     /**
      * @test
-     * @expectedException \InvalidArgumentException
      */
     public function it_throws_an_exception_if_rendering_listener_returns_incompatible_data()
     {
         $this->app['themes']->shouldIgnoreMissing($bag = m::mock('Cartalyst\Themes\ThemeBag'));
 
         $bag->shouldReceive('inject')
-            ->once();
+            ->once()
+        ;
 
         $model = m::mock('Platform\Pages\Models\Page');
 
         $model->shouldReceive('getAttribute')
             ->with('type')
             ->once()
-            ->andReturn('database');
+            ->andReturn('database')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('template')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('slug')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('value')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('section')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getEventDispatcher')
             ->once()
-            ->andReturn($this->app['events']);
+            ->andReturn($this->app['events'])
+        ;
 
         $this->app['events']->shouldReceive('fire')
             ->with('platform.pages.rendering.foo', ['page' => $model])
             ->once()
-            ->andReturn(['foo' => 'bar']);
+            ->andReturn(['foo' => 'bar'])
+        ;
 
         $this->app['platform.content']->shouldReceive('prepareForRendering')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->render($model);
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function it_throws_an_exception_if_rendering_listener_returns_a_page_key()
     {
         $this->app['themes']->shouldIgnoreMissing($bag = m::mock('Cartalyst\Themes\ThemeBag'));
 
         $bag->shouldReceive('inject')
-            ->once();
+            ->once()
+        ;
 
         $model = m::mock('Platform\Pages\Models\Page');
 
         $model->shouldReceive('getAttribute')
             ->with('type')
             ->once()
-            ->andReturn('database');
+            ->andReturn('database')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('template')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('slug')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('value')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('section')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getEventDispatcher')
             ->once()
-            ->andReturn($this->app['events']);
+            ->andReturn($this->app['events'])
+        ;
 
         $this->app['events']->shouldReceive('fire')
             ->with('platform.pages.rendering.foo', ['page' => $model])
             ->once()
-            ->andReturn([['page' => 'bar']]);
+            ->andReturn([['page' => 'bar']])
+        ;
 
         $this->app['platform.content']->shouldReceive('prepareForRendering')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->render($model);
     }
 
     /**
      * @test
-     * @expectedException \RuntimeException
      */
     public function it_throws_an_exception_when_rendering_an_invalid_type()
     {
@@ -747,10 +850,12 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('getAttribute')
             ->with('type')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getKey')
-            ->once();
+            ->once()
+        ;
 
         $this->repository->render($model);
     }
@@ -762,17 +867,21 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $menu->shouldReceive('where')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('first')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.tags']->shouldReceive('set')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $data = ['enabled' => 1];
 
@@ -780,57 +889,70 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('getAttribute')
             ->with('id')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('bypass')
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updating', [ $model, $data ])
-            ->once();
+            ->with('platform.page.updating', [$model, $data])
+            ->once()
+        ;
 
         $this->app['platform.pages.handler.data']->shouldReceive('prepare')
             ->once()
-            ->andReturn($data);
+            ->andReturn($data)
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('on')
             ->with('update')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('bind')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'));
+            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'))
+        ;
 
         $messages->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('slug')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('uri')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('fill')
             ->once()
             ->with($data)
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updated', [ $model ])
-            ->once();
+            ->with('platform.page.updated', [$model])
+            ->once()
+        ;
 
         list($messages, $page) = $this->repository->enable(1);
 
@@ -844,17 +966,21 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $menu->shouldReceive('where')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $menu->shouldReceive('first')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.tags']->shouldReceive('set')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.menus']->shouldReceive('createModel')
             ->once()
-            ->andReturn($menu);
+            ->andReturn($menu)
+        ;
 
         $data = ['enabled' => 0];
 
@@ -862,57 +988,70 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $model->shouldReceive('getAttribute')
             ->with('id')
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('bypass')
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updating', [ $model, $data ])
-            ->once();
+            ->with('platform.page.updating', [$model, $data])
+            ->once()
+        ;
 
         $this->app['platform.pages.handler.data']->shouldReceive('prepare')
             ->once()
-            ->andReturn($data);
+            ->andReturn($data)
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('on')
             ->with('update')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('bind')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'));
+            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'))
+        ;
 
         $messages->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('slug')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('uri')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('fill')
             ->once()
             ->with($data)
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->once();
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updated', [ $model ])
-            ->once();
+            ->with('platform.page.updated', [$model])
+            ->once()
+        ;
 
         list($messages, $page) = $this->repository->disable(1);
 
@@ -930,64 +1069,79 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->app['files']->shouldReceive('isDirectory')
             ->twice()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->repository->shouldReceive('getFinder')
             ->once()
-            ->andReturn($finder = m::mock('Symfony\Component\Finder\Finder'));
+            ->andReturn($finder = m::mock('Symfony\Component\Finder\Finder'))
+        ;
 
         $this->app['config']->shouldReceive('get')
             ->with('platform.themes.config.active.frontend')
             ->once()
-            ->andReturn('frontend::default');
+            ->andReturn('frontend::default')
+        ;
 
         $this->app['config']->shouldReceive('get')
             ->with('platform.themes.config.fallback.frontend')
             ->once()
-            ->andReturn('frontend::default');
+            ->andReturn('frontend::default')
+        ;
 
         $this->app['themes']->shouldReceive('getCascadedViewPaths')
             ->with('frontend::default')
             ->twice()
-            ->andReturn($paths);
+            ->andReturn($paths)
+        ;
 
         $this->app['view']->shouldReceive('getExtensions')
             ->once()
-            ->andReturn(['blade.php' => 'blade', 'php' => '.php']);
+            ->andReturn(['blade.php' => 'blade', 'php' => '.php'])
+        ;
 
         $finder->shouldReceive('files')
             ->once()
-            ->andReturn($finder);
+            ->andReturn($finder)
+        ;
 
         $finder->shouldReceive('in')
             ->once()
-            ->andReturn($finder);
+            ->andReturn($finder)
+        ;
 
         $finder->shouldReceive('getIterator')
             ->once()
-            ->andReturn($iterator = m::mock('Iterator'));
+            ->andReturn($iterator = m::mock('Iterator'))
+        ;
 
         $iterator->shouldReceive('rewind')
-            ->once();
+            ->once()
+        ;
 
         $iterator->shouldReceive('valid')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $iterator->shouldReceive('valid')
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $iterator->shouldReceive('current')
             ->once()
-            ->andReturn($file = m::mock('SplFileInfo'));
+            ->andReturn($file = m::mock('SplFileInfo'))
+        ;
 
         $file->shouldReceive('getRelativePathname')
-            ->andReturn(__DIR__);
+            ->andReturn(__DIR__)
+        ;
 
         $iterator->shouldReceive('next')
-            ->andReturn(__DIR__);
+            ->andReturn(__DIR__)
+        ;
 
-        $this->assertEquals($paths, $this->repository->files());
+        $this->assertSame($paths, $this->repository->files());
     }
 
     /** @test */
@@ -1001,70 +1155,87 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('getFinder')
             ->once()
-            ->andReturn($finder = m::mock('Symfony\Component\Finder\Finder'));
+            ->andReturn($finder = m::mock('Symfony\Component\Finder\Finder'))
+        ;
 
         $this->app['config']->shouldReceive('get')
             ->with('platform.themes.config.active.frontend')
             ->once()
-            ->andReturn('frontend::default');
+            ->andReturn('frontend::default')
+        ;
 
         $this->app['config']->shouldReceive('get')
             ->with('platform.themes.config.fallback.frontend')
             ->once()
-            ->andReturn('frontend::default');
+            ->andReturn('frontend::default')
+        ;
 
         $this->app['themes']->shouldReceive('getCascadedViewPaths')
             ->with('frontend::default')
             ->twice()
-            ->andReturn($paths);
+            ->andReturn($paths)
+        ;
 
         $this->app['view']->shouldReceive('getExtensions')
             ->once()
-            ->andReturn(['blade.php' => 'blade', 'php' => '.php']);
+            ->andReturn(['blade.php' => 'blade', 'php' => '.php'])
+        ;
 
         $finder->shouldReceive('files')
             ->once()
-            ->andReturn($finder);
+            ->andReturn($finder)
+        ;
 
         $finder->shouldReceive('depth')
             ->with('< 3')
-            ->once();
+            ->once()
+        ;
 
         $finder->shouldReceive('exclude')
-            ->once();
+            ->once()
+        ;
 
         $finder->shouldReceive('name')
-            ->once();
+            ->once()
+        ;
 
         $finder->shouldReceive('in')
             ->once()
-            ->andReturn($finder);
+            ->andReturn($finder)
+        ;
 
         $finder->shouldReceive('getIterator')
             ->once()
-            ->andReturn($iterator = m::mock('Iterator'));
+            ->andReturn($iterator = m::mock('Iterator'))
+        ;
 
         $iterator->shouldReceive('rewind')
-            ->once();
+            ->once()
+        ;
 
         $iterator->shouldReceive('valid')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $iterator->shouldReceive('valid')
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $iterator->shouldReceive('current')
             ->once()
-            ->andReturn($file = m::mock('SplFileInfo'));
+            ->andReturn($file = m::mock('SplFileInfo'))
+        ;
 
         $file->shouldReceive('getRelativePathname')
-            ->andReturn(__DIR__);
+            ->andReturn(__DIR__)
+        ;
 
         $iterator->shouldReceive('next')
-            ->andReturn(__DIR__);
+            ->andReturn(__DIR__)
+        ;
 
-        $this->assertEquals($paths, $this->repository->templates());
+        $this->assertSame($paths, $this->repository->templates());
     }
 
     /** @test */
@@ -1076,6 +1247,8 @@ class PageRepositoryTest extends IlluminateTestCase
     /**
      * Repository should receive createModel.
      *
+     * @param mixed $times
+     *
      * @return mixed
      */
     protected function shouldReceiveCreateModel($times = 1)
@@ -1084,7 +1257,8 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->times($times)
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         return $model;
     }
@@ -1102,17 +1276,21 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $cacheExpectation = $this->app['cache']->shouldReceive('rememberForever')
             ->once()
             ->with('platform.page.1', m::on(function ($callback) {
                 $callback();
+
                 return true;
-            }));
+            }))
+        ;
 
         $modelExpectation = $model->shouldReceive('find')
-            ->once();
+            ->once()
+        ;
 
         if ($returnModel) {
             $modelExpectation->andReturn($model);
@@ -1125,53 +1303,64 @@ class PageRepositoryTest extends IlluminateTestCase
     /**
      * Page creation expectations.
      *
-     * @param  arary  $data
+     * @param arary $data
+     *
      * @return \Platform\Pages\Models\Page
      */
     protected function shouldReceiveCreate($data)
     {
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.creating', [ $data ])
-            ->once();
+            ->with('platform.page.creating', [$data])
+            ->once()
+        ;
 
         $this->app['events']->shouldReceive('fire')
             ->with('platform.page.created', m::any())
-            ->once();
+            ->once()
+        ;
 
         $this->app['platform.pages.handler.data']->shouldReceive('prepare')
             ->once()
-            ->andReturn($data);
+            ->andReturn($data)
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('on')
             ->with('create')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('validate')
             ->once()
             ->with($data)
-            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'));
+            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'))
+        ;
 
         $messages->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->repository->shouldReceive('createModel')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('fill')
             ->once()
             ->with($data)
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('id')
             ->once()
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         return $model;
     }
@@ -1179,7 +1368,8 @@ class PageRepositoryTest extends IlluminateTestCase
     /**
      * Page update expectations.
      *
-     * @param  arary  $data
+     * @param arary $data
+     *
      * @return void
      */
     protected function shouldReceiveUpdate($data)
@@ -1187,58 +1377,70 @@ class PageRepositoryTest extends IlluminateTestCase
         $model = $this->shouldReceiveFind();
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updating', [ $model, $data ])
-            ->once();
+            ->with('platform.page.updating', [$model, $data])
+            ->once()
+        ;
 
         // Strip tags from data to prepare
-        $data = array_except($data, 'tags');
+        $data = Arr::except($data, 'tags');
 
         $this->app['platform.pages.handler.data']->shouldReceive('prepare')
             ->once()
-            ->andReturn($data);
+            ->andReturn($data)
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('slug')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->once()
             ->with('uri')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->app['events']->shouldReceive('fire')
-            ->with('platform.page.updated', [ $model ])
-            ->once();
+            ->with('platform.page.updated', [$model])
+            ->once()
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('on')
             ->with('update')
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('bind')
             ->with($data)
             ->once()
-            ->andReturn($this->app['platform.pages.validator']);
+            ->andReturn($this->app['platform.pages.validator'])
+        ;
 
         $this->app['platform.pages.validator']->shouldReceive('validate')
             ->once()
-            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'));
+            ->andReturn($messages = m::mock('Illuminate\Support\MessageBag'))
+        ;
 
         $messages->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $model->shouldReceive('fill')
             ->once()
             ->with($data)
-            ->andReturn($model);
+            ->andReturn($model)
+        ;
 
         $model->shouldReceive('save')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('id')
-            ->once();
+            ->once()
+        ;
     }
 }

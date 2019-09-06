@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,8 +21,6 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
-use Platform\Menus\Models\Menu;
-use Platform\Pages\Models\Page;
 use Cartalyst\Testing\IlluminateTestCase;
 use Platform\Pages\Controllers\Frontend\PagesController;
 
@@ -40,13 +38,14 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
         // Base Controller expectations
         $this->app['sentinel']->shouldReceive('getUser')
-            ->andReturn($this->user = m::mock('Cartalyst\Sentinel\Users\EloquentUser'));
+            ->andReturn($this->user = m::mock('Cartalyst\Sentinel\Users\EloquentUser'))
+        ;
         $this->app['view']->shouldReceive('share');
 
         // Additional bindings
@@ -70,61 +69,71 @@ class FrontendPagesControllerTest extends IlluminateTestCase
     {
         $this->app['request']->shouldReceive('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('visibility')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('https')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('render')
             ->with($model)
-            ->once();
+            ->once()
+        ;
 
         $this->controller->page($this->app['request']);
     }
 
     /**
      * @test
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function do_not_render_admin_pages_for_other_users()
     {
         $this->app['request']->shouldReceive('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('visibility')
             ->twice()
-            ->andReturn('admin');
+            ->andReturn('admin')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('https')
-            ->once();
+            ->once()
+        ;
 
         $this->user->shouldReceive('getAttribute')
             ->with('roles')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $this->app['sentinel']->shouldReceive('hasAccess')
             ->with('superuser')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $this->controller->page($this->app['request']);
     }
@@ -136,48 +145,57 @@ class FrontendPagesControllerTest extends IlluminateTestCase
     {
         $this->app['request']->shouldReceive('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('visibility')
             ->twice()
-            ->andReturn('logged_in');
+            ->andReturn('logged_in')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('https')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('offsetExists')
             ->with('roles')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['sentinel']->shouldReceive('hasAccess')
             ->with('superuser')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
-        $role = new \stdClass;
+        $role     = new \stdClass();
         $role->id = 'foo';
 
         $this->user->shouldReceive('getAttribute')
             ->with('roles')
             ->once()
-            ->andReturn([$role]);
+            ->andReturn([$role])
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('roles')
             ->times(2)
-            ->andReturn(['foo']);
+            ->andReturn(['foo'])
+        ;
 
         $this->pages->shouldReceive('render')
             ->with($model)
-            ->once();
+            ->once()
+        ;
 
         $this->controller->page($this->app['request']);
     }
@@ -189,29 +207,35 @@ class FrontendPagesControllerTest extends IlluminateTestCase
     {
         $this->app['request']->shouldReceive('path')
             ->once()
-            ->andReturn('/');
+            ->andReturn('/')
+        ;
 
         $this->app['config']->shouldReceive('get')
             ->with('platform.pages.config.default_page', '')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('visibility')
-            ->once();
+            ->once()
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('https')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('render')
             ->with($model)
-            ->once();
+            ->once()
+        ;
 
         $this->controller->page($this->app['request']);
     }
@@ -223,77 +247,90 @@ class FrontendPagesControllerTest extends IlluminateTestCase
     {
         $this->app['request']->shouldReceive('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('https')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['request']
             ->shouldReceive('secure')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $this->app['request']
             ->shouldReceive('getRequestUri')
-            ->once();
+            ->once()
+        ;
 
         $this->app['redirect']->shouldReceive('secure')
             ->once()
-            ->andReturn($this->app['redirect']);
+            ->andReturn($this->app['redirect'])
+        ;
 
         $this->controller->page($this->app['request']);
     }
 
     /**
      * @test
-     * @expectedException \Symfony\Component\HttpKernel\Exception\HttpException
      */
     public function do_not_render_without_permissions()
     {
         $this->app['request']->shouldReceive('path')
             ->once()
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $this->pages->shouldReceive('findEnabled')
             ->with('foo')
             ->once()
-            ->andReturn($model = m::mock('Platform\Pages\Models\Page'));
+            ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
+        ;
 
         $model->shouldReceive('getAttribute')
             ->with('visibility')
             ->once()
-            ->andReturn('logged_in');
+            ->andReturn('logged_in')
+        ;
 
         $model->shouldReceive('offsetExists')
             ->with('roles')
             ->twice()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $this->app['request']
             ->shouldReceive('secure')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->app['sentinel']->shouldReceive('hasAccess')
             ->with('superuser')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $model->shouldReceive('hasGetMutator')
             ->with('roles')
-            ->andReturn('getRolesAttribute');
+            ->andReturn('getRolesAttribute')
+        ;
 
         $model->shouldReceive('getAttribute')
             ->atLeast()
             ->once()
-            ->andReturn(['foobar']);
+            ->andReturn(['foobar'])
+        ;
 
         $this->controller->page($this->app['request']);
     }

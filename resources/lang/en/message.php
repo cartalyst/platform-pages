@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     // General messages
     'not_found' => 'Page [:id] does not exist.',
 
@@ -36,5 +35,4 @@ return [
         'update' => 'There was an issue updating the page. Please try again.',
         'delete' => 'There was an issue deleting the page. Please try again.',
     ],
-
 ];

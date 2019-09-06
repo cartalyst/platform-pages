@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -20,14 +20,16 @@
 
 namespace Platform\Pages\Handlers;
 
+use Illuminate\Support\Arr;
+
 class DataHandler implements DataHandlerInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function prepare(array $data)
     {
-        $data['roles'] = array_get($data, 'roles', []);
+        $data['roles'] = Arr::get($data, 'roles', []);
 
         if (isset($data['uri']) && $data['uri'] !== '/') {
             $data['uri'] = trim($data['uri'], '/');

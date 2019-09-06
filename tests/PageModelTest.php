@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,6 +21,7 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
+use Illuminate\Support\Arr;
 use Platform\Pages\Models\Page;
 use Cartalyst\Testing\IlluminateTestCase;
 
@@ -31,7 +32,7 @@ class PageModelTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function tearDown()
+    protected function tearDown(): void
     {
         m::close();
     }
@@ -41,7 +42,7 @@ class PageModelTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -66,7 +67,7 @@ class PageModelTest extends IlluminateTestCase
 
         $this->page->roles = $roles;
 
-        $this->assertEquals(json_encode($roles), array_get($this->page->getAttributes(), 'roles'));
+        $this->assertSame(json_encode($roles), Arr::get($this->page->getAttributes(), 'roles'));
 
         $this->assertSame($roles, $this->page->roles);
     }
@@ -89,12 +90,12 @@ class PageModelTest extends IlluminateTestCase
         $this->page->name = $slug;
         $this->page->slug = null;
 
-        $this->assertEquals('foo-bar', $this->page->slug);
+        $this->assertSame('foo-bar', $this->page->slug);
 
         // Turns underscores into dashes
         $this->page->slug = $slug;
 
-        $this->assertEquals('foo-bar', $this->page->slug);
+        $this->assertSame('foo-bar', $this->page->slug);
     }
 
     /** @test */
@@ -104,7 +105,7 @@ class PageModelTest extends IlluminateTestCase
 
         $this->page->uri = $uri;
 
-        $this->assertEquals('foo', $this->page->uri);
+        $this->assertSame('foo', $this->page->uri);
     }
 
     /** @test */
@@ -116,16 +117,17 @@ class PageModelTest extends IlluminateTestCase
         $this->app['config']->shouldReceive('get')
             ->with('platform.pages.config.default_template', '')
             ->once()
-            ->andReturn($defaultTemplate);
+            ->andReturn($defaultTemplate)
+        ;
 
         // Defaults to default_template config
-        $this->assertEquals('foo', $this->page->template);
+        $this->assertSame('foo', $this->page->template);
 
         // Set to null when type is filesystem
         $this->page->type     = 'filesystem';
         $this->page->template = $defaultTemplate;
 
-        $this->assertNull(array_get($this->page->getAttributes(), 'template'));
+        $this->assertNull(Arr::get($this->page->getAttributes(), 'template'));
     }
 
     /** @test */
@@ -137,16 +139,17 @@ class PageModelTest extends IlluminateTestCase
         $this->app['config']->shouldReceive('get')
             ->with('platform.pages.config.default_section', '')
             ->once()
-            ->andReturn($defaultSection);
+            ->andReturn($defaultSection)
+        ;
 
         // Defaults to default_section config
-        $this->assertEquals('foo', $this->page->section);
+        $this->assertSame('foo', $this->page->section);
 
         // Set to null when type is filesystem
         $this->page->type    = 'filesystem';
         $this->page->section = $defaultSection;
 
-        $this->assertNull(array_get($this->page->getAttributes(), 'section'));
+        $this->assertNull(Arr::get($this->page->getAttributes(), 'section'));
     }
 
     /** @test */
@@ -154,7 +157,7 @@ class PageModelTest extends IlluminateTestCase
     {
         $value = 'foo';
 
-        $this->page->type = 'filesystem';
+        $this->page->type  = 'filesystem';
         $this->page->value = $value;
 
         $this->assertNull($this->page->value);
@@ -176,7 +179,7 @@ class PageModelTest extends IlluminateTestCase
     {
         $this->page->visibility = null;
 
-        $this->assertEquals('always', $this->page->visibility);
+        $this->assertSame('always', $this->page->visibility);
     }
 
     /**
@@ -185,12 +188,14 @@ class PageModelTest extends IlluminateTestCase
      */
     public function it_adds_rendering_callback()
     {
-        $callback = function () {};
+        $callback = function () {
+        };
 
         $dispatcher = m::mock('Illuminate\Contracts\Events\Dispatcher');
         $dispatcher->shouldReceive('listen')
             ->with('platform.pages.rendering.*', $callback)
-            ->once();
+            ->once()
+        ;
 
         $this->page->setEventDispatcher($dispatcher);
 

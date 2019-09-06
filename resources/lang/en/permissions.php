@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -19,12 +19,10 @@
  */
 
 return [
-
     'index'        => 'List Pages',
     'create'       => 'Create new Pages',
     'copy'         => 'Copy Page',
     'edit'         => 'Edit Pages',
     'delete'       => 'Delete Pages',
     'bulk_actions' => 'Bulk Actions',
-
 ];

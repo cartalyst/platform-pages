@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,9 +21,9 @@
 namespace Platform\Pages\Repositories;
 
 use RuntimeException;
-use InvalidArgumentException;
+use Illuminate\Support\Arr;
 use Cartalyst\Support\Traits;
-use Cartalyst\Themes\ThemeBag;
+use InvalidArgumentException;
 use Platform\Pages\Models\Page;
 use Illuminate\Support\HtmlString;
 use Illuminate\Container\Container;
@@ -71,7 +71,8 @@ class PageRepository implements PageRepositoryInterface
     /**
      * Constructor.
      *
-     * @param  \Illuminate\Container\Container  $app
+     * @param \Illuminate\Container\Container $app
+     *
      * @return void
      */
     public function __construct(Container $app)
@@ -90,7 +91,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function grid()
     {
@@ -98,7 +99,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findAll()
     {
@@ -108,7 +109,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findAllEnabled()
     {
@@ -118,7 +119,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id)
     {
@@ -136,7 +137,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findBySlug($slug)
     {
@@ -146,7 +147,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findByUri($uri)
     {
@@ -156,7 +157,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function findEnabled($id)
     {
@@ -168,14 +169,16 @@ class PageRepository implements PageRepositoryInterface
                     $query
                         ->orWhere('slug', $id)
                         ->orWhere('uri', $id)
-                        ->orWhere('id', (int) $id);
+                        ->orWhere('id', (int) $id)
+                    ;
                 })
-                ->first();
+                ->first()
+            ;
         });
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getAllTags()
     {
@@ -183,7 +186,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPreparedPage($id)
     {
@@ -216,7 +219,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validForCreation(array $data)
     {
@@ -224,17 +227,17 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function validForUpdate(Page $page, array $data)
     {
-        $bindings = [ 'slug' => $page->slug, 'uri' => $page->uri ];
+        $bindings = ['slug' => $page->slug, 'uri' => $page->uri];
 
         return $this->validator->on('update')->bind($bindings)->validate($data);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function create(array $input)
     {
@@ -242,12 +245,12 @@ class PageRepository implements PageRepositoryInterface
         $page = $this->createModel();
 
         // Fire the 'platform.page.creating' event
-        if ($this->fireEvent('platform.page.creating', [ $input ]) === false) {
+        if ($this->fireEvent('platform.page.creating', [$input]) === false) {
             return false;
         }
 
         // Get the submitted tags
-        $tags = array_pull($input, 'tags', []);
+        $tags = Arr::pull($input, 'tags', []);
 
         // Prepare the submitted data
         $data = $this->data->prepare($input);
@@ -267,14 +270,14 @@ class PageRepository implements PageRepositoryInterface
             $this->setPageMenu($page, $data);
 
             // Fire the 'platform.page.created' event
-            $this->fireEvent('platform.page.created', [ $page ]);
+            $this->fireEvent('platform.page.created', [$page]);
         }
 
-        return [ $messages, $page ];
+        return [$messages, $page];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function update($id, array $input)
     {
@@ -282,12 +285,12 @@ class PageRepository implements PageRepositoryInterface
         $page = $this->find($id);
 
         // Fire the 'platform.page.updating' event
-        if ($this->fireEvent('platform.page.updating', [ $page, $input ]) === false) {
+        if ($this->fireEvent('platform.page.updating', [$page, $input]) === false) {
             return false;
         }
 
         // Get the submitted tags
-        $tags = array_pull($input, 'tags', []);
+        $tags = Arr::pull($input, 'tags', []);
 
         // Prepare the submitted data
         $data = $this->data->prepare($input);
@@ -307,14 +310,14 @@ class PageRepository implements PageRepositoryInterface
             $this->setPageMenu($page, $data);
 
             // Fire the 'platform.page.updated' event
-            $this->fireEvent('platform.page.updated', [ $page ]);
+            $this->fireEvent('platform.page.updated', [$page]);
         }
 
-        return [ $messages, $page ];
+        return [$messages, $page];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function store($id, array $input)
     {
@@ -322,14 +325,14 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function delete($id)
     {
         // Check if the page exists
         if ($page = $this->find($id)) {
             // Fire the 'platform.page.deleted' event
-            $this->fireEvent('platform.page.deleted', [ $page ]);
+            $this->fireEvent('platform.page.deleted', [$page]);
 
             // Delete the page
             $page->delete();
@@ -341,27 +344,27 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function enable($id)
     {
         $this->validator->bypass();
 
-        return $this->update($id, [ 'enabled' => true ]);
+        return $this->update($id, ['enabled' => true]);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function disable($id)
     {
         $this->validator->bypass();
 
-        return $this->update($id, [ 'enabled' => false ]);
+        return $this->update($id, ['enabled' => false]);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function render(Page $page)
     {
@@ -386,7 +389,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function files()
     {
@@ -421,7 +424,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function templates()
     {
@@ -467,7 +470,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getThemeBag()
     {
@@ -479,7 +482,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTheme($type = 'active')
     {
@@ -491,7 +494,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFinder()
     {
@@ -499,7 +502,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTemplatePaths()
     {
@@ -517,7 +520,7 @@ class PageRepository implements PageRepositoryInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFilePaths()
     {
@@ -551,11 +554,11 @@ class PageRepository implements PageRepositoryInterface
             $themePaths[] = $this->getThemeBag()->getCascadedViewPaths($theme);
         }
 
-        return array_flatten($themePaths);
+        return Arr::flatten($themePaths);
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function setPageMenu($page, array $options = [])
     {
@@ -563,10 +566,10 @@ class PageRepository implements PageRepositoryInterface
             $menuModel = $this->container['platform.menus']->createModel();
 
             // Get the menu that this page will be stored
-            $pageMenuTree = (int) array_get($options, 'menu', null);
+            $pageMenuTree = (int) Arr::get($options, 'menu', null);
 
             // Get the menu parent id, if applicable
-            $pageMenuParent = (int) array_get($options, "parent.{$pageMenuTree}");
+            $pageMenuParent = (int) Arr::get($options, "parent.{$pageMenuTree}");
 
             // Find the menu
             if ($pageMenuTree) {
@@ -588,7 +591,7 @@ class PageRepository implements PageRepositoryInterface
                             array_push($guardedAttributes, 'id');
 
                             // Store menu attributes
-                            $attrs = array_except($pageMenu->getAttributes(), $guardedAttributes);
+                            $attrs = Arr::except($pageMenu->getAttributes(), $guardedAttributes);
 
                             // Delete from the current menu tree
                             $pageMenu->delete();
@@ -642,16 +645,18 @@ class PageRepository implements PageRepositoryInterface
      * Grabs additional rendering data by firing a callback which
      * people can listen into.
      *
-     * @param  \Platform\Pages\Models\Page  $page
-     * @return array
+     * @param \Platform\Pages\Models\Page $page
+     *
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
+     *
+     * @return array
      */
     protected function additionalRenderData(Page $page)
     {
         $dispatcher = $page->getEventDispatcher();
 
-        $responses = $dispatcher->fire('platform.pages.rendering.'.$page->slug, compact('page'));
+        $responses = $dispatcher->dispatch('platform.pages.rendering.'.$page->slug, compact('page'));
 
         $data = [];
 

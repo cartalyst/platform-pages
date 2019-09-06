@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -19,15 +19,13 @@
  */
 
 return [
-
-    'title'  => 'Pages',
+    'title' => 'Pages',
 
     'tabs' => [
-        'general'     => 'Page',
-        'access'      => 'Access',
-        'navigation'  => 'Navigation',
-        'tags'        => 'Tags',
-        'attributes'  => 'Attributes',
+        'general'    => 'Page',
+        'access'     => 'Access',
+        'navigation' => 'Navigation',
+        'tags'       => 'Tags',
+        'attributes' => 'Attributes',
     ],
-
 ];

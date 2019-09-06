@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -25,7 +25,8 @@ interface DataHandlerInterface
     /**
      * Prepares the given data for being stored.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return mixed
      */
     public function prepare(array $data);

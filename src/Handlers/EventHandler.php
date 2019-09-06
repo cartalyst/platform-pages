@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -27,7 +27,7 @@ use Cartalyst\Support\Handlers\EventHandler as BaseEventHandler;
 class EventHandler extends BaseEventHandler implements EventHandlerInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function subscribe(Dispatcher $dispatcher)
     {
@@ -41,14 +41,14 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function creating(array $input)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function created(Page $page)
     {
@@ -56,14 +56,14 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function updating(Page $page, array $input)
     {
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function updated(Page $page)
     {
@@ -71,7 +71,7 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function deleted(Page $page)
     {
@@ -81,12 +81,13 @@ class EventHandler extends BaseEventHandler implements EventHandlerInterface
     /**
      * Flush the cache.
      *
-     * @param  \Platform\Pages\Models\Page  $page
+     * @param \Platform\Pages\Models\Page $page
+     *
      * @return void
      */
     protected function flushCache(Page $page)
     {
-        $cacheKeys = [ $page->id, $page->slug, $page->uri ];
+        $cacheKeys = [$page->id, $page->slug, $page->uri];
 
         $this->app['cache']->forget('platform.pages.all');
         $this->app['cache']->forget('platform.pages.all.enabled');

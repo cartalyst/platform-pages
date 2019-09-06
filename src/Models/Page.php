@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -34,12 +34,12 @@ class Page extends Model implements EntityInterface, TaggableInterface
     use EntityTrait, NamespacedEntityTrait, TaggableTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $table = 'pages';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $fillable = [
         'name',
@@ -57,21 +57,22 @@ class Page extends Model implements EntityInterface, TaggableInterface
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected $with = [
         'values.attribute',
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected static $entityNamespace = 'platform/pages';
 
     /**
      * Get mutator for the "type" attribute.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return string
      */
     public function getTypeAttribute($type)
@@ -82,7 +83,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Get mutator for the "roles" attribute.
      *
-     * @param  string  $roles
+     * @param string $roles
+     *
      * @return array
      */
     public function getRolesAttribute($roles)
@@ -93,7 +95,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator for the "roles" attribute.
      *
-     * @param  array  $roles
+     * @param array $roles
+     *
      * @return void
      */
     public function setRolesAttribute(array $roles)
@@ -104,7 +107,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Get mutator for the "enabled" attribute.
      *
-     * @param  int  $enabled
+     * @param int $enabled
+     *
      * @return bool
      */
     public function getEnabledAttribute($enabled)
@@ -115,7 +119,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator the "slug" attribute.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return void
      */
     public function setSlugAttribute($slug)
@@ -126,7 +131,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator for the "uri" attribute.
      *
-     * @param  string  $uri
+     * @param string $uri
+     *
      * @return void
      */
     public function setUriAttribute($uri)
@@ -137,7 +143,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Get mutator for the "template" attribute.
      *
-     * @param  string  $template
+     * @param string $template
+     *
      * @return string
      */
     public function getTemplateAttribute($template)
@@ -148,7 +155,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator for the "template" attribute.
      *
-     * @param  string  $template
+     * @param string $template
+     *
      * @return void
      */
     public function setTemplateAttribute($template)
@@ -159,7 +167,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Get mutator for the "section" attribute.
      *
-     * @param  string  $section
+     * @param string $section
+     *
      * @return string
      */
     public function getSectionAttribute($section)
@@ -170,7 +179,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator for the "section" attribute.
      *
-     * @param  string  $section
+     * @param string $section
+     *
      * @return void
      */
     public function setSectionAttribute($section)
@@ -181,7 +191,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator for the "value" attribute.
      *
-     * @param  string  $value
+     * @param string $value
+     *
      * @return void
      */
     public function setValueAttribute($value)
@@ -192,7 +203,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Set mutator for the "file" attribute.
      *
-     * @param  string  $file
+     * @param string $file
+     *
      * @return void
      */
     public function setFileAttribute($file)
@@ -203,7 +215,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Get mutator for the "visibility" attribute.
      *
-     * @param  string  $visibility
+     * @param string $visibility
+     *
      * @return string
      */
     public function getVisibilityAttribute($visibility)
@@ -214,7 +227,8 @@ class Page extends Model implements EntityInterface, TaggableInterface
     /**
      * Add a callback for when a page is rendering.
      *
-     * @param  \Closure  $callback
+     * @param \Closure $callback
+     *
      * @return void
      */
     public static function rendering(Closure $callback)

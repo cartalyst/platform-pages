@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -21,8 +21,6 @@
 namespace Platform\Pages\Tests;
 
 use Mockery as m;
-use Platform\Menus\Models\Menu;
-use Platform\Pages\Models\Page;
 use Cartalyst\Testing\IlluminateTestCase;
 use Platform\Pages\Controllers\Admin\PagesController;
 
@@ -40,7 +38,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -63,10 +61,12 @@ class AdminPagesControllerTest extends IlluminateTestCase
     public function index_route()
     {
         $this->pages->shouldReceive('getAllTags')
-            ->once();
+            ->once()
+        ;
 
         $this->app['view']->shouldReceive('make')
-            ->once();
+            ->once()
+        ;
 
         $this->controller->index();
     }
@@ -75,11 +75,13 @@ class AdminPagesControllerTest extends IlluminateTestCase
     public function create_route()
     {
         $this->app['view']->shouldReceive('make')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('getPreparedPage')
             ->once()
-            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null])
+        ;
 
         $this->controller->create();
     }
@@ -88,11 +90,13 @@ class AdminPagesControllerTest extends IlluminateTestCase
     public function edit_route()
     {
         $this->app['view']->shouldReceive('make')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('getPreparedPage')
             ->once()
-            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null])
+        ;
 
         $this->controller->edit(1);
     }
@@ -101,17 +105,21 @@ class AdminPagesControllerTest extends IlluminateTestCase
     public function edit_non_existing()
     {
         $this->pages->shouldReceive('getPreparedPage')
-            ->once();
+            ->once()
+        ;
 
         $this->app['alerts']->shouldReceive('error')
-            ->once();
+            ->once()
+        ;
 
         $this->app['translator']->shouldReceive('trans')
-            ->once();
+            ->once()
+        ;
 
         $this->app['redirect']->shouldReceive('toAdmin')
             ->once()
-            ->andReturn($response = m::mock('Illuminate\Response\Response'));
+            ->andReturn($response = m::mock('Illuminate\Response\Response'))
+        ;
 
         $this->pages->shouldReceive('find');
 
@@ -122,11 +130,13 @@ class AdminPagesControllerTest extends IlluminateTestCase
     public function datagrid()
     {
         $this->app['datagrid']->shouldReceive('make')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('grid')
             ->once()
-            ->andReturn([]);
+            ->andReturn([])
+        ;
 
         $this->controller->grid();
     }
@@ -140,20 +150,24 @@ class AdminPagesControllerTest extends IlluminateTestCase
 
         $this->app['request']->shouldReceive('all')
             ->once()
-            ->andReturn(['slug' => 'foo']);
+            ->andReturn(['slug' => 'foo'])
+        ;
 
         $this->app['redirect']->shouldReceive('route')
-            ->once();
+            ->once()
+        ;
 
         $message = m::mock('Illuminate\Support\MessageBag');
 
         $message->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->pages->shouldReceive('store')
             ->once()
-            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
+            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')])
+        ;
 
         $this->controller->store();
     }
@@ -167,20 +181,24 @@ class AdminPagesControllerTest extends IlluminateTestCase
 
         $this->app['request']->shouldReceive('all')
             ->once()
-            ->andReturn(['slug' => 'foo']);
+            ->andReturn(['slug' => 'foo'])
+        ;
 
         $this->app['redirect']->shouldReceive('route')
-            ->once();
+            ->once()
+        ;
 
         $message = m::mock('Illuminate\Support\MessageBag');
 
         $message->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->pages->shouldReceive('store')
             ->once()
-            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
+            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')])
+        ;
 
         $this->controller->update(1);
     }
@@ -194,25 +212,30 @@ class AdminPagesControllerTest extends IlluminateTestCase
 
         $this->app['redirect']->shouldReceive('back')
             ->once()
-            ->andReturn($this->app['redirect']);
+            ->andReturn($this->app['redirect'])
+        ;
 
         $this->app['redirect']->shouldReceive('withInput')
             ->once()
-            ->andReturn($this->app['redirect']);
+            ->andReturn($this->app['redirect'])
+        ;
 
         $this->app['request']->shouldReceive('all')
             ->once()
-            ->andReturn(['slug' => 'foo']);
+            ->andReturn(['slug' => 'foo'])
+        ;
 
         $message = m::mock('Illuminate\Support\MessageBag');
 
         $message->shouldReceive('isEmpty')
             ->once()
-            ->andReturn(false);
+            ->andReturn(false)
+        ;
 
         $this->pages->shouldReceive('store')
             ->once()
-            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')]);
+            ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')])
+        ;
 
         $this->controller->update(1);
     }
@@ -225,11 +248,13 @@ class AdminPagesControllerTest extends IlluminateTestCase
         $this->app['translator']->shouldReceive('trans');
 
         $this->app['redirect']->shouldReceive('route')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('delete')
             ->once()
-            ->andReturn(true);
+            ->andReturn(true)
+        ;
 
         $this->controller->delete(1);
     }
@@ -242,10 +267,12 @@ class AdminPagesControllerTest extends IlluminateTestCase
         $this->app['translator']->shouldReceive('trans');
 
         $this->app['redirect']->shouldReceive('route')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('delete')
-            ->once();
+            ->once()
+        ;
 
         $this->controller->delete(1);
     }
@@ -254,11 +281,13 @@ class AdminPagesControllerTest extends IlluminateTestCase
     public function copy_route()
     {
         $this->app['view']->shouldReceive('make')
-            ->once();
+            ->once()
+        ;
 
         $this->pages->shouldReceive('getPreparedPage')
             ->once()
-            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null]);
+            ->andReturn(['page' => 'foo', 'roles' => null, 'templates' => null, 'files' => null, 'menus' => null, 'menu' => null])
+        ;
 
         $this->controller->copy(1);
     }
@@ -269,21 +298,25 @@ class AdminPagesControllerTest extends IlluminateTestCase
         $this->app['request']->shouldReceive('input')
             ->with('action')
             ->once()
-            ->andReturn('delete');
+            ->andReturn('delete')
+        ;
 
         $this->app['request']->shouldReceive('input')
             ->with('rows', [])
             ->once()
-            ->andReturn([1]);
+            ->andReturn([1])
+        ;
 
         $this->pages->shouldReceive('delete')
             ->with(1)
-            ->once();
+            ->once()
+        ;
 
         $this->app['response']
             ->shouldReceive('make')
             ->with('Success', 200, [])
-            ->once();
+            ->once()
+        ;
 
         $this->controller->executeAction();
     }
@@ -294,12 +327,14 @@ class AdminPagesControllerTest extends IlluminateTestCase
         $this->app['request']->shouldReceive('input')
             ->with('action')
             ->once()
-            ->andReturn('foobar');
+            ->andReturn('foobar')
+        ;
 
         $this->app['response']
             ->shouldReceive('make')
             ->with('Failed', 500, [])
-            ->once();
+            ->once()
+        ;
 
         $this->controller->executeAction();
     }

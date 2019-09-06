@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -26,7 +26,7 @@ use Platform\Pages\Models\Page;
 class PagesSeeder extends Seeder
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function run()
     {

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -20,10 +20,10 @@
 
 namespace Platform\Pages\Tests;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Platform\Pages\Handlers\DataHandler;
 
-class PageDataHandlerTest extends PHPUnit_Framework_TestCase
+class PageDataHandlerTest extends TestCase
 {
     /**
      * Model instance.
@@ -37,9 +37,9 @@ class PageDataHandlerTest extends PHPUnit_Framework_TestCase
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp(): void
     {
-        $this->handler = new DataHandler;
+        $this->handler = new DataHandler();
     }
 
     /** @test */
@@ -51,6 +51,6 @@ class PageDataHandlerTest extends PHPUnit_Framework_TestCase
             'roles' => [],
         ];
 
-        $this->assertEquals($expected, $this->handler->prepare($data));
+        $this->assertSame($expected, $this->handler->prepare($data));
     }
 }

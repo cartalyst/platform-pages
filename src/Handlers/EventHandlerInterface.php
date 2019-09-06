@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -28,7 +28,8 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * When a page is being created.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return mixed
      */
     public function creating(array $data);
@@ -36,7 +37,8 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * When a page is created.
      *
-     * @param  \Platform\Pages\Models\Page  $page
+     * @param \Platform\Pages\Models\Page $page
+     *
      * @return void
      */
     public function created(Page $page);
@@ -44,8 +46,9 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * When a page is being updated.
      *
-     * @param  \Platform\Pages\Models\Page  $page
-     * @param  array  $data
+     * @param \Platform\Pages\Models\Page $page
+     * @param array                       $data
+     *
      * @return mixed
      */
     public function updating(Page $page, array $data);
@@ -53,7 +56,8 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * When a page is updated.
      *
-     * @param  \Platform\Pages\Models\Page  $page
+     * @param \Platform\Pages\Models\Page $page
+     *
      * @return void
      */
     public function updated(Page $page);
@@ -61,7 +65,8 @@ interface EventHandlerInterface extends BaseEventHandlerInterface
     /**
      * When a page is deleted.
      *
-     * @param  \Platform\Pages\Models\Page  $page
+     * @param \Platform\Pages\Models\Page $page
+     *
      * @return void
      */
     public function deleted(Page $page);

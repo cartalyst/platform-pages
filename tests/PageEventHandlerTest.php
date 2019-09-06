@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -27,9 +27,9 @@ use Platform\Pages\Handlers\EventHandler;
 class PageEventHandlerTest extends IlluminateTestCase
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -44,23 +44,28 @@ class PageEventHandlerTest extends IlluminateTestCase
 
         $this->app['events']->shouldReceive('listen')
             ->once()
-            ->with('platform.page.creating', $class.'@creating');
+            ->with('platform.page.creating', $class.'@creating')
+        ;
 
         $this->app['events']->shouldReceive('listen')
             ->once()
-            ->with('platform.page.created', $class.'@created');
+            ->with('platform.page.created', $class.'@created')
+        ;
 
         $this->app['events']->shouldReceive('listen')
             ->once()
-            ->with('platform.page.updating', $class.'@updating');
+            ->with('platform.page.updating', $class.'@updating')
+        ;
 
         $this->app['events']->shouldReceive('listen')
             ->once()
-            ->with('platform.page.updated', $class.'@updated');
+            ->with('platform.page.updated', $class.'@updated')
+        ;
 
         $this->app['events']->shouldReceive('listen')
             ->once()
-            ->with('platform.page.deleted', $class.'@deleted');
+            ->with('platform.page.deleted', $class.'@deleted')
+        ;
 
         $this->handler->subscribe($this->app['events']);
     }
@@ -98,7 +103,8 @@ class PageEventHandlerTest extends IlluminateTestCase
     /**
      * Sets expected method calls for flushing cache.
      *
-     * @param  \Platform\Content\Models\Content  $page
+     * @param \Platform\Content\Models\Content $page
+     *
      * @return void
      */
     protected function shouldFlushCache($page)
@@ -106,51 +112,62 @@ class PageEventHandlerTest extends IlluminateTestCase
         // Single page
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with("platform.page.1");
+            ->with('platform.page.1')
+        ;
 
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.page.slug.foo');
+            ->with('platform.page.slug.foo')
+        ;
 
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.page.uri.foouri');
+            ->with('platform.page.uri.foouri')
+        ;
 
         // Enabled pages
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with("platform.page.enabled.1");
+            ->with('platform.page.enabled.1')
+        ;
 
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.page.enabled.foo');
+            ->with('platform.page.enabled.foo')
+        ;
 
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.page.enabled.foouri');
+            ->with('platform.page.enabled.foouri')
+        ;
 
         // All pages
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.pages.all');
+            ->with('platform.pages.all')
+        ;
 
         $this->app['cache']->shouldReceive('forget')
             ->once()
-            ->with('platform.pages.all.enabled');
+            ->with('platform.pages.all.enabled')
+        ;
 
         $page->shouldReceive('getAttribute')
             ->once()
             ->with('id')
-            ->andReturn(1);
+            ->andReturn(1)
+        ;
 
         $page->shouldReceive('getAttribute')
             ->once()
             ->with('slug')
-            ->andReturn('foo');
+            ->andReturn('foo')
+        ;
 
         $page->shouldReceive('getAttribute')
             ->once()
             ->with('uri')
-            ->andReturn('foouri');
+            ->andReturn('foouri')
+        ;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -19,7 +19,6 @@
  */
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Default Page
@@ -76,11 +75,8 @@ return [
     */
 
     'exclude' => [
-
         'modals',
         'pages',
         'partials',
-
     ],
-
 ];

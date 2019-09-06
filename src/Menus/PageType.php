@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -20,6 +20,7 @@
 
 namespace Platform\Pages\Menus;
 
+use Illuminate\Support\Arr;
 use Platform\Menus\Models\Menu;
 use Platform\Menus\Types\AbstractType;
 use Platform\Menus\Types\TypeInterface;
@@ -31,10 +32,10 @@ class PageType extends AbstractType implements TypeInterface
      *
      * @var \Platform\Pages\Models\Page
      */
-    protected $pages = null;
+    protected $pages;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getIdentifier()
     {
@@ -42,7 +43,7 @@ class PageType extends AbstractType implements TypeInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -50,33 +51,33 @@ class PageType extends AbstractType implements TypeInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getFormHtml(Menu $child = null)
     {
         $pages = $this->getPages();
 
-        return $this->view->make("platform/pages::types/form", compact('child', 'pages'));
+        return $this->view->make('platform/pages::types/form', compact('child', 'pages'));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getTemplateHtml()
     {
         $pages = $this->getPages();
 
-        return $this->view->make("platform/pages::types/template", compact('pages'));
+        return $this->view->make('platform/pages::types/template', compact('pages'));
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function afterSave(Menu $child)
     {
         $data = $child->getAttributes();
 
-        if ($pageId = array_get($data, 'page_id')) {
+        if ($pageId = Arr::get($data, 'page_id')) {
             $page = $this->app['platform.pages']->find($pageId);
 
             $child->page_id = $pageId;
@@ -86,7 +87,7 @@ class PageType extends AbstractType implements TypeInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function beforeDelete(Menu $child)
     {

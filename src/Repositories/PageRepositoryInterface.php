@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * Part of the Platform Pages extension.
  *
  * NOTICE OF LICENSE
@@ -20,7 +20,6 @@
 
 namespace Platform\Pages\Repositories;
 
-use Cartalyst\Themes\ThemeBag;
 use Platform\Pages\Models\Page;
 
 interface PageRepositoryInterface
@@ -49,7 +48,8 @@ interface PageRepositoryInterface
     /**
      * Returns a page by its primary key, slug or uri.
      *
-     * @param  mixed  $id
+     * @param mixed $id
+     *
      * @return \Platform\Pages\Models\Page
      */
     public function find($id);
@@ -57,7 +57,8 @@ interface PageRepositoryInterface
     /**
      * Returns a page by its slug.
      *
-     * @param  string  $slug
+     * @param string $slug
+     *
      * @return \Platform\Pages\Models\Page
      */
     public function findBySlug($slug);
@@ -65,7 +66,8 @@ interface PageRepositoryInterface
     /**
      * Returns a page by its uri.
      *
-     * @param  string  $uri
+     * @param string $uri
+     *
      * @return \Platform\Pages\Models\Page
      */
     public function findByUri($uri);
@@ -73,7 +75,8 @@ interface PageRepositoryInterface
     /**
      * Returns a page by its primary key that is enabled.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Platform\Pages\Models\Page
      */
     public function findEnabled($id);
@@ -89,7 +92,8 @@ interface PageRepositoryInterface
      * Returns the given page with the necessary and
      * belonging data already prepared to be used.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return array
      */
     public function getPreparedPage($id);
@@ -97,7 +101,8 @@ interface PageRepositoryInterface
     /**
      * Determines if the given page is valid for creation.
      *
-     * @param  array  $data
+     * @param array $data
+     *
      * @return \Illuminate\Support\MessageBag
      */
     public function validForCreation(array $data);
@@ -105,8 +110,9 @@ interface PageRepositoryInterface
     /**
      * Determines if the given page is valid for updating.
      *
-     * @param  \Platform\Pages\Models\Page  $page
-     * @param  array  $data
+     * @param \Platform\Pages\Models\Page $page
+     * @param array                       $data
+     *
      * @return \Illuminate\Support\MessageBag
      */
     public function validForUpdate(Page $page, array $data);
@@ -114,25 +120,28 @@ interface PageRepositoryInterface
     /**
      * Creates a page with the given data.
      *
-     * @param  array  $data
-     * @return bool|array
+     * @param array $data
+     *
+     * @return array|bool
      */
     public function create(array $data);
 
     /**
      * Updates a page with the given data.
      *
-     * @param  int  $id
-     * @param  array  $data
-     * @return bool|array
+     * @param int   $id
+     * @param array $data
+     *
+     * @return array|bool
      */
     public function update($id, array $data);
 
     /**
      * Creates or updates the given page.
      *
-     * @param  int  $id
-     * @param  array  $input
+     * @param int   $id
+     * @param array $input
+     *
      * @return array
      */
     public function store($id, array $input);
@@ -140,7 +149,8 @@ interface PageRepositoryInterface
     /**
      * Deletes the given page.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return bool
      */
     public function delete($id);
@@ -148,25 +158,29 @@ interface PageRepositoryInterface
     /**
      * Enables the given page.
      *
-     * @param  int  $id
-     * @return bool|array
+     * @param int $id
+     *
+     * @return array|bool
      */
     public function enable($id);
 
     /**
      * Disables the given page.
      *
-     * @param  int  $id
-     * @return bool|array
+     * @param int $id
+     *
+     * @return array|bool
      */
     public function disable($id);
 
     /**
      * Renders the page.
      *
-     * @param  \Platform\Pages\Models\Page  $page
-     * @return string
+     * @param \Platform\Pages\Models\Page $page
+     *
      * @throws \RuntimeException
+     *
+     * @return string
      */
     public function render(Page $page);
 
