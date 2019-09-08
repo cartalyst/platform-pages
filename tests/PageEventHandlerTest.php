@@ -27,6 +27,18 @@ use Platform\Pages\Handlers\EventHandler;
 class PageEventHandlerTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void

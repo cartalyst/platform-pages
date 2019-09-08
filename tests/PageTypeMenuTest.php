@@ -27,6 +27,18 @@ use Cartalyst\Testing\IlluminateTestCase;
 class PageTypeMenuTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -62,7 +74,7 @@ class PageTypeMenuTest extends IlluminateTestCase
             ->andReturn([])
         ;
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->with('platform/pages::types/form', ['child' => $menu, 'pages' => []])
             ->once()
         ;
@@ -80,7 +92,7 @@ class PageTypeMenuTest extends IlluminateTestCase
             ->andReturn([])
         ;
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->with('platform/pages::types/template', ['pages' => []])
             ->once()
         ;
@@ -147,14 +159,14 @@ class PageTypeMenuTest extends IlluminateTestCase
             ->andReturn([$page])
         ;
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->with('platform/pages::types/form', ['child' => $menu, 'pages' => [$page]])
             ->once()
         ;
 
         $this->type->getFormHtml($menu);
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->with('platform/pages::types/template', ['pages' => [$page]])
             ->once()
         ;

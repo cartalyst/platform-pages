@@ -27,6 +27,18 @@ use Cartalyst\Testing\IlluminateTestCase;
 class PageRepositoryTest extends IlluminateTestCase
 {
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function setUp(): void
@@ -273,7 +285,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn([])
         ;
 
-        $this->app['view']->shouldReceive('getExtensions')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('getExtensions')
             ->once()
             ->andReturn([])
         ;
@@ -323,7 +335,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn([])
         ;
 
-        $this->app['view']->shouldReceive('getExtensions')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('getExtensions')
             ->once()
             ->andReturn([])
         ;
@@ -576,7 +588,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($model = m::mock('Platform\Pages\Models\Page'))
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.creating', [$data])
             ->once()
             ->andReturn(false)
@@ -594,7 +606,7 @@ class PageRepositoryTest extends IlluminateTestCase
 
         $model = $this->shouldReceiveFind();
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updating', [$model, $data])
             ->once()
             ->andReturn(false)
@@ -645,7 +657,7 @@ class PageRepositoryTest extends IlluminateTestCase
     {
         $model = $this->shouldReceiveFind();
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.deleted', [$model])
             ->once()
         ;
@@ -712,7 +724,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($this->app['events'])
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.pages.rendering.foo', ['page' => $model])
             ->once()
             ->andReturn([['foo' => 'bar']])
@@ -730,6 +742,8 @@ class PageRepositoryTest extends IlluminateTestCase
      */
     public function it_throws_an_exception_if_rendering_listener_returns_incompatible_data()
     {
+        $this->expectException('InvalidArgumentException');
+
         $this->app['themes']->shouldIgnoreMissing($bag = m::mock('Cartalyst\Themes\ThemeBag'));
 
         $bag->shouldReceive('inject')
@@ -770,7 +784,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($this->app['events'])
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.pages.rendering.foo', ['page' => $model])
             ->once()
             ->andReturn(['foo' => 'bar'])
@@ -788,6 +802,8 @@ class PageRepositoryTest extends IlluminateTestCase
      */
     public function it_throws_an_exception_if_rendering_listener_returns_a_page_key()
     {
+        $this->expectException('RuntimeException');
+
         $this->app['themes']->shouldIgnoreMissing($bag = m::mock('Cartalyst\Themes\ThemeBag'));
 
         $bag->shouldReceive('inject')
@@ -828,7 +844,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($this->app['events'])
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.pages.rendering.foo', ['page' => $model])
             ->once()
             ->andReturn([['page' => 'bar']])
@@ -846,6 +862,8 @@ class PageRepositoryTest extends IlluminateTestCase
      */
     public function it_throws_an_exception_when_rendering_an_invalid_type()
     {
+        $this->expectException('RuntimeException');
+
         $model = m::mock('Platform\Pages\Models\Page');
 
         $model->shouldReceive('getAttribute')
@@ -896,7 +914,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updating', [$model, $data])
             ->once()
         ;
@@ -949,7 +967,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updated', [$model])
             ->once()
         ;
@@ -995,7 +1013,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updating', [$model, $data])
             ->once()
         ;
@@ -1048,7 +1066,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updated', [$model])
             ->once()
         ;
@@ -1095,7 +1113,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($paths)
         ;
 
-        $this->app['view']->shouldReceive('getExtensions')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('getExtensions')
             ->once()
             ->andReturn(['blade.php' => 'blade', 'php' => '.php'])
         ;
@@ -1176,7 +1194,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn($paths)
         ;
 
-        $this->app['view']->shouldReceive('getExtensions')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('getExtensions')
             ->once()
             ->andReturn(['blade.php' => 'blade', 'php' => '.php'])
         ;
@@ -1309,12 +1327,12 @@ class PageRepositoryTest extends IlluminateTestCase
      */
     protected function shouldReceiveCreate($data)
     {
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.creating', [$data])
             ->once()
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.created', m::any())
             ->once()
         ;
@@ -1376,7 +1394,7 @@ class PageRepositoryTest extends IlluminateTestCase
     {
         $model = $this->shouldReceiveFind();
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updating', [$model, $data])
             ->once()
         ;
@@ -1401,7 +1419,7 @@ class PageRepositoryTest extends IlluminateTestCase
             ->andReturn('foo')
         ;
 
-        $this->app['events']->shouldReceive('fire')
+        $this->app['events']->shouldReceive('dispatch')
             ->with('platform.page.updated', [$model])
             ->once()
         ;

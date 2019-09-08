@@ -34,6 +34,8 @@ class PageModelTest extends IlluminateTestCase
      */
     protected function tearDown(): void
     {
+        $this->addToAssertionCount(1);
+
         m::close();
     }
 

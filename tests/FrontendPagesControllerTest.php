@@ -34,6 +34,18 @@ class FrontendPagesControllerTest extends IlluminateTestCase
     protected $controller;
 
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * Setup.
      *
      * @return void
@@ -46,7 +58,7 @@ class FrontendPagesControllerTest extends IlluminateTestCase
         $this->app['sentinel']->shouldReceive('getUser')
             ->andReturn($this->user = m::mock('Cartalyst\Sentinel\Users\EloquentUser'))
         ;
-        $this->app['view']->shouldReceive('share');
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('share');
 
         // Additional bindings
         $this->app['router'] = m::mock('Illuminate\Routing\Router');
@@ -101,6 +113,8 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function do_not_render_admin_pages_for_other_users()
     {
+        $this->expectException('Symfony\Component\HttpKernel\Exception\HttpException');
+
         $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('foo')
@@ -286,6 +300,8 @@ class FrontendPagesControllerTest extends IlluminateTestCase
      */
     public function do_not_render_without_permissions()
     {
+        $this->expectException('Symfony\Component\HttpKernel\Exception\HttpException');
+
         $this->app['request']->shouldReceive('path')
             ->once()
             ->andReturn('foo')

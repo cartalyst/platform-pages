@@ -34,6 +34,18 @@ class AdminPagesControllerTest extends IlluminateTestCase
     protected $controller;
 
     /**
+     * Close mockery.
+     *
+     * @return void
+     */
+    protected function tearDown(): void
+    {
+        $this->addToAssertionCount(1);
+
+        m::close();
+    }
+
+    /**
      * Setup.
      *
      * @return void
@@ -44,7 +56,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
 
         // Admin Controller expectations
         $this->app['sentinel']->shouldReceive('getUser');
-        $this->app['view']->shouldReceive('share');
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('share');
 
         // Pages Repository
         $this->pages = m::mock('Platform\Pages\Repositories\PageRepositoryInterface');
@@ -64,7 +76,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->once()
         ;
 
@@ -74,7 +86,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
     /** @test */
     public function create_route()
     {
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->once()
         ;
 
@@ -89,7 +101,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
     /** @test */
     public function edit_route()
     {
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->once()
         ;
 
@@ -280,7 +292,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
     /** @test */
     public function copy_route()
     {
-        $this->app['view']->shouldReceive('make')
+        $this->app['Illuminate\Contracts\View\Factory']->shouldReceive('make')
             ->once()
         ;
 
@@ -312,7 +324,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->once()
         ;
 
-        $this->app['response']
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']
             ->shouldReceive('make')
             ->with('Success', 200, [])
             ->once()
@@ -330,7 +342,7 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->andReturn('foobar')
         ;
 
-        $this->app['response']
+        $this->app['Illuminate\Contracts\Routing\ResponseFactory']
             ->shouldReceive('make')
             ->with('Failed', 500, [])
             ->once()
