@@ -1,5 +1,11 @@
 # Changelog
 
+### v8.0.1 - 2019-09-27
+
+`REVISED`
+
+- Run `php artisan optimize` after changing pages to ensure any changes to routes are recached.
+
 ### v8.0.0 - 2019-09-26
 
 - Updated for Platform 9
