@@ -62,11 +62,12 @@ class AdminPagesControllerTest extends IlluminateTestCase
         $this->pages = m::mock('Platform\Pages\Repositories\PageRepositoryInterface');
 
         // Additional repositories
-        $this->menus = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
-        $this->roles = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
+        $this->menus   = m::mock('Platform\Menus\Repositories\MenuRepositoryInterface');
+        $this->roles   = m::mock('Platform\Users\Repositories\RoleRepositoryInterface');
+        $this->artisan = m::mock('Illuminate\Contracts\Console\Kernel');
 
         // Pages Controller
-        $this->controller = new PagesController($this->pages);
+        $this->controller = new PagesController($this->pages, $this->artisan);
     }
 
     /** @test */
@@ -181,6 +182,9 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')])
         ;
 
+        $this->artisan->shouldReceive('call')
+            ->with('optimize', ['--quiet' => true]);
+
         $this->controller->store();
     }
 
@@ -211,6 +215,10 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->once()
             ->andReturn([$message, $model = m::mock('Platform\Pages\Models\Page')])
         ;
+
+        $this->artisan->shouldReceive('call')
+            ->once()
+            ->with('optimize', ['--quiet' => true]);
 
         $this->controller->update(1);
     }
@@ -268,6 +276,10 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->andReturn(true)
         ;
 
+        $this->artisan->shouldReceive('call')
+            ->once()
+            ->with('optimize', ['--quiet' => true]);
+
         $this->controller->delete(1);
     }
 
@@ -285,6 +297,10 @@ class AdminPagesControllerTest extends IlluminateTestCase
         $this->pages->shouldReceive('delete')
             ->once()
         ;
+
+        $this->artisan->shouldReceive('call')
+            ->once()
+            ->with('optimize', ['--quiet' => true]);
 
         $this->controller->delete(1);
     }
@@ -329,6 +345,10 @@ class AdminPagesControllerTest extends IlluminateTestCase
             ->with('Success', 200, [])
             ->once()
         ;
+
+        $this->artisan->shouldReceive('call')
+            ->once()
+            ->with('optimize', ['--quiet' => true]);
 
         $this->controller->executeAction();
     }

@@ -20,6 +20,7 @@
 
 namespace Platform\Pages\Controllers\Admin;
 
+use Illuminate\Contracts\Console\Kernel;
 use Platform\Access\Controllers\AdminController;
 use Cartalyst\DataGrid\Export\Providers\ExportProvider;
 use Platform\Pages\Repositories\PageRepositoryInterface;
@@ -45,17 +46,27 @@ class PagesController extends AdminController
     ];
 
     /**
+     * Artisan instance.
+     *
+     * @var \Illuminate\Contracts\Console\Kernel
+     */
+    protected $artisan;
+
+    /**
      * Constructor.
      *
      * @param \Platform\Pages\Repositories\PageRepositoryInterface $pages
+     * @param \Illuminate\Contracts\Console\Kernel                 $artisan
      *
      * @return void
      */
-    public function __construct(PageRepositoryInterface $pages)
+    public function __construct(PageRepositoryInterface $pages, Kernel $artisan)
     {
         parent::__construct();
 
         $this->pages = $pages;
+
+        $this->artisan = $artisan;
     }
 
     /**
@@ -174,6 +185,8 @@ class PagesController extends AdminController
             trans("platform/pages::message.{$type}.delete")
         );
 
+        $this->artisan->call('optimize', ['--quiet' => true]);
+
         return redirect()->route('admin.pages.all');
     }
 
@@ -190,6 +203,8 @@ class PagesController extends AdminController
             foreach (request()->input('rows', []) as $row) {
                 $this->pages->{$action}($row);
             }
+
+            $this->artisan->call('optimize', ['--quiet' => true]);
 
             return response('Success');
         }
@@ -246,6 +261,8 @@ class PagesController extends AdminController
         // Do we have any errors?
         if ($messages->isEmpty()) {
             $this->alerts->success(trans("platform/pages::message.success.{$mode}"));
+
+            $this->artisan->call('optimize', ['--quiet' => true]);
 
             return redirect()->route('admin.pages.all');
         }
