@@ -1,14 +1,14 @@
 {
-	"preface" : [
-		"introduction",
-		"features",
-		"examples"
-	],
-	"setup" : [
-		"installation"
-	],
-	"usage": [
-		"index",
-		"repository"
-	]
+    "preface": [
+        "introduction",
+        "features",
+        "examples"
+    ],
+    "setup": [
+        "installation"
+    ],
+    "usage": [
+        "index",
+        "repository"
+    ]
 }

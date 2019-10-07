@@ -16,12 +16,12 @@ $allPages = $pages->findAll();
 
 ```php
 $pages->create([
-	'name'       => 'Foo',
-	'slug'       => 'foo',
-	'uri'        => 'foo',
-	'enabled'    => true,
-	'type'       => 'filesystem',
-	'visibility' => 'always',
-	'file'       => 'foo',
+    'name'       => 'Foo',
+    'slug'       => 'foo',
+    'uri'        => 'foo',
+    'enabled'    => true,
+    'type'       => 'filesystem',
+    'visibility' => 'always',
+    'file'       => 'foo',
 ]);
 ```
