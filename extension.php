@@ -11,10 +11,10 @@
  * bundled with this package in the LICENSE file.
  *
  * @package    Platform Pages extension
- * @version    8.0.1
+ * @version    9.0.0
  * @author     Cartalyst LLC
  * @license    Cartalyst PSL
- * @copyright  (c) 2011-2019, Cartalyst LLC
+ * @copyright  (c) 2011-2020, Cartalyst LLC
  * @link       https://cartalyst.com
  */
 
@@ -74,7 +74,7 @@ return [
     |
     */
 
-    'version' => '8.0.0',
+    'version' => '9.0.0',
 
     /*
     |--------------------------------------------------------------------------
@@ -148,19 +148,19 @@ return [
                     'prefix' => admin_uri().'/pages', 'namespace' => 'Admin',
                 ], function (Router $router) {
                     $router->get('/', 'PagesController@index')->name('admin.pages.all');
-                    $router->post('/', 'PagesController@executeAction')->name('admin.pages.all');
+                    $router->post('/', 'PagesController@executeAction')->name('admin.pages.execute');
 
                     $router->get('grid', 'PagesController@grid')->name('admin.pages.grid');
 
                     $router->get('create', 'PagesController@create')->name('admin.pages.create');
-                    $router->post('create', 'PagesController@store')->name('admin.pages.create');
+                    $router->post('create', 'PagesController@store')->name('admin.pages.store');
 
                     $router->get('{id}', 'PagesController@edit')->name('admin.pages.edit');
-                    $router->post('{id}', 'PagesController@update')->name('admin.pages.edit');
+                    $router->post('{id}', 'PagesController@update')->name('admin.pages.update');
                     $router->delete('{id}', 'PagesController@delete')->name('admin.pages.delete');
 
                     $router->get('{id}/copy', 'PagesController@copy')->name('admin.pages.copy');
-                    $router->post('{id}/copy', 'PagesController@store')->name('admin.pages.copy');
+                    $router->post('{id}/copy', 'PagesController@store')->name('admin.pages.copy.store');
                 });
 
                 foreach ($app['platform.pages']->findAllEnabled() as $page) {
